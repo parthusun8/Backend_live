@@ -22,7 +22,7 @@ userRouter.get('/createTestUser',async(req,res)=>{
     await newuser.save();
     console.log(newuser);
     res.send({
-        Message:"Created a USER"
+        Message:"Created a USER."
     })
 })
 userRouter.post('/createUser',async(req,res)=>{
