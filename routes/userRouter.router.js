@@ -25,7 +25,7 @@ userRouter.get('/createTestUser',async(req,res)=>{
         Message:"Created a USER"
     })
 })
-userRouter.get('/createUser',async(req,res)=>{
+userRouter.post('/createUser',async(req,res)=>{
     const newuser = new USER({
         USERID:req.body.USERID,
         PHONE:req.body.PHONE,
