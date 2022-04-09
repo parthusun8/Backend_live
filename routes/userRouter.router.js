@@ -40,7 +40,7 @@ userRouter.post('/createUser',async(req,res)=>{
         PROFILE_ID:req.body.PROFILE_ID
     })
 
-    for(let i = 0;i<req.body.INTERESTED_SPORTS.length();i++){
+    for(let i = 0;i<req.body.INTERESTED_SPORTS.length;i++){
         newuser.INTERESTED_SPORTS.push(req.body.INTERESTED_SPORTS[i]);
     }
     await newuser.save();
