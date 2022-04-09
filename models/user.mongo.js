@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
       type:String
   },
   DOB:{
-      type:Date
+      type:String
   },
   CITY:{
     type:String
