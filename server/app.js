@@ -2,11 +2,13 @@ const express = require('express');
 const app = express()
 const cors = require('cors')
 const userRouter = require('../routes/userRouter.router')
+const livrouter = require('../routes/live_maintainer.router')
 const mongoose = require('mongoose')
 
 const uri = "mongodb+srv://Riddhiman_Mongo:hello123@cluster1.b76yf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 mongoose.connect(uri)
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 app.use(userRouter);
+app.use(livrouter);
 module.exports = app

@@ -47,7 +47,6 @@ userRouter.post('/createUser',async(req,res)=>{
         newuser.FRIENDS_LIST.push(req.body.FRIENDS_LIST[j]);
     }
     await newuser.save();
-    console.log(newuser);
     res.send({
         Message:"Created a USER"
     })
