@@ -1,5 +1,7 @@
 const express = require('express')
 const USER = require('../models/user.mongo')
+const USERProfile = require('../models/userprofile.model')
+
 
 const userRouter = express.Router()
 
@@ -68,5 +70,22 @@ userRouter.post('/userResetPwd',async (req,res)=>{
         })
     }
 })
+
+
+userRouter.post('/userProfileBuild',async(req,res)=>{
+    const new_USERPRofile = new USERProfile(req.body)
+    try{
+        await new_USERPRofile.save()
+        res.status(200).send({
+            Message:"Successfully Updated Userprofile"
+        })
+    }catch(err){
+        console.log(err);
+        res.status(404).send({
+            Message:"Error in Profile creation"
+        })
+    }
+})
+
 
 module.exports = userRouter;
