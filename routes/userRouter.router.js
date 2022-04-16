@@ -2,7 +2,6 @@ const express = require('express')
 const USER = require('../models/user.mongo')
 const USERProfile = require('../models/userprofile.model')
 
-
 const userRouter = express.Router()
 
 userRouter.get('/',(req,res)=>{
@@ -18,17 +17,16 @@ userRouter.get('/createTestUser',async(req,res)=>{
         PHONE:"98213*****",
         NAME:"James",
         PWD:"abc234",
-        GENDER:"MALE"
+        GENDER:"MALE",
     })
-
     await newuser.save();
-    console.log(newuser);
     res.send({
         Message:"Created a USER."
     })
 })
 userRouter.post('/createUser',async(req,res)=>{
-    const newuser = new USER({
+    const newuser = new USER(
+        {
         USERID:req.body.USERID,
         PHONE:req.body.PHONE,
         NAME:req.body.NAME,
@@ -40,8 +38,8 @@ userRouter.post('/createUser',async(req,res)=>{
         STATE:req.body.STATE,
         SPORTS_ACADEMY:req.body.SPORTS_ACADEMY,
         PROFILE_ID:req.body.PROFILE_ID
-    })
-
+    }
+    )
     for(let i = 0;i<req.body.INTERESTED_SPORTS.length;i++){
         newuser.INTERESTED_SPORTS.push(req.body.INTERESTED_SPORTS[i]);
     }
@@ -52,6 +50,37 @@ userRouter.post('/createUser',async(req,res)=>{
     res.send({
         Message:"Created a USER"
     })
+})
+userRouter.post('/userResetPwd',async (req,res)=>{
+    const query = {USERID:req.body.USERID}
+    const user = await USER.exists(query)
+    if(user){
+        const newuser = await USER.findOneAndUpdate(query,{
+            PWD:req.body.PWD
+        })
+        res.status(200).send({
+            Message:'USER Updated'
+        })
+    }else{
+        res.status(404).send({
+            Message:'USER does not Exist'
+        })
+    }
+})
+
+userRouter.post('/userProfileBuild',async(req,res)=>{
+    const new_USERPRofile = new USERProfile(req.body)
+    try{
+        await new_USERPRofile.save()
+        res.status(200).send({
+            Message:"Successfully Updated Userprofile"
+        })
+    }catch(err){
+        console.log(err);
+        res.status(404).send({
+            Message:"Error in Profile creation"
+        })
+    }
 })
 
 userRouter.post('/userResetPwd',async (req,res)=>{

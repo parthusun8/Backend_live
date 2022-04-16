@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id = "form" action="">
+       <input type="text" class="Room" placeholder="matchid">
+       <button class = "Join">Join</button>
+       <input type="text" class="player1" placeholder="player1">
+       <input type="text" class="player2" placeholder="player2">
+       <button class = "Update">Update</button> 
+    </form>
+    <div class="Player1Score">
+        <h1 class="Score">Player1</h1>
+        <input type="text" class="score1">
+    </div>
+    <div class="Player2Score">
+        <h1 class="score">Player2</h1>
+        <input type="text" class="score2">
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        const roomid = document.querySelector('.Room').value;
+        const join = document.querySelector('.Join');
+        join.addEventListener('click',(e)=>{
+            e.preventDefault()
+            socket.emit('join-room',{
+                roomid:roomid
+            })
+            socket.on('Joined Match',()=>{
+            alert(`USERID: ${socket.id} Joined Match`)
+        })
+        })
+        const update = document.querySelector('.Update')
+        const player1score = document.querySelector('.player1')
+        const player2score = document.querySelector('.player2')        
+        update.addEventListener('click',(e)=>{
+            e.preventDefault()
+            const score1 = player1score.value;
+            const score2 = player2score.value;
+            socket.emit('update-score',{
+                score1:score1,
+                score2:score2
+            })
+        })
+        socket.on('new-score',(obj)=>{
+            document.querySelector('.score1').value = obj.newscore1
+            document.querySelector('.score2').value = obj.newscore2
+        })
+    </script>
+</body>
+</html>

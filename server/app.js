@@ -11,4 +11,5 @@ app.use(cors());
 app.use(express.json());
 app.use(userRouter);
 app.use(livrouter);
+app.use(express.static(`${__dirname}\\staticfiles`))
 module.exports = app

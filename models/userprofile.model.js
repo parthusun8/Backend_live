@@ -7,9 +7,11 @@ const base_profile=new mongoose.Schema({
   },
   POINTS:{
     type:Number,
+    default:0
   },
   LEVEL:{
     type:Number,
+    default:0
   }
 });
 
