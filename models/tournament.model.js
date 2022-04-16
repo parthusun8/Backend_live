@@ -44,4 +44,4 @@ const bd =new mongoose.Schema({
   }
 });
 
-module.exports=mongoose.model('base_data', bd);
+module.exports=mongoose.model('tournament', bd);

@@ -28,4 +28,4 @@ const tabletennisschema = new mongoose.Schema({
     }        
 })
 
-module.exports = tabletennisschema
+module.exports = mongoose.model('tabletennis',tabletennisschema)
