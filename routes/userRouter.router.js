@@ -1,4 +1,5 @@
 const express = require('express')
+const { default: mongoose } = require('mongoose')
 const USER = require('../models/user.mongo')
 const USERProfile = require('../models/userprofile.model')
 
@@ -116,5 +117,28 @@ userRouter.post('/userProfileBuild',async(req,res)=>{
     }
 })
 
+userRouter.post('/userLogin',async (req,res)=>{
+    const loginid = req.body.loginid
+    const pwd = req.body.pwd
+    try{
+        const user = await USER.findOne({
+            USERID:loginid
+        })
+        if(user.PWD==pwd){
+            res.status(200).send({
+                Message:'USER Verified'
+            })
+        }
+        else{
+            res.status(404).send({
+                Message:'Incorrect Pwd'
+            })
+        }
+    }catch(err){
+        res.status(404).send({
+            Message:"Invalid USERID"
+        })
+    }
+})
 
 module.exports = userRouter;
