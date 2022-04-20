@@ -9,10 +9,11 @@
 <body>
     <form id = "form" action="">
        <input type="text" class="Room" placeholder="matchid">
-       <button class = "Join">Join</button>
        <input type="text" class="player1" placeholder="player1">
        <input type="text" class="player2" placeholder="player2">
+       <input type="text" class="entity" placeholder="Enter Entity">
        <button class = "Update">Update</button> 
+       <button class = "Join">Join</button>
     </form>
     <div class="Player1Score">
         <h1 class="Score">Player1</h1>
@@ -25,16 +26,15 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-        const roomid = document.querySelector('.Room').value;
         const join = document.querySelector('.Join');
         join.addEventListener('click',(e)=>{
             e.preventDefault()
             socket.emit('join-room',{
-                roomid:roomid
+                entity:document.querySelector('.entity').value,
+                entity_ID:'random',
+                sport:'tabletennis',
+                MATCHID:document.querySelector('.Room').value
             })
-            socket.on('Joined Match',()=>{
-            alert(`USERID: ${socket.id} Joined Match`)
-        })
         })
         const update = document.querySelector('.Update')
         const player1score = document.querySelector('.player1')
@@ -44,13 +44,24 @@
             const score1 = player1score.value;
             const score2 = player2score.value;
             socket.emit('update-score',{
-                score1:score1,
-                score2:score2
+                PLAYER_1_SCORE:score1,
+                PLAYER_2_SCORE:score2
             })
         })
-        socket.on('new-score',(obj)=>{
-            document.querySelector('.score1').value = obj.newscore1
-            document.querySelector('.score2').value = obj.newscore2
+        socket.on('joined-room',(obj)=>{
+                console.log(obj.Message);
+        })
+
+        socket.on('joined-match',(obj)=>{
+            console.log(obj.Message);
+        })
+        socket.on('score-updated',(obj)=>{
+            console.log(obj);
+            document.querySelector('.score1').value = obj.PLAYER_1_SCORE
+            document.querySelector('.score2').value = obj.PLAYER_2_SCORE
+        })
+        socket.on('ERROR',(obj)=>{
+            console.log(obj);
         })
     </script>
 </body>
