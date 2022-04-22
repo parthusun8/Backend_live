@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const tournament = require('../models/tournament.model')
-
-
+const {createMatches,saveMatch} = require('../Functions/createMatches.singles')
 
 const evrouter = express.Router()
 //---------------------------------
@@ -29,19 +28,24 @@ evrouter.post('/createTournament',async (req,res)=>{
     }
 })
 evrouter.post('/createMatches',async (req,res)=>{
-    const currtournament = await tournament.findOneAndUpdate({
-        TOURNAMENT_ID:req.body.TOURNAMENT_ID
-    },{
-        MATCHES:["Matchid1,matchid2"]
-    })  
-    if(currtournament){
-        res.status(200).send({
-            Message:"Testing Going on..."
+    //Requirement = tournament id
+    //participants array which we will get from the tournaments collection
+    const TOURNAMENT_ID = req.body.TOURNAMENT_ID
+    try{
+        const t = await tournament.findOne({
+            TOURNAMENT_ID:TOURNAMENT_ID
         })
-    }
-    else{
+        const matches = createMatches(t.PARTICIPANTS)
+        for(var i = 0;i<matches.length;i++){
+            saveMatch(matches[i].player1,matches[i].player2,t.TOURNAMENT_ID,i)
+        }
+        res.status(200).send({
+            Message:'Created Matches'
+        })        
+    }catch(err){
+        console.log(err);
         res.status(404).send({
-            Message:"Tournament not found"
+            Message:'Tournament not found'
         })
     }
 })

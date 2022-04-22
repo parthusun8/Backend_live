@@ -12,10 +12,10 @@ const tabletennisschema = new mongoose.Schema({
         type:String
     },
     PLAYER1:{
-        type:[String]//Array of userids for doubles. If single player just give one player in the array
+        type:String//Array of userids for doubles. If single player just give one player in the array
     },
     PLAYER2:{
-        type:[String]//Array of userids for doubles. If single player just give one player in the array
+        type:String//Array of userids for doubles. If single player just give one player in the array
     },
     PLAYER1_SCORE:{
         type:Number
@@ -23,6 +23,7 @@ const tabletennisschema = new mongoose.Schema({
     PLAYER2_SCORE:{
         type:Number
     },
+    TIME: [Number],
     WINNER:{
         type:[String] //Array of userids for doubles. If single player just give one player in the array
     }        

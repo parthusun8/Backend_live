@@ -20,7 +20,7 @@ io.on("connect",async (socket)=>{
         let sport = obj.sport
         socket.join(roomname);
         socket.to(socket_id).emit('joined-room',{
-            Message:roomname
+            Message:roomname 
         })
         if(entity=='LIVE-MAINTAINER'){
             io.to(roomname).emit('joined-match',{

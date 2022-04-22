@@ -41,6 +41,10 @@ const bd =new mongoose.Schema({
   },
   MATCHES:{  //array of match ids
     type:[]
+  },
+  PARTICIPANTS:{
+    type:[String],
+    default:['pl1','pl2','pl3','pl4'] // Array of participants
   }
 });
 
