@@ -89,4 +89,6 @@ Given below are some of the api endpoints for the ardent sports app. (Please not
 
 
 
+//23-04-2022: API Endpoints will be updated soon
+
 Subject to Change.(Note: While connected to SRMIST(wifi) the api endpoints may not work since some ports are blocked. Try to use personal mobile hotspot for testing endpoints)
