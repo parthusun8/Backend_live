@@ -11,7 +11,6 @@ const bd =new mongoose.Schema({
   },
   LOCATION:{
     type:String,
-
   },
   TYPE:{
     type:String,
@@ -19,7 +18,6 @@ const bd =new mongoose.Schema({
   },
   GEOTAG:{     
     type:String,//API CALL
-
   },
   REGISTRATION_CLOSE_TIME:{
     type : Date, 
@@ -45,6 +43,9 @@ const bd =new mongoose.Schema({
   PARTICIPANTS:{
     type:[String],
     default:['pl1','pl2','pl3','pl4'] // Array of participants
+  },
+  NO_OF_KNOCKOUT_ROUNDS:{
+    type:Number
   }
 });
 

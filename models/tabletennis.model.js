@@ -23,6 +23,9 @@ const tabletennisschema = new mongoose.Schema({
     PLAYER2_SCORE:{
         type:Number
     },
+    ROUND_NO:{
+        type:Number
+    },
     TIME: [Number],
     WINNER:{
         type:[String] //Array of userids for doubles. If single player just give one player in the array
