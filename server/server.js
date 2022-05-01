@@ -7,7 +7,7 @@ const tabletennis = require('../models/tabletennis.model')
 
 const io = new Server(server)
 //We are currently doing it for singles of raquet games(example: tabletennis)
-io.on("connect",async (socket)=>{
+io.on("connection",async (socket)=>{
     const socket_id = socket.id
     socket.on('join-room',(obj)=>{
         //entity can have values - USER/LIVE-MAINTAINER/ADMIN/EVENT-MANAGER
@@ -33,23 +33,55 @@ io.on("connect",async (socket)=>{
             })
         }
         //update-score event for tabletennis
+        //obj must also contain set details
+        var setscore_array_p1 = [0,0,0]
+        var setscore_array_p2 = [0,0,0]
         socket.on('update-score',async (obj)=>{
             const pl1score = obj.PLAYER_1_SCORE
             const pl2score = obj.PLAYER_2_SCORE
+            const set  = parseInt(obj.set,10) - 1;
+            console.log(obj.set);
+            console.log(set);
+            setscore_array_p1[set] = parseInt(pl1score,10)
+            setscore_array_p2[set] = parseInt(pl2score,10)
+            console.log(setscore_array_p1); 
+            let update_query
+            if(obj.set=='1'){
+                update_query = {
+                    "PLAYER1_SCORE.set1":pl1score
+                    ,
+                    "PLAYER2_SCORE.set1":pl2score
+                }
+            }
+            else if(set=='2'){
+                update_query = {
+                    "PLAYER1_SCORE.set2":pl1score
+                    ,
+                    "PLAYER2_SCORE.set2":pl2score
+                }
+            }
+            else if(set=='3'){
+                update_query = {
+                    "PLAYER1_SCORE.set3":pl1score
+                    ,
+                    "PLAYER2_SCORE.set3":pl2score
+                }
+
+            }
             try{
                 const match = await tabletennis.findOneAndUpdate({
                     MATCHID:roomname
                 },{
-                    PLAYER1_SCORE:pl1score,
-                    PLAYER2_SCORE:pl2score
+                    $set:update_query
                 })
                 if(match){
                     io.to(roomname).emit('score-updated',{
                         PLAYER_1_SCORE:pl1score,
                         PLAYER_2_SCORE:pl2score
                     })    
+                    console.log(match);
                 }
-                else{
+                else if(!match){
                     io.to(roomname).emit('ERROR',{
                         Message:'Match not found in db'
                     })    

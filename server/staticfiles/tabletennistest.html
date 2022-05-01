@@ -15,6 +15,10 @@
        <button class = "Update">Update</button> 
        <button class = "Join">Join</button>
     </form>
+    <div class="set">
+        <h1 class="set1">Set: </h1>
+        <input type="text" class="Set">
+    </div>
     <div class="Player1Score">
         <h1 class="Score">Player1</h1>
         <input type="text" class="score1">
@@ -43,9 +47,11 @@
             e.preventDefault()
             const score1 = player1score.value;
             const score2 = player2score.value;
+            const set = document.querySelector('.Set').value
             socket.emit('update-score',{
                 PLAYER_1_SCORE:score1,
-                PLAYER_2_SCORE:score2
+                PLAYER_2_SCORE:score2,
+                set:set
             })
         })
         socket.on('joined-room',(obj)=>{
