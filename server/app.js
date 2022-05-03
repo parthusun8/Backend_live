@@ -13,5 +13,5 @@ app.use(express.json());
 app.use(userRouter);
 app.use(livrouter);
 app.use(evrouter);
-app.use(express.static(`${__dirname}\\staticfiles`))
+app.use(express.static(`${__dirname}/staticfiles`))
 module.exports = app
