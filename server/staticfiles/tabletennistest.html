@@ -29,7 +29,7 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io();
+        var socket = io("https://ardentsportsapis.herokuapp.com/");
         const join = document.querySelector('.Join');
         join.addEventListener('click',(e)=>{
             e.preventDefault()
