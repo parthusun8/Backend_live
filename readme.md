@@ -87,8 +87,65 @@ Given below are some of the api endpoints for the ardent sports app. (Please not
     Message:"Created a LiveMaintainer"
 ##### }
 
+-----------------------------------------------------------
+## Event Manager
+### /createTournament (POST)
+#### body
+##### (JSON)
+
+TOURNAMENT_ID:{
+    type:Number,
+
+  },
+  STATUS:{
+    type:Boolean,
+    default:true,
+
+  },
+  LOCATION:{
+    type:String,
+
+  },
+  TYPE:{
+    type:String,
+    default:"DYNAMIC",
+  },
+  GEOTAG:{     
+    type:String,//API CALL
+  },
+  REGISTRATION_CLOSE_TIME:{
+    type : Date
+  },
+  SPORT:{
+    type:Array,    
+  },
+  CATEGORIES:{
+    type:Array,
+  },
+  MATCHES:[Array of MatchIDs to be left empty by default],
+  PARTICIPANTS:[Array of Participant IDs //To be left Empty during creation]
+
+##### returns JSON
+##### 
+##### {
+    Message:"Successfully Created New Tournament"
+##### }
+
+or
+##### {
+    Message:"Error in Tournament Creation"
+##### }
+
+-------------------------------------------------------
+## Match Submission endpoints for socketio
+### Client emit events
+##### join-room: Is used to join the broad tournament:
+###### emit event should contain: Javascript Object with fields: entity(LIVE_MAINTAINER, USER), entity_ID, TOURNAMENT_ID, MATCHID
+
+###### while joined in room, 'update-score' event is emitted by client to update score: on successful/unsuccessful updation of scores, the relevant messages will be triggered as specified in 'server.js' file of 'Server_Riddhiman' branch
+------------------------------------------------------
 
 
-//23-04-2022: API Endpoints will be updated soon
+//29-04-2022: API Endpoints will be updated soon
 
 Subject to Change.(Note: While connected to SRMIST(wifi) the api endpoints may not work since some ports are blocked. Try to use personal mobile hotspot for testing endpoints)
