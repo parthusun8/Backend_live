@@ -38,7 +38,8 @@ io.on("connection",async (socket)=>{
         //obj must also contain set details
         var setscore_array_p1 = [0,0,0]
         var setscore_array_p2 = [0,0,0]
-        socket.on('update-score',async (obj)=>{
+        socket.on('update-score',async (obj1)=>{
+            const obj = JSON.parse(obj1)
             const pl1score = obj.PLAYER_1_SCORE
             const pl2score = obj.PLAYER_2_SCORE
             const set  = parseInt(obj.set,10) - 1;
