@@ -30,9 +30,9 @@ livrouter.post('/loginLiveMaintainer', async (req,res)=>{
         })
     }
 })
-livrouter.post('/retrievescores',async (req,res)=>{
+livrouter.get('/retrievescores',async (req,res)=>{
     //MATCHID
-    const matchid = req.body.MATCHID
+    const matchid = req.query.MATCHID
     try {
         const doc = await tabletennis.findOne({
             MATCHID:matchid
