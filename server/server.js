@@ -10,9 +10,10 @@ const io = new Server(server)
 io.on("connection",async (socket)=>{
     console.log(socket.id);
     const socket_id = socket.id
-    socket.on('join-room',(obj)=>{
+    socket.on('join-room',(obj1)=>{
         //entity can have values - USER/LIVE-MAINTAINER/ADMIN/EVENT-MANAGER
         //entityID means either USERID, LIVE-MAINTAINER_ID etc..
+        const obj = JSON.parse(obj1)
         console.log(obj);
         const entity = obj.entity
         const entity_ID = obj.entity_ID
