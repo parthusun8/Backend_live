@@ -56,14 +56,14 @@ io.on("connection",async (socket)=>{
                     "PLAYER2_SCORE.set1":pl2score
                 }
             }
-            else if(set=='2'){
+            else if(obj.set=='2'){
                 update_query = {
                     "PLAYER1_SCORE.set2":pl1score
                     ,
                     "PLAYER2_SCORE.set2":pl2score
                 }
             }
-            else if(set=='3'){
+            else if(obj.set=='3'){
                 update_query = {
                     "PLAYER1_SCORE.set3":pl1score
                     ,
