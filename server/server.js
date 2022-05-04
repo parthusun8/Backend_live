@@ -78,10 +78,11 @@ io.on("connection",async (socket)=>{
                     $set:update_query
                 })
                 if(match){
-                    io.to(roomname).emit('score-updated',{
+                    io.to(roomname).emit('score-updated',JSON.stringify({
+                        set:obj.set,
                         PLAYER_1_SCORE:pl1score,
                         PLAYER_2_SCORE:pl2score
-                    })    
+                    }))    
                     console.log(match);
                 }
                 else if(!match){
