@@ -1,8 +1,8 @@
 const express = require('express')
-const { default: mongoose } = require('mongoose')
+const mongoose = require('mongoose')
 const USER = require('../models/user.mongo')
 const USERProfile = require('../models/userprofile.model')
-
+const stripe = require('stripe')("sk_test_51Kx9oUSDyPLJYmvrHGifQoOVMJTLzveCWgOMKSdYGUKOhgqEW5pDoA9XTbs5NDki9XW4mmU4wNna8uFdpoM0BanG00uedfdbjt")
 const userRouter = express.Router()
 
 userRouter.get('/',(req,res)=>{
@@ -101,6 +101,28 @@ userRouter.post('/userResetPwd',async (req,res)=>{
     }
 })
 
+userRouter.get('/walletPaymentVerify', async (req,res)=>{
+//require userID, 
+    const intent_id = req.query.intent_id;
+    console.log(req.query.intent_id);
+    try {
+        const payment_intent = await stripe.paymentIntents.retrieve(intent_id)
+        console.log(payment_intent);
+        if(payment_intent){
+            //do something
+            res.status(200).send("Done Something")
+        }
+        else{
+            const err = new Error("Unknown Error")
+            throw err
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({
+            Message:'Error'
+        })
+    }
+})
 
 userRouter.post('/userProfileBuild',async(req,res)=>{
     const new_USERPRofile = new USERProfile(req.body)

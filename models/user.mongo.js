@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
   FRIENDS_LIST:[], //String array// 
   PROFILE_ID:{
       type:String
+  },
+  WALLET_BALANCE:{
+    type:Number,
+    default:0
   }
 })
 
