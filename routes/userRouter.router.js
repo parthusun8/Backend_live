@@ -102,14 +102,15 @@ userRouter.post('/userResetPwd',async (req,res)=>{
 })
 
 userRouter.get('/walletPaymentVerify', async (req,res)=>{
-//require userID, 
+    const user_id = req.query.USERID
     const intent_id = req.query.intent_id;
-    console.log(req.query.intent_id);
-    try {
+    try {                   
         const payment_intent = await stripe.paymentIntents.retrieve(intent_id)
         console.log(payment_intent);
         if(payment_intent){
-            //do something
+        //use findOneandUpdate function of the user model
+        //update the wallet balance of the user by the amount in the payment_intent object
+        //Set the relevant JSON response under the tag Message as shown below
             res.status(200).send("Done Something")
         }
         else{
