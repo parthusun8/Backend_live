@@ -2,6 +2,7 @@ const mongoose=require("mongoose")
 const bd =new mongoose.Schema({
   TOURNAMENT_ID:{
     type:Number,
+    default:123456
   },
   STATUS:{
     type:Boolean,
