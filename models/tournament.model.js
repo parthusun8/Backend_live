@@ -2,15 +2,19 @@ const mongoose=require("mongoose")
 const bd =new mongoose.Schema({
   TOURNAMENT_ID:{
     type:Number,
-
   },
   STATUS:{
     type:Boolean,
     default:true,
-
   },
   LOCATION:{
     type:String,
+  },
+  CITY:{
+    type:String
+  },
+  ADDRESS:{
+    type:String
   },
   TYPE:{
     type:String,
@@ -19,14 +23,19 @@ const bd =new mongoose.Schema({
   GEOTAG:{     
     type:String,//API CALL
   },
+  START_DATE:{
+    type:String
+  },
+  END_DATE:{
+    type:String
+  },
   REGISTRATION_CLOSE_TIME:{
     type : Date, 
     default: Date.now,
 
   },
   SPORT:{
-    type:Array,    //drop down
-
+    type:String,    //drop down
   },
   CANCELLATION_STATUS:{
     type:Boolean,
@@ -39,6 +48,12 @@ const bd =new mongoose.Schema({
   },
   MATCHES:{  //array of match ids
     type:[]
+  },
+  NO_OF_COURTS:{
+    type:Number
+  },
+  BREAK_TIME:{
+    type:String
   },
   PARTICIPANTS:{
     type:[String],
