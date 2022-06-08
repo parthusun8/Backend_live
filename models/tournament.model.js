@@ -1,8 +1,8 @@
 const mongoose=require("mongoose")
 const bd =new mongoose.Schema({
   TOURNAMENT_ID:{
-    type:Number,
-    default:123456
+    type:String,
+    default:"123456"
   },
   STATUS:{
     type:Boolean,
@@ -62,6 +62,10 @@ const bd =new mongoose.Schema({
   },
   NO_OF_KNOCKOUT_ROUNDS:{
     type:Number
+  },
+  SPOT_STATUS_ARRAY:{
+    type:[String],
+    default:[]
   }
 });
 

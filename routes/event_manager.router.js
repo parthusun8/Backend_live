@@ -15,6 +15,13 @@ const evrouter = express.Router()
 evrouter.post('/createTournament',async (req,res)=>{
     //First Matches have to be created
     try{
+        const spotArray = []
+        const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS
+        for(let i =0;i<no_of_spots;i++){
+            spotArray.push("None")
+        }
+        req.body.SPOT_STATUS_ARRAY = spotArray
+        console.log(req.body);
         await new tournament(req.body).save()
         //update_event_manager_current_tournaments
         res.status(200).send({

@@ -4,6 +4,7 @@ const server = http.createServer(app);
 const port = process.env.PORT||3000 // to be upgraded for .env files later
 const {Server} = require('socket.io');
 const tabletennis = require('../models/tabletennis.model')
+const tournament = require('../models/tournament.model')
 
 const io = new Server(server)
 //We are currently doing it for singles of raquet games(example: tabletennis)
@@ -93,6 +94,61 @@ io.on("connection",async (socket)=>{
             }catch(err){
                 console.log(err);
                 socket.to(socket_id).emit('ERROR')
+            }
+        })
+    })
+})
+
+//Spot booking
+//Lets work with timestamps
+
+// var spotArray = [[],[],[],[],[]]
+// var spotStatusArray = ["None","None","None","None","None"]
+io.on("connection",(socket)=>{
+    socket.on('join-booking',(obj1)=>{
+        const tid = obj1.TOURNAMENT_ID
+        tournament.findOne({
+            TOURNAMENT_ID:tid            
+        },function(error,result){
+            if(error){
+                socket.emit('error',{
+                    Message:'Tournament Not found'
+                })
+            }
+            const spotStatusArray = result.SPOT_STATUS_ARRAY
+            socket.emit('spotStatusArray',{
+                array:spotStatusArray
+            })
+            socket.join(obj1.TOURNAMENT_ID)
+         })
+        socket.on('spot-clicked',(obj)=>{
+            spotArray[obj.btnID].push(socket.id)
+            var color=''
+            if(spotArray.length==1){
+                color = 'orange'
+                spotStatusArray[obj.btnID] = "In Progress"
+            }
+            else{
+                spotStatusArray[obj.btnID] = "In Progress"
+                color = 'orange'
+            }
+            io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',{
+                btnID:obj.btnID,
+                queuepos:spotArray[obj.btnID].length,
+                color:color
+            })
+        })
+        socket.on('cancel-spot',(obj)=>{
+            spotArray[obj.selectedButton].shift()
+        })
+        socket.on('confirm-booking',(obj)=>{
+            //requires btn ID
+            const selectedButton = obj.selectedButton
+            if(spotArray[selectedButton].indexOf(socket.id)==0){
+                io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',{
+                    btnID:selectedButton
+                })
+                spotStatusArray[selectedButton] = "Booked"
             }
         })
     })

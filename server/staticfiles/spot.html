@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button class="spot 1">spot-1</button>
+    <button class="spot 2">spot-2</button>
+    <button class="spot 3">spot-3</button>
+    <button class="spot 4">spot-4</button>
+    <button class="spot 5">spot-5</button>
+    <button class="cancel">cancel</button>
+    <button class="confirm">Confirm</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io()
+        let selectedButton
+        const btn = document.querySelectorAll('.spot')
+        const btnArray = Array.from(btn)
+        window.addEventListener('load',()=>{
+            socket.emit('join-booking',{
+                TOURNAMENT_ID:"123457"
+            })
+            socket.on('spotStatusArray',(obj)=>{
+                console.log(obj.array);
+                obj.array.forEach((el,index)=>{
+                    if(el==='In Progress'){
+                        btnArray[index].style.color = 'orange'
+                    }
+                    else if(el==='None'){
+                        btnArray[index].style.color = 'green'
+                    }
+                    else{
+                        btnArray[index].disabled = true
+                    }
+                })
+            })
+        })
+        btnArray.forEach((bt,index)=>{
+            bt.addEventListener('click',()=>{
+                selectedButton = index
+                socket.emit('spot-clicked',{
+                    btnID:index
+                })
+            })
+        })
+        const cancel = document.querySelector('.cancel')
+        cancel.addEventListener('click',()=>{
+            socket.emit('cancel-spot',{
+                selectedButton:selectedButton
+            })
+      })
+        socket.on('spot-clicked-return',(obj)=>{
+            console.log(obj);
+            btnArray[obj.btnID].style.color = 'orange'
+        })
+        const confirm = document.querySelector('.confirm')
+        confirm.addEventListener('click',()=>{
+            socket.emit('confirm-booking',{
+                selectedButton:selectedButton
+            })
+        })
+        socket.on('booking-confirmed',(obj)=>{
+            btnArray[obj.btnID].disabled = true
+        })
+    </script>
+</body>
+</html>
