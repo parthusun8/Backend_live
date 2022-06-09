@@ -18,7 +18,7 @@ evrouter.post('/createTournament',async (req,res)=>{
         const spotArray = []
         const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS
         for(let i =0;i<no_of_spots;i++){
-            spotArray.push("None")
+            spotArray.push(`${i}`)
         }
         req.body.SPOT_STATUS_ARRAY = spotArray
         console.log(req.body);

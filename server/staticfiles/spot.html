@@ -22,16 +22,16 @@
         const btnArray = Array.from(btn)
         window.addEventListener('load',()=>{
             socket.emit('join-booking',{
-                TOURNAMENT_ID:"123457"
+                TOURNAMENT_ID:"123456"
             })
             socket.on('spotStatusArray',(obj)=>{
                 console.log(obj.array);
                 obj.array.forEach((el,index)=>{
-                    if(el==='In Progress'){
-                        btnArray[index].style.color = 'orange'
-                    }
-                    else if(el==='None'){
+                    if(el===`${index}`){
                         btnArray[index].style.color = 'green'
+                    }
+                    else if(el!='confirmed'){
+                        btnArray[index].style.color = 'orange'
                     }
                     else{
                         btnArray[index].disabled = true
@@ -43,6 +43,7 @@
             bt.addEventListener('click',()=>{
                 selectedButton = index
                 socket.emit('spot-clicked',{
+                    TOURNAMENT_ID:"123456",
                     btnID:index
                 })
             })

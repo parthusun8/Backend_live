@@ -122,34 +122,75 @@ io.on("connection",(socket)=>{
             socket.join(obj1.TOURNAMENT_ID)
          })
         socket.on('spot-clicked',(obj)=>{
-            spotArray[obj.btnID].push(socket.id)
-            var color=''
-            if(spotArray.length==1){
-                color = 'orange'
-                spotStatusArray[obj.btnID] = "In Progress"
-            }
-            else{
-                spotStatusArray[obj.btnID] = "In Progress"
-                color = 'orange'
-            }
-            io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',{
-                btnID:obj.btnID,
-                queuepos:spotArray[obj.btnID].length,
-                color:color
+//            spotArray[obj.btnID].push(socket.id)
+//get spotArray
+            console.log('Socket request');
+            const tid = obj1.TOURNAMENT_ID
+            tournament.findOne({
+                TOURNAMENT_ID:tid
+            },function(error,result){
+                var color=''
+                if(result.SPOT_STATUS_ARRAY[obj.btnID]===`${obj.btnID}`){
+                    color='Orange'
+                    result.SPOT_STATUS_ARRAY[obj.btnID] = socket.id
+                    console.log(result.SPOT_STATUS_ARRAY);
+                    tournament.updateOne({
+                        TOURNAMENT_ID:tid,
+                        SPOT_STATUS_ARRAY:`${obj.btnID}`
+                    },{
+                        $set:{
+                            "SPOT_STATUS_ARRAY.$":socket.id
+                        }
+                    },function(error,result){
+                        if(error){
+                            console.log(error);
+                        }
+                        if(result){
+                            console.log(result);
+                            io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',{
+                                btnID:obj.btnID,
+                                color:color
+                            })                
+                        }
+                    })
+                }
             })
+            // if(spotArray.length==1){
+            //     color = 'orange'
+            //     spotStatusArray[obj.btnID] = "In Progress"
+            // }
+            // else{
+            //     spotStatusArray[obj.btnID] = "In Progress"
+            //     color = 'orange'
+            // }
+            // io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',{
+            //     btnID:obj.btnID,
+            //     queuepos:spotArray[obj.btnID].length,
+            //     color:color
+            // })
         })
         socket.on('cancel-spot',(obj)=>{
             spotArray[obj.selectedButton].shift()
         })
         socket.on('confirm-booking',(obj)=>{
-            //requires btn ID
             const selectedButton = obj.selectedButton
-            if(spotArray[selectedButton].indexOf(socket.id)==0){
-                io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',{
-                    btnID:selectedButton
-                })
-                spotStatusArray[selectedButton] = "Booked"
-            }
+            tournament.updateOne({
+                TOURNAMENT_ID:obj.TOURNAMENT_ID,
+                SPOT_STATUS_ARRAY:`${socket.id}`
+            },{
+                $set:{
+                    "SPOT_STATUS_ARRAY.$":`confirmed-${socket.id}`
+                }
+            },function(error,result){
+                if(result){
+                    io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',{
+                        btnID:selectedButton
+                    })
+                }
+            })
+            // if(){
+            //     spotStatusArray[selectedButton] = "Booked"
+            // }
         })
     })
 })
