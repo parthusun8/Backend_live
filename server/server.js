@@ -105,7 +105,8 @@ io.on("connection",async (socket)=>{
 // var spotArray = [[],[],[],[],[]]
 // var spotStatusArray = ["None","None","None","None","None"]
 io.on("connection",(socket)=>{
-    socket.on('join-booking',(obj1)=>{
+    socket.on('join-booking',(objk)=>{
+        const obj1 = JSON.parse(objk)
         const tid = obj1.TOURNAMENT_ID
         tournament.findOne({
             TOURNAMENT_ID:tid            
