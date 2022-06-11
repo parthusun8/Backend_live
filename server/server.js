@@ -119,7 +119,7 @@ io.on("connection",(socket)=>{
             socket.emit('spotStatusArray',{
                 array:spotStatusArray
             })
-            socket.join(obj1.TOURNAMENT_ID)
+            //socket.join(obj1.TOURNAMENT_ID)
          })
         socket.on('spot-clicked',(obj)=>{
 //            spotArray[obj.btnID].push(socket.id)
