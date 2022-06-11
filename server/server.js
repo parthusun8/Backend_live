@@ -30,7 +30,7 @@ io.on("connection",async (socket)=>{
                 Message:`LIVE-MAINTAINER: ${entity_ID} has joined the match`
             })
         }
-        else if(entity=='USER'){
+        else if(entity== 'USER'){
             io.to(roomname).emit('joined-match',{
                 Message:`USER: ${entity_ID} has joined the match`
             })
