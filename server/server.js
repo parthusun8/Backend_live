@@ -118,6 +118,7 @@ io.on("connection",(socket)=>{
                 })
             }
             const spotStatusArray = result.SPOT_STATUS_ARRAY
+            console.log(spotStatusArray);
             socket.emit('spotStatusArray',{
                 array:spotStatusArray
             })
