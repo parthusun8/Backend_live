@@ -119,9 +119,9 @@ io.on("connection",(socket)=>{
             }
             const spotStatusArray = result.SPOT_STATUS_ARRAY
             console.log(spotStatusArray);
-            socket.emit('spotStatusArray',{
+            socket.emit('spotStatusArray',JSON.stringify({
                 array:spotStatusArray
-            })
+            }))
             socket.join(obj1.TOURNAMENT_ID)
          })
         socket.on('spot-clicked',(obj)=>{
