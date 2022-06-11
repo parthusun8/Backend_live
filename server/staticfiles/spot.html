@@ -21,6 +21,7 @@
         const btn = document.querySelectorAll('.spot')
         const btnArray = Array.from(btn)
         window.addEventListener('load',()=>{
+            console.log(socket.id);
             socket.emit('join-booking',{
                 TOURNAMENT_ID:"123456"
             })
@@ -30,7 +31,7 @@
                     if(el===`${index}`){
                         btnArray[index].style.color = 'green'
                     }
-                    else if(el!='confirmed'){
+                    else if(!el.includes("confirmed")){
                         btnArray[index].style.color = 'orange'
                     }
                     else{
@@ -61,6 +62,7 @@
         const confirm = document.querySelector('.confirm')
         confirm.addEventListener('click',()=>{
             socket.emit('confirm-booking',{
+                TOURNAMENT_ID:'123456',
                 selectedButton:selectedButton
             })
         })
