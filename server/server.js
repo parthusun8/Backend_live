@@ -129,7 +129,7 @@ io.on("connection",(socket)=>{
 //            spotArray[obj.btnID].push(socket.id)
 //get spotArray
             console.log('Socket request');
-            const obj = JSON.parse(pbjt)
+            const obj = JSON.parse(objt)
             const tid = obj1.TOURNAMENT_ID
             tournament.findOne({
                 TOURNAMENT_ID:tid
