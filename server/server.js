@@ -125,10 +125,11 @@ io.on("connection",(socket)=>{
             }))
             socket.join(obj1.TOURNAMENT_ID)
          })
-        socket.on('spot-clicked',(obj)=>{
+        socket.on('spot-clicked',(objt)=>{
 //            spotArray[obj.btnID].push(socket.id)
 //get spotArray
             console.log('Socket request');
+            const obj = JSON.parse(pbjt)
             const tid = obj1.TOURNAMENT_ID
             tournament.findOne({
                 TOURNAMENT_ID:tid
@@ -151,10 +152,10 @@ io.on("connection",(socket)=>{
                         }
                         if(result){
                             console.log(result);
-                            io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',{
+                            io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',JSON.stringify({
                                 btnID:obj.btnID,
                                 color:color
-                            })                
+                            }))                
                         }
                     })
                 }
