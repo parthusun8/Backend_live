@@ -9,7 +9,7 @@ const tournament = require('../models/tournament.model')
 const io = new Server(server)
 //We are currently doing it for singles of raquet games(example: tabletennis)
 io.on("connection",async (socket)=>{
-    console.log(socket.id);
+    //console.log(socket.id);
     const socket_id = socket.id
     socket.on('join-room',(obj1)=>{
         //entity can have values - USER/LIVE-MAINTAINER/ADMIN/EVENT-MANAGER
