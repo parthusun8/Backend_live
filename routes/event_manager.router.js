@@ -39,16 +39,24 @@ evrouter.post('/createMatches',async (req,res)=>{
     //participants array which we will get from the tournaments collection
     const TOURNAMENT_ID = req.body.TOURNAMENT_ID
     try{
-        const t = await tournament.findOne({
-            TOURNAMENT_ID:TOURNAMENT_ID
-        })
-        const matches = createMatches(t.PARTICIPANTS)
-        for(var i = 0;i<matches.length;i++){
-            saveMatch(matches[i].player1,matches[i].player2,t.TOURNAMENT_ID,i)
+        const result = await createMatches(TOURNAMENT_ID)
+        if(result){
+            tournament.updateOne({
+                TOURNAMENT_ID:TOURNAMENT_ID
+            },{
+                MATCHES:result
+            },function(error,rs){
+                if(error){
+                    console.log(error)
+                    throw error
+                }
+                if(rs){
+                    res.status(200).send({
+                        Message:'Created Matches'
+                    })
+                }
+            })
         }
-        res.status(200).send({
-            Message:'Created Matches'
-        })        
     }catch(err){
         console.log(err);
         res.status(404).send({

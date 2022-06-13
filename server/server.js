@@ -121,7 +121,9 @@ io.on("connection",(socket)=>{
             console.log(spotStatusArray);
             socket.emit('spotStatusArray',JSON.stringify({
                 total_spots:result.NO_OF_KNOCKOUT_ROUNDS,
-                array:spotStatusArray
+                array:spotStatusArray,
+                prize_pool:result.PRIZE_POOL,
+                entry_fee:result.ENTRY_FEE
             }))
             socket.join(obj1.TOURNAMENT_ID)
          })

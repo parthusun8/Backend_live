@@ -66,6 +66,14 @@ const bd =new mongoose.Schema({
   SPOT_STATUS_ARRAY:{
     type:[String],
     default:[]
+  },
+  PRIZE_POOL:{
+    type:Number,
+    default:0
+  },
+  ENTRY_FEE:{
+    type:Number,
+    default:0    
   }
 });
 
