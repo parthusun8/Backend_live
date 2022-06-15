@@ -25,7 +25,8 @@
             socket.emit('join-booking',JSON.stringify({
                 TOURNAMENT_ID:"123456"
             }))
-            socket.on('spotStatusArray',(obj)=>{
+            socket.on('spotStatusArray',(objk)=>{
+                const obj = JSON.parse(objk)
                 console.log(obj.array);
                 obj.array.forEach((el,index)=>{
                     if(el===`${index}`){
@@ -43,10 +44,10 @@
         btnArray.forEach((bt,index)=>{
             bt.addEventListener('click',()=>{
                 selectedButton = index
-                socket.emit('spot-clicked',{
+                socket.emit('spot-clicked',JSON.stringify({
                     TOURNAMENT_ID:"123456",
                     btnID:index
-                })
+                }))
             })
         })
         const cancel = document.querySelector('.cancel')
@@ -55,18 +56,20 @@
                 selectedButton:selectedButton
             })
       })
-        socket.on('spot-clicked-return',(obj)=>{
+        socket.on('spot-clicked-return',(objk)=>{
+            const obj = JSON.parse(objk)
             console.log(obj);
             btnArray[obj.btnID].style.color = 'orange'
         })
         const confirm = document.querySelector('.confirm')
         confirm.addEventListener('click',()=>{
-            socket.emit('confirm-booking',{
+            socket.emit('confirm-booking',JSON.stringify({
                 TOURNAMENT_ID:'123456',
                 selectedButton:selectedButton
-            })
+            }))
         })
-        socket.on('booking-confirmed',(obj)=>{
+        socket.on('booking-confirmed',(objk)=>{
+            const obj = JSON.parse(objk)            
             btnArray[obj.btnID].disabled = true
         })
     </script>
