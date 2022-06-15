@@ -107,6 +107,7 @@ io.on("connection",async (socket)=>{
 io.on("connection",(socket)=>{
     console.log(socket.id)
     socket.on('join-booking',(objk)=>{
+        console.log(objk);
         const obj1 = JSON.parse(objk)
         const tid = obj1.TOURNAMENT_ID
         tournament.findOne({
@@ -158,29 +159,18 @@ io.on("connection",(socket)=>{
                             io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',JSON.stringify({
                                 btnID:obj.btnID,
                                 color:color
-                            }))                
+                            }))
+
                         }
                     })
                 }
             })
-            // if(spotArray.length==1){
-            //     color = 'orange'
-            //     spotStatusArray[obj.btnID] = "In Progress"
-            // }
-            // else{
-            //     spotStatusArray[obj.btnID] = "In Progress"
-            //     color = 'orange'
-            // }
-            // io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',{
-            //     btnID:obj.btnID,
-            //     queuepos:spotArray[obj.btnID].length,
-            //     color:color
-            // })
         })
         socket.on('cancel-spot',(obj)=>{
             spotArray[obj.selectedButton].shift()
         })
         socket.on('confirm-booking',(obj)=>{
+            console.log(obj);
             const selectedButton = obj.selectedButton
             tournament.updateOne({
                 TOURNAMENT_ID:obj.TOURNAMENT_ID,

@@ -22,9 +22,9 @@
         const btnArray = Array.from(btn)
         window.addEventListener('load',()=>{
             console.log(socket.id);
-            socket.emit('join-booking',{
+            socket.emit('join-booking',JSON.stringify({
                 TOURNAMENT_ID:"123456"
-            })
+            }))
             socket.on('spotStatusArray',(obj)=>{
                 console.log(obj.array);
                 obj.array.forEach((el,index)=>{

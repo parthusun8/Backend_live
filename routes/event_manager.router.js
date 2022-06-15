@@ -37,31 +37,51 @@ evrouter.post('/createTournament',async (req,res)=>{
 evrouter.post('/createMatches',async (req,res)=>{
     //Requirement = tournament id
     //participants array which we will get from the tournaments collection
-    const TOURNAMENT_ID = req.body.TOURNAMENT_ID
-    try{
-        const result = await createMatches(TOURNAMENT_ID)
-        if(result){
+    const tid = req.body.TOURNAMENT_ID
+    tournament.findOne({
+        TOURNAMENT_ID:tid
+    },function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Tournament Not Found'
+            })
+        }
+        else if(result){
+            const spotStatusArray = result.SPOT_STATUS_ARRAY
+            const matches = []
+            if(spotStatusArray.length==32){
+                let j = 0
+                for(let i=0;i<16;i++){
+                    const pl1 = spotStatusArray[j].split("-")
+                    const pl2 = spotStatusArray[j+1].split("-")
+                    if(pl1.length==2 && pl2.length==2){
+                        matches.push({pl1:pl1[1],pl2:pl2[1]})
+                    }
+                    j+=2
+                }
+            }
             tournament.updateOne({
-                TOURNAMENT_ID:TOURNAMENT_ID
+                TOURNAMENT_ID:tid
             },{
-                MATCHES:result
-            },function(error,rs){
+                $addToSet:{
+                    MATCHES:matches
+                }
+            },function(error,result){
                 if(error){
                     console.log(error)
-                    throw error
-                }
-                if(rs){
-                    res.status(200).send({
-                        Message:'Created Matches'
+                    res.status(404).send({
+                        Message:'Error occurred'
                     })
+                }
+                else{
+                    if(result){
+                        res.status(200).send({
+                            Message:'Successfully created Matches'
+                        })
+                    }
                 }
             })
         }
-    }catch(err){
-        console.log(err);
-        res.status(404).send({
-            Message:'Tournament not found'
-        })
-    }
+    })
 })
 module.exports = evrouter
