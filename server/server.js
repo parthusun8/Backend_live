@@ -131,6 +131,7 @@ io.on("connection",(socket)=>{
         socket.on('spot-clicked',(objt)=>{
 //            spotArray[obj.btnID].push(socket.id)
 //get spotArray
+            console.log(socket.id);
             console.log('Socket request');
             const obj = JSON.parse(objt)
             console.log(obj);
@@ -170,6 +171,7 @@ io.on("connection",(socket)=>{
             spotArray[obj.selectedButton].shift()
         })
         socket.on('confirm-booking',(objk)=>{
+            console.log(socket.id);
             const obj = JSON.parse(objk)
             console.log(obj);
             const selectedButton = obj.selectedButton
