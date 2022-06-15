@@ -169,7 +169,8 @@ io.on("connection",(socket)=>{
         socket.on('cancel-spot',(obj)=>{
             spotArray[obj.selectedButton].shift()
         })
-        socket.on('confirm-booking',(obj)=>{
+        socket.on('confirm-booking',(objk)=>{
+            const obj = JSON.parse(objk)
             console.log(obj);
             const selectedButton = obj.selectedButton
             tournament.updateOne({
@@ -182,7 +183,7 @@ io.on("connection",(socket)=>{
             },function(error,result){
                 if(result){
                     io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
-                        btnID:`selectedButton`
+                        btnID:`${selectedButton}`
                     }))
                 }
             })
