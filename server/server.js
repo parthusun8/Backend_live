@@ -181,9 +181,9 @@ io.on("connection",(socket)=>{
                 }
             },function(error,result){
                 if(result){
-                    io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',{
+                    io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
                         btnID:selectedButton
-                    })
+                    }))
                 }
             })
             // if(){
