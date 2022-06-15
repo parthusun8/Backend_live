@@ -177,16 +177,21 @@ io.on("connection",(socket)=>{
             const selectedButton = obj.selectedButton
             tournament.updateOne({
                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                SPOT_STATUS_ARRAY:`${socket.id}`
+                SPOT_STATUS_ARRAY:socket.id
             },{
                 $set:{
                     "SPOT_STATUS_ARRAY.$":`confirmed-${socket.id}`
                 }
             },function(error,result){
                 if(result){
+                    console.log('Booking Confirmed')
+                    console.log(result)
                     io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
                         btnID:`${selectedButton}`
                     }))
+                }
+                if(error){
+                    console.log(error);
                 }
             })
             // if(){
