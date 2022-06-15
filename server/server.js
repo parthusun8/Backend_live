@@ -171,9 +171,11 @@ io.on("connection",(socket)=>{
             spotArray[obj.selectedButton].shift()
         })
         socket.on('confirm-booking',(objk)=>{
+            console.log('In confirm booking')
             console.log(socket.id);
             const obj = JSON.parse(objk)
             console.log(obj);
+            console.log(obj.TOURNAMENT_ID);
             const selectedButton = obj.selectedButton
             tournament.updateOne({
                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
