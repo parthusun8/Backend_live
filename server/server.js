@@ -178,7 +178,7 @@ io.on("connection",(socket)=>{
                 SPOT_STATUS_ARRAY:`${socket.id}`
             },{
                 $set:{
-                    "SPOT_STATUS_ARRAY.$":`confirmed - ${socket.id}`
+                    "SPOT_STATUS_ARRAY.$":`confirmed-${socket.id}`
                 }
             },function(error,result){
                 if(result){
