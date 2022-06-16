@@ -5,6 +5,7 @@ const userRouter = require('../routes/userRouter.router')
 const livrouter = require('../routes/live_maintainer.router')
 const evrouter = require('../routes/event_manager.router')
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 const uri = "mongodb+srv://Riddhiman_Mongo:hello123@cluster1.b76yf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 mongoose.connect(uri)
