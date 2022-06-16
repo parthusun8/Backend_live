@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const USER = require('../models/user.mongo')
 const USERProfile = require('../models/userprofile.model')
-const stripe = require('stripe')(process.env.STRIPE_SK_KEY)
+const stripe = require('stripe')("sk_test_51Kx9oUSDyPLJYmvrHGifQoOVMJTLzveCWgOMKSdYGUKOhgqEW5pDoA9XTbs5NDki9XW4mmU4wNna8uFdpoM0BanG00uedfdbjt")
 const userRouter = express.Router()
 
 userRouter.get('/',(req,res)=>{
