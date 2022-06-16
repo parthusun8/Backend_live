@@ -214,4 +214,11 @@ userRouter.post('/makePayment',async (req,res)=>{
     }
 })
 
+userRouter.post('/sendDetails',async (req,res)=>{
+    console.log(req.body.amount)
+    res.status(200).send({
+        Message:'Done Work'
+    })
+})
+
 module.exports = userRouter;
