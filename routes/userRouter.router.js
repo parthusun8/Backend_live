@@ -170,6 +170,7 @@ userRouter.post('/makePayment',async (req,res)=>{
         console.log(process.env.STRIPE_SK_KEY)
         console.log(req.body.amount)
         console.log(typeof(req.body.amount))
+        console.log(req.body.email)
         //Gets the customer who's email id matches the one sent by the client
         const customerList = await stripe.customers.list({
             email: req.body.email,
