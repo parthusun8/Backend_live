@@ -185,7 +185,8 @@ userRouter.post('/makePayment',async (req,res)=>{
             const customer = await stripe.customers.create({
                 email: req.body.email
             });
-            customerId = customer.data.id;
+            customerId = customer.id;
+            
         }
 
         //Creates a temporary secret key linked with the customer 
