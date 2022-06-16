@@ -171,7 +171,7 @@ userRouter.post('/makePayment',async (req,res)=>{
         //Gets the customer who's email id matches the one sent by the client
         const customerList = await stripe.customers.list({
             email: req.body.email,
-            limit: 1
+            limit: 5
         });
                 
         //Checks the if the customer exists, if not creates a new customer
