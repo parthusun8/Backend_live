@@ -192,6 +192,8 @@ userRouter.post('/makePayment',async (req,res)=>{
         );
 
         //Creates a new payment intent with amount passed in from the client
+        console.log(req.body.amount)
+        console.log(typeof(req.body.amount))
         const paymentIntent = await stripe.paymentIntents.create({
             amount: parseInt(req.body.amount),
             currency: 'sgd',
