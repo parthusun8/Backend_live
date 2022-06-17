@@ -52,6 +52,9 @@ const badmintonschema = new mongoose.Schema({
     TIME: [Number],
     WINNER:{
         type:[String] //Array of userids for doubles. If single player just give one player in the array
+    },
+    NEXT_MATCH_ID:{
+        type:String
     }        
 })
 
