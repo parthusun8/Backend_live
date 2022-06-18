@@ -196,9 +196,25 @@ io.on("connection",(socket)=>{
                     console.log(error);
                 }
             })
-            // if(){
-            //     spotStatusArray[selectedButton] = "Booked"
-            // }
+        })
+        socket.on('remove-booking',(objkt)=>{
+            //send spot number (0-based index)
+            const obj = JSON.parse(objkt)
+            tournament.updateOne({
+                TOURNAMENT_ID:obj.TOURNAMENT_ID,
+                SPOT_STATUS_ARRAY:socket.id
+            },{
+                $set:{
+                    "SPOT_STATUS_ARRAY.$":`${obj.SPOTID}`
+                }
+            },function(error,result){
+                if(error){
+                    io.to(obj.TOURNAMENT_ID).emit('error')
+                }
+                if(result){
+                    io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list')
+                }
+            })
         })
     })
 })
