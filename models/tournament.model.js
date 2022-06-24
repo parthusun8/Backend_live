@@ -55,6 +55,9 @@ const bdmatch = new mongoose.Schema({
   },
   NEXT_MATCH_ID:{
       type:String
+  },
+  NEXT_MATCH_PLAYER_SPOT:{
+    type:Number
   }        
 })
 const bd =new mongoose.Schema({

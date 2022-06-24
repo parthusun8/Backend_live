@@ -19,12 +19,14 @@ async function createMatches(tournamentid){
                         result.MATCHES[j] = {
                             MATCHID:`${j}`,
                             TOURNAMENT_ID:tournamentid,
-                            NEXT_MATCH_ID:`${end+k}`
+                            NEXT_MATCH_ID:`${end+k}`,
+                            NEXT_MATCH_PLAYER_SPOT:0
                         }
                         result.MATCHES[j+1] = {
                             MATCHID:`${j+1}`,
                             TOURNAMENT_ID:tournamentid,
-                            NEXT_MATCH_ID:`${end+k}`
+                            NEXT_MATCH_ID:`${end+k}`,
+                            NEXT_MATCH_PLAYER_SPOT:1
                         }
                         k=k+1
                     }
