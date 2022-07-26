@@ -5,6 +5,7 @@ const port = process.env.PORT||3000 // to be upgraded for .env files later
 const {Server} = require('socket.io');
 const tabletennis = require('../models/tabletennis.model')
 const tournament = require('../models/tournament.model')
+const user = require('../models/user.mongo')
 
 const io = new Server(server)
 //We are currently doing it for singles of raquet games(example: tabletennis)
@@ -14,11 +15,12 @@ io.on("connection",async (socket)=>{
     socket.on('join-room',(obj1)=>{
         //entity can have values - USER/LIVE-MAINTAINER/ADMIN/EVENT-MANAGER
         //entityID means either USERID, LIVE-MAINTAINER_ID etc..
+        //Tournament ID also required
         const obj = JSON.parse(obj1)
         console.log(obj);
         const entity = obj.entity
         const entity_ID = obj.entity_ID
-        let roomname = obj.MATCHID;
+        let roomname = obj.MATCHID+obj.TOURNAMENT_ID;
         console.log(roomname);
         let sport = obj.sport
         socket.join(roomname);
@@ -97,13 +99,57 @@ io.on("connection",async (socket)=>{
             }
         })
     })
+    socket.on('finish-game',(obj)=>{
+        //event called by live-maintainer
+        //tournamentID, MATCHID
+        //winner 
+        const objkt = JSON.parse(obj)
+        //update next match spot, winner of this match
+        tournament.findOneAndUpdate({
+            TOURNAMENT_ID:objkt.TOURNAMENT_ID,
+            "MATCHES.ID":objkt.MATCHID
+        },{
+            $set:{
+                "MATCHES.$.WINNER":[objkt.WINNERID]
+            }
+        },function(error,result){
+            if(error){
+                io.to(objkt.TOURNAMENT_ID).emit('Unknown Error')
+            }
+            if(result){
+                if(result.NEXT_MATCH_PLAYER_SPOT==0){
+                    tournament.updateOne({
+                        TOURNAMENT_ID:objkt.TOURNAMENT_ID,
+                        "MATCHES.ID":result.NEXT_MATCH_ID
+                    },{
+                        $set:{
+                            "MATCHES.$.PLAYER1":objkt.WINNERID
+                        }
+                    },function(error,result){
+                        if(result){
+                            io.to(objkt.TOURNAMENT_ID).emit('Successfully Registered Winner')
+                        }
+                    })
+                }
+                else{
+                    tournament.updateOne({
+                        TOURNAMENT_ID:objkt.TOURNAMENT_ID,
+                        "MATCHES.ID":result.NEXT_MATCH_ID
+                    },{
+                        $set:{
+                            "MATCHES.$.PLAYER2":objkt.WINNERID
+                        }
+                    },function(error,result){
+                        if(result){
+                            io.to(objkt.TOURNAMENT_ID).emit('Successfully Registered Winner')
+                        }
+                    })
+
+                }
+            }
+        })
+    })
 })
-
-//Spot booking
-//Lets work with timestamps
-
-// var spotArray = [[],[],[],[],[]]
-// var spotStatusArray = ["None","None","None","None","None"]
 io.on("connection",(socket)=>{
     console.log(socket.id)
     socket.on('join-booking',(objk)=>{
@@ -188,12 +234,22 @@ io.on("connection",(socket)=>{
                 if(result){
                     console.log('Booking Confirmed')
                     console.log(result)
-                    io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
-                        btnID:`${selectedButton}`
-                    }))
-                }
-                if(error){
-                    console.log(error);
+                    user.updateOne({
+                        USERID:obj.USERID
+                    },{
+                        $push:{
+                            CURRENT_TOURNAMENTS:obj.TOURNAMENT_ID   
+                        }
+                    },function(error,result){
+                        if(error){
+                            console.log(error);
+                        }
+                        else{
+                            io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
+                                btnID:`${selectedButton}`
+                            }))
+                        }
+                    })
                 }
             })
         })

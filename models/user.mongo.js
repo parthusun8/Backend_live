@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema({
   WALLET_BALANCE:{
     type:Number,
     default:0
-  }
+  },
+  CURRENT_TOURNAMENTS:[]
 })
 
 module.exports = mongoose.model("USER",userSchema)
