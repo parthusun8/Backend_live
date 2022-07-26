@@ -83,7 +83,23 @@ userRouter.post('/userProfileBuild',async(req,res)=>{
         })
     }
 })
-
+userRouter.post('/getProfile',async (req,res)=>{
+    //for profile, userID required
+    USER.findOne({
+        USERID:req.body.USERID
+    },function(error,result){
+        if(result){
+            result.Message = "Success"
+            res.status(200).send(result)
+        }
+        else{
+            console.log(error)
+            res.status(404).send({
+                Message:'User Profile Not Found'
+            })
+        }
+    })
+})
 userRouter.post('/userResetPwd',async (req,res)=>{
     const query = {USERID:req.body.USERID}
     const user = await USER.exists(query)
