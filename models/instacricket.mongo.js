@@ -1,0 +1,56 @@
+const mongoose = require('mongoose')
+const playerschema = new mongoose.Schema({
+    USERID:{
+        type:String
+    },
+    role:{
+        type:String
+    },
+    batting_type:{
+        type:String
+    },
+    runs_scored:{
+        type:Number,
+        default:0
+    },
+    overs_bowled:{
+        type:Number,
+        default:0
+    },
+    wickets_taken:{
+        type:Number,
+        default:0
+    },
+    runs_conceded:{
+        type:Number,
+        default:0
+    }
+})
+const teamSchema = new mongoose.Schema({
+    team_1:{
+        type:[playerschema]
+    },
+    team_2:{
+        type:[playerschema]
+    },
+    team_1_score:{
+        type:Number,
+        default:0
+    },
+    team_2_score:{
+        type:Number,
+        default:0
+    },
+    team_1_target:{
+        type:Number,
+        default:0
+    },
+    team_2_target:{
+        type:Number,
+        default:0
+    },
+    winning_team:{
+        type:String
+    }
+})
+module.exports = mongoose.model('cricketteam',teamSchema)

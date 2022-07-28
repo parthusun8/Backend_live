@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const USER = require('../models/user.mongo')
 const USERProfile = require('../models/userprofile.model')
 const stripe = require('stripe')("sk_test_51Kx9oUSDyPLJYmvrHGifQoOVMJTLzveCWgOMKSdYGUKOhgqEW5pDoA9XTbs5NDki9XW4mmU4wNna8uFdpoM0BanG00uedfdbjt")
+const instacricket = require('../models/instacricket.mongo')
+
 const userRouter = express.Router()
 
 userRouter.get('/',(req,res)=>{
@@ -237,6 +239,26 @@ userRouter.post('/sendDetails',async (req,res)=>{
     res.status(200).send({
         Message:'Done Work'
     })
+})
+
+userRouter.post('/cricketMatchDetails', async (req,res)=>{
+    //send team1_detials and send team_2 details as per the schema
+    //Enter a random matchID as of now
+    const newmatch = new instacricket(req.body)
+    try{
+        const savedMatch = newmatch.save()
+        if(savedMatch){
+            res.status(200).send({
+                Message:'Created a new instant cricket match'
+            })
+        }
+    }
+    catch(error){
+        console.log(error)
+        res.status(404).send({
+            Message:'Could not create a new cricket match'
+        })
+    }
 })
 
 module.exports = userRouter;
