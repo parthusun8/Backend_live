@@ -277,6 +277,60 @@ io.on("connection",(socket)=>{
 })
 
 //Instantaneous Cricket matches
+io.on('connection',async (socket)=>{
+    console.log(socket.id)
+    socket.on('instacricket',(objkt)=>{
+        const obj = JSON.parse(objkt)
+        const matchid = obj.matchid  //string
+        instacricket.findOne({
+            matchid:matchid            
+        },function (error,result){
+            if(error){
+                socket.emit('match-not-found',{
+                    Message:'Match Not Found'
+                })
+            }
+            if(result){
+                socket.join(matchid)
+            }
+        })
+        socket.on('update-score',(objt)=>{
+            //required batter_id, matchid, bowler_id,Batter_score,bowler_overs,bowler_runs_conceded,team_1 or team_2,total score
+            const obj = JSON.parse(objt)
+            if(obj.team=='team_1'){
+                instacricket.findOneAndUpdate({
+                    matchid:obj.matchid
+                },{
+                    $set:{
+                        "team_1.$[elem].runs_scored":obj.batter_score,
+                        team_1_score:obj.total_score
+                    }
+                },{
+                    arrayFilters:[{
+                        "elem.USERID":obj.batter_id
+                    }]
+                },function(error,result){
+                    if(error){
+                        console.log(error)
+                    }
+                    else{
+                        console.log(result)
+                        io.to(obj.matchid).emit('score-updated',{
+                            batter_id:obj.batter_id,
+                            batter_score:obj.batter_score
+                        })
+                    }
+                })
+            }
+        })
+        socket.on('wicket',(objt)=>{
+            //required batter_id, matchid, bowler_id,Batter_score,bowler_overs,bowler_runs_conceded,team_1 or team_2            
+        })
+        socket.on('finish-game', (objt)=>{
+            //should have team_1 score,team_2_score,team_1_wickets,team_2_wickets,overs
+        })
+    })
+})
 server.listen(port,()=>{
     console.log(`Listening on port: ${port}`)
 })
