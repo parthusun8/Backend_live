@@ -6,6 +6,7 @@ const {Server} = require('socket.io');
 const tabletennis = require('../models/tabletennis.model')
 const tournament = require('../models/tournament.model')
 const user = require('../models/user.mongo')
+const instacricket = require('../models/instacricket.mongo')
 
 const io = new Server(server)
 //We are currently doing it for singles of raquet games(example: tabletennis)
@@ -274,9 +275,8 @@ io.on("connection",(socket)=>{
         })
     })
 })
+
 //Instantaneous Cricket matches
-
-
 server.listen(port,()=>{
     console.log(`Listening on port: ${port}`)
 })

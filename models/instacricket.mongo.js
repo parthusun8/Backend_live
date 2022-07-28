@@ -27,6 +27,9 @@ const playerschema = new mongoose.Schema({
     }
 })
 const teamSchema = new mongoose.Schema({
+    matchid:{
+        type:String
+    },
     team_1:{
         type:[playerschema]
     },
