@@ -44,6 +44,14 @@ const teamSchema = new mongoose.Schema({
         type:Number,
         default:0
     },
+    team_1_wickets:{
+        type:Number,
+        default:0
+    },
+    team_2_wickets:{
+        type:Number,
+        default:0
+    },
     team_1_target:{
         type:Number,
         default:0

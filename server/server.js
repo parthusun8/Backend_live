@@ -316,18 +316,52 @@ io.on('connection',async (socket)=>{
                     else{
                         console.log(result)
                         io.to(obj.matchid).emit('score-updated',{
+                            team:'team_1',
                             batter_id:obj.batter_id,
-                            batter_score:obj.batter_score
+                            batter_score:obj.batter_score,
+                            bowler_id:bowler_id,
+                            bowler_runs_conceded:bowler_runs_conceded,
+                            bowler_overs:bowler_overs,
+                            total_score:total_score,
+                            total_wickets_fallen:total_wickets_fallen                                   
                         })
                     }
                 })
             }
         })
         socket.on('wicket',(objt)=>{
-            //required batter_id, matchid, bowler_id,Batter_score,bowler_overs,bowler_runs_conceded,team_1 or team_2            
+            //required batter_id, matchid, bowler_id,Batter_score,bowler_overs,bowler_runs_conceded,team_1 or team_2,total_score,total_wickets,team_1 or team_2
+            //team_2
+            const obj = JSON.parse(objt)
+            instacricket.findOneAndUpdate({
+                matchid:obj.matchid
+            },{
+                $set:{
+                    team_1_wickets:total_wickets
+                }
+            },function(error,result){
+                if(error){
+                    console.log(error)
+                    socket.emit('error-in-score-updation',{
+                        Message:'Error in Updation'
+                    })
+                }
+                if(result){
+                    io.to(obj.matchid).emit('wickets-updated',{
+                            team:'team_1',
+                            batter_id:obj.batter_id,
+                            batter_score:obj.batter_score,
+                            bowler_id:bowler_id,
+                            bowler_runs_conceded:bowler_runs_conceded,
+                            bowler_overs:bowler_overs,
+                            total_score:total_score,
+                            total_wickets_fallen:total_wickets_fallen
+                    })
+                }
+            })            
         })
         socket.on('finish-game', (objt)=>{
-            //should have team_1 score,team_2_score,team_1_wickets,team_2_wickets,overs
+            //should have team_1 score,team_2_score,team_1_wickets,team_2_wickets,overs,batter_who_got
         })
     })
 })
