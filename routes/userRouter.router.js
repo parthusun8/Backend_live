@@ -189,6 +189,7 @@ userRouter.post('/makePayment',async (req,res)=>{
         console.log(req.body.amount)
         console.log(typeof(req.body.amount))
         console.log(req.body.email)
+        console.log(req.body.spot_number)
         //Gets the customer who's email id matches the one sent by the client
         const customerList = await stripe.customers.list({
             email: req.body.email,
@@ -225,12 +226,12 @@ userRouter.post('/makePayment',async (req,res)=>{
             paymentIntent: paymentIntent.client_secret,
             ephemeralKey: ephemeralKey.secret,
             customer: customerId,
-            success: true,
+            success: 'true',
         })
         
     } catch (error) {
         console.log(error)
-        res.status(404).send({ success: false, error: error.message })
+        res.status(404).send({ success: 'false', error: error.message })
     }
 })
 
