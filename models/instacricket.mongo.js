@@ -31,10 +31,10 @@ const teamSchema = new mongoose.Schema({
         type:String
     },
     team_1:{
-        type:[playerschema]
+        type:[]
     },
     team_2:{
-        type:[playerschema]
+        type:[]
     },
     team_1_score:{
         type:Number,

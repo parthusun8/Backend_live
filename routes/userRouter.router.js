@@ -4,7 +4,7 @@ const USER = require('../models/user.mongo')
 const USERProfile = require('../models/userprofile.model')
 const stripe = require('stripe')("sk_test_51Kx9oUSDyPLJYmvrHGifQoOVMJTLzveCWgOMKSdYGUKOhgqEW5pDoA9XTbs5NDki9XW4mmU4wNna8uFdpoM0BanG00uedfdbjt")
 const instacricket = require('../models/instacricket.mongo')
-
+const tournamentModel = require('../models/tournament.model')
 const userRouter = express.Router()
 
 userRouter.get('/',(req,res)=>{
@@ -260,6 +260,19 @@ userRouter.post('/cricketMatchDetails', async (req,res)=>{
             Message:'Could not create a new cricket match'
         })
     }
+})
+
+userRouter.get('/allTournaments',async (req,res)=>{
+    tournamentModel.find(function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        if(result){
+            res.status(200).send(result)
+        }
+    })
 })
 
 module.exports = userRouter;
