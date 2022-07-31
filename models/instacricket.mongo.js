@@ -74,6 +74,12 @@ const teamSchema = new mongoose.Schema({
     },
     playing_team_size:{
         type:Number
+    },
+    toss_won_by:{
+        type:String
+    },
+    elected_to:{
+        type:String
     }
 })
 module.exports = mongoose.model('cricketteam',teamSchema)
