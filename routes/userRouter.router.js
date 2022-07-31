@@ -247,7 +247,7 @@ userRouter.post('/cricketMatchDetails', async (req,res)=>{
     //Enter a random matchID as of now
     const newmatch = new instacricket(req.body)
     try{
-        const savedMatch = newmatch.save()
+        const savedMatch = await newmatch.save()
         if(savedMatch){
             res.status(200).send({
                 Message:'Created a new instant cricket match'
