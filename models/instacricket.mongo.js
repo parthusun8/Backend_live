@@ -67,7 +67,7 @@ const teamSchema = new mongoose.Schema({
         type:Number
     },
     ball_type:{
-        type:Number
+        type:String
     },
     city:{
         type:String
