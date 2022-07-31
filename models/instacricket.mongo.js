@@ -62,6 +62,18 @@ const teamSchema = new mongoose.Schema({
     },
     winning_team:{
         type:String
+    },
+    no_of_overs:{
+        type:Number
+    },
+    ball_type:{
+        type:Number
+    },
+    city:{
+        type:String
+    },
+    playing_team_size:{
+        type:Number
     }
 })
 module.exports = mongoose.model('cricketteam',teamSchema)
