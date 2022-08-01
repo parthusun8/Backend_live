@@ -275,4 +275,36 @@ userRouter.get('/allTournaments',async (req,res)=>{
     })
 })
 
+// get tournaments by USERID
+//get tournament by ID
+userRouter.post('/tournamentById',async (req,res)=>{
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        if(result){
+            res.status(200).send(result)
+        }
+    })
+})
+userRouter.post('/hostedTournaments',async (req,res)=>{
+    USER.findOne({
+        USERID:req.body.USERID
+    },function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        if(result){
+            res.status(200).send({
+                Hosted_Tournaments:result.HOSTED_TOURNAMENTS
+            })
+        }
+    })
+})
 module.exports = userRouter;
