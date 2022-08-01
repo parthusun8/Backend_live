@@ -39,7 +39,8 @@ const userSchema = new mongoose.Schema({
     type:Number,
     default:0
   },
-  CURRENT_TOURNAMENTS:[]
+  CURRENT_TOURNAMENTS:[],
+  HOSTED_TOURNAMENTS:[]
 })
 
 module.exports = mongoose.model("USER",userSchema)

@@ -97,7 +97,6 @@ const bd =new mongoose.Schema({
   REGISTRATION_CLOSE_TIME:{
     type : Date, 
     default: Date.now,
-
   },
   SPORT:{
     type:String,    //drop down

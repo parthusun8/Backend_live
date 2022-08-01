@@ -3,6 +3,7 @@ const express = require('express')
 const tournament = require('../models/tournament.model')
 const {createMatches,saveMatch} = require('../Functions/createMatches.singles')
 const evrouter = express.Router()
+const usermodel = require('../models/user.mongo')
 //---------------------------------
 
 //controller functions
@@ -14,6 +15,7 @@ const evrouter = express.Router()
 
 evrouter.post('/createTournament',async (req,res)=>{
     //First Matches have to be created
+    //also demand userid
     try{
         const spotArray = []
         const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS
@@ -22,11 +24,26 @@ evrouter.post('/createTournament',async (req,res)=>{
         }
         req.body.SPOT_STATUS_ARRAY = spotArray
         console.log(req.body);
-        await new tournament(req.body).save()
-        //update_event_manager_current_tournaments
-        res.status(200).send({
-            Message:"Successfully Created New Tournament"
-        })
+        const res1 = await new tournament(req.body).save()
+        //update_event_manager_hosted_tournaments
+        if(res1){
+            usermodel.updateOne({
+                USERID:req.body.USERID
+            },{
+                $push:{
+                    HOSTED_TOURNAMENTS:req.body.TOURNAMENT_ID
+                }
+            },function(error,result){
+                if(error){
+                    throw error
+                }
+                if(result){
+                    res.status(200).send({
+                        Message:"Successfully Created New Tournament"
+                    })
+                }
+            })
+        }
     }catch(error){
         console.log(error);
         res.status(404).send({
