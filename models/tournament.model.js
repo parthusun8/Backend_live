@@ -65,6 +65,9 @@ const bd =new mongoose.Schema({
     type:String,
     default:"123456"
   },
+  TOURNAMENT_NAME:{
+    type:String,
+  },
   STATUS:{
     type:Boolean,
     default:true,
