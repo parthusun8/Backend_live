@@ -16,7 +16,7 @@ userRouter.get('/',(req,res)=>{
 //change to post
 userRouter.get('/createTestUser',async(req,res)=>{
     const newuser = new USER({
-        USERID:"user1",
+        USERID:"user2",
         PHONE:"98213*****",
         NAME:"James",
         PWD:"abc234",
