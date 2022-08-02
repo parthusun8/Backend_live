@@ -204,6 +204,7 @@ io.on("connection",(socket)=>{
                         }
                         if(result){
                             console.log(result);
+                            console.log('In spot clicked return')
                             io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',JSON.stringify({
                                 btnID:obj.btnID,
                                 color:color
