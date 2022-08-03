@@ -239,7 +239,7 @@ io.on("connection",(socket)=>{
                         btnID:`${selectedButton}`
                     }))
 
-                    console.log(result)
+                    console.log(selectedButton)
                     // user.updateOne({
                     //     USERID:obj.USERID
                     // },{
