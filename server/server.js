@@ -203,7 +203,7 @@ io.on("connection",(socket)=>{
                             console.log(error);
                         }
                         if(result){
-                            console.log(result);
+                            // console.log(result);
                             console.log('In spot clicked return')
                             io.to(obj1.TOURNAMENT_ID).emit('spot-clicked-return',JSON.stringify({
                                 btnID:obj.btnID,
@@ -235,7 +235,7 @@ io.on("connection",(socket)=>{
             },function(error,result){
                 if(result){
                     console.log('Booking Confirmed')
-                    console.log(result)
+                    // console.log(result)
                     io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
                         btnID:`${selectedButton}`
                     }))
