@@ -224,7 +224,7 @@ io.on("connection",(socket)=>{
             const obj = JSON.parse(objk)
             console.log(obj);
             console.log(obj.TOURNAMENT_ID);
-            const selectedButton = obj.selectedButton
+            const selectedButton = obj.btnId
             tournament.findOneAndUpdate({
                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
                 SPOT_STATUS_ARRAY:socket.id
