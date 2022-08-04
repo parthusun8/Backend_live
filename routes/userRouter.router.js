@@ -285,7 +285,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
                 }   
 
             }
-            console.log(result)
+            console.log(typeof(result))
             res.status(200).send(result)
         }
     })
