@@ -279,10 +279,11 @@ userRouter.get('/allTournaments',async (req,res)=>{
                 console.log(i)
                 console.log(r1[i])
                 if(r1[i].SPORT=="Badminton"){
-                    r1[i].COLOR = blue
+                    console.log()
+                    r1[i]["COLOR"] = blue
                 }
                 else{
-                    r1[i].COLOR = green
+                    r1[i]["COLOR"] = green
                 }   
 
             }
