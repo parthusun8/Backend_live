@@ -273,6 +273,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
         }
         if(result){
             result.forEach((e)=>{
+                console.log(e)
                 if(e.SPORT=="Badminton"){
                     e.COLOR = blue
                 }
