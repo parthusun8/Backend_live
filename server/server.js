@@ -182,6 +182,7 @@ io.on("connection",(socket)=>{
             console.log('Socket request');
             const obj = JSON.parse(objt)
             console.log(obj);
+            console.log(objt.USERID)
             const tid = obj1.TOURNAMENT_ID
             tournament.findOne({
                 TOURNAMENT_ID:tid
