@@ -182,7 +182,7 @@ io.on("connection",(socket)=>{
             console.log('Socket request');
             const obj = JSON.parse(objt)
             console.log(obj);
-            console.log(objt.USERID)
+            console.log(obj.USERID)
             const tid = obj1.TOURNAMENT_ID
             tournament.findOne({
                 TOURNAMENT_ID:tid
@@ -190,14 +190,14 @@ io.on("connection",(socket)=>{
                 var color=''
                 if(result.SPOT_STATUS_ARRAY[obj.btnID]===`${obj.btnID}`){
                     color='Orange'
-                    result.SPOT_STATUS_ARRAY[obj.btnID] = socket.id
+                    result.SPOT_STATUS_ARRAY[obj.btnID] = obj.USERID
                     console.log(result.SPOT_STATUS_ARRAY);
                     tournament.updateOne({
                         TOURNAMENT_ID:tid,
                         SPOT_STATUS_ARRAY:`${obj.btnID}`
                     },{
                         $set:{
-                            "SPOT_STATUS_ARRAY.$":socket.id
+                            "SPOT_STATUS_ARRAY.$":obj.USERID
                         }
                     },function(error,result){
                         if(error){
@@ -228,10 +228,10 @@ io.on("connection",(socket)=>{
             const selectedButton = obj.btnId
             tournament.findOneAndUpdate({
                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                SPOT_STATUS_ARRAY:socket.id
+                SPOT_STATUS_ARRAY:obj.USERID
             },{
                 $set:{
-                    "SPOT_STATUS_ARRAY.$":`confirmed-${socket.id}`
+                    "SPOT_STATUS_ARRAY.$":`confirmed-${obj.USERID}`
                 }
             },function(error,result){
                 if(result){
@@ -266,7 +266,7 @@ io.on("connection",(socket)=>{
             const obj = JSON.parse(objkt)
             tournament.updateOne({
                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                SPOT_STATUS_ARRAY:socket.id
+                SPOT_STATUS_ARRAY:obj.USERID
             },{
                 $set:{
                     "SPOT_STATUS_ARRAY.$":`${obj.SPOTID}`
