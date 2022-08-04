@@ -272,12 +272,14 @@ userRouter.get('/allTournaments',async (req,res)=>{
             })
         }
         if(result){
-            if(result.SPORT=="Badminton"){
-                result.COLOR = blue
-            }
-            else{
-                result.COLOR = green
-            }
+            result.forEach((e)=>{
+                if(e.SPORT=="Badminton"){
+                    e.COLOR = blue
+                }
+                else{
+                    e.COLOR = green
+                }
+            })
             res.status(200).send(result)
         }
     })
