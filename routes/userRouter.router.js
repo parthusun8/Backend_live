@@ -272,6 +272,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
             })
         }
         if(result){
+            console.log("In result")
             result.forEach((e)=>{
                 console.log(e)
                 if(e.SPORT=="Badminton"){
