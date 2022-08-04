@@ -274,7 +274,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
             const green = "0xff03C289"
 
             console.log("In result")
-            const r1 = Array.from(result)
+            var r1 = Array.from(result)
             for(let i=0;i<r1.length;i++){
                 console.log(i)
                 console.log(r1[i])
