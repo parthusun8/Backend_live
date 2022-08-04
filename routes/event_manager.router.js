@@ -17,6 +17,8 @@ evrouter.post('/createTournament',async (req,res)=>{
     //First Matches have to be created
     //also demand userid
     try{
+        const blue = "0xff6BB8FF"
+        const green = "0xff03C289"
         const spotArray = []
         const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS
         for(let i =0;i<no_of_spots;i++){

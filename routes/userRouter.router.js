@@ -270,8 +270,6 @@ userRouter.get('/allTournaments',async (req,res)=>{
             })
         }
         if(result){
-            const blue = "0xff6BB8FF"
-            const green = "0xff03C289"
 
             // console.log("In result")
             // var r1 = Array.from(result)
