@@ -282,6 +282,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
                     
                     r1[i]["COLOR"] = blue
                     console.log(r1[i]["COLOR"])
+                    console.log(r1[i])
                 }
                 else{
                     r1[i]["COLOR"] = green
