@@ -272,6 +272,8 @@ userRouter.get('/allTournaments',async (req,res)=>{
         if(result){
             console.log("In result")
             function fun1(item,index){
+                console.log(index)
+                console.log(item)
                 const blue = "0xff6BB8FF"
                 const green = "0xff03C289"
                 if(item.SPORT=="Badminton"){
