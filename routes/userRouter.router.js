@@ -263,8 +263,6 @@ userRouter.post('/cricketMatchDetails', async (req,res)=>{
 })
 
 userRouter.get('/allTournaments',async (req,res)=>{
-    const blue = "0xff6BB8FF"
-    const green = "0xff03C289"
     tournamentModel.find(function(error,result){
         if(error){
             res.status(404).send({
@@ -274,6 +272,8 @@ userRouter.get('/allTournaments',async (req,res)=>{
         if(result){
             console.log("In result")
             function fun1(item,index){
+                const blue = "0xff6BB8FF"
+                const green = "0xff03C289"
                 if(item.SPORT=="Badminton"){
                     item.COLOR = blue
                 }
