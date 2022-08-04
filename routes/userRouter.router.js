@@ -290,7 +290,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
                 }   
 
             }
-            console.log(typeof(result))
+            console.log(typeof(r1))
             res.status(200).send({
                 "Required Array":r1
             })
