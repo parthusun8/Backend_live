@@ -270,20 +270,21 @@ userRouter.get('/allTournaments',async (req,res)=>{
             })
         }
         if(result){
+            const blue = "0xff6BB8FF"
+            const green = "0xff03C289"
+
             console.log("In result")
-            function fun1(item,index){
-                console.log(index)
-                console.log(item)
-                const blue = "0xff6BB8FF"
-                const green = "0xff03C289"
-                if(item.SPORT=="Badminton"){
-                    item.COLOR = blue
+            for(let i=0;i<result.length;i++){
+                console.log(i)
+                console.log(result[i])
+                if(result[i].SPORT=="Badminton"){
+                    result[i].COLOR = blue
                 }
                 else{
-                    item.COLOR = green
+                    result[i].COLOR = green
                 }   
+
             }
-            result.forEach(fun1)
             console.log(result)
             res.status(200).send(result)
         }
