@@ -274,19 +274,22 @@ userRouter.get('/allTournaments',async (req,res)=>{
             const green = "0xff03C289"
 
             console.log("In result")
-            for(let i=0;i<result.length;i++){
+            const r1 = Array.from(result)
+            for(let i=0;i<r1.length;i++){
                 console.log(i)
-                console.log(result[i])
-                if(result[i].SPORT=="Badminton"){
-                    result[i].COLOR = blue
+                console.log(r1[i])
+                if(r1[i].SPORT=="Badminton"){
+                    r1[i].COLOR = blue
                 }
                 else{
-                    result[i].COLOR = green
+                    r1[i].COLOR = green
                 }   
 
             }
             console.log(typeof(result))
-            res.status(200).send(result)
+            res.status(200).send({
+                "Required Array":r1
+            })
         }
     })
 })
