@@ -95,8 +95,7 @@ const bd =new mongoose.Schema({
     type:String
   },
   REGISTRATION_CLOSE_TIME:{
-    type : Date, 
-    default: Date.now,
+    type : String 
   },
   SPORT:{
     type:String,    //drop down
@@ -107,7 +106,7 @@ const bd =new mongoose.Schema({
 
   },
   CATEGORIES:{
-    type:Array,
+    type:String,
    //drop down
   },
   MATCHES:{  //array of match ids
@@ -121,7 +120,7 @@ const bd =new mongoose.Schema({
   },
   PARTICIPANTS:{
     type:[String],
-    default:['pl1','pl2','pl3','pl4'] // Array of participants
+ // Array of participants
   },
   NO_OF_KNOCKOUT_ROUNDS:{
     type:Number
