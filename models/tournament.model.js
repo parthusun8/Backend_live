@@ -91,6 +91,9 @@ const bd =new mongoose.Schema({
   START_DATE:{
     type:String
   },
+  COLOR:{
+    type:String
+  },
   END_DATE:{
     type:String
   },

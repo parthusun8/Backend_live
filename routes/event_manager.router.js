@@ -23,6 +23,17 @@ evrouter.post('/createTournament',async (req,res)=>{
             spotArray.push(`${i}`)
         }
         req.body.SPOT_STATUS_ARRAY = spotArray
+        if(req.body.SPORT==='Badminton'){
+                    
+            req.body['COLOR'] = blue
+            console.log(req.body['COLOR'])
+            console.log(req.body)
+        }
+        else{
+            req.body['COLOR'] = green
+            console.log(req.body['COLOR'])
+        }   
+
         console.log(req.body);
         const res1 = await new tournament(req.body).save()
         //update_event_manager_hosted_tournaments
