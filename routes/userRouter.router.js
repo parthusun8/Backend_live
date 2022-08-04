@@ -280,6 +280,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
                     e.COLOR = green
                 }
             })
+            print(result)
             res.status(200).send(result)
         }
     })
