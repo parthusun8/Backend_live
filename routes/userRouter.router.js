@@ -315,7 +315,7 @@ userRouter.post('/hostedTournaments',async (req,res)=>{
         }
     })
 })
-evrouter.get('/getConfirmationDetails',async (req,res)=>{
+userRouter.get('/getConfirmationDetails',async (req,res)=>{
     //queryParams will have USERID and TOURNAMENT_ID
     USER.findOne({
         USERID:req.query.USERID
