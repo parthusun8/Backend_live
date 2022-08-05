@@ -28,7 +28,6 @@ evrouter.post('/createTournament',async (req,res)=>{
         }
         req.body.SPOT_STATUS_ARRAY = spotArray
         if(req.body.SPORT==='Badminton'){
-                    
             req.body['COLOR'] = blue
             req.body['IMG_URL'] = badminton_url
             console.log(req.body['COLOR'])
