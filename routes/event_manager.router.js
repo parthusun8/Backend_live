@@ -19,6 +19,8 @@ evrouter.post('/createTournament',async (req,res)=>{
     try{
         const blue = "0xff6BB8FF"
         const green = "0xff03C289"
+        const badminton_url = "https://ibb.co/sRh50j3"
+        const tt_url = "https://ibb.co/fdvXrjh"
         const spotArray = []
         const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS
         for(let i =0;i<no_of_spots;i++){
@@ -28,11 +30,13 @@ evrouter.post('/createTournament',async (req,res)=>{
         if(req.body.SPORT==='Badminton'){
                     
             req.body['COLOR'] = blue
+            req.body['IMG_URL'] = badminton_url
             console.log(req.body['COLOR'])
-            console.log(req.body)
-        }
+               }
         else{
+            
             req.body['COLOR'] = green
+            req.body['IMG_URL'] = tt_url
             console.log(req.body['COLOR'])
         }   
 

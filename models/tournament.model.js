@@ -139,6 +139,9 @@ const bd =new mongoose.Schema({
   ENTRY_FEE:{
     type:Number,
     default:0    
+  },
+  IMG_URL:{
+    type:String
   }
 });
 
