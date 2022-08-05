@@ -32,9 +32,9 @@ evrouter.post('/createTournament',async (req,res)=>{
             req.body['COLOR'] = blue
             req.body['IMG_URL'] = badminton_url
             console.log(req.body['COLOR'])
-               }
+        }
+        
         else{
-            
             req.body['COLOR'] = green
             req.body['IMG_URL'] = tt_url
             console.log(req.body['COLOR'])
