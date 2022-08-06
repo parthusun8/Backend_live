@@ -208,7 +208,29 @@ userRouter.post('/userLogin',async (req,res)=>{
         })
     }
 })
-
+userRouter.get('/getUserDetails',async (req,res)=>{
+    const userid = req.query.USERID
+    USER.findOne({
+        USERID:userid
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        if(result){
+            res.status(200).send({
+                usrname:result.NAME,
+                usrphone:result.PHONE,
+                usracademy:result.CITY,
+                usrsportsacademy:result.SPORTS_ACADEMY,
+                usrgender:result.GENDER,
+                usrmail:result.EMAIL 
+            })
+        }
+    })
+})
 userRouter.post('/makePayment',async (req,res)=>{
     try {
         let customerId;
