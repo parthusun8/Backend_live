@@ -364,10 +364,7 @@ userRouter.get('/hostedTournaments',async (req,res)=>{
         })
         if(result){
             if(result.HOSTED_TOURNAMENTS.length==0){
-                res.status(200).send({
-                    Message:'No Hosted Tournaments for this user',
-                    Array:[]
-                })
+                res.status(200).send([])
             }
             else{
                 var r1 = []
@@ -382,18 +379,12 @@ userRouter.get('/hostedTournaments',async (req,res)=>{
                     }
                 }
                 if(r1.length!=0){
-                    res.status(200).send({
-                        Message:'Tournaments Found',
-                        Array:r1
-                    })
+                    res.status(200).send(r1)
             }
         }
         }
         else{
-            res.status(404).send({
-                Message:'User does not exist',
-                Array:[]
-            })
+            res.status(404).send([])
         }
     }catch(error){
         console.log(error)
