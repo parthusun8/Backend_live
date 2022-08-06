@@ -242,22 +242,22 @@ io.on("connection",(socket)=>{
                     }))
 
                     console.log(selectedButton)
-                    // user.updateOne({
-                    //     USERID:obj.USERID
-                    // },{
-                    //     $push:{
-                    //         CURRENT_TOURNAMENTS:obj.TOURNAMENT_ID   
-                    //     }
-                    // },function(error,result){
-                    //     if(error){
-                    //         console.log(error);
-                    //     }
-                    //     else{
-                    //         io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
-                    //             btnID:`${selectedButton}`
-                    //         }))
-                    //     }
-                    // })
+                    user.updateOne({
+                        USERID:obj.USERID
+                    },{
+                        $push:{
+                            CURRENT_TOURNAMENTS:obj.TOURNAMENT_ID   
+                        }
+                    },function(error,result){
+                        if(error){
+                            console.log(error);
+                        }
+                        else{
+                            io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
+                                btnID:`${selectedButton}`
+                            }))
+                        }
+                    })
                 }
             })
         })
