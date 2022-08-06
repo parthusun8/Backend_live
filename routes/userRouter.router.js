@@ -454,7 +454,7 @@ userRouter.get('/myBookings',async (req,res)=>{
             }
             else{
                 var r1 = []
-                for(let i =0; i< result.HOSTED_TOURNAMENTS.length;i++){
+                for(let i =0; i< result.CURRENT_TOURNAMENTS.length;i++){
                     try{
                         const tournament = await tournamentModel.findOne({
                             TOURNAMENT_ID:result.CURRENT_TOURNAMENTS[i]
