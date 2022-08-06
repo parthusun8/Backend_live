@@ -365,7 +365,8 @@ userRouter.get('/hostedTournaments',async (req,res)=>{
         if(result){
             if(result.HOSTED_TOURNAMENTS.length==0){
                 res.status(200).send({
-                    Message:'No Hosted Tournaments for this user'
+                    Message:'No Hosted Tournaments for this user',
+                    Array:[]
                 })
             }
             else{
@@ -390,7 +391,8 @@ userRouter.get('/hostedTournaments',async (req,res)=>{
         }
         else{
             res.status(404).send({
-                Message:'User does not exist'
+                Message:'User does not exist',
+                Array:[]
             })
         }
     }catch(error){
