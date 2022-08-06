@@ -420,4 +420,41 @@ userRouter.get('/hostedTournaments',async (req,res)=>{
         })
     }
 })
+userRouter.get('/myBookings',async (req,res)=>{
+    const userid = req.query.USERID
+    try{
+        const result = await USER.findOne({
+            USERID:userid
+        })
+        if(result){
+            if(result.HOSTED_TOURNAMENTS.length==0){
+                res.status(200).send([])
+            }
+            else{
+                var r1 = []
+                for(let i =0; i< result.HOSTED_TOURNAMENTS.length;i++){
+                    try{
+                        const tournament = await tournamentModel.findOne({
+                            TOURNAMENT_ID:result.CURRENT_TOURNAMENTS[i]
+                        })
+                        r1.push(tournament)
+                    }catch(error){
+                        console.log(error)
+                    }
+                }
+                if(r1.length!=0){
+                    res.status(200).send(r1)
+            }
+        }
+        }
+        else{
+            res.status(404).send([])
+        }
+    }catch(error){
+        console.log(error)
+        res.status(404).send({
+            Message:'Error'
+        })
+    }
+})
 module.exports = userRouter;
