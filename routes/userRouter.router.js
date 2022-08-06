@@ -358,16 +358,11 @@ userRouter.get('/getConfirmationDetails',async (req,res)=>{
 })
 userRouter.get('/hostedTournaments',async (req,res)=>{
     const userid = req.query.USERID
-    USER.findOne({
-        USERID:userid
-    },function(error,result){
-        if(error){
-            console.log(error)
-            res.status(404).send({
-                Message:'Error in fetching tournaments'
-            })
-        }
-        else{
+    try{
+        const result = await USER.findOne({
+            USERID:userid
+        })
+        if(result){
             if(result.HOSTED_TOURNAMENTS.length==0){
                 res.status(200).send({
                     Message:'No Hosted Tournaments for this user'
@@ -375,19 +370,29 @@ userRouter.get('/hostedTournaments',async (req,res)=>{
             }
             else{
                 var r1 = []
-                result.HOSTED_TOURNAMENTS.forEach((item,index)=>{
-                    tournamentModel.findOne({
-                        TOURNAMENT_ID:item
-                    },function(error,result){
-                        r1.push(result)
+                for(let i =0; i< result.HOSTED_TOURNAMENTS.length;i++){
+                    try{
+                        const tournament = await tournamentModel.findOne({
+                            TOURNAMENT_ID:result.HOSTED_TOURNAMENTS[i]
+                        })
+                        r1.push(tournament)
+                    }catch(error){
+                        console.log(error)
+                    }
+                }
+                if(r1.length!=0){
+                    res.status(200).send({
+                        Message:'Tournaments Found',
+                        Array:r1
                     })
-                })
-                res.status(200).send({
-                    Message:'Tournaments Found',
-                    HOSTED_TOURNAMENTS_ARRAY:r1
-                })
             }
         }
-    })
+        }
+    }catch(error){
+        console.log(error)
+        res.status(404).send({
+            Message:'Error'
+        })
+    }
 })
 module.exports = userRouter;
