@@ -28,31 +28,48 @@ userRouter.get('/createTestUser',async(req,res)=>{
     })
 })
 userRouter.post('/createUser',async(req,res)=>{
-    const newuser = new USER(
-        {
-        USERID:req.body.USERID,
-        PHONE:req.body.PHONE,
-        NAME:req.body.NAME,
-        EMAIL:req.body.EMAIL,
-        PWD:req.body.PWD,
-        GENDER:req.body.GENDER,
-        DOB:req.body.DOB,
-        CITY:req.body.CITY,
-        STATE:req.body.STATE,
-        SPORTS_ACADEMY:req.body.SPORTS_ACADEMY,
-        PROFILE_ID:req.body.PROFILE_ID
+    try{
+        const usr = await USER.findOne({
+            USERID:req.body.USERID
+        })
+        if(usr){
+            res.status(404).send({
+                Message:'User Exists'
+            })
+        }
+        else{
+            const newuser = new USER(
+                {
+                USERID:req.body.USERID,
+                PHONE:req.body.PHONE,
+                NAME:req.body.NAME,
+                EMAIL:req.body.EMAIL,
+                PWD:req.body.PWD,
+                GENDER:req.body.GENDER,
+                DOB:req.body.DOB,
+                CITY:req.body.CITY,
+                STATE:req.body.STATE,
+                SPORTS_ACADEMY:req.body.SPORTS_ACADEMY,
+                PROFILE_ID:req.body.PROFILE_ID
+            }
+            )
+            for(let i = 0;i<req.body.INTERESTED_SPORTS.length;i++){
+                newuser.INTERESTED_SPORTS.push(req.body.INTERESTED_SPORTS[i]);
+            }
+            for(let j = 0;j<req.body.FRIENDS_LIST.length;j++){
+                newuser.FRIENDS_LIST.push(req.body.FRIENDS_LIST[j]);
+            }
+            await newuser.save();
+            res.send({
+                Message:"Created a USER"
+            })
+        }
+    }catch(error){
+        console.log(error)
+        res.status(404).send({
+            Message:'Unknown Error'
+        })
     }
-    )
-    for(let i = 0;i<req.body.INTERESTED_SPORTS.length;i++){
-        newuser.INTERESTED_SPORTS.push(req.body.INTERESTED_SPORTS[i]);
-    }
-    for(let j = 0;j<req.body.FRIENDS_LIST.length;j++){
-        newuser.FRIENDS_LIST.push(req.body.FRIENDS_LIST[j]);
-    }
-    await newuser.save();
-    res.send({
-        Message:"Created a USER"
-    })
 })
 userRouter.post('/userResetPwd',async (req,res)=>{
     const query = {USERID:req.body.USERID}
