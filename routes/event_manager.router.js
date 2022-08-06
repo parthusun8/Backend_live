@@ -38,27 +38,40 @@ evrouter.post('/createTournament',async (req,res)=>{
             req.body['IMG_URL'] = tt_url
             console.log(req.body['COLOR'])
         }   
-
-        console.log(req.body);
-        const res1 = await new tournament(req.body).save()
-        //update_event_manager_hosted_tournaments
-        if(res1){
-            usermodel.updateOne({
-                USERID:req.body.USERID
-            },{
-                $push:{
-                    HOSTED_TOURNAMENTS:req.body.TOURNAMENT_ID
-                }
-            },function(error,result){
-                if(error){
-                    throw error
-                }
-                if(result){
-                    res.status(200).send({
-                        Message:"Successfully Created New Tournament"
-                    })
-                }
-            })
+        const usr = await usermodel.findOne({
+            USERID:req.body.USERID
+        })
+        if(usr){
+            if(req.body.SPORT=="Badminton"){
+                req.body.TOURNAMENT_ID = `BA${req.body.USERID}${usr.HOSTED_TOURNAMENTS.length+1}`
+            }
+            else if(req.body.SPORT=="Table Tennis"){
+                req.body.TOURNAMENT_ID = `TT${req.body.USERID}${usr.HOSTED_TOURNAMENTS.length+1}`
+            }
+            else if(req.body.SPORT=="Cricket"){
+                req.body.TOURNAMENT_ID = `CR${req.body.USERID}${usr.HOSTED_TOURNAMENTS.length+1}`
+            }
+            console.log(req.body);
+            const res1 = await new tournament(req.body).save()
+            //update_event_manager_hosted_tournaments
+            if(res1){
+                usermodel.updateOne({
+                    USERID:req.body.USERID
+                },{
+                    $push:{
+                        HOSTED_TOURNAMENTS:req.body.TOURNAMENT_ID
+                    }
+                },function(error,result){
+                    if(error){
+                        throw error
+                    }
+                    if(result){
+                        res.status(200).send({
+                            Message:"Successfully Created New Tournament"
+                        })
+                    }
+                })
+            }
         }
     }catch(error){
         console.log(error);
@@ -82,6 +95,5 @@ evrouter.post('/createMatches',async (req,res)=>{
         })
     }
 })
-
 
 module.exports = evrouter
