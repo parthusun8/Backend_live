@@ -388,6 +388,11 @@ userRouter.get('/hostedTournaments',async (req,res)=>{
             }
         }
         }
+        else{
+            res.status(404).send({
+                Message:'User does not exist'
+            })
+        }
     }catch(error){
         console.log(error)
         res.status(404).send({
