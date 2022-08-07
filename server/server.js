@@ -246,6 +246,7 @@ io.on("connection",(socket)=>{
                         }
                         if(result){
                             const current_bookings_array = result.CURRENT_TOURNAMENTS.indexOf(obj.TOURNAMENT_ID)
+                            console.log(current_bookings_array)
                             if(current_bookings_array==-1){
                                 user.updateOne({
                                     USERID:obj.USERID
