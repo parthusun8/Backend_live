@@ -238,20 +238,32 @@ io.on("connection",(socket)=>{
                     console.log('Booking Confirmed')
                     // console.log(result)
                     console.log(selectedButton)
-                    user.updateOne({
+                    user.findOne({
                         USERID:obj.USERID
-                    },{
-                        $push:{
-                            CURRENT_TOURNAMENTS:obj.TOURNAMENT_ID   
-                        }
                     },function(error,result){
                         if(error){
-                            console.log(error);
+                            console.log(error)
                         }
-                        else{
-                            io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
-                                btnID:`${selectedButton}`
-                            }))
+                        if(result){
+                            const current_bookings_array = result.CURRENT_TOURNAMENTS.indexOf(obj.TOURNAMENT_ID)
+                            if(current_bookings_array==-1){
+                                user.updateOne({
+                                    USERID:obj.USERID
+                                },{
+                                    $push:{
+                                        CURRENT_TOURNAMENTS:obj.TOURNAMENT_ID   
+                                    }
+                                },function(error,result){
+                                    if(error){
+                                        console.log(error);
+                                    }
+                                    else{
+                                        io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
+                                            btnID:`${selectedButton}`
+                                        }))
+                                    }
+                                })
+                            }
                         }
                     })
                 }
