@@ -175,7 +175,8 @@ io.on("connection",(socket)=>{
                 if(d2>=d1 && d2<=d3){
                     console.log("In time")
                     const spotStatusArray = result.SPOT_STATUS_ARRAY
-                    console.log(spotStatusArray);
+                    console.log("Inside join-booking");
+                    console.log("Emitted Spot Status Array")
                     socket.emit('spotStatusArray',JSON.stringify({
                         total_spots:result.NO_OF_KNOCKOUT_ROUNDS,
                         array:spotStatusArray,
@@ -206,7 +207,7 @@ io.on("connection",(socket)=>{
                 if(result.SPOT_STATUS_ARRAY[obj.btnID]===`${obj.btnID}`){
                     color='Orange'
                     result.SPOT_STATUS_ARRAY[obj.btnID] = obj.USERID
-                    console.log(result.SPOT_STATUS_ARRAY);
+                    console.log("Inside Spot Clicked");
                     tournament.updateOne({
                         TOURNAMENT_ID:tid,
                         SPOT_STATUS_ARRAY:`${obj.btnID}`
