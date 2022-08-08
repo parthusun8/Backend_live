@@ -42,6 +42,7 @@ evrouter.post('/createTournament',async (req,res)=>{
             USERID:req.body.USERID
         })
         if(usr){
+            console.log("usr found")
             if(req.body.SPORT=="Badminton"){
                 req.body.TOURNAMENT_ID = `BA${req.body.USERID}${usr.HOSTED_TOURNAMENTS.length+1}`
             }
