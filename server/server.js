@@ -157,7 +157,7 @@ io.on("connection",(socket)=>{
         console.log(objk);
         const cur_time = new Date(Date.now()).toISOString()
         console.log(cur_time)
-        const desired_time = new(Date.now() - 6*60*60*1000).toISOString()
+        const desired_time = new Date(new Date.getTime() - 6*60*60*1000).toISOString()
         console.log(desired_time)
         const obj1 = JSON.parse(objk)
         const tid = obj1.TOURNAMENT_ID
