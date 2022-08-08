@@ -6,7 +6,8 @@ const {Server} = require('socket.io');
 const tabletennis = require('../models/tabletennis.model')
 const tournament = require('../models/tournament.model')
 const user = require('../models/user.mongo')
-const instacricket = require('../models/instacricket.mongo')
+const instacricket = require('../models/instacricket.mongo');
+const tournamentModel = require('../models/tournament.model');
 
 const io = new Server(server)
 //We are currently doing it for singles of raquet games(example: tabletennis)
@@ -292,19 +293,33 @@ io.on("connection",(socket)=>{
         socket.on('remove-booking',(objkt)=>{
             //send spot number (0-based index)
             const obj = JSON.parse(objkt)
-            tournament.updateOne({
-                TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                SPOT_STATUS_ARRAY:obj.USERID
-            },{
-                $set:{
-                    "SPOT_STATUS_ARRAY.$":`${obj.SPOTID}`
-                }
+            tournamentModel.findOne({
+                USERID:obj.TOURNAMENT_ID
             },function(error,result){
                 if(error){
-                    io.to(obj.TOURNAMENT_ID).emit('error')
+                    console.log(error)
                 }
                 if(result){
-                    io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list')
+                    if(result.indexOf(`confirmed-${obj.USERID}`)!=-1){
+                        io.to(obj.TOURNAMENT_ID).emit("not-to-be-removed")
+                    }
+                    else{
+                        tournament.updateOne({
+                            TOURNAMENT_ID:obj.TOURNAMENT_ID,
+                            SPOT_STATUS_ARRAY:obj.USERID
+                        },{
+                            $set:{
+                                "SPOT_STATUS_ARRAY.$":`${obj.SPOTID}`
+                            }
+                        },function(error,result2){
+                            if(error){
+                                io.to(obj.TOURNAMENT_ID).emit('error')
+                            }
+                            if(result2){
+                                io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list')
+                            }
+                        })
+                    }
                 }
             })
         })
