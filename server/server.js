@@ -173,6 +173,7 @@ io.on("connection",(socket)=>{
                 const d2 = new Date(new Date().getTime() + istConstant).getTime()
                 const d3 = new Date(new Date(result.END_TIMESTAMP).getTime())
                 if(d2>=d1 && d2<=d3){
+                    console.log("In time")
                     const spotStatusArray = result.SPOT_STATUS_ARRAY
                     console.log(spotStatusArray);
                     socket.emit('spotStatusArray',JSON.stringify({
@@ -184,6 +185,7 @@ io.on("connection",(socket)=>{
                     socket.join(obj1.TOURNAMENT_ID)
                 }
                 else{
+                    console.log("Not In time")
                     socket.emit('booking-not-allowed')
                 }
             }
