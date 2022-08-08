@@ -16,6 +16,7 @@ const usermodel = require('../models/user.mongo')
 evrouter.post('/createTournament',async (req,res)=>{
     //First Matches have to be created
     //also demand userid
+    console.log(req.body.USERID)
     try{
         const blue = "0xff6BB8FF"
         const green = "0xff03C289"
