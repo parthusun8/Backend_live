@@ -17,8 +17,6 @@ io.on("connection",async (socket)=>{
         //entity can have values - USER/LIVE-MAINTAINER/ADMIN/EVENT-MANAGER
         //entityID means either USERID, LIVE-MAINTAINER_ID etc..
         //Tournament ID also required
-        const cur_time = new Date(Date.now()).toISOString()
-        console.log(cur_time)
         const obj = JSON.parse(obj1)
         console.log(obj);
         const entity = obj.entity
@@ -157,6 +155,8 @@ io.on("connection",(socket)=>{
     console.log(socket.id)
     socket.on('join-booking',(objk)=>{
         console.log(objk);
+        const cur_time = new Date(Date.now()).toISOString()
+        console.log(cur_time)
         const obj1 = JSON.parse(objk)
         const tid = obj1.TOURNAMENT_ID
         tournament.findOne({
