@@ -97,8 +97,9 @@ const bd =new mongoose.Schema({
   END_DATE:{
     type:String
   },
-  REGISTRATION_CLOSE_TIME:{
-    type : Number 
+  REGISTRATION_CLOSES_BEFORE:{
+    type:Number,
+    default:6 
   },
   START_TIME:{
     type:String
