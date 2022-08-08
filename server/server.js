@@ -155,11 +155,6 @@ io.on("connection",(socket)=>{
     console.log(socket.id)
     socket.on('join-booking',(objk)=>{
         console.log(objk);
-        const istConstant = 5*60*60*1000+30*60*1000
-        const cur_time = new Date(new Date().getTime()+istConstant).toISOString()
-        console.log(cur_time)
-        const desired_time = new Date(new Date().getTime() + istConstant - 6*60*60*1000).toISOString()
-        console.log(desired_time)
         const obj1 = JSON.parse(objk)
         const tid = obj1.TOURNAMENT_ID
         tournament.findOne({
@@ -170,15 +165,28 @@ io.on("connection",(socket)=>{
                     Message:'Tournament Not found'
                 })
             }
-            const spotStatusArray = result.SPOT_STATUS_ARRAY
-            console.log(spotStatusArray);
-            socket.emit('spotStatusArray',JSON.stringify({
-                total_spots:result.NO_OF_KNOCKOUT_ROUNDS,
-                array:spotStatusArray,
-                prize_pool:result.PRIZE_POOL,
-                entry_fee:result.ENTRY_FEE
-            }))
-            socket.join(obj1.TOURNAMENT_ID)
+            if(result){
+                const istConstant = 5*60*60*1000+30*60*1000
+                const starttimestamp = result.START_TIMESTAMP
+                const regclosesbefore = result.REGISTRATION_CLOSES_BEFORE
+                const d1 = new Date(new Date(starttimestamp).getTime() - regclosesbefore*60*60*1000).getTime()
+                const d2 = new Date(new Date().getTime() + istConstant).getTime()
+                const d3 = new Date(new Date(result.END_TIMESTAMP).getTime())
+                if(d2>=d1 && d2<=d3){
+                    const spotStatusArray = result.SPOT_STATUS_ARRAY
+                    console.log(spotStatusArray);
+                    socket.emit('spotStatusArray',JSON.stringify({
+                        total_spots:result.NO_OF_KNOCKOUT_ROUNDS,
+                        array:spotStatusArray,
+                        prize_pool:result.PRIZE_POOL,
+                        entry_fee:result.ENTRY_FEE
+                    }))
+                    socket.join(obj1.TOURNAMENT_ID)
+                }
+                else{
+                    socket.emit('booking-not-allowed')
+                }
+            }
          })
         socket.on('spot-clicked',(objt)=>{
 //            spotArray[obj.btnID].push(socket.id)
