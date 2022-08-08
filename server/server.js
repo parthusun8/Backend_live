@@ -17,6 +17,8 @@ io.on("connection",async (socket)=>{
         //entity can have values - USER/LIVE-MAINTAINER/ADMIN/EVENT-MANAGER
         //entityID means either USERID, LIVE-MAINTAINER_ID etc..
         //Tournament ID also required
+        const cur_time = new Date(Date.now()).toISOString()
+        console.log(cur_time)
         const obj = JSON.parse(obj1)
         console.log(obj);
         const entity = obj.entity

@@ -98,7 +98,7 @@ const bd =new mongoose.Schema({
     type:String
   },
   REGISTRATION_CLOSE_TIME:{
-    type : String 
+    type : Number 
   },
   SPORT:{
     type:String,    //drop down
@@ -106,7 +106,6 @@ const bd =new mongoose.Schema({
   CANCELLATION_STATUS:{
     type:Boolean,
     default:false,
-
   },
   CATEGORIES:{
     type:String,
