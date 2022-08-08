@@ -479,4 +479,30 @@ userRouter.get('/myBookings',async (req,res)=>{
         })
     }
 })
+userRouter.get('/tournamentInMyBookings',async (req,res)=>{
+    //requires USERID, TOURNAMENT_ID
+    USER.findOne({
+        USERID:req.body.USERID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:"Booking not approved"
+            })
+        }
+        if(result){
+            const curr_bookings = result.CURRENT_TOURNAMENTS
+            if(curr_bookings.indexOf(req.body.TOURNAMENT_ID)!=-1){
+                res.status(200).send({
+                    Message:'Already booked spot for this Tournament'
+                })
+            }
+            else if(curr_bookings.indexOf(req.body.TOURNAMENT_ID)==-1){
+                res.status(200).send({
+                    Message:'Booking Approved'
+                })
+            }
+        }
+    }) 
+})
 module.exports = userRouter;
