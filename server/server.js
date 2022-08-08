@@ -250,6 +250,9 @@ io.on("connection",(socket)=>{
                     "SPOT_STATUS_ARRAY.$":`confirmed-${obj.USERID}`
                 }
             },function(error,result){
+                if(error){
+                    console.log(error)
+                }
                 if(result){
                     console.log('Booking Confirmed')
                     // console.log(result)
