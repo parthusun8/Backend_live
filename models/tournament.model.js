@@ -147,6 +147,12 @@ const bd =new mongoose.Schema({
   },
   IMG_URL:{
     type:String
+  },
+  START_TIMESTAMP:{
+    type:String
+  },
+  END_TIMESTAMP:{
+    type:String
   }
 });
 
