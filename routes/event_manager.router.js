@@ -71,6 +71,7 @@ evrouter.post('/createTournament',async (req,res)=>{
                     }
                 },function(error,result){
                     if(error){
+                        console.log(error)
                         throw error
                     }
                     if(result){
