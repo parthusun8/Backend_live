@@ -172,7 +172,7 @@ io.on("connection",(socket)=>{
                 const d1 = new Date(new Date(starttimestamp).getTime() - regclosesbefore*60*60*1000).getTime()
                 const d2 = new Date(new Date().getTime() + istConstant).getTime()
                 const d3 = new Date(new Date(result.END_TIMESTAMP).getTime())
-                if(d2>=d1 && d2<=d3){
+                if(d2<=d1){
                     console.log("In time")
                     const spotStatusArray = result.SPOT_STATUS_ARRAY
                     console.log("Inside join-booking");
