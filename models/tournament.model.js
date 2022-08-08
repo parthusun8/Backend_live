@@ -85,9 +85,6 @@ const bd =new mongoose.Schema({
     type:String,
     default:"DYNAMIC",
   },
-  GEOTAG:{     
-    type:String,//API CALL
-  },
   START_DATE:{
     type:String
   },
@@ -141,6 +138,9 @@ const bd =new mongoose.Schema({
   PRIZE_POOL:{
     type:Number,
     default:0
+  },
+  AGE_CATEGORY:{
+    type:String
   },
   ENTRY_FEE:{
     type:Number,
