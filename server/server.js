@@ -314,6 +314,7 @@ io.on("connection",(socket)=>{
                         },function(error,result2){
                             if(error){
                                 io.to(obj.TOURNAMENT_ID).emit('error')
+                            
                             }
                             if(result2){
                                 io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list')
