@@ -167,29 +167,16 @@ io.on("connection",(socket)=>{
                 })
             }
             if(result){
-                const istConstant = 5*60*60*1000+30*60*1000
-                const starttimestamp = result.START_TIMESTAMP
-                const regclosesbefore = result.REGISTRATION_CLOSES_BEFORE
-                const d1 = new Date(new Date(starttimestamp).getTime() - regclosesbefore*60*60*1000).getTime()
-                const d2 = new Date(new Date().getTime() + istConstant).getTime()
-                const d3 = new Date(new Date(result.END_TIMESTAMP).getTime())
-                if(d2<=d1){
-                    console.log("In time")
-                    const spotStatusArray = result.SPOT_STATUS_ARRAY
-                    console.log("Inside join-booking");
-                    console.log("Emitted Spot Status Array")
-                    socket.emit('spotStatusArray',JSON.stringify({
-                        total_spots:result.NO_OF_KNOCKOUT_ROUNDS,
-                        array:spotStatusArray,
-                        prize_pool:result.PRIZE_POOL,
-                        entry_fee:result.ENTRY_FEE
-                    }))
-                    socket.join(obj1.TOURNAMENT_ID)
-                }
-                else{
-                    console.log("Not In time")
-                    socket.emit('booking-not-allowed')
-                }
+                const spotStatusArray = result.SPOT_STATUS_ARRAY
+                console.log("Inside join-booking");
+                console.log("Emitted Spot Status Array")
+                socket.emit('spotStatusArray',JSON.stringify({
+                    total_spots:result.NO_OF_KNOCKOUT_ROUNDS,
+                    array:spotStatusArray,
+                    prize_pool:result.PRIZE_POOL,
+                    entry_fee:result.ENTRY_FEE
+                }))
+                socket.join(obj1.TOURNAMENT_ID)
             }
          })
         socket.on('spot-clicked',(objt)=>{
