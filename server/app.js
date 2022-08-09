@@ -7,7 +7,7 @@ const evrouter = require('../routes/event_manager.router')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
-const uri = "mongodb+srv://Riddhiman_Mongo:hello123@cluster1.b76yf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb+srv://Riddhiman_Mongo:hello123@cluster1.b76yf.mongodb.net/ArdentSport?retryWrites=true&w=majority";
 mongoose.connect(uri)
 app.use(express.urlencoded({
     extended:true
