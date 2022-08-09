@@ -449,7 +449,7 @@ userRouter.get('/myBookings',async (req,res)=>{
             USERID:userid
         })
         if(result){
-            if(result.HOSTED_TOURNAMENTS.length==0){
+            if(result.CURRENT_TOURNAMENTS.length==0){
                 res.status(200).send([])
             }
             else{
