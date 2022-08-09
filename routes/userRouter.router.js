@@ -8,9 +8,7 @@ const tournamentModel = require('../models/tournament.model')
 const userRouter = express.Router()
 
 userRouter.get('/',(req,res)=>{
-    res.send({
-        Message:'userRouter'
-    })
+    res.render('fixture',{no_of_bracs:req.query.no_of_spots})
 })
 
 //change to post

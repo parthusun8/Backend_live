@@ -12,6 +12,7 @@ mongoose.connect(uri)
 app.use(express.urlencoded({
     extended:true
 }))
+app.set('view engine','ejs')
 app.use(cors());
 app.use(express.json());
 app.use(userRouter);
