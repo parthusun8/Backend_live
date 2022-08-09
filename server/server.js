@@ -300,7 +300,7 @@ io.on("connection",(socket)=>{
                     console.log(error)
                 }
                 if(result){
-                    if(result.indexOf(`confirmed-${obj.USERID}`)!=-1){
+                    if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)!=-1){
                         io.to(obj.TOURNAMENT_ID).emit("not-to-be-removed")
                     }
                     else{
