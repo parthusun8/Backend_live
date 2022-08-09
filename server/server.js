@@ -223,7 +223,7 @@ io.on("connection",(socket)=>{
                                     }
                                     if(result){
                                         if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)!=-1){
-                                            console.log("Payment already done")
+                                            console.log(`Payment already done ${obj.USERID}`)
                                             io.to(obj.TOURNAMENT_ID).emit("not-to-be-removed")
                                         }
                                         else{
