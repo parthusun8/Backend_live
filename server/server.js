@@ -214,7 +214,7 @@ io.on("connection",(socket)=>{
                                 btnID:obj.btnID,
                                 color:color
                             }))
-                            setTimeout(1000*50,()=>{
+                            setTimeout(()=>{
                                 tournamentModel.findOne({
                                     USERID:obj.TOURNAMENT_ID
                                 },function(error,result){
@@ -247,7 +247,7 @@ io.on("connection",(socket)=>{
                                         }
                                     }
                                 })
-                            })
+                            },1000*50)
 
                         }
                     })
