@@ -458,12 +458,12 @@ userRouter.get('/isTimeExceeded',async (req,res)=>{
                 const d2 = new Date(new Date().getTime() + istConstant).getTime()
                 if(d2>=d1){
                     res.status(200).send({
-                        Message:'Time Limit Exceeded'
+                        Message:true
                     })
                 }
                 else if(d2<=d1){
                     res.status(200).send({
-                        Message:'Proceed to booking'
+                        Message:false
                     })
                 }
         }
