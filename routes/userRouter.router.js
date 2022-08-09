@@ -465,6 +465,7 @@ userRouter.get('/myBookings',async (req,res)=>{
                     }
                 }
                 if(r1.length!=0){
+                    console.log(r1)       
                     res.status(200).send(r1)
             }
         }
