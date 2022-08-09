@@ -214,6 +214,40 @@ io.on("connection",(socket)=>{
                                 btnID:obj.btnID,
                                 color:color
                             }))
+                            setTimeout(1000*50,()=>{
+                                tournamentModel.findOne({
+                                    USERID:obj.TOURNAMENT_ID
+                                },function(error,result){
+                                    if(error){
+                                        console.log(error)
+                                    }
+                                    if(result){
+                                        if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)!=-1){
+                                            console.log("Payment already done")
+                                            io.to(obj.TOURNAMENT_ID).emit("not-to-be-removed")
+                                        }
+                                        else{
+                                            tournament.updateOne({
+                                                TOURNAMENT_ID:obj.TOURNAMENT_ID,
+                                                SPOT_STATUS_ARRAY:obj.USERID
+                                            },{
+                                                $set:{
+                                                    "SPOT_STATUS_ARRAY.$":`${obj.btnID}`
+                                                }
+                                            },function(error,result2){
+                                                if(error){
+                                                    console.log(error)
+                                                    io.to(obj.TOURNAMENT_ID).emit('error')
+                                                }
+                                                if(result2){
+                                                    console.log("Emit remove from waiting list")
+                                                    io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list')
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+                            })
 
                         }
                     })
