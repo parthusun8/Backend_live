@@ -440,6 +440,35 @@ userRouter.get('/hostedTournaments',async (req,res)=>{
         })
     }
 })
+userRouter.get('/isTimeExceeded',async (req,res)=>{
+    //give TOURNAMENT ID
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Error in fetching Tournament'
+            })
+        }
+        if(result){
+            const istConstant = 5*60*60*1000+30*60*1000
+                const starttimestamp = result.START_TIMESTAMP
+                const regclosesbefore = result.REGISTRATION_CLOSES_BEFORE
+                const d1 = new Date(new Date(starttimestamp).getTime() - regclosesbefore*60*60*1000).getTime()
+                const d2 = new Date(new Date().getTime() + istConstant).getTime()
+                if(d2>=d1){
+                    res.status(200).send({
+                        Message:'Time Limit Exceeded'
+                    })
+                }
+                else if(d2<=d1){
+                    res.status(200).send({
+                        Message:'Proceed to booking'
+                    })
+                }
+        }
+    })
+})
 userRouter.get('/myBookings',async (req,res)=>{
     const userid = req.query.USERID
     try{
