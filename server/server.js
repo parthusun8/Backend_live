@@ -242,7 +242,9 @@ io.on("connection",(socket)=>{
                                                 }
                                                 if(result2){
                                                     console.log("Emit remove from waiting list")
-                                                    io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list')
+                                                    io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list',{
+                                                        Message:'Removed'
+                                                    })
                                                 }
                                             })
                                         }
