@@ -312,43 +312,43 @@ io.on("connection",(socket)=>{
                 }
             })
         })
-        socket.on('remove-booking',(objkt)=>{
-            //send spot number (0-based index)
-            console.log("In remove booking")
-            const obj = JSON.parse(objkt)
-            tournamentModel.findOne({
-                USERID:obj.TOURNAMENT_ID
-            },function(error,result){
-                if(error){
-                    console.log(error)
-                }
-                if(result){
-                    if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)!=-1){
-                        console.log("Payment already done")
-                        io.to(obj.TOURNAMENT_ID).emit("not-to-be-removed")
-                    }
-                    else{
-                        tournament.updateOne({
-                            TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                            SPOT_STATUS_ARRAY:obj.USERID
-                        },{
-                            $set:{
-                                "SPOT_STATUS_ARRAY.$":`${obj.SPOTID}`
-                            }
-                        },function(error,result2){
-                            if(error){
-                                console.log(error)
-                                io.to(obj.TOURNAMENT_ID).emit('error')
-                            }
-                            if(result2){
-                                console.log("Emit remove from waiting list")
-                                io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list')
-                            }
-                        })
-                    }
-                }
-            })
-        })
+        // socket.on('remove-booking',(objkt)=>{
+        //     //send spot number (0-based index)
+        //     console.log("In remove booking")
+        //     const obj = JSON.parse(objkt)
+        //     tournamentModel.findOne({
+        //         USERID:obj.TOURNAMENT_ID
+        //     },function(error,result){
+        //         if(error){
+        //             console.log(error)
+        //         }
+        //         if(result){
+        //             if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)!=-1){
+        //                 console.log("Payment already done")
+        //                 io.to(obj.TOURNAMENT_ID).emit("not-to-be-removed")
+        //             }
+        //             else{
+        //                 tournament.updateOne({
+        //                     TOURNAMENT_ID:obj.TOURNAMENT_ID,
+        //                     SPOT_STATUS_ARRAY:obj.USERID
+        //                 },{
+        //                     $set:{
+        //                         "SPOT_STATUS_ARRAY.$":`${obj.SPOTID}`
+        //                     }
+        //                 },function(error,result2){
+        //                     if(error){
+        //                         console.log(error)
+        //                         io.to(obj.TOURNAMENT_ID).emit('error')
+        //                     }
+        //                     if(result2){
+        //                         console.log("Emit remove from waiting list")
+        //                         io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list')
+        //                     }
+        //                 })
+        //             }
+        //         }
+        //     })
+        // })
     })
 })
 
