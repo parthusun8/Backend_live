@@ -17,18 +17,6 @@ async function createMatches(tournamentid){
                 while(i){
                     let k =1
                     for(let j=start;j<=end;j=j+2){
-                        result.MATCHES[j] = {
-                            MATCHID:`${j}`,
-                            TOURNAMENT_ID:tournamentid,
-                            NEXT_MATCH_ID:`${end+k}`,
-                            NEXT_MATCH_PLAYER_SPOT:0
-                        }
-                        result.MATCHES[j+1] = {
-                            MATCHID:`${j+1}`,
-                            TOURNAMENT_ID:tournamentid,
-                            NEXT_MATCH_ID:`${end+k}`,
-                            NEXT_MATCH_PLAYER_SPOT:1
-                        }
                         if(id<result.SPOT_STATUS_ARRAY.length){
                             result.MATCHES[j] = {
                                 PLAYER1:result.SPOT_STATUS_ARRAY[id],
@@ -45,10 +33,25 @@ async function createMatches(tournamentid){
                                 TOURNAMENT_ID:tournamentid,
                                 NEXT_MATCH_ID:`${end+k}`,
                                 NEXT_MATCH_PLAYER_SPOT:1
-                            }      
+                            }
+                            id+=4      
+                        }
+                        
+                        else{
+                            result.MATCHES[j] = {
+                                MATCHID:`${j}`,
+                                TOURNAMENT_ID:tournamentid,
+                                NEXT_MATCH_ID:`${end+k}`,
+                                NEXT_MATCH_PLAYER_SPOT:0
+                            }
+                            result.MATCHES[j+1] = {
+                                MATCHID:`${j+1}`,
+                                TOURNAMENT_ID:tournamentid,
+                                NEXT_MATCH_ID:`${end+k}`,
+                                NEXT_MATCH_PLAYER_SPOT:1
+                            }
                         }
                         k=k+1
-                        id+=4
                     }
                     i=i/2
                     start=end+1
