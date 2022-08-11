@@ -549,4 +549,59 @@ userRouter.get('/getScore',async (req,res)=>{
         }
     })
 })
+userRouter.get('/endMatch',async (req,res)=>{
+    //TOURNAMENT_ID and MATCHID,WINNER_ID
+    const matchid = parseInt(req.query.MATCHID.split(" ")[1])-1
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Error in tourna fetching'
+            })
+        }
+        else{
+            if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+                tournamentModel.updateOne({
+                    TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                },{
+                    $set:{
+                        "SPOT_STATUS_ARRAY.$[elem].PLAYER1":WINNER_ID
+                    }
+                },{
+                    arrayFilters:[{"$elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID}]
+                },function(error,result){
+                    if(error){
+                        console.log(error)
+                    }
+                    if(result){
+                        res.status(200).send({
+                            Message:'Updated Successfully'
+                        })
+                    }
+                })
+            }
+            else{
+                tournamentModel.updateOne({
+                    TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                },{
+                    $set:{
+                        "SPOT_STATUS_ARRAY.$[elem].PLAYER2":WINNER_ID
+                    }
+                },{
+                    arrayFilters:[{"$elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID}]
+                },function(error,result){
+                    if(error){
+                        console.log(error)
+                    }
+                    if(result){
+                        res.status(200).send({
+                            Message:'Updated Successfully'
+                        })
+                    }
+                })
+            }
+        }
+    })
+})
 module.exports = userRouter;
