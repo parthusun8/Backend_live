@@ -265,7 +265,7 @@ function getBracket(base) {
 		brackets.push({
             lastGames:	round==1 ? null : [last[0].game,last[1].game],
             nextGame:	nextInc+i>base-1?null:nextInc+i,
-            teamnames:	round==1 ? [exampleTeams[teamMark],exampleTeams[teamMark+1]] : [`Match ${matchid-base}`,`Match ${matchid+1-base}`],
+            teamnames:	round==1 ? [exampleTeams[teamMark],exampleTeams[teamMark+1]] : [`TBA`,`TBA`],
             bracketNo:	i,
             roundNo:	round,
             bye:		isBye
