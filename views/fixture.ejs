@@ -181,6 +181,7 @@ var knownBrackets = [2,4,8,16,32,64], // brackets with "perfect" proportions (fu
 /*
  * Build our bracket "model"
  */
+var matchid = 1
 function getBracket(base) {
 
     var closest 		= _.find(knownBrackets, function(k) { return k>=base; }),
@@ -194,7 +195,6 @@ function getBracket(base) {
         baseC 		= base/2,
         teamMark	= 0,
         nextInc		= base/2;
-
     for(i=1;i<=(base-1);i++) {
         var	baseR = i/baseT,
             isBye = false;
@@ -205,14 +205,16 @@ function getBracket(base) {
         }
 
         var last = _.map(_.filter(brackets, function(b) { return b.nextGame == i; }), function(b) { return {game:b.bracketNo,teams:b.teamnames}; });
-        brackets.push({
+		//[last[0].teams[_.random(1)],last[1].teams[_.random(1)]]
+		brackets.push({
             lastGames:	round==1 ? null : [last[0].game,last[1].game],
             nextGame:	nextInc+i>base-1?null:nextInc+i,
-            teamnames:	round==1 ? [exampleTeams[teamMark],exampleTeams[teamMark+1]] : ["TBA","TBA"],
+            teamnames:	round==1 ? [exampleTeams[teamMark],exampleTeams[teamMark+1]] : [`Match ${matchid-base}`,`Match ${matchid+1-base}`],
             bracketNo:	i,
             roundNo:	round,
             bye:		isBye
         });
+		matchid += 2
         teamMark+=2;
         if(i%2!=0)	nextInc--;
         while(baseR>=1) {
@@ -240,7 +242,7 @@ function renderBrackets(struct) {
             if(gg.bye)
                 round.append('<div></div>');
             else
-                round.append('<div><div class="bracketbox"><span class="info1">'+gg.bracketNo+'</span><span class="info2">'+gg.bracketNo+'</span><span class="teama"><a href="#hello">'+gg.teamnames[0]+'</a></span><span class="teamb">'+gg.teamnames[1]+'</span></div></div>');
+                round.append('<div><div class="bracketbox"><span class="info1">'+gg.bracketNo+'</span><span class="info2">'+gg.bracketNo+'</span><span class="teama">'+`<a href="https://ardentsportsapis.herokuapp.com/getScore?TOURNAMENT_ID="TTbuddhiman2@gmail.com4&MATCHID=${gg.teamnames[0]}">`+gg.teamnames[0]+'</a></span><span class="teamb"><a href = "/hello2">'+gg.teamnames[1]+'</a></span></div></div>');
         });
         group.append(round);
     }

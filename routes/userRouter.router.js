@@ -534,4 +534,19 @@ userRouter.get('/tournamentInMyBookings',async (req,res)=>{
         }
     }) 
 })
+userRouter.get('/getScore',async (req,res)=>{
+    //requires TOURNAMENT_ID and MATCHID
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Tournament Not found'
+            })
+        }
+        else{
+            res.status(200).send(result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])])
+        }
+    })
+})
 module.exports = userRouter;
