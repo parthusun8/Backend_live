@@ -545,7 +545,7 @@ userRouter.get('/getScore',async (req,res)=>{
             })
         }
         else{
-            res.status(200).send(result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])])
+            res.status(200).send(result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
         }
     })
 })
