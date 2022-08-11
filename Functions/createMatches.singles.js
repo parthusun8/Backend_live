@@ -13,6 +13,7 @@ async function createMatches(tournamentid){
                 let i = n/2
                 let start = 0
                 let end = i-1
+                var id = 0
                 while(i){
                     let k =1
                     for(let j=start;j<=end;j=j+2){
@@ -28,7 +29,26 @@ async function createMatches(tournamentid){
                             NEXT_MATCH_ID:`${end+k}`,
                             NEXT_MATCH_PLAYER_SPOT:1
                         }
+                        if(id<result.SPOT_STATUS_ARRAY.length){
+                            result.MATCHES[j] = {
+                                PLAYER1:SPOT_STATUS_ARRAY[id],
+                                PLAYER2:SPOT_STATUS_ARRAY[id+1],
+                                MATCHID:`${j}`,
+                                TOURNAMENT_ID:tournamentid,
+                                NEXT_MATCH_ID:`${end+k}`,
+                                NEXT_MATCH_PLAYER_SPOT:0
+                            }
+                            result.MATCHES[j+1] = {
+                                PLAYER1:SPOT_STATUS_ARRAY[id+2],
+                                PLAYER2:SPOT_STATUS_ARRAY[id+3],
+                                MATCHID:`${j+1}`,
+                                TOURNAMENT_ID:tournamentid,
+                                NEXT_MATCH_ID:`${end+k}`,
+                                NEXT_MATCH_PLAYER_SPOT:1
+                            }      
+                        }
                         k=k+1
+                        id+=4
                     }
                     i=i/2
                     start=end+1
