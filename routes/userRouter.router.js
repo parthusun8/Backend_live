@@ -586,7 +586,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     TOURNAMENT_ID:req.query.TOURNAMENT_ID
                 },{
                     $set:{
-                        "SPOT_STATUS_ARRAY.$[elem].PLAYER2":WINNER_ID
+                        "MATCHES.$[elem].PLAYER2":req.query.WINNER_ID
                     }
                 },{
                     arrayFilters:[{"$elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID}]
