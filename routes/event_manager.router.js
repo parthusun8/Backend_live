@@ -91,9 +91,9 @@ evrouter.post('/createTournament',async (req,res)=>{
         })
     }
 })
-evrouter.post('/createMatches',async (req,res)=>{
+evrouter.get('/createMatches',async (req,res)=>{
     try{
-        const result = await createMatches(req.body.tournamentid)
+        const result = await createMatches(req.query.TOURNAMENT_ID)
         if(result){
             res.status(200).send({
                 Message:'Matches Created'
