@@ -31,16 +31,16 @@ async function createMatches(tournamentid){
                         }
                         if(id<result.SPOT_STATUS_ARRAY.length){
                             result.MATCHES[j] = {
-                                PLAYER1:SPOT_STATUS_ARRAY[id],
-                                PLAYER2:SPOT_STATUS_ARRAY[id+1],
+                                PLAYER1:result.SPOT_STATUS_ARRAY[id],
+                                PLAYER2:result.SPOT_STATUS_ARRAY[id+1],
                                 MATCHID:`${j}`,
                                 TOURNAMENT_ID:tournamentid,
                                 NEXT_MATCH_ID:`${end+k}`,
                                 NEXT_MATCH_PLAYER_SPOT:0
                             }
                             result.MATCHES[j+1] = {
-                                PLAYER1:SPOT_STATUS_ARRAY[id+2],
-                                PLAYER2:SPOT_STATUS_ARRAY[id+3],
+                                PLAYER1:result.SPOT_STATUS_ARRAY[id+2],
+                                PLAYER2:result.SPOT_STATUS_ARRAY[id+3],
                                 MATCHID:`${j+1}`,
                                 TOURNAMENT_ID:tournamentid,
                                 NEXT_MATCH_ID:`${end+k}`,
