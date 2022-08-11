@@ -589,7 +589,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                         "MATCHES.$[elem].PLAYER2":req.query.WINNER_ID
                     }
                 },{
-                    arrayFilters:[{"$elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID}]
+                    arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID}]
                 },function(error,result){
                     if(error){
                         console.log(error)
