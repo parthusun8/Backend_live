@@ -23,6 +23,7 @@ userRouter.get('/getTournamentFixtures',async (req,res)=>{
             })
         }
         if(result){
+            console.log(result)
             res.render('tourna_fixture',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS})
         }
     })
