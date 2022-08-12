@@ -552,6 +552,36 @@ userRouter.get('/tournamentInMyBookings',async (req,res)=>{
         }
     }) 
 })
+userRouter.post('/updateScore',async (req,res)=>{
+    //required TOURNAMENT_ID,
+    //required MATCHID
+    //Set
+    //PLAYER_1_SCORE
+    //PLAYER_2_SCORE
+    matchesmodel.findOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        if(result){ 
+            matchesmodel.updateOne({
+                TOURNAMENT_ID:req.body.TOURNAMENT_ID
+            },{
+                $set:{
+                    "MATCHES.[$elem].PLAYER_1_SCORE.set1":parseInt(req.body.PLAYER_1_SCORE),
+                    "MATCHES.[$elem].PLAYER_1_SCORE.set1":parseInt(req.body.PLAYER_2_SCORE)
+                }
+            },{
+                arrayFilters:[{"elem.MATCHID":req.body.MATCHID}]
+            })
+        }
+    })
+
+})
 userRouter.get('/getScore',async (req,res)=>{
     //requires TOURNAMENT_ID and MATCHID
     matchesmodel.findOne({
