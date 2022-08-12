@@ -318,6 +318,10 @@ body {
         $(function(){
             var socket = io()
         const roomname = $("#TID").text() + $("#MATCHID").text()
+        socket.emit('join-room',{
+            TOURNAMENT_ID:$("#TID").text(),
+            MATCHID:`${(parseInt($("#MATCHID").text())-1)}`
+        })
         socket.on('joined-room',()=>{
             console.log('Joined Match')
         })
