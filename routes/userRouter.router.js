@@ -5,6 +5,7 @@ const USERProfile = require('../models/userprofile.model')
 const stripe = require('stripe')("sk_test_51Kx9oUSDyPLJYmvrHGifQoOVMJTLzveCWgOMKSdYGUKOhgqEW5pDoA9XTbs5NDki9XW4mmU4wNna8uFdpoM0BanG00uedfdbjt")
 const instacricket = require('../models/instacricket.mongo')
 const tournamentModel = require('../models/tournament.model')
+const matchesmodel = require('../models/matches.mongo')
 const userRouter = express.Router()
 
 userRouter.get('/',(req,res)=>{
@@ -568,7 +569,7 @@ userRouter.get('/getScore',async (req,res)=>{
 userRouter.get('/endMatch',async (req,res)=>{
     //TOURNAMENT_ID and MATCHID,WINNER_ID
     const matchid = parseInt(req.query.MATCHID.split(" ")[1])-1
-    tournamentModel.findOne({
+    matchesmodel.findOne({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID
     },function(error,result){
         if(error){
@@ -578,7 +579,7 @@ userRouter.get('/endMatch',async (req,res)=>{
         }
         else{
             if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
-                tournamentModel.updateOne({
+                matchesmodel.updateOne({
                     TOURNAMENT_ID:req.query.TOURNAMENT_ID
                 },{
                     $set:{
@@ -598,7 +599,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                 })
             }
             else{
-                tournamentModel.updateOne({
+                matchesmodel.updateOne({
                     TOURNAMENT_ID:req.query.TOURNAMENT_ID
                 },{
                     $set:{

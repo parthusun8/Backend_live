@@ -1,5 +1,6 @@
 const tournament = require('../models/tournament.model')
 const bd = require('../models/badminton.model')
+const matchesmodel = require('../models/matches.mongo')
 async function createMatches(tournamentid){
     return new Promise((resolve,reject)=>{
         tournament.findOne({
@@ -57,7 +58,7 @@ async function createMatches(tournamentid){
                     start=end+1
                     end=end+i
                 }
-                tournament.updateOne({
+                matchesmodel.updateOne({
                     TOURNAMENT_ID:tournamentid
                 },{
                     $addToSet:{

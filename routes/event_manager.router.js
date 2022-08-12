@@ -4,6 +4,7 @@ const tournament = require('../models/tournament.model')
 const {createMatches,saveMatch} = require('../Functions/createMatches.singles')
 const evrouter = express.Router()
 const usermodel = require('../models/user.mongo')
+const matchesmodel = require('../models/matches.mongo')
 //---------------------------------
 
 //controller functions
@@ -63,8 +64,11 @@ evrouter.post('/createTournament',async (req,res)=>{
             req.body.START_TIMESTAMP = new Date(new Date(parseInt(start_date.split("-")[2]),parseInt(start_date.split("-")[1])-1,parseInt(start_date.split("-")[0]),parseInt(start_time.split(":")[0]),parseInt(start_time.split(":")[1])).getTime() + istConstant).toISOString()
             req.body.END_TIMESTAMP = new Date(new Date(parseInt(end_date.split("-")[2]),parseInt(end_date.split("-")[1])-1,parseInt(end_date.split("-")[0]),parseInt(end_time.split(":")[0]),parseInt(end_time.split(":")[1])).getTime() + istConstant).toISOString()            
             const res1 = await new tournament(req.body).save()
+            const res2 = await new matchesmodel({
+                TOURNAMENT_ID:req.body.TOURNAMENT_ID
+            })
             //update_event_manager_hosted_tournaments
-            if(res1){
+            if(res1&&res2){
                 usermodel.updateOne({
                     USERID:req.body.USERID
                 },{
