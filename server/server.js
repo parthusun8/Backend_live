@@ -30,7 +30,7 @@ io.on("connection",async (socket)=>{
         let sport = obj.sport
         socket.join(roomname);
         socket.to(socket_id).emit('joined-room',{
-            Message:roomname 
+            Message:'Random'
         })
         //update-score event for tabletennis
         //obj must also contain set details
