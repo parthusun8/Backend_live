@@ -504,7 +504,7 @@ body {
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-        const socket = io()
+        var socket = io()
         const roomname = $("#TID").text() + $("#MATCHID").text()
         socket.emit('join-room',{
             TOURNAMENT_ID:$("#TID").text(),
