@@ -8,6 +8,7 @@ const tournament = require('../models/tournament.model')
 const user = require('../models/user.mongo')
 const instacricket = require('../models/instacricket.mongo');
 const tournamentModel = require('../models/tournament.model');
+const matchesmodel = require('../models/matches.mongo')
 
 const io = new Server(server)
 //We are currently doing it for singles of raquet games(example: tabletennis)
@@ -22,23 +23,15 @@ io.on("connection",async (socket)=>{
         console.log(obj);
         const entity = obj.entity
         const entity_ID = obj.entity_ID
-        let roomname = obj.MATCHID+obj.TOURNAMENT_ID;
+        var roomname = obj.MATCHID+obj.TOURNAMENT_ID;
+        var tourney_id = obj.TOURNAMENT_ID
+        var matchid = obj.MATCHID
         console.log(roomname);
         let sport = obj.sport
         socket.join(roomname);
         socket.to(socket_id).emit('joined-room',{
             Message:roomname 
         })
-        if(entity=='LIVE-MAINTAINER'){
-            io.to(roomname).emit('joined-match',{
-                Message:`LIVE-MAINTAINER: ${entity_ID} has joined the match`
-            })
-        }
-        else if(entity== 'USER'){
-            io.to(roomname).emit('joined-match',{
-                Message:`USER: ${entity_ID} has joined the match`
-            })
-        }
         //update-score event for tabletennis
         //obj must also contain set details
         var setscore_array_p1 = [0,0,0]
@@ -57,31 +50,33 @@ io.on("connection",async (socket)=>{
             let update_query
             if(obj.set=='1'){
                 update_query = {
-                    "PLAYER1_SCORE.set1":pl1score
+                    "MATCHES.$[elem].PLAYER1_SCORE.set1":pl1score
                     ,
-                    "PLAYER2_SCORE.set1":pl2score
+                    "MATCHES.$[elem].PLAYER2_SCORE.set1":pl2score
                 }
             }
             else if(obj.set=='2'){
                 update_query = {
-                    "PLAYER1_SCORE.set2":pl1score
+                    "MATCHES.$[elem].PLAYER1_SCORE.set2":pl1score
                     ,
-                    "PLAYER2_SCORE.set2":pl2score
+                    "MATCHES.$[elem].PLAYER2_SCORE.set2":pl2score
                 }
             }
             else if(obj.set=='3'){
                 update_query = {
-                    "PLAYER1_SCORE.set3":pl1score
+                    "MATCHES.$[elem].PLAYER1_SCORE.set3":pl1score
                     ,
-                    "PLAYER2_SCORE.set3":pl2score
+                    "MATCHES.$[elem].PLAYER2_SCORE.set3":pl2score
                 }
 
             }
             try{
-                const match = await tabletennis.findOneAndUpdate({
-                    MATCHID:roomname
+                const match = await matchesmodel.updateOne({
+                    TOURNAMENT_ID:tourney_id
                 },{
                     $set:update_query
+                },{
+                    arrayFilters:[{"elem.MATCHID":matchid}]
                 })
                 if(match){
                     io.to(roomname).emit('score-updated',JSON.stringify({
