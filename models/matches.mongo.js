@@ -64,6 +64,9 @@ const bdmatch = new mongoose.Schema({
     TOURNAMENT_ID:{
         type:String
     },
+    TOURNAMENT_NAME:{
+        type:String
+    },
     MATCHES:{
         type:[bdmatch]
     }
