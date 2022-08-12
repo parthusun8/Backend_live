@@ -563,7 +563,7 @@ userRouter.get('/getScore',async (req,res)=>{
             })
         }
         else{
-            console.log(result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
+            console.log(result)
             res.render('match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
         }
     })
