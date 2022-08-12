@@ -504,7 +504,7 @@ body {
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-        const socket = io("https://ardentsportsapis.herokuapp.com")
+        const socket = io()
         const roomname = $("#TID").text() + $("#MATCHID").text()
         socket.emit('join-booking',{
             TOURNAMENT_ID:$("#TID").text(),
