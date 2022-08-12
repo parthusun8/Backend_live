@@ -564,7 +564,6 @@ userRouter.get('/getScore',async (req,res)=>{
         }
         else{
             console.log(result)
-            result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].MATCHID = (parseInt(result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1].MATCHID)-1]) + 1).toString()
             res.render('match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
         }
     })
