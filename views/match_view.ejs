@@ -315,19 +315,15 @@ body {
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-        var socket = io()
+        $(function(){
+            var socket = io()
         const roomname = $("#TID").text() + $("#MATCHID").text()
-        $(window).on('load',()=>{
-            socket.emit('join-room',{
-            TOURNAMENT_ID:$("#TID").text(),
-            MATCHID:`${(parseInt($("#MATCHID").text())-1)}`
-        })
-        })
         socket.on('joined-room',()=>{
             console.log('Joined Match')
         })
         socket.on('score-updated',(data)=>{
             console.log(data)
+        })
         })
     </script>
 </body>
