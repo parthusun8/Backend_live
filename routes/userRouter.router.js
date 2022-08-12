@@ -563,7 +563,8 @@ userRouter.get('/getScore',async (req,res)=>{
             })
         }
         else{
-            res.status(200).send(result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
+            console.log(result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
+            res.render('match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
         }
     })
 })
