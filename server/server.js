@@ -53,6 +53,7 @@ io.on("connection",async (socket)=>{
             setscore_array_p1[set] = parseInt(pl1score,10)
             setscore_array_p2[set] = parseInt(pl2score,10)
             console.log(setscore_array_p1); 
+            console.log(setscore_array_p2);
             let update_query
             if(obj.set=='1'){
                 update_query = {
