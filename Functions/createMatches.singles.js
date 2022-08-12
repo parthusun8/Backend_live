@@ -10,6 +10,14 @@ async function createMatches(tournamentid){
                 reject(404)
             }
             if(result){
+                for(var i=0;i<result.SPOT_STATUS_ARRAY.length;i++){
+                    if(result.SPOT_STATUS_ARRAY[i].includes("confirmed")){
+                        result.SPOT_STATUS_ARRAY[i] = result.SPOT_STATUS_ARRAY[i].split("-")[1]
+                    }
+                    else{
+                        result.SPOT_STATUS_ARRAY[i] = "Not Booked"
+                    }
+                }
                 const n = result.NO_OF_KNOCKOUT_ROUNDS
                 let i = n/2
                 let start = 0
