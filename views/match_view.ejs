@@ -175,13 +175,14 @@ fieldset {
             <input value ="<%=PLAYER1_SCORE.set1%> - <%=PLAYER1_SCORE.set2%> - <%=PLAYER1_SCORE.set3%>" type="text" tabindex="3" required disabled>
           </fieldset>
           <fieldset>
-            <input placeholder="Your Web Site (optional)" type="url" tabindex="4" required>
-          </fieldset>
-          <fieldset>
-            <textarea placeholder="Type your message here...." tabindex="5" required></textarea>
+            <h5>Player_2_score</h5>
+            <input value ="<%=PLAYER2_SCORE.set1%> - <%=PLAYER2_SCORE.set2%> - <%=PLAYER2_SCORE.set3%>" type="text" tabindex="3" required disabled>
           </fieldset>
           <p class="copyright">Ardent Sport Ltd. <a href="https://colorlib.com" target="_blank" title="Colorlib">Be Great, Be Ardent</a></p>
         </form>
       </div>
+      <script>
+        setInterval(window.location.reload(),10000)
+      </script>
 </body>
 </html>
