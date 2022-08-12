@@ -574,8 +574,8 @@ userRouter.post('/updateScore',async (req,res)=>{
                     TOURNAMENT_ID:req.body.TOURNAMENT_ID
                 },{
                     $set:{
-                        "MATCHES.[$elem].PLAYER_1_SCORE.set1":parseInt(req.body.PLAYER_1_SCORE),
-                        "MATCHES.[$elem].PLAYER_1_SCORE.set1":parseInt(req.body.PLAYER_2_SCORE)
+                        "MATCHES.[$elem].PLAYER1_SCORE.set1":parseInt(req.body.PLAYER_1_SCORE),
+                        "MATCHES.[$elem].PLAYER2_SCORE.set1":parseInt(req.body.PLAYER_2_SCORE)
                     }
                 },{
                     arrayFilters:[{"elem.MATCHID":req.body.MATCHID}]
@@ -595,8 +595,8 @@ userRouter.post('/updateScore',async (req,res)=>{
                     TOURNAMENT_ID:req.body.TOURNAMENT_ID
                 },{
                     $set:{
-                        "MATCHES.[$elem].PLAYER_1_SCORE.set2":parseInt(req.body.PLAYER_1_SCORE),
-                        "MATCHES.[$elem].PLAYER_1_SCORE.set2":parseInt(req.body.PLAYER_2_SCORE)
+                        "MATCHES.[$elem].PLAYER1_SCORE.set2":parseInt(req.body.PLAYER_1_SCORE),
+                        "MATCHES.[$elem].PLAYER2_SCORE.set2":parseInt(req.body.PLAYER_2_SCORE)
                     }
                 },{
                     arrayFilters:[{"elem.MATCHID":req.body.MATCHID}]
@@ -616,8 +616,8 @@ userRouter.post('/updateScore',async (req,res)=>{
                     TOURNAMENT_ID:req.body.TOURNAMENT_ID
                 },{
                     $set:{
-                        "MATCHES.[$elem].PLAYER_1_SCORE.set3":parseInt(req.body.PLAYER_1_SCORE),
-                        "MATCHES.[$elem].PLAYER_1_SCORE.set3":parseInt(req.body.PLAYER_2_SCORE)
+                        "MATCHES.[$elem].PLAYER1_SCORE.set3":parseInt(req.body.PLAYER_1_SCORE),
+                        "MATCHES.[$elem].PLAYER2_SCORE.set3":parseInt(req.body.PLAYER_2_SCORE)
                     }
                 },{
                     arrayFilters:[{"elem.MATCHID":req.body.MATCHID}]
