@@ -558,6 +558,7 @@ userRouter.post('/updateScore',async (req,res)=>{
     //set
     //PLAYER_1_SCORE
     //PLAYER_2_SCORE
+    console.log(req.body)
     matchesmodel.findOne({
         TOURNAMENT_ID:req.body.TOURNAMENT_ID
     },function(error,result){
