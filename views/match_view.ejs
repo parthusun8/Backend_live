@@ -458,19 +458,19 @@ body {
                             12 Aug at <strong>19:00</strong>
                         </div> -->
                         <div class="match-score">
-                            <span class="match-score-number match-score-number--leading"><%=PLAYER1_SCORE.set1%></span>
+                            <span class="match-score-number match-score-number--leading" id="pl1s1"><%=PLAYER1_SCORE.set1%></span>
                             <span class="match-score-divider">:</span>
-                            <span class="match-score-number"><%=PLAYER2_SCORE.set1%></span>
+                            <span class="match-score-number" id="pl2s1"><%=PLAYER2_SCORE.set1%></span>
                         </div>
                         <div class="match-score">
-                            <span class="match-score-number match-score-number--leading"><%=PLAYER1_SCORE.set2%></span>
+                            <span class="match-score-number match-score-number--leading" id="pl1s2"><%=PLAYER1_SCORE.set2%></span>
                             <span class="match-score-divider">:</span>
-                            <span class="match-score-number"><%=PLAYER2_SCORE.set2%></span>
+                            <span class="match-score-number" id="pl2s2"><%=PLAYER2_SCORE.set2%></span>
                         </div>
                         <div class="match-score">
-                            <span class="match-score-number match-score-number--leading"><%=PLAYER1_SCORE.set3%></span>
+                            <span class="match-score-number match-score-number--leading" id="pl1s3"><%=PLAYER1_SCORE.set3%></span>
                             <span class="match-score-divider">:</span>
-                            <span class="match-score-number"><%=PLAYER2_SCORE.set3%></span>
+                            <span class="match-score-number" id="pl2s3"><%=PLAYER2_SCORE.set3%></span>
                         </div>
                         <div class="match-time-lapsed">
                             72'
@@ -496,7 +496,10 @@ body {
             </div>
         </div>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
+        const socket = io("https://ardentsportsapis.herokuapp.com")
+        socket.join()
     </script>
 </body>
 </html>
