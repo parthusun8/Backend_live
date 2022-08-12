@@ -429,6 +429,9 @@ body {
   align-items: center;
   justify-content: center;
 }
+#TID{
+    font-size: 0px;
+}
     </style>
 </head>
 <body>
@@ -438,6 +441,8 @@ body {
             <div class="match-header">
                 <div class="match-status">Live</div>
                 <div class="match-tournament"><img src="https://assets.codepen.io/285131/pl-logo.svg" /><%=TOURNAMENT_NAME%></div>
+                <div class="match-tournament" id="MATCHID"><%=MATCHID%></div>
+                <div class="TID" id="TID"><%=TOURNAMENT_NAME%></div>
                 <div class="match-actions">
                     <!-- <button class="btn-icon"><i class="material-icons-outlined">grade</i></button>
                     <button class="btn-icon"><i class="material-icons-outlined">add_alert</i></button> -->
@@ -497,9 +502,20 @@ body {
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
         const socket = io("https://ardentsportsapis.herokuapp.com")
-        socket.join()
+        const roomname = $("#TID").text() + $("#MATCHID").text()
+        socket.emit('join-booking',{
+            TOURNAMENT_ID:$("#TID").text(),
+            MATCHID:$("#MATCHID").text()
+        })
+        socket.on('joined-room',()=>{
+            console.log('Joined Match')
+        })
+        socket.on('score-updated',(data)=>{
+            console.log(data)
+        })
     </script>
 </body>
 </html>
