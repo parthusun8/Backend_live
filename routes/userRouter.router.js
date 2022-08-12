@@ -555,7 +555,7 @@ userRouter.get('/tournamentInMyBookings',async (req,res)=>{
 userRouter.post('/updateScore',async (req,res)=>{
     //required TOURNAMENT_ID,
     //required MATCHID
-    //Set
+    //set
     //PLAYER_1_SCORE
     //PLAYER_2_SCORE
     matchesmodel.findOne({
@@ -568,16 +568,69 @@ userRouter.post('/updateScore',async (req,res)=>{
             })
         }
         if(result){ 
-            matchesmodel.updateOne({
-                TOURNAMENT_ID:req.body.TOURNAMENT_ID
-            },{
-                $set:{
-                    "MATCHES.[$elem].PLAYER_1_SCORE.set1":parseInt(req.body.PLAYER_1_SCORE),
-                    "MATCHES.[$elem].PLAYER_1_SCORE.set1":parseInt(req.body.PLAYER_2_SCORE)
-                }
-            },{
-                arrayFilters:[{"elem.MATCHID":req.body.MATCHID}]
-            })
+            if(req.body.set=="1"){
+                matchesmodel.updateOne({
+                    TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                },{
+                    $set:{
+                        "MATCHES.[$elem].PLAYER_1_SCORE.set1":parseInt(req.body.PLAYER_1_SCORE),
+                        "MATCHES.[$elem].PLAYER_1_SCORE.set1":parseInt(req.body.PLAYER_2_SCORE)
+                    }
+                },{
+                    arrayFilters:[{"elem.MATCHID":req.body.MATCHID}]
+                },function(error,result){
+                    if(error){
+                        console.log(error)
+                    }
+                    else{
+                        res.status(200).send({
+                            Message:'Success for updating score'
+                        })
+                    }
+                })
+            }
+            else if(req.body.set=="2"){
+                matchesmodel.updateOne({
+                    TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                },{
+                    $set:{
+                        "MATCHES.[$elem].PLAYER_1_SCORE.set2":parseInt(req.body.PLAYER_1_SCORE),
+                        "MATCHES.[$elem].PLAYER_1_SCORE.set2":parseInt(req.body.PLAYER_2_SCORE)
+                    }
+                },{
+                    arrayFilters:[{"elem.MATCHID":req.body.MATCHID}]
+                },function(error,result){
+                    if(error){
+                        console.log(error)
+                    }
+                    else{
+                        res.status(200).send({
+                            Message:'Success for updating score'
+                        })
+                    }
+                })
+            }
+            else{
+                matchesmodel.updateOne({
+                    TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                },{
+                    $set:{
+                        "MATCHES.[$elem].PLAYER_1_SCORE.set3":parseInt(req.body.PLAYER_1_SCORE),
+                        "MATCHES.[$elem].PLAYER_1_SCORE.set3":parseInt(req.body.PLAYER_2_SCORE)
+                    }
+                },{
+                    arrayFilters:[{"elem.MATCHID":req.body.MATCHID}]
+                },function(error,result){
+                    if(error){
+                        console.log(error)
+                    }
+                    else{
+                        res.status(200).send({
+                            Message:'Success for updating score'
+                        })
+                    }
+                })
+            }
         }
     })
 
