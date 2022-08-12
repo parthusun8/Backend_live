@@ -157,4 +157,4 @@ const bd =new mongoose.Schema({
   }
 });
 
-module.exports=mongoose.model('matches', bd);
+module.exports=mongoose.model('tournament', bd);

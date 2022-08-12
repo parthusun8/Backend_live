@@ -68,4 +68,4 @@ const bdmatch = new mongoose.Schema({
         type:[bdmatch]
     }
   })
-  module.exports = mongoose.model('tournament', tourna);
+  module.exports = mongoose.model('matches', tourna);
