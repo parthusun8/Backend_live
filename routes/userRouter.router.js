@@ -554,7 +554,7 @@ userRouter.get('/tournamentInMyBookings',async (req,res)=>{
 })
 userRouter.get('/getScore',async (req,res)=>{
     //requires TOURNAMENT_ID and MATCHID
-    tournamentModel.findOne({
+    matchesmodel.findOne({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID
     },function(error,result){
         if(error){
