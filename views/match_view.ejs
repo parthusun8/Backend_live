@@ -65,7 +65,12 @@ body {
   font-size: 20px;
   font-weight: 400;
 }
-
+#contact h5 {
+  margin: 5px 0 15px;
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+}
 fieldset {
   border: medium none !important;
   margin: 0 0 10px;
@@ -158,14 +163,16 @@ fieldset {
           <h3>Ardent Sport</h3>
           <h4><b>Matchid: <%=MATCHID%></b></h4>
           <fieldset>
-            <h4>Player 1</h4>
+            <h5>Player 1</h5>
             <input value="<%=PLAYER1%>" type="text" tabindex="1" required autofocus disabled>
           </fieldset>
           <fieldset>
-            <input placeholder="Your Email Address" type="email" tabindex="2" required>
+            <h5>Player 2</h5>
+            <input value="<%=PLAYER2%>" type="text" tabindex="2" required disabled>
           </fieldset>
           <fieldset>
-            <input placeholder="Your Phone Number (optional)" type="tel" tabindex="3" required>
+            <h5>Player_1_score</h5>
+            <input value ="<%=PLAYER1_SCORE.set1%> - <%=PLAYER1_SCORE.set2%> - <%=PLAYER1_SCORE.set3%>" type="text" tabindex="3" required disabled>
           </fieldset>
           <fieldset>
             <input placeholder="Your Web Site (optional)" type="url" tabindex="4" required>
