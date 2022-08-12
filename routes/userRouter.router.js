@@ -649,6 +649,7 @@ userRouter.get('/getScore',async (req,res)=>{
         else{
             console.log(result)
             result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].MATCHID = req.query.MATCHID.split(" ")[1]
+            result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].TOURNAMENT_NAME = result.TOURNAMENT_NAME
             res.render('match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
         }
     })
