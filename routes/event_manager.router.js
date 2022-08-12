@@ -66,7 +66,7 @@ evrouter.post('/createTournament',async (req,res)=>{
             const res1 = await new tournament(req.body).save()
             const res2 = await new matchesmodel({
                 TOURNAMENT_ID:req.body.TOURNAMENT_ID
-            })
+            }).save()
             //update_event_manager_hosted_tournaments
             if(res1&&res2){
                 usermodel.updateOne({
