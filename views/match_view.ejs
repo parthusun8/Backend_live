@@ -508,7 +508,7 @@ body {
         const roomname = $("#TID").text() + $("#MATCHID").text()
         socket.emit('join-booking',{
             TOURNAMENT_ID:$("#TID").text(),
-            MATCHID:$("#MATCHID").text()
+            MATCHID:`${(parseInt($("#MATCHID").text())-1)}`
         })
         socket.on('joined-room',()=>{
             console.log('Joined Match')
