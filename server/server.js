@@ -10,7 +10,12 @@ const instacricket = require('../models/instacricket.mongo');
 const tournamentModel = require('../models/tournament.model');
 const matchesmodel = require('../models/matches.mongo')
 
-const io = new Server(server)
+const io = new Server(server,{
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+      }
+})
 //We are currently doing it for singles of raquet games(example: tabletennis)
 io.on("connection",async (socket)=>{
     //console.log(socket.id);
