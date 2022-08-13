@@ -326,10 +326,10 @@ body {
         socket.on("connect",()=>{
             sktButton.addEventListener('click',()=>{
             console.log(socket.id)
-            socket.emit('join-room',{
+            socket.emit('join-room',JSON.stringify({
                 TOURNAMENT_ID:$("#TID").text(),
                 MATCHID:$("#MATCHID").text()
-            })
+            }))
         })
         socket.on('joined-room',()=>{
             console.log('Joined Match')
