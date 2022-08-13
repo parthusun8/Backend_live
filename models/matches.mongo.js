@@ -15,10 +15,12 @@ const bdmatch = new mongoose.Schema({
         type:String
     },
     PLAYER1:{
-        type:String//Array of userids for doubles. If single player just give one player in the array
+        type:String,//Array of userids for doubles. If single player just give one player in the array,
+        default:"Not Yet Assigned"
     },
     PLAYER2:{
-        type:String//Array of userids for doubles. If single player just give one player in the array
+        type:String,
+        default:"Not Yet Assigned"//Array of userids for doubles. If single player just give one player in the array
     },
     PLAYER1_SCORE:{
         set1:{
