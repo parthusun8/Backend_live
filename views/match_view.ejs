@@ -320,7 +320,6 @@ body {
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-        $(function(){
         var socket = io()
         const roomname = $("#TID").text() + $("#MATCHID").text()
         const sktButton = document.querySelector('.SocketButton')
@@ -339,7 +338,6 @@ body {
             console.log(data)
         })
         sktButton.click()
-        })
         })
     </script>
 </body>
