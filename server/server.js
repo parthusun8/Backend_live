@@ -55,6 +55,8 @@ io.on("connection",async (socket)=>{
             })            
         }
         else{
+            console.log("Joined-room emitted")
+            console.log("socket-id")
             socket.to(socket_id).emit('joined-room',{
                 Message:'Random'
             })
