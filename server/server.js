@@ -123,6 +123,7 @@ io.on("connection",async (socket)=>{
                     console.log(match);
                 }
                 else if(!match){
+                    console.log('Error in finding match')
                     io.to(roomname).emit('ERROR',{
                         Message:'Match not found in db'
                     })    
