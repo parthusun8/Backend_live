@@ -718,6 +718,23 @@ userRouter.get('/allMatches', async (req,res)=>{
             console.log(error)
         }
         else{
+            var mtches = []
+            var sport = ""
+            if(result.TOURNAMENT_ID[0]=='T'){
+                sport = "Table Tennis"
+            }
+            else{
+                sport = "Badminton"
+            }
+            for(var i=0;i<result.MATCHES.length;i++){
+                mtches.push({
+                    TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                    PLAYER1_NAME:result.MATCHES[i].PLAYER1,
+                    PLAYER2_NAME:result.MATCHES[i].PLAYER2,
+                    MATCHID:result.MATCHES[i].MATCHID,
+                    SPORT_NAME:sport   
+                })
+            }
             res.status(200).send(result.MATCHES)
         }
     })
