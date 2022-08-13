@@ -744,18 +744,21 @@ userRouter.get('/allMatches', async (req,res)=>{
                         sport = "Badminton"
                     }
                     for(var i=0;i<result.MATCHES.length;i++){
-                        mtches.push({
-                            TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                            PLAYER1_NAME:result.MATCHES[i].PLAYER1,
-                            PLAYER2_NAME:result.MATCHES[i].PLAYER2,
-                            MATCHID:result.MATCHES[i].MATCHID,
-                            SPORT_NAME:sport,
-                            LOCATION:result2.LOCATION,
-                            CITY:result2.CITY,
-                            TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
-                            IMG_URL:result2.IMG_URL,
-                            PRIZE_POOL:`${result2.PRIZE_POOL}`
-                        })
+                        if(result.MATCHES[i].completion_status=="Not Complete"){
+                            mtches.push({
+                                TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                PLAYER1_NAME:result.MATCHES[i].PLAYER1,
+                                PLAYER2_NAME:result.MATCHES[i].PLAYER2,
+                                MATCHID:result.MATCHES[i].MATCHID,
+                                SPORT_NAME:sport,
+                                LOCATION:result2.LOCATION,
+                                CITY:result2.CITY,
+                                TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
+                                IMG_URL:result2.IMG_URL,
+                                PRIZE_POOL:`${result2.PRIZE_POOL}`
+                            })
+    
+                        }
                     }
                     res.status(200).send(mtches)
                 }
