@@ -709,4 +709,17 @@ userRouter.get('/endMatch',async (req,res)=>{
         }
     })
 })
+userRouter.get('/allMatches', async (req,res)=>{
+    //tournament id
+    matchesmodel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            console.log(error)
+        }
+        else{
+            res.status(200).send(result.MATCHES)
+        }
+    })
+})
 module.exports = userRouter;

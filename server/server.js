@@ -34,34 +34,40 @@ io.on("connection",async (socket)=>{
         console.log(roomname);
         let sport = obj.sport
         socket.join(roomname);
-        if(entity=="LIVE-MAINTAINER"){
-            matchesmodel.updateOne({
-                TOURNAMENT_ID:tourney_id
-            },{
-                $set:{
-                    "MATCHES.$[elem].SCORER":entity_ID
-                }
-            },{
-                arrayFilters:[{"elem.MATCHID":matchid}]
-            },function(error,result){
-                if(error){
-                    console.log(error)
-                }
-                if(result){
-                    socket.to(socket.id).emit('joined-room',{
-                        Message:'Random'
-                    })
-                }
-            })            
-        }
-        else{
-            console.log("Joined-room emitted")
-            console.log(socket.id)
-            socket.join(roomname);
-            socket.to(socket.id).emit('joined-room',{
-                Message:'Room'
-            })
-        }
+        console.log("Joined-room emitted")
+        console.log(socket.id)
+        socket.join(roomname);
+        socket.to(socket.id).emit('joined-room',{
+            Message:'Room'
+        })
+        // if(entity=="LIVE-MAINTAINER"){
+        //     matchesmodel.updateOne({
+        //         TOURNAMENT_ID:tourney_id
+        //     },{
+        //         $set:{
+        //             "MATCHES.$[elem].SCORER":entity_ID
+        //         }
+        //     },{
+        //         arrayFilters:[{"elem.MATCHID":matchid}]
+        //     },function(error,result){
+        //         if(error){
+        //             console.log(error)
+        //         }
+        //         if(result){
+        //             socket.to(socket.id).emit('joined-room',{
+        //                 Message:'Random'
+        //             })
+        //         }
+        //     })            
+        // }
+        // else{
+        //     console.log("Joined-room emitted")
+        //     console.log(socket.id)
+        //     socket.join(roomname);
+        //     socket.to(socket.id).emit('joined-room',{
+        //         Message:'Room'
+        //     })
+        // }
         //update-score event for tabletennis
         //obj must also contain set details
         var setscore_array_p1 = [0,0,0]
