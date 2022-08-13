@@ -30,17 +30,17 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         // "https://ardentsportsapis.herokuapp.com/"
-        var socket = io();
+        var socket = io("https://ardentsportsapis.herokuapp.com");
         const join = document.querySelector('.Join');
         join.addEventListener('click',(e)=>{
             e.preventDefault()
-            socket.emit('join-room',{
+            socket.emit('join-room',JSON.stringify({
                 entity:document.querySelector('.entity').value,
                 entity_ID:'random',
                 sport:'tabletennis',
                 MATCHID:document.querySelector('.Room').value,
-                TOURNAMENT_ID:"TTbuddhiman@gmail.com3"
-            })
+                TOURNAMENT_ID:"TTtest2@gmail.com1"
+            }))
         })
         const update = document.querySelector('.Update')
         const player1score = document.querySelector('.player1')
