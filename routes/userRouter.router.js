@@ -711,31 +711,44 @@ userRouter.get('/endMatch',async (req,res)=>{
 })
 userRouter.get('/allMatches', async (req,res)=>{
     //tournament id
-    matchesmodel.findOne({
+    tournamentModel.findOne({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID
-    },function(error,result){
+    },function(error,result2){
         if(error){
             console.log(error)
         }
-        else{
-            var mtches = []
-            var sport = ""
-            if(result.TOURNAMENT_ID[0]=='T'){
-                sport = "Table Tennis"
-            }
-            else{
-                sport = "Badminton"
-            }
-            for(var i=0;i<result.MATCHES.length;i++){
-                mtches.push({
-                    TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                    PLAYER1_NAME:result.MATCHES[i].PLAYER1,
-                    PLAYER2_NAME:result.MATCHES[i].PLAYER2,
-                    MATCHID:result.MATCHES[i].MATCHID,
-                    SPORT_NAME:sport   
-                })
-            }
-            res.status(200).send(mtches)
+        if(result2){
+            matchesmodel.findOne({
+                TOURNAMENT_ID:req.query.TOURNAMENT_ID
+            },function(error,result){
+                if(error){
+                    console.log(error)
+                }
+                else{
+                    var mtches = []
+                    var sport = ""
+                    if(result.TOURNAMENT_ID[0]=='T'){
+                        sport = "Table Tennis"
+                    }
+                    else{
+                        sport = "Badminton"
+                    }
+                    for(var i=0;i<result.MATCHES.length;i++){
+                        mtches.push({
+                            TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                            PLAYER1_NAME:result.MATCHES[i].PLAYER1,
+                            PLAYER2_NAME:result.MATCHES[i].PLAYER2,
+                            MATCHID:result.MATCHES[i].MATCHID,
+                            SPORT_NAME:sport,
+                            LOCATION:result2.LOCATION,
+                            CITY:result2.CITY,
+                            TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
+                            IMG_URL:result2.IMG_URL,
+                        })
+                    }
+                    res.status(200).send(mtches)
+                }
+            })
         }
     })
 })
