@@ -51,8 +51,8 @@
             const score2 = player2score.value;
             const set = document.querySelector('.Set').value
             socket.emit('update-score',JSON.stringify({
-                PLAYER_1_SCORE:"7",
-                PLAYER_2_SCORE:"8",
+                PLAYER_1_SCORE:document.querySelector('.score1').value,
+                PLAYER_2_SCORE:document.querySelector('.score2').value,
                 set:set
             }))
         })
