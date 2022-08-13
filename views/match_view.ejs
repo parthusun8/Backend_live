@@ -243,6 +243,9 @@ body {
 #TID{
     font-size: 0px;
 }
+.SocketButton{
+    visibility: hidden;
+}
     </style>
 </head>
 <body>
@@ -253,7 +256,7 @@ body {
                 <div class="match-status">Live</div>
                 <div class="match-tournament"><img src="https://assets.codepen.io/285131/pl-logo.svg" /><%=TOURNAMENT_NAME%></div>
                 <div class="match-tournament" id="MATCHID"><%=MATCHID%></div>
-                <div class="TID" id="TID"><%=TOURNAMENT_NAME%></div>
+                <div class="TID" id="TID"><%=TOURNAMENT_ID%></div>
                 <div class="match-actions">
                     <!-- <button class="btn-icon"><i class="material-icons-outlined">grade</i></button>
                     <button class="btn-icon"><i class="material-icons-outlined">add_alert</i></button> -->
@@ -311,6 +314,7 @@ body {
                 </div>
             </div>
         </div>
+        <div class="SocketButton"></div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -318,9 +322,12 @@ body {
         $(function(){
             var socket = io()
         const roomname = $("#TID").text() + $("#MATCHID").text()
-        socket.emit('join-room',{
-            TOURNAMENT_ID:$("#TID").text(),
-            MATCHID:`${(parseInt($("#MATCHID").text())-1)}`
+        const sktButton = document.querySelector('.SocketButton')
+        sktButton.addEventListener('click',()=>{
+            socket.emit('join-room',{
+                TOURNAMENT_ID:$("#TID").text(),
+                MATCHID:$("#MATCHID").text()
+            })
         })
         socket.on('joined-room',()=>{
             console.log('Joined Match')
@@ -328,6 +335,7 @@ body {
         socket.on('score-updated',(data)=>{
             console.log(data)
         })
+        sktButton.click()
         })
     </script>
 </body>
