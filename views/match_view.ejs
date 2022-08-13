@@ -337,16 +337,16 @@ body {
         socket.on('score-updated',(data)=>{
             console.log(data)
             if(data.set=="1"){
-                document.querySelector('#pl1s1').textContent = data.PLAYER_1_SCORE
-                document.querySelector('#pl2s1').textContent = data.PLAYER_2_SCORE
+                $('#pl1s1').text(data.PLAYER_1_SCORE)
+                $('#pl2s1').text(data.PLAYER_2_SCORE)
             }
             else if(data.set=="2"){
-                document.querySelector('#pl1s2').textContent = data.PLAYER_1_SCORE
-                document.querySelector('#pl2s2').textContent = data.PLAYER_2_SCORE
+                $('#pl1s2').text(data.PLAYER_1_SCORE)
+                $('#pl2s2').text(data.PLAYER_2_SCORE)
             }
             else if(data.set=="3"){
-                document.querySelector('#pl1s3').textContent = data.PLAYER_1_SCORE
-                document.querySelector('#pl2s3').textContent = data.PLAYER_2_SCORE
+                $('#pl1s3').text(data.PLAYER_1_SCORE)
+                $('#pl2s3').text(data.PLAYER_2_SCORE)
             }
         })
         })
