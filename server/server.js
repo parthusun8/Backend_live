@@ -48,7 +48,7 @@ io.on("connection",async (socket)=>{
                     console.log(error)
                 }
                 if(result){
-                    socket.to(socket_id).emit('joined-room',{
+                    socket.to(socket.id).emit('joined-room',{
                         Message:'Random'
                     })
                 }
@@ -57,8 +57,9 @@ io.on("connection",async (socket)=>{
         else{
             console.log("Joined-room emitted")
             console.log(socket.id)
-            socket.to(socket_id).emit('joined-room',{
-                Message:'Random'
+            socket.join(roomname);
+            socket.to(socket.id).emit('joined-room',{
+                Message:'Room'
             })
         }
         //update-score event for tabletennis
