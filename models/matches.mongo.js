@@ -64,6 +64,13 @@ const bdmatch = new mongoose.Schema({
     },
     NEXT_MATCH_PLAYER_SPOT:{
       type:Number
+    },
+    winner_id:{
+        type:String
+    },
+    completion_status:{
+        type:String,
+        default:"Not Complete"
     }        
   })
   const tourna = new mongoose.Schema({

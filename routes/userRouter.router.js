@@ -666,15 +666,23 @@ userRouter.get('/endMatch',async (req,res)=>{
             })
         }
         else{
-            if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+            if(result.MATCHES.length-1==matchid){
+                console.log('Finals')
+                res.status(200).send({
+                    Message:'Tournament Over'
+                })
+            }
+            else if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                 matchesmodel.updateOne({
                     TOURNAMENT_ID:req.query.TOURNAMENT_ID
                 },{
                     $set:{
-                        "MATCHES.$[elem].PLAYER1":req.query.WINNER_ID
+                        "MATCHES.$[elem].PLAYER1":req.query.WINNER_ID,
+                        "MATCHES.$[elem2].winner_id":req.query.WINNER_ID,
+                        "MATCHES.$[elem2].completion_status":"Done"
                     }
                 },{
-                    arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID}]
+                    arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
                 },function(error,result){
                     if(error){
                         console.log(error)
@@ -691,10 +699,12 @@ userRouter.get('/endMatch',async (req,res)=>{
                     TOURNAMENT_ID:req.query.TOURNAMENT_ID
                 },{
                     $set:{
-                        "MATCHES.$[elem].PLAYER2":req.query.WINNER_ID
+                        "MATCHES.$[elem].PLAYER2":req.query.WINNER_ID,
+                        "MATCHES.$[elem2].winner_id":req.query.WINNER_ID,
+                        "MATCHES.$[elem2].completion_status":"Done"   
                     }
                 },{
-                    arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID}]
+                    arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
                 },function(error,result){
                     if(error){
                         console.log(error)
