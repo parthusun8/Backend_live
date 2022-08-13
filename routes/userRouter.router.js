@@ -744,7 +744,7 @@ userRouter.get('/allMatches', async (req,res)=>{
                             CITY:result2.CITY,
                             TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
                             IMG_URL:result2.IMG_URL,
-                            PRIZE_POOL:result2.PRIZE_POOL
+                            PRIZE_POOL:`${result2.PRIZE_POOL}`
                         })
                     }
                     res.status(200).send(mtches)
