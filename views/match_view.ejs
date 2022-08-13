@@ -337,8 +337,8 @@ body {
         socket.on('score-updated',(data)=>{
             console.log(data)
             if(data.set=="1"){
-                $('#pl1s1').text(data.PLAYER_1_SCORE)
-                $('#pl2s1').text(data.PLAYER_2_SCORE)
+                document.getElementById('#pl1s1').innerHTML = data.PLAYER_1_SCORE
+                document.getElementById('#pl2s1').innerHTML = data.PLAYER_2_SCORE
             }
             else if(data.set=="2"){
                 $('#pl1s2').text(data.PLAYER_1_SCORE)
