@@ -335,6 +335,7 @@ body {
             console.log('Joined Match')
         })
         socket.on('score-updated',(data)=>{
+            console.log(data)
             if(data.set=="1"){
                 document.querySelector('#pl1s1').textContent = data.PLAYER_1_SCORE
                 document.querySelector('#pl2s1').textContent = data.PLAYER_2_SCORE
