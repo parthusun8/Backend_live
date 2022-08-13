@@ -329,7 +329,7 @@ body {
             console.log(socket.id)
             socket.emit('join-room',JSON.stringify({
                 TOURNAMENT_ID:`${$("#TID").text()}`,
-                MATCHID:`${$("#MATCHID").text()}`
+                MATCHID:`${parseInt($("#MATCHID").text()) - 1}`
             }))
         })
         socket.on('joined-room',()=>{
