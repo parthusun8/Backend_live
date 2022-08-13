@@ -320,10 +320,11 @@ body {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
         $(function(){
-            var socket = io()
+            var socket = io("https://ardentsportsapis.herokuapp.com")
         const roomname = $("#TID").text() + $("#MATCHID").text()
         const sktButton = document.querySelector('.SocketButton')
         sktButton.addEventListener('click',()=>{
+            console.log(socket.id)
             socket.emit('join-room',{
                 TOURNAMENT_ID:$("#TID").text(),
                 MATCHID:$("#MATCHID").text()
