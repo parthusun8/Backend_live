@@ -8,6 +8,9 @@ const bdmatch = new mongoose.Schema({
         type:String,
         required:true
     },
+    TOURNAMENT_NAME:{
+        type:String
+    },
     CATEGORY:{
         type:String
     },
@@ -45,6 +48,10 @@ const bdmatch = new mongoose.Schema({
             type:Number,
             default:0
         }
+    },
+    SCORER:{
+        type:String,
+        default:"Not Assigned"
     },
     ROUND_NO:{
         type:Number
