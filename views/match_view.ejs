@@ -322,6 +322,7 @@ body {
     <script>
         var socket = io()
         const roomname = $("#TID").text() + $("#MATCHID").text()
+        console.log(`Expected Roomname ${roomname}`)
         const sktButton = document.querySelector('.SocketButton')
         socket.on("connect",()=>{
             sktButton.addEventListener('click',()=>{
@@ -335,7 +336,9 @@ body {
             console.log('Joined Match')
         })
         socket.on('score-updated',(data)=>{
-            console.log(data)
+            if(data.set=="1"){
+
+            }
         })
         sktButton.click()
         })
