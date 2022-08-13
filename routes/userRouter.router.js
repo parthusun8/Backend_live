@@ -735,7 +735,7 @@ userRouter.get('/allMatches', async (req,res)=>{
                     SPORT_NAME:sport   
                 })
             }
-            res.status(200).send(result.MATCHES)
+            res.status(200).send(mtches)
         }
     })
 })
