@@ -57,10 +57,6 @@ const bdmatch = new mongoose.Schema({
         type:Number
     },
     TIME: [Number],
-    WINNER:{
-        type:String,
-        default:"To be Announced" //Array of userids for doubles. If single player just give one player in the array
-    },
     NEXT_MATCH_ID:{
         type:String
     },
