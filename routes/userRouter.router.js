@@ -658,6 +658,7 @@ userRouter.get('/endMatch',async (req,res)=>{
     //TOURNAMENT_ID and MATCHID,WINNER_ID
     const matchid = parseInt(req.query.MATCHID.split("-")[1])-1
     console.log(matchid)
+    
     matchesmodel.findOne({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID
     },function(error,result){
