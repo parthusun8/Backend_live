@@ -27,6 +27,7 @@
         <h1 class="score">Player2</h1>
         <input type="text" class="score2">
     </div>
+    <button class = "Submit">Submit</button> 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         // "https://ardentsportsapis.herokuapp.com/"
@@ -43,6 +44,7 @@
             }))
         })
         const update = document.querySelector('.Update')
+        const Submit = document.querySelector('.Submit')
         const player1score = document.querySelector('.player1')
         const player2score = document.querySelector('.player2')        
         update.addEventListener('click',(e)=>{
@@ -71,6 +73,9 @@
         socket.on('ERROR',(obj)=>{
             console.log(obj);
         })
+        Submit.on('click',fetch("https://ardentsportsapis.herokuapp.com/endMatch?TOURNAMENT_ID=TTtest2@gmail.com1&MATCHID=Match 1&WINNER_ID=0").then(res=>{
+            console.log(res)
+        }))
     </script>
 </body>
 </html>
