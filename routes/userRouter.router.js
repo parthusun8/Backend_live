@@ -357,13 +357,17 @@ userRouter.get('/allTournaments',async (req,res)=>{
         if(result){
 
             // console.log("In result")
-            // var r1 = Array.from(result)
-            // for(let i=0;i<r1.length;i++){
-            //     console.log(i)
-            //     console.log(r1[i])
-            // }
-            // console.log(typeof(r1))
-            res.status(200).send(result)
+            const istConstant = 5*60*60*1000+30*60*1000
+            var r1 = Array.from(result)
+            var r2 = []
+            for(let i=0;i<r1.length;i++){
+                const curDate = new Date(new Date().getTime() + istConstant).toISOString()
+                const end_date = new Date(r1[i].END_DATE)
+                if(curDate.getTime()<end_date.getTime()){
+                    r2.push(r1[i])
+                }
+            }
+            res.status(200).send(r2)
         }
     })
 })
@@ -678,7 +682,6 @@ userRouter.get('/endMatch',async (req,res)=>{
     //TOURNAMENT_ID and MATCHID,WINNER_ID
     const matchid = parseInt(req.query.MATCHID.split("-")[1])
     console.log(matchid)
-
     matchesmodel.findOne({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID
     },function(error,result){
@@ -690,6 +693,21 @@ userRouter.get('/endMatch',async (req,res)=>{
         else{
             if(result.MATCHES.length-1==matchid){
                 console.log('Finals')
+                const usrid_1 = req.query.TOURNAMENT_ID.split(".")[0]
+                const usrid = usrid_1.slice(2)
+                // USER.findOne({
+                //     USERID:usrid+`.com`
+                // },function(error,result){
+                //     if(error){
+                //         console.log(error)
+                //         res.status(404).send({
+                //             Message:'Error in Tourney deletion'
+                //         })
+                //     }
+                //     else{
+
+                //     }
+                // })
                 res.status(200).send({
                     Message:'Tournament Over'
                 })
