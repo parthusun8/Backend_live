@@ -200,6 +200,26 @@ userRouter.post('/userProfileBuild',async(req,res)=>{
         })
     }
 })
+userRouter.get('/userDetails',async (req,res)=>{
+    USER.findOne({
+        USERID:req.query.USERID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'User not found'
+            })
+        }
+        else if(result){
+            res.status(200).send({
+                Message:'User found',
+                Name:result.NAME,
+                Phone:result.PHONE,
+                City:result.CITY
+            })
+        }
+    })
+})
 
 userRouter.post('/userLogin',async (req,res)=>{
     const loginid = req.body.loginid
