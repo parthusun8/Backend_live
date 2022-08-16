@@ -359,6 +359,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
             // console.log("In result")
             const istConstant = 5*60*60*1000+30*60*1000
             var r1 = Array.from(result)
+            console.log(r1)
             var r2 = []
             for(let i=0;i<r1.length;i++){
                 const curDate = new Date(new Date().getTime() + istConstant)
@@ -368,7 +369,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
                 }
             }
             console.log(r2)
-            res.status(200).send(r2)
+            res.status(200).send(result)
         }
     })
 })
