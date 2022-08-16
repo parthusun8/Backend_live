@@ -367,6 +367,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
                     r2.push(r1[i])
                 }
             }
+            console.log(r2)
             res.status(200).send(r2)
         }
     })
