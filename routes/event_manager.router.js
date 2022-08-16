@@ -63,8 +63,8 @@ evrouter.post('/createTournament',async (req,res)=>{
             const istConstant = 5*60*60*1000+30*60*1000
             req.body.START_TIMESTAMP = new Date(new Date(parseInt(start_date.split("-")[2]),parseInt(start_date.split("-")[1])-1,parseInt(start_date.split("-")[0]),parseInt(start_time.split(":")[0]),parseInt(start_time.split(":")[1])).getTime() + istConstant).toISOString()
             req.body.END_TIMESTAMP = new Date(new Date(parseInt(end_date.split("-")[2]),parseInt(end_date.split("-")[1])-1,parseInt(end_date.split("-")[0]),parseInt(end_time.split(":")[0]),parseInt(end_time.split(":")[1])).getTime() + istConstant).toISOString()            
-            req.body.START_TIME = start_time.split(":")[0]+start_time.split(":")[1]
-            req.body.END_TIME = end_time.split(":")[0]+end_time.split(":")[1]
+            // req.body.START_TIME = start_time.split(":")[0]+start_time.split(":")[1]
+            // req.body.END_TIME = end_time.split(":")[0]+end_time.split(":")[1]
             const res1 = await new tournament(req.body).save()
             const res2 = await new matchesmodel({
                 TOURNAMENT_ID:req.body.TOURNAMENT_ID,
