@@ -361,7 +361,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
             var r1 = Array.from(result)
             var r2 = []
             for(let i=0;i<r1.length;i++){
-                const curDate = new Date(new Date().getTime() + istConstant).toISOString()
+                const curDate = new Date(new Date().getTime() + istConstant)
                 const end_date = new Date(r1[i].END_DATE)
                 if(curDate.getTime()<end_date.getTime()){
                     r2.push(r1[i])
