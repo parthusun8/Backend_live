@@ -700,7 +700,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     Message:'Tournament Over'
                 })
             }
-            else if(result.MATCHES[matchid].PLAYER2=="Not Yet Assigned"){
+            else if(result.MATCHES[matchid].PLAYER2=="Not Booked"){
                 var WINNER = result.MATCHES[matchid].PLAYER1    
                 if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                     //write winner_id_logic
@@ -748,7 +748,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     })
                 }
             }
-            else if(result.MATCHES[matchid].PLAYER1=="Not Yet Assigned"){
+            else if(result.MATCHES[matchid].PLAYER1=="Not Booked"){
                 var WINNER = result.MATCHES[matchid].PLAYER2    
                 if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                     //write winner_id_logic
@@ -829,7 +829,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                         else{
                             set3 = -1
                         }
-                        if(set1+set2+set3==2){
+                        if(set1+set2+set3>=2){
                             WINNER_ID = result.PLAYER1
                         }
                         else{
