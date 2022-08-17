@@ -815,19 +815,19 @@ userRouter.get('/endMatch',async (req,res)=>{
                             set = 1
                         }
                         else{
-                            set1 = -1
+                            set1 = 0
                         }
                         if((result4.MATCHES[matchid].PLAYER1_SCORE.set2)>(result4.MATCHES[matchid].PLAYER2_SCORE.set2)){
                             set2 = 1
                         }
                         else{
-                            set2 = -1
+                            set2 = 0
                         }
                         if((result4.MATCHES[matchid].PLAYER1_SCORE.set3)>(result4.MATCHES[matchid].PLAYER2_SCORE)){
                             set3 = 1
                         }
                         else{
-                            set3 = -1
+                            set3 = 0
                         }
                         if(set1+set2+set3>=2){
                             WINNER_ID = result4.PLAYER1
@@ -836,7 +836,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                             WINNER_ID=result4.PLAYER2
                         }
                         //
-                        if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+                        if(result4.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                             //write winner_id_logic
                             matchesmodel.updateOne({
                                 TOURNAMENT_ID:req.query.TOURNAMENT_ID
@@ -847,7 +847,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                                     "MATCHES.$[elem2].completion_status":"Done"
                                 }
                             },{
-                                arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
+                                arrayFilters:[{"elem.MATCHID":result4.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result4.MATCHES[matchid].MATCHID}]
                             },function(error,result2){
                                 if(error){
                                     console.log(error)
@@ -869,7 +869,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                                     "MATCHES.$[elem2].completion_status":"Done"   
                                 }
                             },{
-                                arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
+                                arrayFilters:[{"elem.MATCHID":result4.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result4.MATCHES[matchid].MATCHID}]
                             },function(error,result3){
                                 if(error){
                                     console.log(error)
