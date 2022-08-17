@@ -248,6 +248,7 @@ io.on("connection",(socket)=>{
                                 color:color
                             }))
                             setTimeout(()=>{
+                                console.log(obj.TOURNAMENT_ID)
                                 tournamentModel.findOne({
                                     USERID:obj.TOURNAMENT_ID
                                 },function(error,result){

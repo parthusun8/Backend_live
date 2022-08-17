@@ -355,7 +355,6 @@ userRouter.get('/allTournaments',async (req,res)=>{
             })
         }
         if(result){
-
             // console.log("In result")
             const istConstant = 5*60*60*1000+30*60*1000
             var r1 = Array.from(result)
