@@ -250,7 +250,7 @@ io.on("connection",(socket)=>{
                             setTimeout(()=>{
                                 console.log(obj.TOURNAMENT_ID)
                                 tournamentModel.findOne({
-                                    USERID:obj.TOURNAMENT_ID
+                                    TOURNAMENT_ID:obj.TOURNAMENT_ID
                                 },function(error,result){
                                     if(error){
                                         console.log(error)
