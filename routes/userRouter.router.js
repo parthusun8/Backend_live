@@ -800,6 +800,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                 }
             }
             else if(result.MATCHES[matchid].PLAYER1=="Not Booked"||result.MATCHES[matchid].PLAYER1=="Not Yet Assigned"){
+                console.log('Else if Case')
                 var WINNER = result.MATCHES[matchid].PLAYER2    
                 if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                     //write winner_id_logic
@@ -848,6 +849,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                 }
             }
             else{
+                console.log('Else Case')
                 matchesmodel.findOne({
                     TOURNAMENT_ID:req.query.TOURNAMENT_ID
                 },function(error,result4){
