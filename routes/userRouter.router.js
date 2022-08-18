@@ -709,7 +709,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     console.log(result.MATCHES[matchid].PLAYER1_SCORE)
                     console.log(result.MATCHES[matchid].PLAYER2_SCORE)
                     if((result.MATCHES[matchid].PLAYER1_SCORE.set1)>(result.MATCHES[matchid].PLAYER2_SCORE.set1)){
-                        set = 1
+                        set1 = 1
                     }
                     else{
                         set1 = 0
