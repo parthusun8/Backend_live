@@ -882,7 +882,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                         var set3 = 0
                         var WINNER_ID = ""
                         if((result4.MATCHES[matchid].PLAYER1_SCORE.set1)>(result4.MATCHES[matchid].PLAYER2_SCORE.set1)){
-                            set = 1
+                            set1 = 1
                         }
                         else{
                             set1 = 0
