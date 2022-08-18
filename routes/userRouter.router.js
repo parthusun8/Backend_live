@@ -692,7 +692,7 @@ userRouter.get('/endMatch',async (req,res)=>{
             })
         }
         else{
-            if(result.MATCHES.length-1==matchid){
+            if(result.MATCHES.length-2==matchid){
                 console.log(result)
                 console.log('Finals')
                 var WINNER = ""
@@ -889,6 +889,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                         else{
                             WINNER_ID=result4.MATCHES[matchid].PLAYER2
                         }
+                        console.log(WINNER_ID)
                         //
                         if(result4.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                             //write winner_id_logic
