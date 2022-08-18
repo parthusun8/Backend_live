@@ -748,7 +748,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     })
                 }
             }
-            else if(result.MATCHES[matchid].PLAYER1=="Not Booked"){
+            else if(result.MATCHES[matchid].PLAYER1=="Not Booked"||result.MATCHES[matchid].PLAYER1=="Not Yet Assigned"){
                 var WINNER = result.MATCHES[matchid].PLAYER2    
                 if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                     //write winner_id_logic
