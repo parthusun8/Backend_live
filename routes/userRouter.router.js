@@ -718,7 +718,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     else{
                         set2 = 0
                     }
-                    if((result.MATCHES[matchid].PLAYER1_SCORE.set3)>(result.MATCHES[matchid].PLAYER2_SCORE)){
+                    if((result.MATCHES[matchid].PLAYER1_SCORE.set3)>(result.MATCHES[matchid].PLAYER2_SCORE.set3)){
                         set3 = 1
                     }
                     else{
@@ -883,7 +883,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                         else{
                             set2 = 0
                         }
-                        if((result4.MATCHES[matchid].PLAYER1_SCORE.set3)>(result4.MATCHES[matchid].PLAYER2_SCORE)){
+                        if((result4.MATCHES[matchid].PLAYER1_SCORE.set3)>(result4.MATCHES[matchid].PLAYER2_SCORE.set3)){
                             set3 = 1
                         }
                         else{
