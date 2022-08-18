@@ -13,7 +13,8 @@ const matchesmodel = require('../models/matches.mongo')
 const io = new Server(server,{
     cors: {
         origin: "http://localhost:3000",
-        methods: ["GET", "POST"]
+        methods: ["GET", "POST"],
+        forceNew:true
       }
 })
 //We are currently doing it for singles of raquet games(example: tabletennis)
