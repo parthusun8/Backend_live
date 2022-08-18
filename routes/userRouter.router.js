@@ -731,6 +731,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     else{
                         WINNER=result.MATCHES[matchid].PLAYER2
                     }
+                    console.log(set1+set2+set3)
                     console.log('733')
                     console.log(WINNER)
                 }
