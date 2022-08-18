@@ -752,7 +752,8 @@ userRouter.get('/endMatch',async (req,res)=>{
                     }
                     else{
                         res.status(200).send({
-                            Message:'Successfully Updated Finals'
+                            Message:'Successfully Updated Finals',
+                            WINNER:WINNER
                         })
                     }
                 })
@@ -777,7 +778,8 @@ userRouter.get('/endMatch',async (req,res)=>{
                         }
                         if(result2){
                             res.status(200).send({
-                                Message:'Updated Successfully'
+                                Message:'Updated Successfully',
+                                WINNER:WINNER
                             })
                         }
                     })
@@ -799,7 +801,8 @@ userRouter.get('/endMatch',async (req,res)=>{
                         }
                         if(result3){
                             res.status(200).send({
-                                Message:'Updated Successfully'
+                                Message:'Updated Successfully',
+                                WINNER:WINNER
                             })
                         }
                     })
@@ -826,7 +829,8 @@ userRouter.get('/endMatch',async (req,res)=>{
                         }
                         if(result2){
                             res.status(200).send({
-                                Message:'Updated Successfully'
+                                Message:'Updated Successfully',
+                                WINNER:WINNER
                             })
                         }
                     })
@@ -848,7 +852,8 @@ userRouter.get('/endMatch',async (req,res)=>{
                         }
                         if(result3){
                             res.status(200).send({
-                                Message:'Updated Successfully'
+                                Message:'Updated Successfully',
+                                WINNER:WINNER
                             })
                         }
                     })
@@ -915,7 +920,8 @@ userRouter.get('/endMatch',async (req,res)=>{
                                 }
                                 if(result2){
                                     res.status(200).send({
-                                        Message:'Updated Successfully'
+                                        Message:'Updated Successfully',
+                                        WINNER:WINNER_ID
                                     })
                                 }
                             })
@@ -937,7 +943,8 @@ userRouter.get('/endMatch',async (req,res)=>{
                                 }
                                 if(result3){
                                     res.status(200).send({
-                                        Message:'Updated Successfully'
+                                        Message:'Updated Successfully',
+                                        WINNER:WINNER_ID
                                     })
                                 }
                             })
