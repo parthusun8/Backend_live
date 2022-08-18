@@ -693,6 +693,7 @@ userRouter.get('/endMatch',async (req,res)=>{
         }
         else{
             if(result.MATCHES.length-1==matchid){
+                console.log(result)
                 console.log('Finals')
                 var WINNER = ""
                 if(result.MATCHES[matchid].PLAYER1=="Not Booked"||result.MATCHES[matchid].PLAYER1=="Not Yet Assigned"){
