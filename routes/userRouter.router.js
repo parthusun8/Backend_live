@@ -884,10 +884,10 @@ userRouter.get('/endMatch',async (req,res)=>{
                             set3 = 0
                         }
                         if(set1+set2+set3>=2){
-                            WINNER_ID = result4.PLAYER1
+                            WINNER_ID = result4.MATCHES[matchid].PLAYER1
                         }
                         else{
-                            WINNER_ID=result4.PLAYER2
+                            WINNER_ID=result4.MATCHES[matchid].PLAYER2
                         }
                         //
                         if(result4.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
