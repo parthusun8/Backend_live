@@ -725,10 +725,10 @@ userRouter.get('/endMatch',async (req,res)=>{
                         set3 = 0
                     }
                     if(set1+set2+set3>=2){
-                        WINNER = result.PLAYER1
+                        WINNER = result[matchid].PLAYER1
                     }
                     else{
-                        WINNER=result.PLAYER2
+                        WINNER=result[matchid].PLAYER2
                     }
                 }
                 matchesmodel.findOneAndUpdate({
