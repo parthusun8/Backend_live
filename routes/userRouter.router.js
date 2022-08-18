@@ -730,7 +730,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     else{
                         WINNER=result.MATCHES[matchid].PLAYER2
                     }
-                    console.log(WINNER_ID)
+                    console.log(WINNER)
                 }
                 matchesmodel.findOneAndUpdate({
                     TOURNAMENT_ID : req.query.TOURNAMENT_ID
