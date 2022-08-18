@@ -860,6 +860,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                         })
                     }
                     else{
+                        console.log(result)
                         var set1 = 0
                         var set2 = 0
                         var set3 = 0
