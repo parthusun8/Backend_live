@@ -694,13 +694,63 @@ userRouter.get('/endMatch',async (req,res)=>{
         else{
             if(result.MATCHES.length-1==matchid){
                 console.log('Finals')
-                const usrid_1 = req.query.TOURNAMENT_ID.split(".")[0]
-                const usrid = usrid_1.slice(2)
-                res.status(200).send({
-                    Message:'Tournament Over'
+                var WINNER = ""
+                if(result.MATCHES[matchid].PLAYER1=="Not Booked"||result.MATCHES[matchid].PLAYER1=="Not Yet Assigned"){
+                    WINNER = result.MATCHES[matchid].PLAYER2
+                }
+                else if(result.MATCHES[matchid].PLAYER2=="Not Booked"||result.MATCHES[matchid].PLAYER2=="Not Yet Assigned"){
+                    WINNER = result.MATCHES[matchid].PLAYER1
+                }
+                else{
+                    var set1 = 0
+                    var set2 = 0
+                    var set3 = 0
+                    if((result.MATCHES[matchid].PLAYER1_SCORE.set1)>(result.MATCHES[matchid].PLAYER2_SCORE.set1)){
+                        set = 1
+                    }
+                    else{
+                        set1 = 0
+                    }
+                    if((result.MATCHES[matchid].PLAYER1_SCORE.set2)>(result.MATCHES[matchid].PLAYER2_SCORE.set2)){
+                        set2 = 1
+                    }
+                    else{
+                        set2 = 0
+                    }
+                    if((result.MATCHES[matchid].PLAYER1_SCORE.set3)>(result.MATCHES[matchid].PLAYER2_SCORE)){
+                        set3 = 1
+                    }
+                    else{
+                        set3 = 0
+                    }
+                    if(set1+set2+set3>=2){
+                        WINNER = result.PLAYER1
+                    }
+                    else{
+                        WINNER=result.PLAYER2
+                    }
+                }
+                matchesmodel.findOneAndUpdate({
+                    TOURNAMENT_ID : req.query.TOURNAMENT_ID
+                },{ 
+                    $set:{
+                        "MATCHES.$[elem].winner_id":WINNER,
+                        "MATCHES.$[elem].completion_status":"Done"
+                    }
+                },{
+                    arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].MATCHID}]
+                },function(error,d){
+                    if(error){
+                        res.status(404).send({
+                            Message:'Error in final processing'
+                        })
+                    }
+                    else{
+                        res.render('final_winner',{WINNER_ID:WINNER,TOURNAMENT_NAME:d.TOURNAMENT_NAME})
+                    }
                 })
             }
-            else if(result.MATCHES[matchid].PLAYER2=="Not Booked"){
+            else if(result.MATCHES[matchid].PLAYER2=="Not Booked"||result.MATCHES[matchid].PLAYER2=="Not Yet Assigned"){
                 var WINNER = result.MATCHES[matchid].PLAYER1    
                 if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                     //write winner_id_logic
