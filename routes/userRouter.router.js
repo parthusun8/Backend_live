@@ -732,6 +732,9 @@ userRouter.get('/endMatch',async (req,res)=>{
                         WINNER=result.MATCHES[matchid].PLAYER2
                     }
                     console.log(set1+set2+set3)
+                    console.log(set1)
+                    console.log(set2)
+                    console.log(set3)
                     console.log('733')
                     console.log(WINNER)
                 }
@@ -900,6 +903,9 @@ userRouter.get('/endMatch',async (req,res)=>{
                         else{
                             WINNER_ID=result4.MATCHES[matchid].PLAYER2
                         }
+                        console.log(set1)
+                        console.log(set2)
+                        console.log(set3)
                         console.log(WINNER_ID)
                         //
                         if(result4.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
