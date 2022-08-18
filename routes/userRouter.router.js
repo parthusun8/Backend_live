@@ -706,6 +706,8 @@ userRouter.get('/endMatch',async (req,res)=>{
                     var set1 = 0
                     var set2 = 0
                     var set3 = 0
+                    console.log(result.MATCHES[matchid].PLAYER1_SCORE)
+                    console.log(result.MATCHES[matchid].PLAYER2_SCORE)
                     if((result.MATCHES[matchid].PLAYER1_SCORE.set1)>(result.MATCHES[matchid].PLAYER2_SCORE.set1)){
                         set = 1
                     }
