@@ -725,11 +725,12 @@ userRouter.get('/endMatch',async (req,res)=>{
                         set3 = 0
                     }
                     if(set1+set2+set3>=2){
-                        WINNER = result[matchid].PLAYER1
+                        WINNER = result.MATCHES[matchid].PLAYER1
                     }
                     else{
-                        WINNER=result[matchid].PLAYER2
+                        WINNER=result.MATCHES[matchid].PLAYER2
                     }
+                    console.log(WINNER_ID)
                 }
                 matchesmodel.findOneAndUpdate({
                     TOURNAMENT_ID : req.query.TOURNAMENT_ID
@@ -747,7 +748,9 @@ userRouter.get('/endMatch',async (req,res)=>{
                         })
                     }
                     else{
-                        res.render('final_winner',{WINNER_ID:WINNER,TOURNAMENT_NAME:d.TOURNAMENT_NAME})
+                        res.status(200).send({
+                            Message:'Successfully Updated Finals'
+                        })
                     }
                 })
             }
