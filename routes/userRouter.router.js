@@ -1044,9 +1044,8 @@ userRouter.get('/pastTournaments',async (req,res)=>{
         const usrresult = await USER.findOne({
             USERID:userid
         }).lean({ virtuals: true })
-        if(usrresult){
-            try{
-            const r1 = await tournamentModel.find().lean({ virtuals: true })
+        const r1 = await tournamentModel.find().lean({ virtuals: true })
+        if(usrresult&&r1){
             if(r1){
                 var r2 = []
                 for(let i=0;i<r1.length;i++){
@@ -1059,9 +1058,7 @@ userRouter.get('/pastTournaments',async (req,res)=>{
                 }
                 res.status(200).send(r2)
             }
-            }catch(error){
-                throw error
-            }
+
         }
     }catch(error){
         console.log(error)
