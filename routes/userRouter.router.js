@@ -1059,7 +1059,7 @@ userRouter.get('/pastTournaments',async (req,res)=>{
                         r2.push(r1[i])
                     }
                 }
-                res.status(200).send(r1)
+                res.status(200).send(r2)
             }
 
         }
