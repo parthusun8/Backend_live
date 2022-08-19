@@ -9,7 +9,12 @@ const matchesmodel = require('../models/matches.mongo')
 const userRouter = express.Router()
 
 userRouter.get('/',(req,res)=>{
-    res.render('fixture',{no_of_bracs:req.query.no_of_spots})
+    if(!req.query.no_of_spots){
+        res.render('please_select_spots')
+    }
+    else{
+        res.render('fixture',{no_of_bracs:req.query.no_of_spots})
+    }
 })
 userRouter.get('/getTournamentFixtures',async (req,res)=>{
     //TOURNAMENT_ID required
