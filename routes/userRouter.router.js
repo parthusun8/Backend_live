@@ -379,6 +379,7 @@ userRouter.get('/allTournaments',async (req,res)=>{
 })
 userRouter.get('/allTournaments2',async (req,res)=>{
     try{
+        const istConstant = 5*60*60*1000+30*60*1000
         const r1 = await tournamentModel.find().lean()
         if(r1){
             var r2 = []
