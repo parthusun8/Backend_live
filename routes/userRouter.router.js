@@ -1038,13 +1038,25 @@ userRouter.get('/allMatches', async (req,res)=>{
     })
 })
 userRouter.get('/pastTournaments',async (req,res)=>{
-    const allTourneys = await tournamentModel.find().lean()
-    if(allTourneys){
-        console.log(allTourneys[0])
-        res.status(200).send({
-            Message:'Check logs'
+    try{
+        const istConstant = 5*60*60*1000+30*60*1000
+        const r1 = await tournamentModel.find().lean()
+        if(r1){
+            var r2 = []
+            for(let i=0;i<r1.length;i++){
+                const curDate = new Date(new Date().getTime() + istConstant)
+                const end_date = new Date(r1[i].END_DATE)
+                if(curDate.getTime()>end_date.getTime()){
+                    r2.push(r1[i])
+                }
+            }
+            res.status(200).send(r1)
+        }
+    }catch(error){
+        console.log(error)
+        res.status(404).send({
+            Message:'Unknown Error'
         })
     }
-
 })
 module.exports = userRouter;
