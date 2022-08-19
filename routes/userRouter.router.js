@@ -390,7 +390,7 @@ userRouter.get('/allTournaments2',async (req,res)=>{
                     r2.push(r1[i])
                 }
             }
-            res.status(200).send(r2)
+            res.status(200).send(r1)
         }
     }catch(error){
         console.log(error)
