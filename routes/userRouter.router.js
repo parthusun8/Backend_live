@@ -383,6 +383,7 @@ userRouter.get('/allTournaments2',async (req,res)=>{
         const r1 = await tournamentModel.find().lean()
         if(r1){
             var r2 = []
+            console.log(r1[0].TOURNAMENT_ID)
             for(let i=0;i<r1.length;i++){
                 const curDate = new Date(new Date().getTime() + istConstant)
                 const end_date = new Date(r1[i].END_DATE)
@@ -1058,7 +1059,7 @@ userRouter.get('/pastTournaments',async (req,res)=>{
                         r2.push(r1[i])
                     }
                 }
-                res.status(200).send(r2)
+                res.status(200).send(r1)
             }
 
         }
