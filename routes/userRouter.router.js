@@ -1048,6 +1048,7 @@ userRouter.get('/pastTournaments',async (req,res)=>{
         if(usrresult&&r1){
             if(r1){
                 var r2 = []
+                console.log(typeof(r1))
                 for(let i=0;i<r1.length;i++){
                     const curDate = new Date(new Date().getTime() + istConstant)
                     const end_date = new Date(r1[i].END_DATE)
