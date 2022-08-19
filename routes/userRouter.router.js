@@ -1043,8 +1043,8 @@ userRouter.get('/pastTournaments',async (req,res)=>{
         const userid = req.query.USERID
         const usrresult = await USER.findOne({
             USERID:userid
-        }).exec()
-        const r1 = await tournamentModel.find().exec()
+        }).lean().exec()
+        const r1 = await tournamentModel.find().lean().exec()
         if(usrresult&&r1){
             if(r1){
                 console.log(r1)
