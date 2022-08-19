@@ -1011,4 +1011,14 @@ userRouter.get('/allMatches', async (req,res)=>{
         }
     })
 })
+userRouter.get('/pastTournaments',async (req,res)=>{
+    const allTourneys = await tournamentModel.find().lean()
+    if(allTourneys){
+        console.log(allTourneys[0])
+        res.status(200).send({
+            Message:'Check logs'
+        })
+    }
+
+})
 module.exports = userRouter;
