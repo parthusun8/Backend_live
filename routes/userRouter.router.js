@@ -1040,17 +1040,27 @@ userRouter.get('/allMatches', async (req,res)=>{
 userRouter.get('/pastTournaments',async (req,res)=>{
     try{
         const istConstant = 5*60*60*1000+30*60*1000
-        const r1 = await tournamentModel.find().lean()
-        if(r1){
-            var r2 = []
-            for(let i=0;i<r1.length;i++){
-                const curDate = new Date(new Date().getTime() + istConstant)
-                const end_date = new Date(r1[i].END_DATE)
-                if(curDate.getTime()>end_date.getTime()){
-                    r2.push(r1[i])
+        const userid = req.query.USERID
+        const usrresult = await USER.findOne({
+            USERID:userid
+        }).lean({ virtuals: true })
+        if(usrresult){
+            try{
+            const r1 = await tournamentModel.find().lean({ virtuals: true })
+            if(r1){
+                var r2 = []
+                for(let i=0;i<r1.length;i++){
+                    const curDate = new Date(new Date().getTime() + istConstant)
+                    const end_date = new Date(r1[i].END_DATE)
+                    if(curDate.getTime()>end_date.getTime()&&usrresult.HOSTED_TOURNAMENTS.includes(r1[i].TOURNAMENT_ID)){
+                        r2.push(r1[i])
+                    }
                 }
+                res.status(200).send(r2)
             }
-            res.status(200).send(r1)
+            }catch(error){
+                throw error
+            }
         }
     }catch(error){
         console.log(error)
