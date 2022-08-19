@@ -383,7 +383,7 @@ userRouter.get('/allTournaments2',async (req,res)=>{
         const r1 = await tournamentModel.find().lean()
         if(r1){
             var r2 = []
-            console.log(r1[0].TOURNAMENT_ID)
+            console.log(r1[56])
             for(let i=0;i<r1.length;i++){
                 const curDate = new Date(new Date().getTime() + istConstant)
                 const end_date = new Date(r1[i].END_DATE)
