@@ -1044,8 +1044,8 @@ userRouter.get('/pastTournaments',async (req,res)=>{
         const userid = req.query.USERID
         const usrresult = await USER.findOne({
             USERID:userid
-        }).lean().exec()
-        const r1 = await tournamentModel.find().lean().exec()
+        }).lean()
+        const r1 = await tournamentModel.find().lean()
         if(usrresult&&r1){
             if(r1){
                 var r2 = []
