@@ -1054,12 +1054,12 @@ userRouter.get('/pastTournaments',async (req,res)=>{
                     console.log(i)
                     console.log(r1[i].TOURNAMENT_ID)
                     const curDate = new Date(new Date().getTime() + istConstant)
-                    const end_date = new Date(r1[i].END_DATE)
+                    const end_date = new Date(r1[i].END_TIMESTAMP)
                     console.log(usrresult.HOSTED_TOURNAMENTS)
                     console.log(curDate.getTime())
                     console.log(end_date.getTime())
                     console.log(curDate.getTime()>end_date.getTime())
-                    if(curDate.getTime()>end_date.getTime()&&usrresult.HOSTED_TOURNAMENTS.includes(r1[i].TOURNAMENT_ID)){
+                    if(curDate.getTime()<end_date.getTime()&&usrresult.HOSTED_TOURNAMENTS.includes(r1[i].TOURNAMENT_ID)){
                         console.log(r1[i])
                         r2.push(r1[i])
                     }
