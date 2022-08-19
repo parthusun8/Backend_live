@@ -377,7 +377,27 @@ userRouter.get('/allTournaments',async (req,res)=>{
         }
     })
 })
-
+userRouter.get('/allTournaments2',async (req,res)=>{
+    try{
+        const r1 = await tournamentModel.find().lean()
+        if(r1){
+            var r2 = []
+            for(let i=0;i<r1.length;i++){
+                const curDate = new Date(new Date().getTime() + istConstant)
+                const end_date = new Date(r1[i].END_DATE)
+                if(curDate.getTime()<end_date.getTime()){
+                    r2.push(r1[i])
+                }
+            }
+            res.status(200).send(r2)
+        }
+    }catch(error){
+        console.log(error)
+        res.status(404).send({
+            Message:'Unknown Error'
+        })
+    }
+})
 // get tournaments by USERID
 //get tournament by ID
 userRouter.post('/tournamentById',async (req,res)=>{
