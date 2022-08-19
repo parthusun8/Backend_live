@@ -1047,6 +1047,7 @@ userRouter.get('/pastTournaments',async (req,res)=>{
         const r1 = await tournamentModel.find().lean({ virtuals: true })
         if(usrresult&&r1){
             if(r1){
+                r1.reverse()
                 var r2 = []
                 console.log(typeof(r1))
                 for(let i=0;i<r1.length;i++){
