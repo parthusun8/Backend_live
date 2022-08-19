@@ -1048,10 +1048,11 @@ userRouter.get('/pastTournaments',async (req,res)=>{
         const r1 = await tournamentModel.find().lean().exec()
         if(usrresult&&r1){
             if(r1){
-                console.log(r1)
                 var r2 = []
                 console.log(typeof(r1))
                 for(let i=0;r1[i]!='undefined';i++){
+                    console.log(i)
+                    console.log(r1[i])
                     const curDate = new Date(new Date().getTime() + istConstant)
                     const end_date = new Date(r1[i].END_DATE)
                     if(curDate.getTime()>end_date.getTime()&&usrresult.HOSTED_TOURNAMENTS.includes(r1[i].TOURNAMENT_ID)){
