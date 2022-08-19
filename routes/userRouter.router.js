@@ -1052,7 +1052,7 @@ userRouter.get('/pastTournaments',async (req,res)=>{
                 for(let i=0;i<r1.length;i++){
                     const curDate = new Date(new Date().getTime() + istConstant)
                     const end_date = new Date(r1[i].END_DATE)
-                    if(curDate.getTime()>end_date.getTime()&&usrresult.HOSTED_TOURNAMENTS.includes(r1[i].TOURNAMENT_ID)){
+                    if(curDate.getTime()<end_date.getTime()&&usrresult.HOSTED_TOURNAMENTS.includes(r1[i].TOURNAMENT_ID)){
                         r2.push(r1[i])
                     }
                 }
