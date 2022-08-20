@@ -1016,6 +1016,10 @@ userRouter.get('/endMatch',async (req,res)=>{
         }
     })
 })
+userRouter.get('/trophy',async (req,res)=>{
+    //userid and Tournament ID to be passed
+    res.render('final_winner',{WINNER_ID:req.query.USERID,TOURNAMENT_NAME:req.query.TOURNAMENT_NAME})
+})
 userRouter.get('/allMatches', async (req,res)=>{
     //tournament id
     tournamentModel.findOne({
