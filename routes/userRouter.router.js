@@ -792,9 +792,25 @@ userRouter.get('/endMatch',async (req,res)=>{
                         })
                     }
                     else{
-                        res.status(200).send({
-                            Message:'Successfully Updated Finals',
-                            WINNER:WINNER
+                        //update user
+                        USER.updateOne({
+                            USERID:WINNER
+                        },{
+                            $push:{
+                                TROPHIES:req.query.TOURNAMENT_ID
+                            }
+                        },function(error,f){
+                            if(error){
+                                res.status(404).send({
+                                    Message:'Error in final processing'
+                                })                                        
+                            }
+                            else{
+                                res.status(200).send({
+                                    Message:'Successfully Updated Finals',
+                                    WINNER:WINNER
+                                })        
+                            }
                         })
                     }
                 })
