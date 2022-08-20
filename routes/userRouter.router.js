@@ -379,18 +379,28 @@ userRouter.get('/allTournaments2',async (req,res)=>{
 })
 userRouter.get('/allTournaments',async (req,res)=>{
     try{
-        const istConstant = 5*60*60*1000+30*60*1000
         const r1 = await tournamentModel.find().lean()
         if(r1){
-            var r2 = []
-            for(let i=0;r1[i];i++){
-                const curDate = new Date(new Date().getTime() + istConstant)
-                const end_date = new Date(r1[i].END_DATE)
-                if(curDate.getTime()<end_date.getTime()){
-                    r2.push(r1[i])
+            if(r1){
+                var r2 = []
+                console.log(typeof(r1))
+                for(let i=0;r1[i];i++){
+                    console.log(i)
+                    console.log(r1[i].TOURNAMENT_ID)
+                    const curDate = new Date(new Date().getTime() + istConstant)
+                    const end_date = new Date(r1[i].END_TIMESTAMP)
+                    console.log(usrresult.HOSTED_TOURNAMENTS)
+                    console.log(curDate.getTime())
+                    console.log(end_date.getTime())
+                    console.log(curDate.getTime()>end_date.getTime())
+                    if(curDate.getTime()<end_date.getTime()){
+                        console.log(r1[i])
+                        r2.push(r1[i])
+                    }
                 }
+                res.status(200).send(r2)
             }
-            res.status(200).send(r2)
+
         }
     }catch(error){
         console.log(error)
