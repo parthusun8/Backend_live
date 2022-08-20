@@ -85,7 +85,7 @@ evrouter.post('/createTournament',async (req,res)=>{
                     }
                     if(result){
                         res.status(200).send({
-                            Message:"Successfully Created New Tournament"
+                            TOURNAMENT_ID:req.body.TOURNAMENT_ID
                         })
                     }
                 })
