@@ -390,7 +390,6 @@ userRouter.get('/allTournaments',async (req,res)=>{
                     console.log(r1[i].TOURNAMENT_ID)
                     const curDate = new Date(new Date().getTime() + istConstant)
                     const end_date = new Date(r1[i].END_TIMESTAMP)
-                    console.log(usrresult.HOSTED_TOURNAMENTS)
                     console.log(curDate.getTime())
                     console.log(end_date.getTime())
                     console.log(curDate.getTime()>end_date.getTime())
