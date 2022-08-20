@@ -40,7 +40,10 @@ const userSchema = new mongoose.Schema({
     default:0
   },
   CURRENT_TOURNAMENTS:[],
-  HOSTED_TOURNAMENTS:[]
+  HOSTED_TOURNAMENTS:[],
+  TROPHIES:{
+    type:[String]
+  }
 })
 
 module.exports = mongoose.model("USER",userSchema)
