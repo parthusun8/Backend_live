@@ -102,8 +102,20 @@ evrouter.get('/createMatches',async (req,res)=>{
     try{
         const result = await createMatches(req.query.TOURNAMENT_ID)
         if(result){
-            res.status(200).send({
-                Message:'Matches Created'
+            tournament.findOneAndUpdate({
+                TOURNAMENT_ID:req.query.TOURNAMENT_ID
+            },{
+                STATUS:false
+            },function(error,result){
+                if(error){
+                    console.log(error)
+                    throw error
+                }
+                else{
+                    res.status(200).send({
+                        Message:'Matches Created'
+                    })                    
+                }
             })
         }
     }catch(err){
