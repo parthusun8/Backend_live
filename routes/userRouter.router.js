@@ -483,39 +483,39 @@ userRouter.get('/getConfirmationDetails',async (req,res)=>{
     })
 })
 userRouter.get('/hostedTournaments',async (req,res)=>{
-    const userid = req.query.USERID
     try{
-        const result = await USER.findOne({
+        const istConstant = 5*60*60*1000+30*60*1000
+        const userid = req.query.USERID
+        const usrresult = await USER.findOne({
             USERID:userid
-        })
-        if(result){
-            if(result.HOSTED_TOURNAMENTS.length==0){
-                res.status(200).send([])
-            }
-            else{
-                var r1 = []
-                for(let i =0; i< result.HOSTED_TOURNAMENTS.length;i++){
-                    try{
-                        const tournament = await tournamentModel.findOne({
-                            TOURNAMENT_ID:result.HOSTED_TOURNAMENTS[i]
-                        })
-                        r1.push(tournament)
-                    }catch(error){
-                        console.log(error)
+        }).lean()
+        const r1 = await tournamentModel.find().lean()
+        if(usrresult&&r1){
+            if(r1){
+                var r2 = []
+                console.log(typeof(r1))
+                for(let i=0;r1[i];i++){
+                    console.log(i)
+                    console.log(r1[i].TOURNAMENT_ID)
+                    const curDate = new Date(new Date().getTime() + istConstant)
+                    const end_date = new Date(r1[i].END_TIMESTAMP)
+                    console.log(usrresult.HOSTED_TOURNAMENTS)
+                    console.log(curDate.getTime())
+                    console.log(end_date.getTime())
+                    console.log(curDate.getTime()>end_date.getTime())
+                    if(curDate.getTime()<end_date.getTime()&&usrresult.HOSTED_TOURNAMENTS.includes(r1[i].TOURNAMENT_ID)){
+                        console.log(r1[i])
+                        r2.push(r1[i])
                     }
                 }
-                if(r1.length!=0){
-                    res.status(200).send(r1)
+                res.status(200).send(r2)
             }
-        }
-        }
-        else{
-            res.status(404).send([])
+
         }
     }catch(error){
         console.log(error)
         res.status(404).send({
-            Message:'Error'
+            Message:'Unknown Error'
         })
     }
 })
