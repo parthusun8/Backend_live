@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
   HOSTED_TOURNAMENTS:[],
   TROPHIES:{
     type:[String]
+  },
+  POINTS:{
+    type:Number,
+    default:0
   }
 })
 

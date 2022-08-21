@@ -793,7 +793,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                     }
                     else{
                         //update user
-                        USER.updateOne({
+                        USER.findOneAndUpdate({
                             USERID:WINNER
                         },{
                             $push:{
@@ -806,10 +806,24 @@ userRouter.get('/endMatch',async (req,res)=>{
                                 })                                        
                             }
                             else{
-                                res.status(200).send({
-                                    Message:'Successfully Updated Finals',
-                                    WINNER:WINNER
-                                })        
+                                USER.updateOne({
+                                    USERID:WINNER
+                                },{
+                                    POINTS:f.POINTS+10
+                                },function(error,result){
+                                    if(error){
+                                        res.status(404).send({
+                                            Message:'Error in final processing'
+                                        })      
+                                    }
+                                    else{
+                                        res.status(200).send({
+                                            Message:'Successfully Updated Finals',
+                                            WINNER:WINNER
+                                        })        
+                                        
+                                    }
+                                })
                             }
                         })
                     }
