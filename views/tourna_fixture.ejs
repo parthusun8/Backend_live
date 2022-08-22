@@ -344,6 +344,7 @@ $(window).on('load', async function() {
         });
 	const res = await fetch(`https://ardentsportsapis.herokuapp.com/spotStatusArray?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const data = await res.json()
+	console.log(data)
 	for(var i=0;i<data.SPOT_STATUS_ARRAY.length;i++){
 		if(data.SPOT_STATUS_ARRAY[i].includes("confirmed")){
 			$(`.NaN_${i+1}`).text(data.SPOT_STATUS_ARRAY[i].split("-")[1])
