@@ -259,7 +259,8 @@ userRouter.get('/userDetails',async (req,res)=>{
                 Message:'User found',
                 Name:result.NAME,
                 Phone:result.PHONE,
-                City:result.CITY
+                City:result.CITY,
+                Points:`${result.POINTS}`
             })
         }
     })
