@@ -349,8 +349,9 @@ body {
             socket.on('joined-room',(data)=>{
             console.log('Joined Match')
         })
-        socket.on('score-updated',(data)=>{
-            console.log(data)
+        socket.on('score-updated',(ndata)=>{
+            console.log(ndata)
+            const data = JSON.parse(ndata)
             if(data.set=="1"){
                 document.getElementById('#pl1s1').innerHTML = data.PLAYER_1_SCORE
                 document.getElementById('#pl2s1').innerHTML = data.PLAYER_2_SCORE
