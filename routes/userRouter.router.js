@@ -38,7 +38,7 @@ userRouter.get('/getTournamentFixtures',async (req,res)=>{
                     })      
                 }
                 else{
-                    if(!result.MATCHES){
+                    if(!result.MATCHES.length){
                         res.send("PLEASE START THE TOURNAMENT BEFORE PROCEEDING.....")
                     }
                     else{
