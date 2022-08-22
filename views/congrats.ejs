@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations!</title>
+    <style>
+    @import url(https://fonts.googleapis.com/css?family=Lato:400,700,900);
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(to bottom, #8c7a7a 0%, #af877c 65%, #af877c 100%) fixed;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/coc-background.jpg") no-repeat center center fixed;
+  background-size: cover;
+  font: 14px/20px "Lato", Arial, sans-serif;
+  color: #9E9E9E;
+  margin-top: 30px;
+}
+
+.slide-container {
+  margin: auto;
+  width: 600px;
+  text-align: center;
+}
+
+.wrapper {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.wrapper:focus {
+  outline: 0;
+}
+
+.card {
+  background: white;
+  width: 300px;
+  display: inline-block;
+  margin: auto;
+  border-radius: 19px;
+  position: relative;
+  text-align: center;
+  box-shadow: -1px 15px 30px -12px black;
+  z-index: 9999;
+}
+
+.card__image {
+  position: relative;
+  height: 230px;
+  margin-bottom: 35px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.card__image {
+  background: #849192;
+}
+.card__image img {
+  width: 200px;
+  position: absolute;
+  top: 10px;
+  left: 50px;
+}
+
+.card__level {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.card__level--barbarian {
+  color: #EC9B3B;
+}
+
+.card__unit-name {
+  font-size: 26px;
+  color: black;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+.details_player_name{
+  font-size: 17px;
+}
+.details{
+  font-size: 17px;
+
+}
+
+.card__unit-description {
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.card__unit-stats--barbarian {
+  background: #EC9B3B;
+}
+.card__unit-stats--barbarian .one-second {
+  border-right: 1px solid #BD7C2F;
+}
+
+.card__unit-stats {
+  color: white;
+  font-weight: 700;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+.card__unit-stats .one-second {
+  width: 50%;
+  float: left;
+  padding: 20px 15px;
+}
+.card__unit-stats sup {
+  position: absolute;
+  bottom: 4px;
+  font-size: 75%;
+  margin-left: 2px;
+}
+.card__unit-stats .stat {
+  position: relative;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.card__unit-stats .stat-value {
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 12px;
+}
+.card__unit-stats .no-border {
+  border-right: none;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+.slick-prev {
+  left: 100px;
+  z-index: 999;
+}
+
+.slick-next {
+  right: 100px;
+  z-index: 999;
+}
+@media (max-width: 400px) {
+
+  body{
+    margin-top: 200px;
+  }
+  .card {
+    width: 500px;
+    height: 920px;
+}
+.card__unit-stats {
+    position: relative;
+    top: 86px;
+}
+.card__image {
+    position: relative;
+    height: 370px;
+    margin-bottom: 40px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+.card__unit-description {
+    font-size: 20px;
+    padding: 30px;
+    margin-bottom: 10px;
+}
+.card__unit-name {
+    font-size: 50px;
+    color: black;
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+.card__image img {
+    width: 300px;
+    position: absolute;
+    top: 40px;
+    left: 90px;
+}
+.card__unit-stats .one-second {
+    width: 50%;
+    float: left;
+    padding: 20px 15px;
+}
+.card__unit-stats .stat-value {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 20px;
+}
+.card__unit-stats .stat {
+    position: relative;
+    font-size: 30px;
+    margin-bottom: 35px;
+}
+.details_player_name{
+  font-size: 35px;
+  color: Black;
+  margin-top: 50px;
+  font-weight: bold;
+}
+.details{
+  font-size: 25px;
+  color: Black;
+  margin-bottom: 5px;
+}
+}
+
+
+</style>
+</head>
+<body>
+  <div class="slide-container">
+
+    <div class="wrapper">
+      <div class="card barbarian">
+        <div class="card__image card__image">
+          <img src="https://media2.giphy.com/media/QBw33dFlgxnzXSAS27/giphy.gif?cid=ecf05e4785b4e75v15mbwyeyw5lpmuqrhsvvndulcg4be6ta&rid=giphy.gif&ct=s" alt="barbarian" />
+        </div>
+        <div class="card__unit-name">Congratulations</div>
+        <div class="card__unit-description">
+          <p class="details_player_name">Player Name </p>
+          <p class="details">Date of Tournament </p>
+          <p class="details">Tournament Name </p>
+          <p class="details">City</p>
+
+        </div>
+
+        <div class="card__unit-stats card__unit-stats--barbarian clearfix">
+          <div class="one-second">
+            <div class="stat">1<sup>st</sup></div>
+            <div class="stat-value">prize</div>
+          </div>
+
+
+          <div class="one-second no-border">
+            <div class="stat">Rs. 10000</div>
+            <div class="stat-value">prize money</div>
+          </div>
+        </div>
+</body>
+</html>

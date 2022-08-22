@@ -1181,4 +1181,20 @@ userRouter.get('/spotStatusArray',async (req,res)=>{
         }
     })
 })
+userRouter.get('/profileDetails',async (req,res)=>{
+    //req.query.USERID
+    USER.findOne({
+        USERID:req.query.USERID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        else{
+            res.render('spotDetail',{USERID:req.query.USERID,USERNAME:result.NAME,CITY:result.CITY})
+        }
+    })
+})
 module.exports = userRouter;
