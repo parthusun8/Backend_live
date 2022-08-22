@@ -38,12 +38,7 @@ userRouter.get('/getTournamentFixtures',async (req,res)=>{
                     })      
                 }
                 else{
-                    if(!result.MATCHES.length){
-                        res.send("PLEASE START THE TOURNAMENT BEFORE PROCEEDING.....")
-                    }
-                    else{
                         res.render('tourna_fixture',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS})
-                    }
                 }
             })
         }
@@ -725,9 +720,15 @@ userRouter.get('/getScore',async (req,res)=>{
         }
         else{
             console.log(result)
-            result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].MATCHID = req.query.MATCHID.split(" ")[1]
-            result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].TOURNAMENT_NAME = result.TOURNAMENT_NAME
-            res.render('match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
+            if(result.MATCHES.length==0){
+                res.send("The Tournament has not started Yet")
+            }
+            else{
+                result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].MATCHID = req.query.MATCHID.split(" ")[1]
+                result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].TOURNAMENT_NAME = result.TOURNAMENT_NAME
+                res.render('match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
+
+            }
         }
     })
 })
