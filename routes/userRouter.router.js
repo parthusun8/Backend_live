@@ -44,6 +44,34 @@ userRouter.get('/getTournamentFixtures',async (req,res)=>{
         }
     })
 })
+userRouter.get('/getBookingFixtures',async (req,res)=>{
+    //TOURNAMENT_ID required
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        if(result){
+            console.log(result)
+            matchesmodel.findOne({
+                TOURNAMENT_ID:result.TOURNAMENT_ID
+            },function(error,d){
+                if(error){
+                    res.status(404).send({
+                        Message:'Error'
+                    })      
+                }
+                else{
+                        res.render('booking_fixture',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS,USERID:req.query.USERID})
+                }
+            })
+        }
+    })
+})
 
 //change to post
 userRouter.get('/createTestUser',async(req,res)=>{
