@@ -1135,4 +1135,22 @@ userRouter.get('/pastTournaments',async (req,res)=>{
         })
     }
 })
+userRouter.get('/spotStatusArray',async (req,res)=>{
+    //TOURNAMENT_ID reqd
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            console.log(error);
+            res.status(404).send({
+                Message:'Unknown Error'
+            })
+        }
+        else{
+            res.status(200).send({
+                array:result.SPOT_STATUS_ARRAY
+            })
+        }
+    })
+})
 module.exports = userRouter;
