@@ -29,7 +29,23 @@ userRouter.get('/getTournamentFixtures',async (req,res)=>{
         }
         if(result){
             console.log(result)
-            res.render('tourna_fixture',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS})
+            matchesmodel.findOne({
+                TOURNAMENT_ID:result.TOURNAMENT_ID
+            },function(error,d){
+                if(error){
+                    res.status(404).send({
+                        Message:'Error'
+                    })      
+                }
+                else{
+                    if(!result.MATCHES){
+                        res.send("PLEASE START THE TOURNAMENT BEFORE PROCEEDING.....")
+                    }
+                    else{
+                        res.render('tourna_fixture',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS})
+                    }
+                }
+            })
         }
     })
 })
