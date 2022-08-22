@@ -351,19 +351,19 @@ body {
         })
         socket.on('score-updated',(data)=>{
             console.log(data)
-            // if(data.set=="1"){
-            //     document.getElementById('#pl1s1').innerHTML = data.PLAYER_1_SCORE
-            //     document.getElementById('#pl2s1').innerHTML = data.PLAYER_2_SCORE
-            // }
-            // else if(data.set=="2"){
-            //     $('#pl1s2').text(data.PLAYER_1_SCORE)
-            //     $('#pl2s2').text(data.PLAYER_2_SCORE)
-            // }
-            // else if(data.set=="3"){
-            //     $('#pl1s3').text(data.PLAYER_1_SCORE)
-            //     $('#pl2s3').text(data.PLAYER_2_SCORE)
-            // }
-            window.location.reload()
+            if(data.set=="1"){
+                document.getElementById('#pl1s1').innerHTML = data.PLAYER_1_SCORE
+                document.getElementById('#pl2s1').innerHTML = data.PLAYER_2_SCORE
+            }
+            else if(data.set=="2"){
+                $('#pl1s2').text(data.PLAYER_1_SCORE)
+                $('#pl2s2').text(data.PLAYER_2_SCORE)
+            }
+            else if(data.set=="3"){
+                $('#pl1s3').text(data.PLAYER_1_SCORE)
+                $('#pl2s3').text(data.PLAYER_2_SCORE)
+            }
+//            window.location.reload()
         })
         })
         sktButton.click()
