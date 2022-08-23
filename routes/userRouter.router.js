@@ -1138,6 +1138,7 @@ userRouter.get('/allMatchesSpots',async (req,res)=>{
             })
         }
         else{
+            console.log(result)
             res.status(200).send({
                 Matches:result.MATCHES
             })

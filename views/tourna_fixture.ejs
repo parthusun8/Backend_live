@@ -353,7 +353,7 @@ $(window).on('load', async function() {
             $(`.Spot.${i+1}`).css("color","#faf5f5")
 		}
 	}
-	const res2 = await fetch(`https://ardentsportapis.herokuapp.com/allMatchesSpots?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+	const res2 = await fetch(`https://ardentsportsapis.herokuapp.com/allMatchesSpots?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const data2 = await res2.json()
 	console.log(data2)	
 });
