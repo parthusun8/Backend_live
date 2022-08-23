@@ -1127,6 +1127,23 @@ userRouter.get('/allMatches', async (req,res)=>{
         }
     })
 })
+userRouter.get('/allMatchesSpots',async (req,res)=>{
+    //req.query.TOURNAMENT_ID
+    matchesmodel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Unknown Error'
+            })
+        }
+        else{
+            res.status(200).send({
+                Matches:result.MATCHES
+            })
+        }
+    })
+})
 userRouter.get('/pastTournaments',async (req,res)=>{
     try{
         const istConstant = 5*60*60*1000+30*60*1000
