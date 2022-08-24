@@ -1212,7 +1212,7 @@ userRouter.get('/profileDetails',async (req,res)=>{
             })
         }
         else{
-            res.render('spotDetail',{USERID:req.query.USERID,USERNAME:result.NAME,CITY:result.CITY})
+            res.render('spotDetail',{USERID:req.query.USERID,USERNAME:result.NAME,CITY:result.CITY,TOURNAMENT_ID:req.query.TOURNAMENT_ID})
         }
     })
 })
