@@ -179,6 +179,8 @@ body {
       <script>
         $(window).load(()=>{
           $('.location.back').html($('<a></a>').attr('href',`https://ardentsportsapis.herokuapp.com/getTournamentFixtures?TOURNAMENT_ID=${$('.tournamentID').text()}`).text('Go Back To Fixtures'))
+          $('.location.back').css('color','white')
+          $('.location.back').css('font-size','20px')
         })
       </script>      
 </body>
