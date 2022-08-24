@@ -89,6 +89,9 @@
   text-transform: uppercase;
   font-size: 0.9em;
 }
+.tournamentID{
+  visibility: hidden;
+}
 .background {
   z-index: 1;
   background-color: #FFFFFF;
@@ -156,6 +159,7 @@ body {
         <div class='content'>
           <div class='top'>
             <div class='name'><%=USERNAME%></div>
+            <div class="tournamentID"><%=TOURNAMENT_ID%></div>
           </div>
           <div class='bottom'>
             <div class='left'>
@@ -163,6 +167,7 @@ body {
             </div>
             <div class='left'>
               <div class='location'><%=CITY%>, India</div>
+              <div class="location">Go Back To Fixtures</div>
             </div>
           </div>
         </div>
