@@ -1216,6 +1216,22 @@ userRouter.get('/profileDetails',async (req,res)=>{
         }
     })
 })
+userRouter.get('/profileDetailsTourna',async (req,res)=>{
+    //req.query.USERID
+    USER.findOne({
+        USERID:req.query.USERID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        else{
+            res.render('spotDetailTourna',{USERID:req.query.USERID,USERNAME:result.NAME,CITY:result.CITY,TOURNAMENT_ID:req.query.TOURNAMENT_ID})
+        }
+    })
+})
 userRouter.get('/ticket',async (req,res)=>{
     //reqs tournamentID and USERID
     tournamentModel.findOne({
