@@ -348,7 +348,7 @@ $(window).on('load', async function() {
 	for(var i=0;i<data.array.length;i++){
 		if(data.array[i].includes("confirmed")){
 			$(`.Spot.${i+1}`).text(data.array[i].split("-")[1].slice(0,6))
-			$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`https://ardentsportsapis.herokuapp.com/profileDetailsTourna?USERID=${data.array[i].split("-")[1]}`).text(data.array[i].split("-")[1].slice(0,6)))
+			$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`https://ardentsportsapis.herokuapp.com/profileDetailsTourna?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}`).text(data.array[i].split("-")[1].slice(0,6)))
             //text(data.array[i].split("-")[1].slice(0,6))
             $(`.Spot.${i+1}`).css("color","#faf5f5")
 		}
