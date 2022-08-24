@@ -1242,7 +1242,8 @@ userRouter.get('/ticket',async (req,res)=>{
                             USRNAME:result2.NAME,
                             SPORT:result.SPORT,
                             CATEGORY:result.CATEGORY,
-                            DATE:result.START_DATE
+                            DATE:result.START_DATE,
+                            LOCATION:result.CITY
                         })
                     }
                 })
