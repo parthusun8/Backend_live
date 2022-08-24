@@ -92,6 +92,9 @@
 .tournamentID{
   visibility: hidden;
 }
+.namenew{
+  visibility: hidden;
+}
 .background {
   z-index: 1;
   background-color: #FFFFFF;
@@ -159,6 +162,7 @@ body {
         <div class='content'>
           <div class='top'>
             <div class='name'><%=USERNAME%></div>
+            <div class='namenew'><%=ORIGINAL%></div>
             <div class="tournamentID"><%=TOURNAMENT_ID%></div>
           </div>
           <div class='bottom'>
@@ -178,7 +182,7 @@ body {
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <script>
         $(window).load(()=>{
-          $('.location.back').html($('<a></a>').attr('href',`https://ardentsportsapis.herokuapp.com/getBookingFixtures?TOURNAMENT_ID=${$('.tournamentID').text()}&USERID=${$('.email').text()}`).text('Go Back To Fixtures'))
+          $('.location.back').html($('<a></a>').attr('href',`https://ardentsportsapis.herokuapp.com/getBookingFixtures?TOURNAMENT_ID=${$('.tournamentID').text()}&USERID=${$('.namenew').text()}`).text('Go Back To Fixtures'))
           $('.location.back').css('color','white')
           $('.location.back').css('font-size','20px')
         })
