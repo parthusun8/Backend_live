@@ -1216,4 +1216,38 @@ userRouter.get('/profileDetails',async (req,res)=>{
         }
     })
 })
+userRouter.get('/ticket',async (req,res)=>{
+    //reqs tournamentID and USERID
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error,result){
+            if(error){
+                res.status(404).send({
+                    Message:'Error'
+                })
+            }
+            else{
+                var spotbooked = result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${req.query.USERID}`)+1
+                USER.findOne({
+                    USERID:req.query.USERID
+                },function(error,result2){
+                    if(error){
+                        console.log(error)
+                    }
+                    if(result2){
+                        res.status(200).send({
+                            TNAME:result.TOURNAMENT_NAME,
+                            SPOT:spotbooked,
+                            USRNAME:result2.NAME,
+                            SPORT:result.SPORT,
+                            CATEGORY:result.CATEGORY,
+                            DATE:result.START_DATE
+                        })
+                    }
+                })
+            }
+        }
+    })
+})
 module.exports = userRouter;
