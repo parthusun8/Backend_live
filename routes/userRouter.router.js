@@ -1104,8 +1104,8 @@ userRouter.get('/allMatches', async (req,res)=>{
                     else{
                         sport = "Badminton"
                     }
-                    for(var i=0;i<result.MATCHES.length;i++){
-                        if(result.MATCHES[i].completion_status=="Not Complete"){
+                    for(var i=0;i<(result2.NO_OF_KNOCKOUT_ROUNDS/2)-1;i++){
+                        if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
                             mtches.push({
                                 TOURNAMENT_ID:req.query.TOURNAMENT_ID,
                                 PLAYER1_NAME:result.MATCHES[i].PLAYER1,
@@ -1118,7 +1118,6 @@ userRouter.get('/allMatches', async (req,res)=>{
                                 IMG_URL:result2.IMG_URL,
                                 PRIZE_POOL:`${result2.PRIZE_POOL}`
                             })
-    
                         }
                     }
                     res.status(200).send(mtches)
