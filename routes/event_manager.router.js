@@ -21,8 +21,8 @@ evrouter.post('/createTournament',async (req,res)=>{
     try{
         const blue = "0xff6BB8FF"
         const green = "0xff03C289"
-        const badminton_url = "https://mologds.s3.ap-south-1.amazonaws.com/badminton.png"
-        const tt_url = "https://mologds.s3.ap-south-1.amazonaws.com/icons8-ping-pong-96.png"
+        const badminton_url = "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/badminton.png"
+        const tt_url = "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/icons8-ping-pong-96.png"
         const spotArray = []
         const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS
         for(let i =0;i<no_of_spots;i++){
