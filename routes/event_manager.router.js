@@ -128,8 +128,10 @@ evrouter.get('/createMatches',async (req,res)=>{
 evrouter.get('/changeImage',async (req,res)=>{
     const badminton_url = "https://mologds.s3.ap-south-1.amazonaws.com/badminton.png"
     const tt_url = "https://mologds.s3.ap-south-1.amazonaws.com/icons8-ping-pong-96.png"
-    tournament.find({
+    tournament.updateMany({
         IMG_URL:badminton_url
+    },{
+        IMG_URL:"https://ardentbucketnew.s3.ap-south-1.amazonaws.com/badminton.png"
     },function(error,result){
         res.status(200).send(result)
     })
