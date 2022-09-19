@@ -153,6 +153,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             // req.body.END_TIME = end_time.split(":")[0]+end_time.split(":")[1]
             // categories will be hyphen separated strings
             const categories = req.body.CATEGORY.split("-")
+            console.log(categories)
             const tid = req.body.TOURNAMENT_ID 
             var tourneys = []
             var tourneyMatches = []
