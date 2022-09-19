@@ -158,8 +158,9 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             var tourneys = []
             var tourneyMatches = []
             for(var i=0;i<categories.length;i++){
+                console.log(i)
                 req.body.CATEGORY = categories[i]
-                req.body.TOURNAMENT_ID=tid+categories[i]
+                req.body.TOURNAMENT_ID = tid+categories[i]
                 tourneyMatches.push({
                     TOURNAMENT_ID:req.body.TOURNAMENT_ID,
                     TOURNAMENT_NAME:req.body.TOURNAMENT_NAME
