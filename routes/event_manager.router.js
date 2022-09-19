@@ -100,7 +100,7 @@ evrouter.post('/createTournament',async (req,res)=>{
 })
 //multiple tournament creation
 //going with category array
-evrouter.post('/createTournament',async (req,res)=>{
+evrouter.post('/createMultipleTournament',async (req,res)=>{
     //First Matches have to be created
     //also demand userid
     console.log(req.body)
