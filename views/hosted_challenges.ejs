@@ -344,7 +344,7 @@ function renderBrackets(struct) {
     });
 }
 $('.tdetails').on('click',async function(){
-    window.location = 'https://www.google.com'
+    window.location =  `https://ardentsportsapis.herokuapp.com/tournamentdetails?TOURNAMENT_ID=${$("#tourney_id").text()}`
 })
 $(window).on('load', async function() {
     console.log('Hello')
