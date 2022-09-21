@@ -481,6 +481,34 @@ userRouter.post('/hostedTournaments',async (req,res)=>{
         }
     })
 })
+userRouter.get('/hosted',async (req,res)=>{
+    //requires tournament id
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        if(result){
+            console.log(result)
+            matchesmodel.findOne({
+                TOURNAMENT_ID:result.TOURNAMENT_ID
+            },function(error,d){
+                if(error){
+                    res.status(404).send({
+                        Message:'Error'
+                    })      
+                }
+                else{
+                    res.render('hosted_challenges',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS})
+                }
+            })
+        }
+    })
+})
 userRouter.get('/getConfirmationDetails',async (req,res)=>{
     //queryParams will have USERID and TOURNAMENT_ID
     USER.findOne({
@@ -809,7 +837,6 @@ userRouter.get('/endMatch',async (req,res)=>{
                         set3 = 0
                     }
                     if(set1+set2+set3>=2){
-                        console.log('728')
                         WINNER = result.MATCHES[matchid].PLAYER1
                     }
                     else{
@@ -1266,4 +1293,12 @@ userRouter.get('/ticket',async (req,res)=>{
         }
     })
 })
+
+userRouter.get('/tournamentdetails',async(req,res)=>{
+    //tournament_id_required
+    //from here we will get per tournament details
+    const tid = req.query.TOURNAMENT_ID
+    res.render('viewTournaDetails',{tid:tid})
+})
+
 module.exports = userRouter;
