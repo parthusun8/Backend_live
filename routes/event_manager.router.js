@@ -154,18 +154,21 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             // categories will be hyphen separated strings
             const categories = req.body.CATEGORY.split("-")
             console.log(categories)
-            const tid = req.body.TOURNAMENT_ID 
-            var tourneys = []
-            var tourneyMatches = []
+            const tid = req.body.TOURNAMENT_ID
+            const tname = req.body.TOURNAMENT_NAME 
+            let tourneys = []
+            let tourneyMatches = []
             for(var i=0;i<categories.length;i++){
-                console.log(i)
-                req.body.CATEGORY = categories[i]
-                req.body.TOURNAMENT_ID = tid+categories[i]
-                tourneyMatches.push({
-                    TOURNAMENT_ID:req.body.TOURNAMENT_ID,
-                    TOURNAMENT_NAME:req.body.TOURNAMENT_NAME
-                })
-                tourneys.push(req.body)                
+                var obj = {...req.body}
+                console.log(categories[i])
+                obj.CATEGORY = categories[i]
+                obj.TOURNAMENT_ID = tid+categories[i]
+                obj.TOURNAMENT_NAME = tname+categories[i]
+                tourneys[i] = obj
+                tourneyMatches[i] = {
+                    TOURNAMENT_ID:obj.TOURNAMENT_ID,
+                    TOURNAMENT_NAME:obj.TOURNAMENT_NAME
+                }
             }
             const res1 = await tournament.insertMany(tourneys)  
             const res2 = await matchesmodel.insertMany(tourneyMatches)
@@ -192,7 +195,8 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 })
             }
         }
-    }catch(error){
+    }
+    catch(error){
         console.log(error);
         res.status(404).send({
             Message:"Error in Tournament Creation"
