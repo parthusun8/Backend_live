@@ -12,13 +12,13 @@ const fs = require('fs')
 const multer = require('multer')
 const s3 = new S3({
     region:'ap-south-1',
-    accessKeyId:'AKIAVCSZ2D56JWCNDC5M',
-    secretAccessKey:'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'   
+    accessKeyId:'AKIAZCDZBASTOLTWPCVW',
+    secretAccessKey:'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'   
 })
 const uploadFile = (file)=>{
     const fileStream = fs.createReadStream(file.path)
     const BucketParams = {
-        Bucket:'mologds',
+        Bucket:'ardentbucketnew',
         Body:fileStream,
         Key:file.filename
     }
