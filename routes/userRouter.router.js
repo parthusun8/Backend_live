@@ -7,6 +7,32 @@ const instacricket = require('../models/instacricket.mongo')
 const tournamentModel = require('../models/tournament.model')
 const matchesmodel = require('../models/matches.mongo')
 const userRouter = express.Router()
+const S3 = require('aws-sdk/clients/s3')
+const fs = require('fs')
+const s3 = new S3({
+    region:'ap-south-1',
+    accessKeyId:'AKIAVCSZ2D56JWCNDC5M',
+    secretAccessKey:'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'   
+})
+const uploadFile = (file)=>{
+    const fileStream = fs.createReadStream(file.path)
+    const BucketParams = {
+        Bucket:'mologds',
+        Body:fileStream,
+        Key:file.filename
+    }
+    return s3.upload(BucketParams).promise()
+}
+
+//multer configs
+const storage = multer.diskStorage({
+    destination:function(req,res){
+        if(!fs.existsSync('imgfolder')){
+            fs.mkdirSync('imgfolder')
+        }
+    }
+})
+const uploadoptions = multer({storage:storage})
 
 userRouter.get('/',(req,res)=>{
     if(!req.query.no_of_spots){
@@ -1301,4 +1327,19 @@ userRouter.get('/tournamentdetails',async(req,res)=>{
     res.render('viewTournaDetails',{tid:tid})
 })
 
+userRouter.post('/postProfilePic',upload.single('image'),async (req,res)=>{
+    try{
+        const result = await uploadFile(req.file)
+        if(result){
+            console.log(result)
+            res.status(200).send({
+                Message:'Image Uploaded'
+            })
+        }
+    }catch(error){
+        res.status(404).send({
+            Message:error.Message
+        })
+    }
+})
 module.exports = userRouter;

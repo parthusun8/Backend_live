@@ -35,6 +35,9 @@ const userSchema = new mongoose.Schema({
   PROFILE_ID:{
       type:String
   },
+  PROFILE_PIC_URL:{
+    type:String
+  },
   WALLET_BALANCE:{
     type:Number,
     default:0
