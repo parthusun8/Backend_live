@@ -9,6 +9,7 @@ const matchesmodel = require('../models/matches.mongo')
 const userRouter = express.Router()
 const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
+const multer = require('multer')
 const s3 = new S3({
     region:'ap-south-1',
     accessKeyId:'AKIAVCSZ2D56JWCNDC5M',
