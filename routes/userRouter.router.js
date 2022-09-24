@@ -1328,7 +1328,7 @@ userRouter.get('/tournamentdetails',async(req,res)=>{
     res.render('viewTournaDetails',{tid:tid})
 })
 
-userRouter.post('/postProfilePic',upload.single('image'),async (req,res)=>{
+userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=>{
     try{
         const result = await uploadFile(req.file)
         if(result){
