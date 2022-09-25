@@ -1347,7 +1347,9 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                                 spotStatusArrays.push({
                                     category:result1[j].CATEGORY,
                                     id: result1[j].TOURNAMENT_ID,
-                                    array: result1[j].SPOT_STATUS_ARRAY
+                                    array: result1[j].SPOT_STATUS_ARRAY,
+                                    STATUS:r1[i].STATUS,
+                                    SPORT:r1[i].SPORT
                                 })
                             }
                         }
