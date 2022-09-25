@@ -25,7 +25,13 @@ const uploadFile = (file)=>{
     }
     return s3.upload(BucketParams).promise()
 }
-
+const getfile = (key)=>{
+    const downloadParams = {
+        Key:key,
+        Bucket:'ardentbucketnew'
+    }
+    return s3.getObject(downloadParams).createReadStream()
+}
 //multer configs
 const uploadoptions = multer({dest:'./imgfolder/'})
 
@@ -1372,8 +1378,26 @@ userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=
         const result = await uploadFile(req.file)
         if(result){
             console.log(result)
-            res.status(200).send({
-                Message:'Image Uploaded'
+            fs.unlink(`./imgfolder/${req.file.filename}`,function(err){
+                if(err){
+                    throw err
+                }
+                else{
+                    USER.findOneAndUpdate({
+                        USERID: req.body.USERID
+                    },{
+                        PROFILE_PIC_URL:`https://ardentsportsapis.herokuapp.com/getImage?key=${result.key}`
+                    },function(err,result){
+                        if(err){
+                            throw err
+                        }
+                        else{
+                            res.status(200).send({
+                                Message:`https://ardentsportsapis.herokuapp.com/getImage?key=${result.key}`
+                            })
+                        }
+                    })
+                }
             })
         }
     }catch(error){
@@ -1382,5 +1406,10 @@ userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=
             Message:error.Message
         })
     }
+})
+userRouter.get('/getImage',async(req,res)=>{
+    const key = req.query.key
+    const stream = getfile(key)
+    stream.pipe(res)
 })
 module.exports = userRouter;
