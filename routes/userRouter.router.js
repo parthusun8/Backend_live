@@ -27,8 +27,7 @@ const uploadFile = (file)=>{
 }
 
 //multer configs
-const storage = multer({dest:'./imgfolder/'})
-const uploadoptions = multer({storage:storage})
+const uploadoptions = multer({dest:'./imgfolder/'})
 
 userRouter.get('/',(req,res)=>{
     if(!req.query.no_of_spots){
