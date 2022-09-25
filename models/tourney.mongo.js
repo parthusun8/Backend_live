@@ -116,7 +116,7 @@ const tschema = new mongoose.Schema({
      //drop down
     },
     MATCHES:{  //array of match ids
-      type:[bdmatch]
+      type:[String]
     },
     NO_OF_COURTS:{
       type:Number
