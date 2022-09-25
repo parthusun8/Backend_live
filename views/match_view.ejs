@@ -256,6 +256,12 @@ body {
 .SocketButton{
     visibility: hidden;
 }
+.player1id{
+  visibility: hidden;
+}
+.player2id{
+  visibility: hidden;
+}
     </style>
 </head>
 <body>
@@ -267,6 +273,8 @@ body {
                 <div class="match-tournament"><img src="https://assets.codepen.io/285131/pl-logo.svg" /><%=TOURNAMENT_NAME%></div>
                 <div class="match-tournament" id="MATCHID"><%=MATCHID%></div>
                 <div class="TID" id="TID"><%=TOURNAMENT_ID%></div>
+                <div class="player1id"><%=PLAYER1%></div>
+                <div class="player2id"><%=PLAYER2%></div>
                 <div class="match-actions">
                     <!-- <button class="btn-icon"><i class="material-icons-outlined">grade</i></button>
                     <button class="btn-icon"><i class="material-icons-outlined">add_alert</i></button> -->
@@ -276,7 +284,7 @@ body {
                 <div class="column">
                     <div class="team team--home">
                         <div class="team-logo">
-                            <img src="https://assets.codepen.io/285131/whufc.svg" />
+                            <img src="https://assets.codepen.io/285131/whufc.svg" alt="No Pic" class="player2"/>
                         </div>
                         <h2 class="team-name"><%=PLAYER1%> (Player 1)</h2>
                     </div>
@@ -322,7 +330,7 @@ body {
                 <div class="column">
                     <div class="team team--away">
                         <div class="team-logo">
-                            <img src="https://assets.codepen.io/285131/chelsea.svg" />
+                            <img src="https://assets.codepen.io/285131/chelsea.svg" class="player2"/>
                         </div>
                         <h2 class="team-name"><%=PLAYER2%> (Player 2)</h2>
                     </div>
@@ -368,6 +376,9 @@ body {
         })
         })
         sktButton.click()
+        })
+        $('window').on('load',async function(){
+          $('player1').attr('src',`https://`)
         })
     </script>
 </body>

@@ -1387,7 +1387,7 @@ userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=
                         USERID: req.body.USERID
                     },{
                         PROFILE_PIC_URL:`https://ardentsportsapis.herokuapp.com/getImage?key=${result.key}`
-                    },function(err,result){
+                    },function(err,result2){
                         if(err){
                             throw err
                         }
