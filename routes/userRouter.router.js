@@ -5,6 +5,7 @@ const USERProfile = require('../models/userprofile.model')
 const stripe = require('stripe')("sk_test_51Kx9oUSDyPLJYmvrHGifQoOVMJTLzveCWgOMKSdYGUKOhgqEW5pDoA9XTbs5NDki9XW4mmU4wNna8uFdpoM0BanG00uedfdbjt")
 const instacricket = require('../models/instacricket.mongo')
 const tournamentModel = require('../models/tournament.model')
+const onlytournamentModel = require('../models/tourney.mongo')
 const matchesmodel = require('../models/matches.mongo')
 const userRouter = express.Router()
 const S3 = require('aws-sdk/clients/s3')
@@ -1321,7 +1322,37 @@ userRouter.get('/ticket',async (req,res)=>{
         }
     })
 })
-
+userRouter.get('/baseTournaments',async(req,res)=>{
+    try{
+        const istConstant = 5*60*60*1000+30*60*1000
+        const r1 = await onlytournamentModel.find().lean()
+        if(r1){
+            if(r1){
+                var r2 = []
+                console.log(typeof(r1))
+                for(let i=0;r1[i];i++){
+                    console.log(i)
+                    console.log(r1[i].TOURNAMENT_ID)
+                    const curDate = new Date(new Date().getTime() + istConstant)
+                    const end_date = new Date(r1[i].END_TIMESTAMP)
+                    console.log(curDate.getTime())
+                    console.log(end_date.getTime())
+                    console.log(curDate.getTime()>end_date.getTime())
+                    if(curDate.getTime()<end_date.getTime()){
+                        console.log(r1[i])
+                        r2.push(r1[i])
+                    }
+                }
+                res.status(200).send(r2)
+            }
+        }
+    }catch(error){
+        console.log(error)
+        res.status(404).send({
+            Message:'Unknown Error'
+        })
+    }
+})
 userRouter.get('/tournamentdetails',async(req,res)=>{
     //tournament_id_required
     //from here we will get per tournament details

@@ -5,6 +5,7 @@ const {createMatches,saveMatch} = require('../Functions/createMatches.singles')
 const evrouter = express.Router()
 const usermodel = require('../models/user.mongo')
 const matchesmodel = require('../models/matches.mongo')
+const onlytourneys = require('../models/tourney.mongo')
 //---------------------------------
 
 //controller functions
@@ -152,48 +153,52 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             // req.body.START_TIME = start_time.split(":")[0]+start_time.split(":")[1]
             // req.body.END_TIME = end_time.split(":")[0]+end_time.split(":")[1]
             // categories will be hyphen separated strings
-            const categories = req.body.CATEGORY.split("-")
-            console.log(categories)
-            const tid = req.body.TOURNAMENT_ID
-            const tname = req.body.TOURNAMENT_NAME 
-            let tourneys = []
-            let tourneyMatches = []
-            for(var i=0;i<categories.length;i++){
-                var obj = {...req.body}
-                console.log(categories[i])
-                obj.CATEGORY = categories[i]
-                obj.TOURNAMENT_ID = tid+categories[i]
-                obj.TOURNAMENT_NAME = tname+categories[i]
-                tourneys[i] = obj
-                tourneyMatches[i] = {
-                    TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                    TOURNAMENT_NAME:obj.TOURNAMENT_NAME
+            const result1 = await onlytourneys.save(req.body)
+            if(result1){
+                const categories = req.body.CATEGORY.split("-")
+                console.log(categories)
+                const tid = req.body.TOURNAMENT_ID
+                const tname = req.body.TOURNAMENT_NAME 
+                let tourneys = []
+                let tourneyMatches = []
+                for(var i=0;i<categories.length;i++){
+                    var obj = {...req.body}
+                    console.log(categories[i])
+                    obj.CATEGORY = categories[i]
+                    obj.TOURNAMENT_ID = tid+categories[i]
+                    obj.TOURNAMENT_NAME = tname+categories[i]
+                    tourneys[i] = obj
+                    tourneyMatches[i] = {
+                        TOURNAMENT_ID:obj.TOURNAMENT_ID,
+                        TOURNAMENT_NAME:obj.TOURNAMENT_NAME
+                    }
+                }
+                const res1 = await tournament.insertMany(tourneys)  
+                const res2 = await matchesmodel.insertMany(tourneyMatches)
+                //update_event_manager_hosted_tournaments
+                if(res1&&res2){
+                    usermodel.updateOne({
+                        USERID:req.body.USERID
+                    },{
+                        $push:{
+                            HOSTED_TOURNAMENTS:{
+                                $each:tourneys
+                            }
+                        }
+                    },function(error,result){
+                        if(error){
+                            console.log(error)
+                            throw error
+                        }
+                        if(result){
+                            res.status(200).send({
+                                TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                            })
+                        }
+                    })
                 }
             }
-            const res1 = await tournament.insertMany(tourneys)  
-            const res2 = await matchesmodel.insertMany(tourneyMatches)
-            //update_event_manager_hosted_tournaments
-            if(res1&&res2){
-                usermodel.updateOne({
-                    USERID:req.body.USERID
-                },{
-                    $push:{
-                        HOSTED_TOURNAMENTS:{
-                            $each:tourneys
-                        }
-                    }
-                },function(error,result){
-                    if(error){
-                        console.log(error)
-                        throw error
-                    }
-                    if(result){
-                        res.status(200).send({
-                            TOURNAMENT_ID:req.body.TOURNAMENT_ID
-                        })
-                    }
-                })
-            }
+
         }
     }
     catch(error){
@@ -241,4 +246,6 @@ evrouter.get('/changeImage',async (req,res)=>{
         res.status(200).send(result)
     })
 })
+
 module.exports = evrouter
+
