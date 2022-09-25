@@ -1326,7 +1326,8 @@ userRouter.get('/baseTournaments',async(req,res)=>{
     try{
         const istConstant = 5*60*60*1000+30*60*1000
         const r1 = await onlytournamentModel.find().lean()
-        if(r1){
+        const result1 = await tournamentModel.find().lean()
+        if(r1&&result1){
             if(r1){
                 var r2 = []
                 console.log(typeof(r1))
@@ -1340,6 +1341,17 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                     console.log(curDate.getTime()>end_date.getTime())
                     if(curDate.getTime()<end_date.getTime()){
                         console.log(r1[i])
+                        var spotStatusArrays = []
+                        for(var j = 0;j<result1.length;j++){
+                            if(result1[j].TOURNAMENT_ID.includes(r1[i].TOURNAMENT_ID)){
+                                spotStatusArrays.push({
+                                    category:result1[j].CATEGORY,
+                                    id: result1[j].TOURNAMENT_ID,
+                                    array: result1[j].SPOT_STATUS_ARRAY
+                                })
+                            }
+                        }
+                        r1[i].spotStatusArrays = spotStatusArrays
                         r2.push(r1[i])
                     }
                 }
