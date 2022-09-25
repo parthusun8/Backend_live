@@ -27,14 +27,7 @@ const uploadFile = (file)=>{
 }
 
 //multer configs
-const storage = multer.diskStorage({
-    destination:function(req,res,cb){
-        if(!fs.existsSync('imgfolder')){
-            fs.mkdirSync('imgfolder')
-        }
-        cb(null,'./imgfolder')
-    }
-})
+const storage = multer({dest:'./imgfolder/'})
 const uploadoptions = multer({storage:storage})
 
 userRouter.get('/',(req,res)=>{
