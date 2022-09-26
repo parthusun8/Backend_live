@@ -1418,7 +1418,7 @@ userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=
                     throw err
                 }
                 else{
-                    USER.findOneAndUpdate({
+                    USER.updateOne({
                         USERID: req.body.USERID
                     },{
                         PROFILE_PIC_URL:`https://ardentsportsapis.herokuapp.com/getImage?key=${result.key}`
