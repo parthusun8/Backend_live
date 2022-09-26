@@ -383,10 +383,12 @@ body {
           const dat1 = await pl1.json()
           const dat2 = await pl2.json()
           if(dat1){
+            console.log(dat1)
             $('.team-name.pl1').text(dat1.Name)
             $('.player1').attr('src',dat1.Profile_pic_url)
           }
           if(dat2){
+            console.log(dat2)
             $('.team-name.pl2').text(dat2.Name)
             $('.player2').attr('src',dat2.Profile_pic_url)
           }
