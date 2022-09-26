@@ -286,7 +286,7 @@ body {
                         <div class="team-logo">
                             <img src="https://assets.codepen.io/285131/whufc.svg" alt="No Pic" class="player2"/>
                         </div>
-                        <h2 class="team-name"><%=PLAYER1%> (Player 1)</h2>
+                        <h2 class="team-name pl1"><%=PLAYER1%> (Player 1)</h2>
                     </div>
                 </div>
                 <div class="column">
@@ -332,7 +332,7 @@ body {
                         <div class="team-logo">
                             <img src="https://assets.codepen.io/285131/chelsea.svg" class="player2"/>
                         </div>
-                        <h2 class="team-name"><%=PLAYER2%> (Player 2)</h2>
+                        <h2 class="team-name pl2"><%=PLAYER2%> (Player 2)</h2>
                     </div>
                 </div>
             </div>
@@ -378,7 +378,14 @@ body {
         sktButton.click()
         })
         $('window').on('load',async function(){
-          $('player1').attr('src',`https://`)
+          const pl1 = await fetch(`https://ardentsportsapis.herokuapp.com/userDetails?USERID=${$('.player1id').text()}`)
+          const pl2 = await fetch(`https://ardentsportsapis.herokuapp.com/userDetails?USERID=${$('.player2id').text()}`)
+          if(pl1&&pl2){
+            $('.team-name.pl1').text(pl1.Name)
+            $('.team-name.pl2').text(pl2.Name)
+            $('.player1').attr('src',pl1.Profile_pic_url)
+            $('.player2').attr('src',pl2.Profile_pic_url)
+          }
         })
     </script>
 </body>

@@ -271,6 +271,24 @@ userRouter.post('/userProfileBuild',async(req,res)=>{
         })
     }
 })
+userRouter.get('/defaultProfilePic',async(req,res)=>{
+    USER.updateMany({
+        WALLET_BALANCE:0
+    },{
+        PROFILE_PIC_URL:'none'
+    },function(error,result){
+        if(error){
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:'Updated all users'
+            })
+        }
+    })
+})
 userRouter.get('/userDetails',async (req,res)=>{
     USER.findOne({
         USERID:req.query.USERID
@@ -287,7 +305,8 @@ userRouter.get('/userDetails',async (req,res)=>{
                 Name:result.NAME,
                 Phone:result.PHONE,
                 City:result.CITY,
-                Points:`${result.POINTS}`
+                Points:`${result.POINTS}`,
+                Profile_pic_url:result.PROFILE_PIC_URL
             })
         }
     })
