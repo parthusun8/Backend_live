@@ -811,6 +811,22 @@ userRouter.post('/updateScore',async (req,res)=>{
     })
 
 })
+userRouter.get('/profilePicUrl',async(req,res)=>{
+    try{
+        const usr=await USER.findOne({
+            USERID:req.query.USERID
+        })
+        if(usr){
+            res.status(200).send({
+                Message:usr.PROFILE_PIC_URL
+            })
+        }
+    }catch(error){
+        res.status(404).send({
+            Message:error.Message
+        })
+    }
+})
 userRouter.get('/getScore',async (req,res)=>{
     //requires TOURNAMENT_ID and MATCHID
     matchesmodel.findOne({
