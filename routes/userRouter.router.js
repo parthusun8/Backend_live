@@ -1410,6 +1410,7 @@ userRouter.get('/tournamentdetails',async(req,res)=>{
 userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=>{
     try{
         console.log(req.file)
+        USERID: req.body.USERID
         const result = await uploadFile(req.file)
         if(result){
             console.log(result)
