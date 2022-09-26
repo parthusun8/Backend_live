@@ -377,7 +377,7 @@ body {
         })
         sktButton.click()
         })
-        $(window).on('load',async function(){
+        $(window).load(async function(){
           const pl1 = await fetch(`https://ardentsportsapis.herokuapp.com/userDetails?USERID=${$('.player1id').text()}`)
           const pl2 = await fetch(`https://ardentsportsapis.herokuapp.com/userDetails?USERID=${$('.player2id').text()}`)
           const dat1 = await pl1.json()
