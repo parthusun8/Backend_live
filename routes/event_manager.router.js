@@ -161,6 +161,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 const tname = req.body.TOURNAMENT_NAME 
                 let tourneys = []
                 let tourneyMatches = []
+                let tourneyID = []
                 for(var i=0;i<categories.length;i++){
                     var obj = {...req.body}
                     console.log(categories[i])
@@ -168,6 +169,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                     obj.TOURNAMENT_ID = tid+categories[i]
                     obj.TOURNAMENT_NAME = tname+categories[i]
                     tourneys[i] = obj
+                    tourneyID[i] = obj.TOURNAMENT_ID
                     tourneyMatches[i] = {
                         TOURNAMENT_ID:obj.TOURNAMENT_ID,
                         TOURNAMENT_NAME:obj.TOURNAMENT_NAME
@@ -182,7 +184,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                     },{
                         $push:{
                             HOSTED_TOURNAMENTS:{
-                                $each:tourneys
+                                $each:tourneyID
                             }
                         }
                     },function(error,result){
