@@ -380,13 +380,15 @@ body {
         $('window').on('load',async function(){
           const pl1 = await fetch(`https://ardentsportsapis.herokuapp.com/userDetails?USERID=${$('.player1id').text()}`)
           const pl2 = await fetch(`https://ardentsportsapis.herokuapp.com/userDetails?USERID=${$('.player2id').text()}`)
-          if(pl1){
-            $('.team-name.pl1').text(pl1.Name)
-            $('.player1').attr('src',pl1.Profile_pic_url)
+          const dat1 = await pl1.json()
+          const dat2 = await pl2.json()
+          if(dat1){
+            $('.team-name.pl1').text(dat1.Name)
+            $('.player1').attr('src',dat1.Profile_pic_url)
           }
-          if(pl2){
-            $('.team-name.pl2').text(pl2.Name)
-            $('.player2').attr('src',pl2.Profile_pic_url)
+          if(dat2){
+            $('.team-name.pl2').text(dat2.Name)
+            $('.player2').attr('src',dat2.Profile_pic_url)
           }
         })
     </script>
