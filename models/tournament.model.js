@@ -139,6 +139,15 @@ const bd =new mongoose.Schema({
     type:Number,
     default:0
   },
+  GOLD:{
+    type:Number
+  },
+  SILVER:{
+    type:Number
+  },
+  BRONZE:{
+    type:Number
+  },
   AGE_CATEGORY:{
     type:String
   },
@@ -153,6 +162,9 @@ const bd =new mongoose.Schema({
     type:String
   },
   END_TIMESTAMP:{
+    type:String
+  },
+  ORGANIZER_NAME:{
     type:String
   }
 });

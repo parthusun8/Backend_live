@@ -74,6 +74,15 @@ const mongoose = require('mongoose')
       type:[String],
       default:[]
     },
+    GOLD:{
+      type:Number
+    },
+    SILVER:{
+      type:Number
+    },
+    BRONZE:{
+      type:Number
+    },
     PRIZE_POOL:{
       type:Number,
       default:0
@@ -92,6 +101,9 @@ const mongoose = require('mongoose')
       type:String
     },
     END_TIMESTAMP:{
+      type:String
+    },
+    ORGANIZER_NAME:{
       type:String
     }
 })

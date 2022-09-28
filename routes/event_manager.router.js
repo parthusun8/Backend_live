@@ -156,6 +156,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             const result1 = await new onlytourneys(req.body).save()
             if(result1){
                 const categories = req.body.CATEGORY.split("-")
+                const agecategories = req.body.AGE_CATEGORY.split("-")
                 for(var i=0;i<categories.length;i++){
                     if(categories[i]==`Men's Single`){
                         categories[i] = `MS`
@@ -174,8 +175,9 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                     var obj = {...req.body}
                     console.log(categories[i])
                     obj.CATEGORY = categories[i]
-                    obj.TOURNAMENT_ID = tid+'-'+categories[i]
-                    obj.TOURNAMENT_NAME = tname+'-'+categories[i]
+                    obj.AGE_CATEGORY = agecategories[i]
+                    obj.TOURNAMENT_ID = tid+'-'+categories[i]+'-'+agecategories[i]
+                    obj.TOURNAMENT_NAME = tname+'-'+categories[i]+'-'+agecategories[i]
                     tourneys[i] = obj
                     tourneyID[i] = obj.TOURNAMENT_ID
                     tourneyMatches[i] = {
