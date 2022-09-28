@@ -163,14 +163,14 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             req.body.PRIZE_POOL = req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
             const result1 = await new onlytourneys(req.body).save()
             if(result1){
-                const categories = req.body.CATEGORY.split("-")
-                const agecategories = req.body.AGE_CATEGORY.split("-")
-                const poolsize = req.body.NO_OF_KNOCKOUT_ROUNDS.split("-")
-                const gold = req.body.GOLD.split("-")
-                const silver = req.body.SILVER.split("-")
-                const bronze = req.body.BRONZE.split("-")
-                const others = req.body.OTHER.split("-")
-                const prizepools = req.body.PRIZE_POOL.split("-")
+                const categories = new_obj.CATEGORY.split("-")
+                const agecategories = new_obj.AGE_CATEGORY.split("-")
+                const poolsize = new_obj.NO_OF_KNOCKOUT_ROUNDS.split("-")
+                const gold = new_obj.GOLD.split("-")
+                const silver = new_obj.SILVER.split("-")
+                const bronze = new_obj.BRONZE.split("-")
+                const others = new_obj.OTHER.split("-")
+                const prizepools = new_obj.PRIZE_POOL.split("-")
                 for(var i=0;i<categories.length;i++){
                     if(categories[i]==`Men's Single`){
                         categories[i] = `MS`
@@ -180,8 +180,8 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                     }
                 }
                 console.log(categories)
-                const tid = req.body.TOURNAMENT_ID
-                const tname = req.body.TOURNAMENT_NAME 
+                const tid = new_obj.TOURNAMENT_ID
+                const tname = new_obj.TOURNAMENT_NAME 
                 let tourneys = []
                 let tourneyMatches = []
                 let tourneyID = []
@@ -224,7 +224,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                         }
                         if(result){
                             res.status(200).send({
-                                TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                                TOURNAMENT_IDs:tourneyID
                             })
                         }
                     })
