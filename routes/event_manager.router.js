@@ -157,6 +157,12 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             if(result1){
                 const categories = req.body.CATEGORY.split("-")
                 const agecategories = req.body.AGE_CATEGORY.split("-")
+                const poolsize = req.body.NO_OF_KNOCKOUT_ROUNDS.split("-")
+                const gold = req.body.GOLD.split("-")
+                const silver = req.body.SILVER.split("-")
+                const bronze = req.body.BRONZE.split("-")
+                const others = req.body.OTHER.split("-")
+                const prizepools = req.body.PRIZE_POOL.split("-")
                 for(var i=0;i<categories.length;i++){
                     if(categories[i]==`Men's Single`){
                         categories[i] = `MS`
@@ -178,6 +184,12 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                     obj.AGE_CATEGORY = agecategories[i]
                     obj.TOURNAMENT_ID = tid+'-'+categories[i]+'-'+agecategories[i]
                     obj.TOURNAMENT_NAME = tname+'-'+categories[i]+'-'+agecategories[i]
+                    obj.NO_OF_KNOCKOUT_ROUNDS = parseInt(poolsize[i])
+                    obj.GOLD = parseInt(gold[i])
+                    obj.SILVER = parseInt(silver[i])
+                    obj.BRONZE = parseInt(bronze[i])
+                    obj.OTHER = parseInt(others[i])
+                    obj.PRIZE_POOL =parseInt(prizepools[i])
                     tourneys[i] = obj
                     tourneyID[i] = obj.TOURNAMENT_ID
                     tourneyMatches[i] = {

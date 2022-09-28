@@ -148,6 +148,9 @@ const bd =new mongoose.Schema({
   BRONZE:{
     type:Number
   },
+  OTHER:{
+    type:Number
+  },
   AGE_CATEGORY:{
     type:String
   },
