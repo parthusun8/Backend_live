@@ -111,11 +111,15 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
         const badminton_url = "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/badminton.png"
         const tt_url = "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/icons8-ping-pong-96.png"
         const spotArray = []
-        const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS
-        for(let i =0;i<no_of_spots;i++){
-            spotArray.push(`${i}`)
+        const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS.split("-")
+        for(let i =0;i<no_of_spots.length-1;i++){
+            var arr = new Array()
+            for(let j=0;j<no_of_spots[i];i++){
+                arr.push(`${j}`)
+            }
+            spotArray.push(arr)
         }
-        req.body.SPOT_STATUS_ARRAY = spotArray
+        req.body.SPOT_STATUS_ARRAY = spotArray[0]
         if(req.body.SPORT==='Badminton'){
             req.body['COLOR'] = blue
             req.body['IMG_URL'] = badminton_url
@@ -162,7 +166,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             req.body.SILVER = 0
             req.body.BRONZE = 0
             req.body.OTHER = 0
-            req.body.PRIZE_POOL = 10000
+            req.body.PRIZE_POOL = req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
             new_obj.PRIZE_POOL = req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
             const result1 = await new onlytourneys(req.body).save()
             if(result1){
@@ -205,6 +209,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                     obj.OTHER = parseInt(others[i])
                     obj.PRIZE_POOL =parseInt(prizepools[i])
                     obj.ENTRY_FEE = parseInt(entryfee[i])
+                    obj.SPOT_STATUS_ARRAY=spotArray[i]
                     tourneys[i] = obj
                     tourneyID[i] = obj.TOURNAMENT_ID
                     tourneyMatches[i] = {
