@@ -114,7 +114,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
         const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS.split("-")
         for(let i =0;i<no_of_spots.length-1;i++){
             var arr = new Array()
-            for(let j=0;j<no_of_spots[i];i++){
+            for(let j=0;j<no_of_spots[i];j++){
                 arr.push(`${j}`)
             }
             spotArray.push(arr)
