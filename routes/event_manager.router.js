@@ -181,7 +181,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 const others = new_obj.OTHER.split("-")
                 const prizepools = ['1200']
                 //new_obj.PRIZE_POOL.split("-")
-                const entryfee = new_obj.PRIZE_POOL.split("-")
+                const entryfee = new_obj.ENTRY_FEE.split("-")
                 for(var i=0;i<categories.length;i++){
                     if(categories[i]==`Men's Single`){
                         categories[i] = `MS`
