@@ -112,7 +112,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
         const tt_url = "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/icons8-ping-pong-96.png"
         const spotArray = []
         const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS.split("-")
-        for(let i =0;i<no_of_spots.length-1;i++){
+        for(let i =0;i<no_of_spots.length;i++){
             var arr = new Array()
             for(let j=0;j<no_of_spots[i];j++){
                 arr.push(`${j}`)
@@ -195,7 +195,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 let tourneys = []
                 let tourneyMatches = []
                 let tourneyID = []
-                for(var i=0;i<categories.length-1;i++){
+                for(var i=0;i<categories.length;i++){
                     var obj = {...req.body}
                     console.log(categories[i])
                     obj.CATEGORY = categories[i]
