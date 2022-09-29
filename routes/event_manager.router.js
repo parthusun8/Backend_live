@@ -131,6 +131,8 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             USERID:req.body.USERID
         })
         if(usr){
+            console.log('Request Body')
+            console.log(req.body)
             console.log("usr found")
             if(req.body.SPORT=="Badminton"){
                 req.body.TOURNAMENT_ID = `BA${req.body.USERID}${usr.HOSTED_TOURNAMENTS.length+1}`
@@ -160,9 +162,13 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             req.body.SILVER = 0
             req.body.BRONZE = 0
             req.body.OTHER = 0
-            req.body.PRIZE_POOL = req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
+            req.body.PRIZE_POOL = 10000
+            new_obj.PRIZE_POOL = '10000-10000'
+            //req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
             const result1 = await new onlytourneys(req.body).save()
             if(result1){
+                console.log(`Categories as per request: ${new_obj.CATEGORY}`)
+                new_obj.CATEGORY = 'MS-WS'
                 const categories = new_obj.CATEGORY.split("-")
                 const agecategories = new_obj.AGE_CATEGORY.split("-")
                 const poolsize = new_obj.NO_OF_KNOCKOUT_ROUNDS.split("-")
@@ -171,14 +177,14 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 const bronze = new_obj.BRONZE.split("-")
                 const others = new_obj.OTHER.split("-")
                 const prizepools = new_obj.PRIZE_POOL.split("-")
-                for(var i=0;i<categories.length;i++){
-                    if(categories[i]==`Men's Single`){
-                        categories[i] = `MS`
-                    }
-                    else if(categories[i]==`Women's Single`){
-                        categories[i] = `MS`
-                    }
-                }
+                // for(var i=0;i<categories.length;i++){
+                //     if(categories[i]==`Men's Single`){
+                //         categories[i] = `MS`
+                //     }
+                //     else if(categories[i]==`Women's Single`){
+                //         categories[i] = `MS`
+                //     }
+                // }
                 console.log(categories)
                 const tid = new_obj.TOURNAMENT_ID
                 const tname = new_obj.TOURNAMENT_NAME 
@@ -189,9 +195,12 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                     var obj = {...req.body}
                     console.log(categories[i])
                     obj.CATEGORY = categories[i]
-                    obj.AGE_CATEGORY = agecategories[i]
-                    obj.TOURNAMENT_ID = tid+'-'+categories[i]+'-'+agecategories[i]
-                    obj.TOURNAMENT_NAME = tname+'-'+categories[i]+'-'+agecategories[i]
+                    obj.AGE_CATEGORY = 'U17' 
+                    //agecategories[i]
+                    obj.TOURNAMENT_ID = tid+'-'+categories[i]+'-'+'U17'
+                    //agecategories[i]
+                    obj.TOURNAMENT_NAME = tname+'-'+categories[i]+'-'+'U17'
+                    //agecategories[i]
                     obj.NO_OF_KNOCKOUT_ROUNDS = parseInt(poolsize[i])
                     obj.GOLD = parseInt(gold[i])
                     obj.SILVER = parseInt(silver[i])
