@@ -159,7 +159,6 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             // req.body.START_TIME = start_time.split(":")[0]+start_time.split(":")[1]
             // req.body.END_TIME = end_time.split(":")[0]+end_time.split(":")[1]
             // categories will be hyphen separated strings
-            req.body.PRIZE_POOL = 1200
             const new_obj = {...req.body}
             req.body.ENTRY_FEE = 0
             req.body.NO_OF_KNOCKOUT_ROUNDS = 0
@@ -167,7 +166,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             req.body.SILVER = 0
             req.body.BRONZE = 0
             req.body.OTHER = 0
-            // req.body.PRIZE_POOL = req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
+            req.body.PRIZE_POOL = req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
             const result1 = await new onlytourneys(req.body).save()
             if(result1){
                 console.log(`Categories as per request: ${new_obj.CATEGORY}`)
@@ -178,7 +177,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 const silver = new_obj.SILVER.split("-")
                 const bronze = new_obj.BRONZE.split("-")
                 const others = new_obj.OTHER.split("-")
-                const prizepools = ['1200']
+                const prizepools = new_obj.PRIZE_POOL.split("-")
                 //new_obj.PRIZE_POOL.split("-")
                 const entryfee = new_obj.ENTRY_FEE.split("-")
                 for(var i=0;i<categories.length;i++){
