@@ -171,7 +171,6 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             const result1 = await new onlytourneys(req.body).save()
             if(result1){
                 console.log(`Categories as per request: ${new_obj.CATEGORY}`)
-                new_obj.CATEGORY = 'MS-WS'
                 const categories = new_obj.CATEGORY.split("-")
                 const agecategories = new_obj.AGE_CATEGORY.split("-")
                 const poolsize = new_obj.NO_OF_KNOCKOUT_ROUNDS.split("-")
