@@ -191,7 +191,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 let tourneys = []
                 let tourneyMatches = []
                 let tourneyID = []
-                for(var i=0;i<categories.length;i++){
+                for(var i=0;i<categories.length-1;i++){
                     var obj = {...req.body}
                     console.log(categories[i])
                     obj.CATEGORY = categories[i]
