@@ -167,7 +167,6 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             req.body.BRONZE = 0
             req.body.OTHER = 0
             req.body.PRIZE_POOL = req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
-            new_obj.PRIZE_POOL = req.body.PRIZE_POOL
             const result1 = await new onlytourneys(req.body).save()
             if(result1){
                 console.log(`Categories as per request: ${new_obj.CATEGORY}`)
