@@ -163,8 +163,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             req.body.BRONZE = 0
             req.body.OTHER = 0
             req.body.PRIZE_POOL = 10000
-            new_obj.PRIZE_POOL = '10000-10000'
-            //req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
+            new_obj.PRIZE_POOL = req.body.PRIZE_POOL.split("-").reduce(function(a,b){return parseInt(a)+parseInt(b)},0)
             const result1 = await new onlytourneys(req.body).save()
             if(result1){
                 console.log(`Categories as per request: ${new_obj.CATEGORY}`)
@@ -177,14 +176,15 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 const bronze = new_obj.BRONZE.split("-")
                 const others = new_obj.OTHER.split("-")
                 const prizepools = new_obj.PRIZE_POOL.split("-")
-                // for(var i=0;i<categories.length;i++){
-                //     if(categories[i]==`Men's Single`){
-                //         categories[i] = `MS`
-                //     }
-                //     else if(categories[i]==`Women's Single`){
-                //         categories[i] = `MS`
-                //     }
-                // }
+                const entryfee = new_obj.PRIZE_POOL.split("-")
+                for(var i=0;i<categories.length;i++){
+                    if(categories[i]==`Men's Single`){
+                        categories[i] = `MS`
+                    }
+                    else if(categories[i]==`Women's Single`){
+                        categories[i] = `MS`
+                    }
+                }
                 console.log(categories)
                 const tid = new_obj.TOURNAMENT_ID
                 const tname = new_obj.TOURNAMENT_NAME 
@@ -195,18 +195,16 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                     var obj = {...req.body}
                     console.log(categories[i])
                     obj.CATEGORY = categories[i]
-                    obj.AGE_CATEGORY = 'U17' 
-                    //agecategories[i]
-                    obj.TOURNAMENT_ID = tid+'-'+categories[i]+'-'+'U17'
-                    //agecategories[i]
-                    obj.TOURNAMENT_NAME = tname+'-'+categories[i]+'-'+'U17'
-                    //agecategories[i]
+                    obj.AGE_CATEGORY = agecategories[i]
+                    obj.TOURNAMENT_ID = tid+'-'+categories[i]+'-'+agecategories[i]
+                    obj.TOURNAMENT_NAME = tname+'-'+categories[i]+'-'+agecategories[i]
                     obj.NO_OF_KNOCKOUT_ROUNDS = parseInt(poolsize[i])
                     obj.GOLD = parseInt(gold[i])
                     obj.SILVER = parseInt(silver[i])
                     obj.BRONZE = parseInt(bronze[i])
                     obj.OTHER = parseInt(others[i])
                     obj.PRIZE_POOL =parseInt(prizepools[i])
+                    obj.ENTRY_FEE = parseInt(entryfee[i])
                     tourneys[i] = obj
                     tourneyID[i] = obj.TOURNAMENT_ID
                     tourneyMatches[i] = {

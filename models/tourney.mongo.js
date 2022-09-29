@@ -105,6 +105,9 @@ const mongoose = require('mongoose')
     },
     ORGANIZER_NAME:{
       type:String
+    },
+    ORGANIZER_ID:{
+      type:String
     }
 })
 module.exports = mongoose.model('tourneys',bd)

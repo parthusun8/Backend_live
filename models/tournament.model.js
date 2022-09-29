@@ -169,6 +169,9 @@ const bd =new mongoose.Schema({
   },
   ORGANIZER_NAME:{
     type:String
+  },
+  ORGANIZER_ID:{
+    type:String
   }
 });
 
