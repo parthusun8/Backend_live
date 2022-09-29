@@ -160,7 +160,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             // req.body.END_TIME = end_time.split(":")[0]+end_time.split(":")[1]
             // categories will be hyphen separated strings
             const new_obj = {...req.body}
-            
+            req.body.ENTRY_FEE = 0
             req.body.NO_OF_KNOCKOUT_ROUNDS = 0
             req.body.GOLD = 0
             req.body.SILVER = 0
