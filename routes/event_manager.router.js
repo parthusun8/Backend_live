@@ -235,7 +235,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                         }
                         if(result){
                             res.status(200).send({
-                                TOURNAMENT_IDs:tourneyID
+                                TOURNAMENT_ID:tourneyID.join(', ')
                             })
                         }
                     })
