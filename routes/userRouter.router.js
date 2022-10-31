@@ -1458,14 +1458,35 @@ userRouter.get('/getImage',async(req,res)=>{
     const stream = getfile(key)
     stream.pipe(res)
 })
+userRouter.get('/paymentPage',async(req,res)=>{
+    //requires username, Tournament Details, Price
+    res.render('payment',{username:req.query.username,tournament_name:req.query.tournament_name,price:req.query.price})
+})
 userRouter.get('/rzp_payment',async (req,res)=>{
-    rzp_instance.payments.fetch(req.query.payment_id).then((d)=>{
-        console.log(d)
-        res.status(200).send({
-            Message:'Received Response'
-        })
-    }).catch((error)=>{
-        console.log(error)
+    // rzp_instance.payments.fetch(req.query.payment_id).then((d)=>{
+    //     console.log(d)
+    //     res.status(200).send({
+    //         Message:'Received Response'
+    //     })
+    // }).catch((error)=>{
+    //     console.log(error)
+    // })
+    console.log(req.query.amount)
+    var options = {
+        amount: req.query.amount,  // amount in the smallest currency unit
+        currency: "INR",
+      };
+    rzp_instance.orders.create(options,function(error,order){
+        if(error){
+            res.status(404).send({
+                Message:'Error in order creation'
+            })
+        }
+        else{
+            res.status(200).send({
+                orderID:order.id
+            })
+        }
     })
 })
 module.exports = userRouter;
