@@ -17,7 +17,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
         let order_id = "";
-        window.addEventListener('load',async function(){
+        $(document).ready(async function(){
+            alert('ready')
             try{
                 const res1 = await fetch(`https://ardentsportsapis.herokuapp.com/rzp_payment?amount=${$('.price').text()}00`)
                 if(res1){
