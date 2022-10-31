@@ -11,6 +11,11 @@ const userRouter = express.Router()
 const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
 const multer = require('multer')
+const razorpay = require('razorpay')
+const rzp_instance = new razorpay({
+    key_id:'rzp_test_BKenOYmQYaOXTq',
+    key_secret:'EEqRh7vAAfvSWvrivQO6eaq5'
+})
 const s3 = new S3({
     region:'ap-south-1',
     accessKeyId:'AKIAZCDZBASTOLTWPCVW',
@@ -1452,5 +1457,15 @@ userRouter.get('/getImage',async(req,res)=>{
     const key = req.query.key
     const stream = getfile(key)
     stream.pipe(res)
+})
+userRouter.get('/rzp_payment',async (req,res)=>{
+    rzp_instance.payments.fetch(req.query.payment_id).then((d)=>{
+        console.log(d)
+        res.status(200).send({
+            Message:'Received Response'
+        })
+    }).catch((error)=>{
+        console.log(error)
+    })
 })
 module.exports = userRouter;
