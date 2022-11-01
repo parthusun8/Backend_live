@@ -7,6 +7,7 @@ const instacricket = require('../models/instacricket.mongo')
 const tournamentModel = require('../models/tournament.model')
 const onlytournamentModel = require('../models/tourney.mongo')
 const matchesmodel = require('../models/matches.mongo')
+const paymentsmodel = require('../models/userpayments.mongo')
 const userRouter = express.Router()
 const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
@@ -1460,7 +1461,7 @@ userRouter.get('/getImage',async(req,res)=>{
 })
 userRouter.get('/paymentPage',async(req,res)=>{
     //requires username, Tournament Details, Price
-    res.render('payment',{username:req.query.username,tournament_name:req.query.tournament_name,price:req.query.price})
+    res.render('payment',{username:req.query.username,tournament_name:req.query.tournament_name,tournament_id:req.query.tournament_id,price:req.query.price})
 })
 userRouter.get('/rzp_payment',async (req,res)=>{
     // rzp_instance.payments.fetch(req.query.payment_id).then((d)=>{
@@ -1488,5 +1489,45 @@ userRouter.get('/rzp_payment',async (req,res)=>{
             })
         }
     })
+})
+
+userRouter.post('/updateUserPayment',async (req,res)=>{
+    //userid
+    //tournament_id
+    //price_paid
+    //payment_id
+    rzp_instance.payments.fetch(req.body.payment_id).then((d)=>{
+        console.log(d)
+        if(d.status=='captured'){
+            const pmt = new paymentsmodel({
+                USERID:req.body.userid,
+                TOURNAMENT_ID:req.body.tournament_id,
+                AMOUNNT:req.body.price_paid,
+                PAYMENT_ID:req.body.payment_id,
+                STATUS:true
+            })
+            pmt.save().then((d)=>{
+                res.status(200).send({
+                    Message:'paid'
+                })
+            }).catch((e)=>{
+                console.log(e)
+                res.status(200).send({
+                    Message:'failure'
+                })
+            })
+        }
+    }).catch((error)=>{
+        console.log(error)
+        res.status(200).send({
+            Message:'failure'
+        })
+    })
+})
+userRouter.get('/success',async (req,res)=>{
+    res.send('Success')
+})
+userRouter.get('/failure',async (req,res)=>{
+    res.send('Failure')
 })
 module.exports = userRouter;

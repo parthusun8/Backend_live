@@ -33,10 +33,35 @@
     "name": "Ardent Sports",
     "description": "Please Pay the exact amount as shown",
     "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "handler": function (response){
+    "handler": async function (response){
         alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature)
+        try{
+            const res = await fetch(`https://ardentsportsapis.herokuapp.com/updateUserPayment`,{
+                method:'POST',
+                headers:{
+                    "Content-type":"application/json"
+                },
+                body:JSON.stringify({
+                    price_paid:$('.price').text(),
+                    userid:$('.username').text(),
+                    tournament_id:$('.tournament_id').text(),
+                    payment_id:response.razorpay_payment_id
+                })
+            })
+            if(res){
+                const data = await res.json()
+                if(data.Message=='paid'){
+                    window.location = "https://ardentsportsapis.herokuapp.com/success"
+                }
+                else if(data.Message=='failure'){
+                    window.location = "https://ardentsportsapis.herokuapp.com/failure"
+                }
+            }
+        }catch(error){
+            alert("Unknown Error")
+        }
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
     },
     "prefill": {
         "name": "Gaurav Kumar",
