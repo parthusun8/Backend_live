@@ -50,11 +50,13 @@
             })
             if(res){
                 const data = await res.json()
-                if(data.Message=='paid'){
+                if(data){
+                    if(data.Message=='paid'){
                     window.location = "https://ardentsportsapis.herokuapp.com/success"
                 }
                 else if(data.Message=='failure'){
                     window.location = "https://ardentsportsapis.herokuapp.com/failure"
+                }
                 }
             }
         }catch(error){
