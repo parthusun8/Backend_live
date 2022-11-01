@@ -338,6 +338,7 @@ io.on("connection",(socket)=>{
                                         console.log(error);
                                     }
                                     else{
+                                        console.log('emitting booking-confirmed')
                                         io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
                                             btnID:`${selectedButton}`
                                         }))
