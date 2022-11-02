@@ -13,7 +13,7 @@
         <h3 class="tournament_id"><%=tournament_id%></h3>
     </div>
     <div class="price_label">PRICE in INR<h1 class="price"><%=price%></h1></div>
-    <button id="rzp-button1">Pay</button>
+    <button id="rzp-button1" style="color: white;background: blue;font-size:1.6rem;">Pay</button>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
@@ -21,7 +21,6 @@
     <script>
         let order_id = "";
         window.addEventListener('load',async function(){
-            alert('ready')
             alert($('.price').text())
             try{
                 const res1 = await fetch(`https://ardentsportsapis.herokuapp.com/rzp_payment?amount=${$('.price').text()}00`)
@@ -37,7 +36,6 @@
     "description": "Please Pay the exact amount as shown",
     "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": async function (response){
-        alert(response.razorpay_payment_id);
         try{
             const res = await fetch(`https://ardentsportsapis.herokuapp.com/updateUserPayment`,{
                 method:'POST',
