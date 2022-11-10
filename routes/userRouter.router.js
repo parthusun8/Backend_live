@@ -14,8 +14,8 @@ const fs = require('fs')
 const multer = require('multer')
 const razorpay = require('razorpay')
 const rzp_instance = new razorpay({
-    key_id:'rzp_test_BKenOYmQYaOXTq',
-    key_secret:'EEqRh7vAAfvSWvrivQO6eaq5'
+    key_id:'rzp_live_4JAecB352A9wtt',
+   key_secret:'UhkUVQq781FVniExGipwVCwi'
 })
 const s3 = new S3({
     region:'ap-south-1',
