@@ -18,7 +18,7 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
+    <!-- <script>
         let order_id = "";
         window.addEventListener('load',async function(){
             alert($('.price').text())
@@ -99,6 +99,8 @@ document.getElementById('rzp-button1').onclick = function(e){
                 alert('Server Error...')
             }
         })
-    </script>
+    </script> -->
+    <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_KeNdwxVl2EfNE3"
+        data-prefill.amount.Amount = "<%=price%>" async> </script> </form>
 </body>
 </html>
