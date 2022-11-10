@@ -100,7 +100,7 @@ userRouter.get('/getBookingFixtures',async (req,res)=>{
                 }
                 else{
                     if(d.MATCHES.length==0){
-                        res.render('not_started_view')
+                        res.render('not_started_view',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS,USERID:req.query.USERID})
                     }
                     else{
                         res.render('booking_fixture',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS,USERID:req.query.USERID})
