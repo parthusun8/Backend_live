@@ -1183,9 +1183,9 @@ userRouter.get('/trophy',async (req,res)=>{
 })
 userRouter.get('/allMatches', async (req,res)=>{
     //tournament id
-    const allUsers = await USER.find().lean()
+    const allUsers = await USER.find()
     if(allUsers){
-        
+        console.log(allUsers)
         tournamentModel.findOne({
             TOURNAMENT_ID:req.query.TOURNAMENT_ID
         },function(error,result2){
