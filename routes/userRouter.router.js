@@ -1183,7 +1183,6 @@ userRouter.get('/trophy',async (req,res)=>{
 })
 userRouter.get('/allMatches', async (req,res)=>{
     //tournament id
-    console.log(allUsers)
     tournamentModel.findOne({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID
     },function(error,result2){
