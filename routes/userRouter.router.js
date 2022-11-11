@@ -1216,6 +1216,7 @@ userRouter.get('/allMatches', async (req,res)=>{
                                 console.log(result.MATCHES[i].PLAYER2)
                                 if(result.MATCHES[i].PLAYER1){
                                     for(var j = 0;j<allUsers[j];j++){
+                                        console.log(allUsers[j])
                                         if(result.MATCHES[i].PLAYER1==allUsers[j].USERID){
                                             us1 = allUsers[j].NAME
                                             break
@@ -1223,7 +1224,6 @@ userRouter.get('/allMatches', async (req,res)=>{
                                     }
                                 }
                                 if(result.MATCHES[i].PLAYER2){
-
                                     for(var j = 0;j<allUsers[j];j++){
                                         if(result.MATCHES[i].PLAYER2==allUsers[j].USERID){
                                             us2 = allUsers[j].NAME
