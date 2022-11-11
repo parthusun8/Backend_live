@@ -1227,7 +1227,9 @@ userRouter.get('/allMatches', async (req,res)=>{
                             })         
                         }
                     }
-                    res.status(200).send(mtches)
+                    if(mtches){
+                        res.status(200).send(mtches)
+                    }
                 }
             })
         }
