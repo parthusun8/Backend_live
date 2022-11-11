@@ -1183,74 +1183,71 @@ userRouter.get('/trophy',async (req,res)=>{
 })
 userRouter.get('/allMatches', async (req,res)=>{
     //tournament id
-    const allUsers = await USER.find()
-    if(allUsers){
-        console.log(allUsers)
-        tournamentModel.findOne({
-            TOURNAMENT_ID:req.query.TOURNAMENT_ID
-        },function(error,result2){
-            if(error){
-                console.log(error)
-            }
-            if(result2){
-                matchesmodel.findOne({
-                    TOURNAMENT_ID:req.query.TOURNAMENT_ID
-                },function(error,result){
-                    if(error){
-                        console.log(error)
+    console.log(allUsers)
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result2){
+        if(error){
+            console.log(error)
+        }
+        if(result2){
+            matchesmodel.findOne({
+                TOURNAMENT_ID:req.query.TOURNAMENT_ID
+            },function(error,result){
+                if(error){
+                    console.log(error)
+                }
+                else{
+                    var mtches = []
+                    var sport = ""
+                    if(result.TOURNAMENT_ID[0]=='T'){
+                        sport = "Table Tennis"
                     }
                     else{
-                        var mtches = []
-                        var sport = ""
-                        if(result.TOURNAMENT_ID[0]=='T'){
-                            sport = "Table Tennis"
-                        }
-                        else{
-                            sport = "Badminton"
-                        }
-                        for(var i=0;i<(result2.NO_OF_KNOCKOUT_ROUNDS)-1;i++){
-                            if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
-                                var us1 = ""
-                                var us2 = ""
-                                console.log(result.MATCHES[i].PLAYER1)
-                                console.log(result.MATCHES[i].PLAYER2)
-                                if(result.MATCHES[i].PLAYER1){
-                                    for(var j = 0;j<allUsers[j];j++){
-                                        console.log(allUsers[j])
-                                        if(result.MATCHES[i].PLAYER1==allUsers[j].USERID){
-                                            us1 = allUsers[j].NAME
-                                            break
-                                        }
-                                    }
-                                }
-                                if(result.MATCHES[i].PLAYER2){
-                                    for(var j = 0;j<allUsers[j];j++){
-                                        if(result.MATCHES[i].PLAYER2==allUsers[j].USERID){
-                                            us2 = allUsers[j].NAME
-                                            break
-                                        }
-                                    }
-                                }
-                                mtches.push({
-                                    TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                                    PLAYER1_NAME:us1,
-                                    PLAYER2_NAME:us2,
-                                    MATCHID:result.MATCHES[i].MATCHID,
-                                    SPORT_NAME:sport,
-                                    LOCATION:result2.LOCATION,
-                                    CITY:result2.CITY,
-                                    TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
-                                    IMG_URL:result2.IMG_URL,
-                                    PRIZE_POOL:`${result2.PRIZE_POOL}`
-                                }) 
-                            }
-                        }
-                            res.status(200).send(mtches)
+                        sport = "Badminton"
                     }
-                })
-            }
-        })
-    }
+                    for(var i=0;i<(result2.NO_OF_KNOCKOUT_ROUNDS)-1;i++){
+                        if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
+                            var us1 = ""
+                            var us2 = ""
+                            console.log(result.MATCHES[i].PLAYER1)
+                            console.log(result.MATCHES[i].PLAYER2)
+                            if(result.MATCHES[i].PLAYER1){
+                                for(var j = 0;j<allUsers[j];j++){
+                                    console.log(allUsers[j])
+                                    if(result.MATCHES[i].PLAYER1==allUsers[j].USERID){
+                                        us1 = allUsers[j].NAME
+                                        break
+                                    }
+                                }
+                            }
+                            if(result.MATCHES[i].PLAYER2){
+                                for(var j = 0;j<allUsers[j];j++){
+                                    if(result.MATCHES[i].PLAYER2==allUsers[j].USERID){
+                                        us2 = allUsers[j].NAME
+                                        break
+                                    }
+                                }
+                            }
+                            mtches.push({
+                                TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                PLAYER1_NAME:us1,
+                                PLAYER2_NAME:us2,
+                                MATCHID:result.MATCHES[i].MATCHID,
+                                SPORT_NAME:sport,
+                                LOCATION:result2.LOCATION,
+                                CITY:result2.CITY,
+                                TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
+                                IMG_URL:result2.IMG_URL,
+                                PRIZE_POOL:`${result2.PRIZE_POOL}`
+                            }) 
+                        }
+                    }
+                        res.status(200).send(mtches)
+                }
+            })
+        }
+    })
 })
 userRouter.get('/allMatchesSpots',async (req,res)=>{
     //req.query.TOURNAMENT_ID
