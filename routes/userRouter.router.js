@@ -1183,59 +1183,67 @@ userRouter.get('/trophy',async (req,res)=>{
 })
 userRouter.get('/allMatches', async (req,res)=>{
     //tournament id
-    tournamentModel.findOne({
-        TOURNAMENT_ID:req.query.TOURNAMENT_ID
-    },function(error,result2){
-        if(error){
-            console.log(error)
-        }
-        if(result2){
-            matchesmodel.findOne({
-                TOURNAMENT_ID:req.query.TOURNAMENT_ID
-            },function(error,result){
-                if(error){
-                    console.log(error)
-                }
-                else{
-                    var mtches = []
-                    var sport = ""
-                    if(result.TOURNAMENT_ID[0]=='T'){
-                        sport = "Table Tennis"
+    const allUsers = await USER.find().lean()
+    if(allUsers){
+        
+        tournamentModel.findOne({
+            TOURNAMENT_ID:req.query.TOURNAMENT_ID
+        },function(error,result2){
+            if(error){
+                console.log(error)
+            }
+            if(result2){
+                matchesmodel.findOne({
+                    TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                },function(error,result){
+                    if(error){
+                        console.log(error)
                     }
                     else{
-                        sport = "Badminton"
-                    }
-                    for(var i=0;i<(result2.NO_OF_KNOCKOUT_ROUNDS)-1;i++){
-                        if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
-                            axios.get(`https://ardentsportsapis.herokuapp.com/userDetails?USERID=${result.MATCHES[i].PLAYER1}`).then(res=>{
-                                const us1 = res.data.Name
-                                axios.get(`https://ardentsportsapis.herokuapp.com/userDetails?USERID=${result.MATCHES[i].PLAYER2}`).then(res2=>{
-                                    const us2 = res2.data.Name
-                                    mtches.push({
-                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                                        PLAYER1_NAME:us1,
-                                        PLAYER2_NAME:us2,
-                                        MATCHID:result.MATCHES[i].MATCHID,
-                                        SPORT_NAME:sport,
-                                        LOCATION:result2.LOCATION,
-                                        CITY:result2.CITY,
-                                        TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
-                                        IMG_URL:result2.IMG_URL,
-                                        PRIZE_POOL:`${result2.PRIZE_POOL}`
-                                    })
-                                    console.log(mtches[i])
-                                })
-
-                            })         
+                        var mtches = []
+                        var sport = ""
+                        if(result.TOURNAMENT_ID[0]=='T'){
+                            sport = "Table Tennis"
                         }
+                        else{
+                            sport = "Badminton"
+                        }
+                        for(var i=0;i<(result2.NO_OF_KNOCKOUT_ROUNDS)-1;i++){
+                            if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
+                                var us1 = ""
+                                var us2 = ""
+                                for(var i = 0;i<allUsers[i];i++){
+                                    if(result.MATCHES[i].PLAYER1==allUsers[i].USERID){
+                                        us1 = allUsers[i].NAME
+                                        break
+                                    }
+                                }
+                                for(var i = 0;i<allUsers.length;i++){
+                                    if(result.MATCHES[i].PLAYER2==allUsers[i].USERID){
+                                        us2 = allUsers[i].NAME
+                                        break
+                                    }
+                                }
+                                mtches.push({
+                                    TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                    PLAYER1_NAME:us1,
+                                    PLAYER2_NAME:us2,
+                                    MATCHID:result.MATCHES[i].MATCHID,
+                                    SPORT_NAME:sport,
+                                    LOCATION:result2.LOCATION,
+                                    CITY:result2.CITY,
+                                    TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
+                                    IMG_URL:result2.IMG_URL,
+                                    PRIZE_POOL:`${result2.PRIZE_POOL}`
+                                }) 
+                            }
+                        }
+                            res.status(200).send(mtches)
                     }
-                    if(mtches){
-                        res.status(200).send(mtches)
-                    }
-                }
-            })
-        }
-    })
+                })
+            }
+        })
+    }
 })
 userRouter.get('/allMatchesSpots',async (req,res)=>{
     //req.query.TOURNAMENT_ID
