@@ -1209,7 +1209,7 @@ userRouter.get('/allMatches', async (req,res)=>{
                         if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
                             axios.get(`https://ardentsportsapis.herokuapp.com/USERID=${result.MATCHES[i].PLAYER1}`).then(res=>{
                                 const us1 = res.data.Name
-                                axios.get(`https://ardentsportsapis.herokuapp.com/USERID=${result.MATCHES[i].PLAYER1}`).then(res2=>{
+                                axios.get(`https://ardentsportsapis.herokuapp.com/USERID=${result.MATCHES[i].PLAYER2}`).then(res2=>{
                                     const us2 = res2.data.Name
                                     mtches.push({
                                         TOURNAMENT_ID:req.query.TOURNAMENT_ID,
@@ -1223,7 +1223,9 @@ userRouter.get('/allMatches', async (req,res)=>{
                                         IMG_URL:result2.IMG_URL,
                                         PRIZE_POOL:`${result2.PRIZE_POOL}`
                                     })
+                                    console.log(mtches[i])
                                 })
+
                             })         
                         }
                     }
