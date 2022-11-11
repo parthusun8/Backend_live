@@ -1212,16 +1212,21 @@ userRouter.get('/allMatches', async (req,res)=>{
                             if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
                                 var us1 = ""
                                 var us2 = ""
-                                for(var i = 0;i<allUsers[i];i++){
-                                    if(result.MATCHES[i].PLAYER1==allUsers[i].USERID){
-                                        us1 = allUsers[i].NAME
-                                        break
+                                if(result.MATCHES[i].PLAYER1){
+                                    for(var i = 0;i<allUsers[i];i++){
+                                        if(result.MATCHES[i].PLAYER1==allUsers[i].USERID){
+                                            us1 = allUsers[i].NAME
+                                            break
+                                        }
                                     }
                                 }
-                                for(var i = 0;i<allUsers.length;i++){
-                                    if(result.MATCHES[i].PLAYER2==allUsers[i].USERID){
-                                        us2 = allUsers[i].NAME
-                                        break
+                                if(result.MATCHES[i].PLAYER2){
+
+                                    for(var i = 0;i<allUsers[i];i++){
+                                        if(result.MATCHES[i].PLAYER2==allUsers[i].USERID){
+                                            us2 = allUsers[i].NAME
+                                            break
+                                        }
                                     }
                                 }
                                 mtches.push({
