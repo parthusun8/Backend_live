@@ -1211,27 +1211,27 @@ userRouter.get('/allMatches', async (req,res)=>{
                             var us2 = ""
                             console.log(result.MATCHES[i].PLAYER1)
                             console.log(result.MATCHES[i].PLAYER2)
-                            if(result.MATCHES[i].PLAYER1){
-                                for(var j = 0;j<allUsers[j];j++){
-                                    // console.log(allUsers[j])
-                                    if(result.MATCHES[i].PLAYER1==allUsers[j].USERID){
-                                        us1 = allUsers[j].NAME
-                                        break
-                                    }
-                                }
-                            }
-                            if(result.MATCHES[i].PLAYER2){
-                                for(var j = 0;j<allUsers[j];j++){
-                                    if(result.MATCHES[i].PLAYER2==allUsers[j].USERID){
-                                        us2 = allUsers[j].NAME
-                                        break
-                                    }
-                                }
-                            }
+                            // if(result.MATCHES[i].PLAYER1){
+                            //     for(var j = 0;j<allUsers[j];j++){
+                            //         // console.log(allUsers[j])
+                            //         if(result.MATCHES[i].PLAYER1==allUsers[j].USERID){
+                            //             us1 = allUsers[j].NAME
+                            //             break
+                            //         }
+                            //     }
+                            // }
+                            // if(result.MATCHES[i].PLAYER2){
+                            //     for(var j = 0;j<allUsers[j];j++){
+                            //         if(result.MATCHES[i].PLAYER2==allUsers[j].USERID){
+                            //             us2 = allUsers[j].NAME
+                            //             break
+                            //         }
+                            //     }
+                            // }
                             mtches.push({
                                 TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                                PLAYER1_NAME:us1,
-                                PLAYER2_NAME:us2,
+                                PLAYER1_NAME:result.MATCHES[i].PLAYER1,
+                                PLAYER2_NAME:result.MATCHES[i].PLAYER2,
                                 MATCHID:result.MATCHES[i].MATCHID,
                                 SPORT_NAME:sport,
                                 LOCATION:result2.LOCATION,
