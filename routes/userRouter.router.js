@@ -1212,6 +1212,8 @@ userRouter.get('/allMatches', async (req,res)=>{
                             if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
                                 var us1 = ""
                                 var us2 = ""
+                                console.log(result.MATCHES[i].PLAYER1)
+                                console.log(result.MATCHES[i].PLAYER2)
                                 if(result.MATCHES[i].PLAYER1){
                                     for(var i = 0;i<allUsers[i];i++){
                                         if(result.MATCHES[i].PLAYER1==allUsers[i].USERID){
