@@ -1216,15 +1216,15 @@ userRouter.get('/allMatches', async (req,res)=>{
                                 var us2 = ""
                                 console.log(result.MATCHES[i].PLAYER1)
                                 console.log(result.MATCHES[i].PLAYER2)
-                                    for(var j = 0;j<allUsers[j];j++){
+                                    for(let j = 0;j<allUsers[j];j++){
                                         console.log(allUsers[j])
-                                        if(result.MATCHES[i].PLAYER1==allUsers[j].USERID){
+                                        if(`${result.MATCHES[i].PLAYER1}`==`${allUsers[j].USERID}`){
                                             us1 = allUsers[j].NAME
                                             break
                                         }
                                     }
-                                    for(var k = 0;k<allUsers[k];k++){
-                                        if(result.MATCHES[i].PLAYER2==allUsers[k].USERID){
+                                    for(let k = 0;k<allUsers[k];k++){
+                                        if(`${result.MATCHES[i].PLAYER2}`==`${allUsers[k].USERID}`){
                                             us2 = allUsers[k].NAME
                                             break
                                         }
