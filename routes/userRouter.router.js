@@ -1216,7 +1216,6 @@ userRouter.get('/allMatches', async (req,res)=>{
                                 var us2 = ""
                                 console.log(result.MATCHES[i].PLAYER1)
                                 console.log(result.MATCHES[i].PLAYER2)
-                                if(result.MATCHES[i].PLAYER1){
                                     for(var j = 0;j<allUsers[j];j++){
                                         console.log(allUsers[j])
                                         if(result.MATCHES[i].PLAYER1==allUsers[j].USERID){
@@ -1224,15 +1223,13 @@ userRouter.get('/allMatches', async (req,res)=>{
                                             break
                                         }
                                     }
-                                }
-                                if(result.MATCHES[i].PLAYER2){
                                     for(var k = 0;k<allUsers[k];k++){
                                         if(result.MATCHES[i].PLAYER2==allUsers[k].USERID){
                                             us2 = allUsers[k].NAME
                                             break
                                         }
                                     }
-                                }
+                                
                                 mtches.push({
                                     TOURNAMENT_ID:req.query.TOURNAMENT_ID,
                                     PLAYER1_NAME:us1,
