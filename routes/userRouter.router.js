@@ -1511,7 +1511,8 @@ userRouter.post('/rzp_payment',async (req,res)=>{
         else{
             console.log(order.id)
             res.status(200).send({
-                orderID:order.id
+                orderID:order.id,
+                status:1
             })
         }
     })
