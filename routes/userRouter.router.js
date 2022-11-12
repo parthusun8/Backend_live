@@ -1187,7 +1187,7 @@ userRouter.get('/allMatches', async (req,res)=>{
         WALLET_BALANCE:0  
     }).lean()
     if(allUsers){
-        console.log(allUsers[0])
+        console.log(allUsers.length)
         tournamentModel.findOne({
             TOURNAMENT_ID:req.query.TOURNAMENT_ID
         },function(error,result2){
