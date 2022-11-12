@@ -1499,7 +1499,7 @@ userRouter.post('/rzp_payment',async (req,res)=>{
     // })
     console.log(req.body.amount)
     var options = {
-        amount: req.body.amount,  // amount in the smallest currency unit
+        amount: req.body.amount + '00',  // amount in the smallest currency unit
         currency: "INR",
       };
     rzp_instance.orders.create(options,function(error,order){
