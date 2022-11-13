@@ -835,7 +835,7 @@ userRouter.get('/profilePicUrl',async(req,res)=>{
         }
     }catch(error){
         res.status(404).send({
-            Message:error.Message
+            Message:"No Image"
         })
     }
 })
