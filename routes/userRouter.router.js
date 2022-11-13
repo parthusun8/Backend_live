@@ -956,7 +956,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                                 USER.updateOne({
                                     USERID:WINNER
                                 },{
-                                    POINTS:f.POINTS+10
+                                    POINTS:f.POINTS+100
                                 },function(error,result){
                                     if(error){
                                         res.status(404).send({
@@ -978,104 +978,141 @@ userRouter.get('/endMatch',async (req,res)=>{
             }
             else if(result.MATCHES[matchid].PLAYER2=="Not Booked"||result.MATCHES[matchid].PLAYER2=="Not Yet Assigned"){
                 var WINNER = result.MATCHES[matchid].PLAYER1    
-                if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
-                    //write winner_id_logic
-                    matchesmodel.updateOne({
-                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
-                    },{
-                        $set:{
-                            "MATCHES.$[elem].PLAYER1":WINNER,
-                            "MATCHES.$[elem2].winner_id":WINNER,
-                            "MATCHES.$[elem2].completion_status":"Done"
-                        }
-                    },{
-                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
-                    },function(error,result2){
-                        if(error){
-                            console.log(error)
-                        }
-                        if(result2){
-                            res.status(200).send({
-                                Message:'Updated Successfully',
-                                WINNER:WINNER
-                            })
-                        }
-                    })
-                }
-                else{
-                    matchesmodel.updateOne({
-                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
-                    },{
-                        $set:{
-                            "MATCHES.$[elem].PLAYER2":WINNER,
-                            "MATCHES.$[elem2].winner_id":WINNER,
-                            "MATCHES.$[elem2].completion_status":"Done"   
-                        }
-                    },{
-                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
-                    },function(error,result3){
-                        if(error){
-                            console.log(error)
-                        }
-                        if(result3){
-                            res.status(200).send({
-                                Message:'Updated Successfully',
-                                WINNER:WINNER
-                            })
-                        }
-                    })
-                }
+                USER.findOne({
+                    USERID:WINNER
+                },function(error,response){
+                    if(error){
+                        throw error
+                    }
+                    if(response){
+                        USER.updateOne({
+                            USERID:WINNER
+                        },{
+                            POINTS:response.POINTS+10
+                        },function(er,re){
+                            if(er){
+                                throw er
+                            }
+                            if(re){
+                                if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+                                    //write winner_id_logic
+                                    matchesmodel.updateOne({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                                    },{
+                                        $set:{
+                                            "MATCHES.$[elem].PLAYER1":WINNER,
+                                            "MATCHES.$[elem2].winner_id":WINNER,
+                                            "MATCHES.$[elem2].completion_status":"Done"
+                                        }
+                                    },{
+                                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
+                                    },function(error,result2){
+                                        if(error){
+                                            console.log(error)
+                                        }
+                                        if(result2){
+                                            res.status(200).send({
+                                                Message:'Updated Successfully',
+                                                WINNER:WINNER
+                                            })
+                                        }
+                                    })
+                                }
+                                else{
+                                    matchesmodel.updateOne({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                                    },{
+                                        $set:{
+                                            "MATCHES.$[elem].PLAYER2":WINNER,
+                                            "MATCHES.$[elem2].winner_id":WINNER,
+                                            "MATCHES.$[elem2].completion_status":"Done"   
+                                        }
+                                    },{
+                                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
+                                    },function(error,result3){
+                                        if(error){
+                                            console.log(error)
+                                        }
+                                        if(result3){
+                                            res.status(200).send({
+                                                Message:'Updated Successfully',
+                                                WINNER:WINNER
+                                            })
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
+                })
             }
             else if(result.MATCHES[matchid].PLAYER1=="Not Booked"||result.MATCHES[matchid].PLAYER1=="Not Yet Assigned"){
                 console.log('Else if Case')
                 var WINNER = result.MATCHES[matchid].PLAYER2    
-                if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
-                    //write winner_id_logic
-                    matchesmodel.updateOne({
-                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
-                    },{
-                        $set:{
-                            "MATCHES.$[elem].PLAYER1":WINNER,
-                            "MATCHES.$[elem2].winner_id":WINNER,
-                            "MATCHES.$[elem2].completion_status":"Done"
-                        }
-                    },{
-                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
-                    },function(error,result2){
-                        if(error){
-                            console.log(error)
-                        }
-                        if(result2){
-                            res.status(200).send({
-                                Message:'Updated Successfully',
-                                WINNER:WINNER
-                            })
-                        }
-                    })
-                }
-                else{
-                    matchesmodel.updateOne({
-                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
-                    },{
-                        $set:{
-                            "MATCHES.$[elem].PLAYER2":WINNER,
-                            "MATCHES.$[elem2].winner_id":WINNER,
-                            "MATCHES.$[elem2].completion_status":"Done"   
-                        }
-                    },{
-                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
-                    },function(error,result3){
-                        if(error){
-                            console.log(error)
-                        }
-                        if(result3){
-                            res.status(200).send({
-                                Message:'Updated Successfully',
-                                WINNER:WINNER
-                            })
-                        }
-                    })
-                }
+                USER.findOne({
+                    USERID:WINNER
+                },function(error,response){
+                    if(error){
+                        throw error
+                    }
+                    if(response){
+                        USER.updateOne({
+                            USERID:WINNER
+                        },{
+                            POINTS:response.POINTS+10
+                        },function(er,re){
+                            if(er){
+                                throw er
+                            }
+                            if(re){
+                                if(result.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+                                    //write winner_id_logic
+                                    matchesmodel.updateOne({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                                    },{
+                                        $set:{
+                                            "MATCHES.$[elem].PLAYER1":WINNER,
+                                            "MATCHES.$[elem2].winner_id":WINNER,
+                                            "MATCHES.$[elem2].completion_status":"Done"
+                                        }
+                                    },{
+                                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
+                                    },function(error,result2){
+                                        if(error){
+                                            console.log(error)
+                                        }
+                                        if(result2){
+                                            res.status(200).send({
+                                                Message:'Updated Successfully',
+                                                WINNER:WINNER
+                                            })
+                                        }
+                                    })
+                                }
+                                else{
+                                    matchesmodel.updateOne({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                                    },{
+                                        $set:{
+                                            "MATCHES.$[elem].PLAYER2":WINNER,
+                                            "MATCHES.$[elem2].winner_id":WINNER,
+                                            "MATCHES.$[elem2].completion_status":"Done"   
+                                        }
+                                    },{
+                                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result.MATCHES[matchid].MATCHID}]
+                                    },function(error,result3){
+                                        if(error){
+                                            console.log(error)
+                                        }
+                                        if(result3){
+                                            res.status(200).send({
+                                                Message:'Updated Successfully',
+                                                WINNER:WINNER
+                                            })
+                                        }
+                                    })
+                                }
+                            }})}})
             }
             else{
                 console.log('Else Case')
@@ -1094,6 +1131,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                         var set2 = 0
                         var set3 = 0
                         var WINNER_ID = ""
+                        var LOSER_ID = ""
                         if((result4.MATCHES[matchid].PLAYER1_SCORE.set1)>(result4.MATCHES[matchid].PLAYER2_SCORE.set1)){
                             set1 = 1
                         }
@@ -1114,62 +1152,104 @@ userRouter.get('/endMatch',async (req,res)=>{
                         }
                         if(set1+set2+set3>=2){
                             WINNER_ID = result4.MATCHES[matchid].PLAYER1
+                            LOSER_ID = result4.MATCHES[matchid].PLAYER2
                         }
                         else{
-                            WINNER_ID=result4.MATCHES[matchid].PLAYER2
+                            WINNER_ID= result4.MATCHES[matchid].PLAYER2
+                            LOSER_ID = result4.MATCHES[matchid].PLAYER1
                         }
                         console.log(set1)
                         console.log(set2)
                         console.log(set3)
                         console.log(WINNER_ID)
-                        //
-                        if(result4.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
-                            //write winner_id_logic
-                            matchesmodel.updateOne({
-                                TOURNAMENT_ID:req.query.TOURNAMENT_ID
-                            },{
-                                $set:{
-                                    "MATCHES.$[elem].PLAYER1":WINNER_ID,
-                                    "MATCHES.$[elem2].winner_id":WINNER_ID,
-                                    "MATCHES.$[elem2].completion_status":"Done"
-                                }
-                            },{
-                                arrayFilters:[{"elem.MATCHID":result4.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result4.MATCHES[matchid].MATCHID}]
-                            },function(error,result2){
-                                if(error){
-                                    console.log(error)
-                                }
-                                if(result2){
-                                    res.status(200).send({
-                                        Message:'Updated Successfully',
-                                        WINNER:WINNER_ID
-                                    })
-                                }
-                            })
-                        }
-                        else{
-                            matchesmodel.updateOne({
-                                TOURNAMENT_ID:req.query.TOURNAMENT_ID
-                            },{
-                                $set:{
-                                    "MATCHES.$[elem].PLAYER2":WINNER_ID,
-                                    "MATCHES.$[elem2].winner_id":WINNER_ID,
-                                    "MATCHES.$[elem2].completion_status":"Done"   
-                                }
-                            },{
-                                arrayFilters:[{"elem.MATCHID":result4.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result4.MATCHES[matchid].MATCHID}]
-                            },function(error,result3){
-                                if(error){
-                                    console.log(error)
-                                }
-                                if(result3){
-                                    res.status(200).send({
-                                        Message:'Updated Successfully',
-                                        WINNER:WINNER_ID
-                                    })
-                                }
-                            })
-                        }
+                        console.log(LOSER_ID)
+                        USER.findOne({
+                            USERID:WINNER
+                        },function(er,re){
+                            if(er){
+                                throw er
+                            }
+                            if(re){
+                                USER.updateOne({
+                                    USERID:WINNER
+                                },{
+                                    POINTS:re.POINTS+10
+                                },function(err,rre){
+                                    if(err){
+                                        throw err
+                                    }
+                                    if(rre){
+                                        USER.findOne({
+                                            USERID:LOSER_ID
+                                        },function(er2,re2){
+                                            if(er2){
+                                                throw er2
+                                            }
+                                            if(re2){
+                                                USER.updateOne({
+                                                    USERID:LOSER_ID
+                                                },{
+                                                    POINTS:re2.POINTS+5
+                                                },function(er3,re3){
+                                                    if(er3){
+                                                        throw er3
+                                                    }
+                                                    if(re3){
+                                                        if(result4.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+                                                            //write winner_id_logic
+                                                            matchesmodel.updateOne({
+                                                                TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                                                            },{
+                                                                $set:{
+                                                                    "MATCHES.$[elem].PLAYER1":WINNER_ID,
+                                                                    "MATCHES.$[elem2].winner_id":WINNER_ID,
+                                                                    "MATCHES.$[elem2].completion_status":"Done"
+                                                                }
+                                                            },{
+                                                                arrayFilters:[{"elem.MATCHID":result4.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result4.MATCHES[matchid].MATCHID}]
+                                                            },function(error,result2){
+                                                                if(error){
+                                                                    console.log(error)
+                                                                }
+                                                                if(result2){
+                                                                    res.status(200).send({
+                                                                        Message:'Updated Successfully',
+                                                                        WINNER:WINNER_ID
+                                                                    })
+                                                                }
+                                                            })
+                                                        }
+                                                        else{
+                                                            matchesmodel.updateOne({
+                                                                TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                                                            },{
+                                                                $set:{
+                                                                    "MATCHES.$[elem].PLAYER2":WINNER_ID,
+                                                                    "MATCHES.$[elem2].winner_id":WINNER_ID,
+                                                                    "MATCHES.$[elem2].completion_status":"Done"   
+                                                                }
+                                                            },{
+                                                                arrayFilters:[{"elem.MATCHID":result4.MATCHES[matchid].NEXT_MATCH_ID},{"elem2.MATCHID":result4.MATCHES[matchid].MATCHID}]
+                                                            },function(error,result3){
+                                                                if(error){
+                                                                    console.log(error)
+                                                                }
+                                                                if(result3){
+                                                                    res.status(200).send({
+                                                                        Message:'Updated Successfully',
+                                                                        WINNER:WINNER_ID
+                                                                    })
+                                                                }
+                                                            })
+                                                        }
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
             
                     }
                 })                
@@ -1509,7 +1589,7 @@ userRouter.post('/rzp_payment',async (req,res)=>{
             })
         }
         else{
-        
+
             console.log(order.id)
             res.status(200).send({
                 orderID:order.id,
