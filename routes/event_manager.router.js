@@ -254,6 +254,10 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
 evrouter.get('/createMatches',async (req,res)=>{
     try{
         console.log(req.query.TOURNAMENT_ID)
+        const splt = req.query.TOURNAMENT_ID.split("-")
+        if(splt[splt.length()-1][0]!='U'){
+            req.query.TOURNAMENT_ID+='+'
+        }
         const result = await createMatches(req.query.TOURNAMENT_ID)
         if(result){
             tournament.findOneAndUpdate({
