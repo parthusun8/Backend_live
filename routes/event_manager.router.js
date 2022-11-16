@@ -256,7 +256,7 @@ evrouter.get('/createMatches',async (req,res)=>{
         console.log(req.query.TOURNAMENT_ID)
         const splt = req.query.TOURNAMENT_ID.split("-")
         if(splt[splt.length-1][0]!='U'){
-            req.query.TOURNAMENT_ID+='+'
+            req.query.TOURNAMENT_ID[req.query.TOURNAMENT_ID.length-1]='+'
             console.log('U')
             console.log(req.query.TOURNAMENT_ID)
 
