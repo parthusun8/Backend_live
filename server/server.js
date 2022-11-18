@@ -249,6 +249,7 @@ io.on("connection",(socket)=>{
                                 color:color
                             }))
                             setTimeout(()=>{
+                                console.log('In spot clicked return tourna')
                                 console.log(obj.TOURNAMENT_ID)
                                 tournamentModel.findOne({
                                     TOURNAMENT_ID:obj.TOURNAMENT_ID
