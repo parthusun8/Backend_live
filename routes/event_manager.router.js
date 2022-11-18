@@ -255,14 +255,14 @@ evrouter.get('/createMatches',async (req,res)=>{
     try{
         console.log(req.query.TOURNAMENT_ID)
         const splt = req.query.TOURNAMENT_ID.split("-")
-        if(splt[splt.length-1][0]!='U'){
-            var r = req.query.TOURNAMENT_ID.split(" ")
-            r[0]+='+'
-            console.log('U')
-            console.log(r[0])
-            req.query.TOURNAMENT_ID = r[0]
+        // if(splt[splt.length-1][0]!='U'){
+        //     var r = req.query.TOURNAMENT_ID.split(" ")
+        //     r[0]+='+'
+        //     console.log('U')
+        //     console.log(r[0])
+        //     req.query.TOURNAMENT_ID = r[0]
 
-        }
+        // }
         const result = await createMatches(req.query.TOURNAMENT_ID)
         if(result){
             tournament.findOneAndUpdate({
