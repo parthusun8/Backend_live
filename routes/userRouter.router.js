@@ -1481,15 +1481,15 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                 var r2 = []
                 console.log(typeof(r1))
                 for(let i=0;r1[i];i++){
-                    console.log(i)
-                    console.log(r1[i].TOURNAMENT_ID)
+                    //console.log(i)
+                    //console.log(r1[i].TOURNAMENT_ID)
                     const curDate = new Date(new Date().getTime() + istConstant)
                     const end_date = new Date(r1[i].END_TIMESTAMP)
-                    console.log(curDate.getTime())
-                    console.log(end_date.getTime())
-                    console.log(curDate.getTime()>end_date.getTime())
+                    //console.log(curDate.getTime())
+                    //console.log(end_date.getTime())
+                    //console.log(curDate.getTime()>end_date.getTime())
                     if(curDate.getTime()<end_date.getTime()){
-                        console.log(r1[i])
+                        //console.log(r1[i])
                         var spotStatusArrays = []
                         for(var j = 0;j<result1.length;j++){
                             if(result1[j].TOURNAMENT_ID.includes(r1[i].TOURNAMENT_ID)){
