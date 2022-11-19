@@ -1493,8 +1493,15 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                         var spotStatusArrays = []
                         for(var j = 0;j<result1.length;j++){
                             if(result1[j].TOURNAMENT_ID.includes(r1[i].TOURNAMENT_ID)){
+                                var cat = ""
+                                if(result1[j].CATEGORY=='MS'){
+                                    cat=`Men's Singles ${result1[j].AGE_CATEGORY}`
+                                }
+                                else{
+                                    cat=`Women's Singles ${result1[j].AGE_CATEGORY}`
+                                }
                                 spotStatusArrays.push({
-                                    category:result1[j].CATEGORY,
+                                    category:cat,
                                     id: result1[j].TOURNAMENT_ID,
                                     array: result1[j].SPOT_STATUS_ARRAY,
                                     STATUS:r1[i].STATUS,
