@@ -203,6 +203,7 @@ io.on("connection",(socket)=>{
             if(result){
                 const spotStatusArray = result.SPOT_STATUS_ARRAY
                 console.log("Inside join-booking");
+                console.log(result.SPOT_STATUS_ARRAY)
                 console.log("Emitted Spot Status Array")
                 socket.emit('spotStatusArray',JSON.stringify({
                     total_spots:result.NO_OF_KNOCKOUT_ROUNDS,
