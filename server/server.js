@@ -278,8 +278,18 @@ io.on("connection",(socket)=>{
                                                 }
                                                 if(result2){
                                                     console.log("Emit remove from waiting list")
-                                                    io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list',{
-                                                        btnID:obj.btnID
+                                                    tournament.findOne({
+                                                        TOURNAMENT_ID:obj.TOURNAMENT_ID
+                                                    },function(errr,resss){
+                                                        if(errr){
+                                                            console.log(errr)
+                                                        }
+                                                        if(resss){
+                                                            console.log(resss.SPOT_STATUS_ARRAY)
+                                                            io.to(obj.TOURNAMENT_ID).emit('removed-from-waiting-list',{
+                                                                btnID:obj.btnID
+                                                            })
+                                                        }
                                                     })
                                                 }
                                             })
