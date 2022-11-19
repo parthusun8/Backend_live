@@ -223,6 +223,8 @@ io.on("connection",(socket)=>{
             console.log(obj);
             console.log(obj.USERID)
             const tid = obj1.TOURNAMENT_ID
+            console.log('Button')
+            console.log(obj.btnID)
             tournament.findOne({
                 TOURNAMENT_ID:tid
             },function(error,result){
