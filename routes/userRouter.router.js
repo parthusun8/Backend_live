@@ -1500,6 +1500,7 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                                 else{
                                     cat=`Women's Singles ${result1[j].AGE_CATEGORY}`
                                 }
+                                console.log(result1[j].SPOT_STATUS_ARRAY)
                                 spotStatusArrays.push({
                                     category:cat,
                                     id: result1[j].TOURNAMENT_ID,
