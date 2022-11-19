@@ -18,10 +18,10 @@
   --color-text-secondary: #8A8F98;
   --color-text-alert: #d72641;
   --color-text-icon: #dbdade;
-  --color-bg-primary: #fff;
+  --color-bg-primary: rgb(77, 75, 75);
   --color-bg-secondary: #1f2022;
   --color-bg-alert: #fdeaec;
-  --color-theme-primary: #623ce6;
+  --color-theme-primary: #e63c3f;
 }
 button,
 input,
@@ -383,7 +383,7 @@ body {
             const dat1 = await pl1.json()
             if(dat1){
             console.log(dat1)
-            $('.team-name.pl1').text(dat1.Name)
+            $('.team-name.pl1').text(dat1.Name + '(PL1)')
             $('.player1').attr('src',dat1.Profile_pic_url)
           }  
           }
@@ -392,7 +392,7 @@ body {
             const dat2 = await pl2.json()
             if(dat2){
             console.log(dat2)
-            $('.team-name.pl2').text(dat2.Name)
+            $('.team-name.pl2').text(dat2.Name + '(PL2)')
             $('.player2').attr('src',dat2.Profile_pic_url)
           }
           }
