@@ -330,10 +330,13 @@ function renderBrackets(struct) {
 $(window).on('load', function() {
     console.log('Hello')
     var opts = parseInt($('#bracs').text())
-    if(!_.isNaN(opts) && opts <= _.last(knownBrackets))
+    if(!_.isNaN(opts) && opts <= _.last(knownBrackets)){
         getBracket(opts);
+		$('button').prop('disabled',true)
+	}
     else
         alert('The bracket size you specified is not currently supported.');
+
         $('#clear').off('click');
         $('#clear').on('click',function(){
             $('#brackets').html("");
