@@ -1361,7 +1361,12 @@ userRouter.get('/allMatches', async (req,res)=>{
                                             break
                                         }
                                     }
-                                
+                                    if(us1==""){
+                                        us1="N/A"
+                                    }
+                                    if(us2==""){
+                                        us2="N/A"
+                                    }
                                 mtches.push({
                                     TOURNAMENT_ID:req.query.TOURNAMENT_ID,
                                     PLAYER1_NAME:us1,
