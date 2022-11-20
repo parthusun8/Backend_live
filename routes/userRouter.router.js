@@ -586,6 +586,7 @@ userRouter.get('/downloadStats',async (req,res)=>{
             var usrArray = []
             for(var i=0;i<result.SPOT_STATUS_ARRAY.length;i++){
                 var a = result.SPOT_STATUS_ARRAY[i].split("-")
+                console.log(a)
                 if(a[0]=='confirmed'){
                     USER.findOne({
                         USERID:a[1]
