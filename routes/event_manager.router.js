@@ -139,13 +139,13 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
             console.log(req.body)
             console.log("usr found")
             if(req.body.SPORT=="Badminton"){
-                req.body.TOURNAMENT_ID = `BA${req.body.USERID}${usr.HOSTED_TOURNAMENTS.length+1}`
+                req.body.TOURNAMENT_ID = `BA${Math.floor(100000 + Math.random() * 900000)}`
             }
             else if(req.body.SPORT=="Table Tennis"){
-                req.body.TOURNAMENT_ID = `TT${req.body.USERID}${usr.HOSTED_TOURNAMENTS.length+1}`
+                req.body.TOURNAMENT_ID = `TT${Math.floor(100000 + Math.random() * 900000)}`
             }
             else if(req.body.SPORT=="Cricket"){
-                req.body.TOURNAMENT_ID = `CR${req.body.USERID}${usr.HOSTED_TOURNAMENTS.length+1}`
+                req.body.TOURNAMENT_ID = `CR${Math.floor(100000 + Math.random() * 900000)}`
             }
             console.log(req.body);
             //update timings
