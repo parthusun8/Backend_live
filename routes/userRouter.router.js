@@ -602,10 +602,10 @@ userRouter.get('/downloadStats',async (req,res)=>{
                         for(var j=0;j<allUsers.length;j++){
                             if(a[1]==allUsers[j].USERID){
                                 usrArray = [...usrArray,{
-                                    "NAME":ress.NAME,
-                                    "USERID":ress.USERID,
-                                    "PHONE":ress.PHONE,
-                                    "POINTS":ress.POINTS,
+                                    "NAME":result.NAME,
+                                    "USERID":result.USERID,
+                                    "PHONE":result.PHONE,
+                                    "POINTS":result.POINTS,
                                 }]
                             }
                         }
