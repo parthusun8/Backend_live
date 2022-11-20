@@ -599,7 +599,7 @@ userRouter.get('/downloadStats',async (req,res)=>{
             }
             const fields = ["NAME","USERID","PHONE","POINTS"]
             const csvparse = new csvgen({fields});
-            const data = csvparse.parse(records)
+            const data = csvparse.parse(usrArray)
             console.log(data);
             res.setHeader("Content-Type", "text/csv");
             res.setHeader("Content-Disposition","attachment; filename=visitorDetails.csv");
