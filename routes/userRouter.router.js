@@ -870,9 +870,16 @@ userRouter.get('/profilePicUrl',async(req,res)=>{
         })
         if(usr){
             console.log(usr)
-            res.status(200).send({
-                Message:usr.PROFILE_PIC_URL
-            })
+            if(!usr.PROFILE_PIC_URL){
+                res.status(404).send({
+                    Message:"No Image"
+                })                
+            }
+            else{
+                res.status(200).send({
+                    Message:usr.PROFILE_PIC_URL
+                })
+            }
         }
     }catch(error){
         res.status(404).send({
