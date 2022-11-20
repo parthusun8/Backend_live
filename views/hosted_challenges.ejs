@@ -251,6 +251,9 @@
 <div class="goToTournamentDetails">
     <button class="tdetails">Click Here to View Stats</button>
 </div>
+<div class="goToTournamentDetails">
+    <button class="tdetailsdownload"><a href="https://ardentsportsapis.herokuapp.com/downloadStats?TOURNAMENT_ID=<%=TOURNEY_ID%>"></a></button>
+</div>
 <div class="brackets" id="brackets"></div>
 <div class="bracs" id="bracs"><%=no_of_bracs%></div>
 <div class="tourney_id" id="tourney_id"><%=TOURNEY_ID%></div>
@@ -259,7 +262,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
     	$(document).on('ready', function() {
-
+$()
 var knownBrackets = [2,4,8,16,32,64], // brackets with "perfect" proportions (full fields, no byes)
 
     exampleTeams  = [] // because a bracket needs some teams!

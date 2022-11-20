@@ -14,6 +14,7 @@ const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
 const multer = require('multer')
 const razorpay = require('razorpay')
+const csvgen = require('json2csv').Parser
 const rzp_instance = new razorpay({
     key_id:'rzp_test_MKSizWXlqa0LsE',
    key_secret:'000II2IEeqG4k6rD07W3HBDX'
@@ -564,6 +565,45 @@ userRouter.get('/hosted',async (req,res)=>{
                     res.render('hosted_challenges',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS})
                 }
             })
+        }
+    })
+})
+userRouter.get('/downloadStats',async (req,res)=>{
+    //reqd_tournament_id
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(err,result){
+        if(err){
+            res.status(404).send({
+                Message:'Error in Receiving CSV'
+            })
+        }
+        if(result){
+            var usrArray = []
+            for(var i=0;i<result.SPOT_STATUS_ARRAY.length;i++){
+                var a = result.SPOT_STATUS_ARRAY[i].split("-")
+                if(a[0]=='confirmed'){
+                    USER.findOne({
+                        USERID:a[1]
+                    },function(errr,ress){
+                        if(ress){
+                            usrArray = [...usrArray,{
+                                "NAME":ress.NAME,
+                                "USERID":ress.USERID,
+                                "PHONE":ress.PHONE,
+                                "POINTS":ress.POINTS,
+                            }]
+                        }
+                    })
+                }
+            }
+            const fields = ["NAME","USERID","PHONE","POINTS"]
+            const csvparse = new csvgen({fields});
+            const data = csvparse.parse(records)
+            console.log(data);
+            res.setHeader("Content-Type", "text/csv");
+            res.setHeader("Content-Disposition","attachment; filename=visitorDetails.csv");
+            res.status(200).end(data);
         }
     })
 })
