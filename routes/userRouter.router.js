@@ -606,13 +606,15 @@ userRouter.get('/downloadStats',async (req,res)=>{
                                     "USERID":allUsers[j].USERID,
                                     "PHONE":allUsers[j].PHONE,
                                     "POINTS":allUsers[j].POINTS,
+                                    "CITY":allUsers[j].CITY,
+                                    "STATE":allUsers[j].STATE
                                 }]
                             }
                         }
                     }
                 }
                 console.log(usrArray)
-                const fields = ["NAME","USERID","PHONE","POINTS"]
+                const fields = ["NAME","USERID","PHONE","POINTS","CITY","STATE"]
                 const csvparse = new csvgen({fields});
                 const data = csvparse.parse(usrArray)
                 console.log(data);
