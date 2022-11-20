@@ -416,11 +416,13 @@ body {
               console.log(dat1)
               $('.team-name.pl1').text(`${dat1.Name} (Player 1)`)
               $('.player1').attr('src',dat1.Profile_pic_url)
+              $('.match-score-number match-score-number--leading').text(`${dat1.Name}`)
             }
             if(dat2){
               console.log(dat2)
               $('.team-name.pl2').text(`${dat2.Name} (Player 2)`)
               $('.player2').attr('src',dat2.Profile_pic_url)
+              $('.match-score-number match-score-number').text(`${dat2.Name}`)
             }
           }
         })
