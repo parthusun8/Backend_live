@@ -1,3 +1,4 @@
+const moment = require('moment')
 const axios = require('axios')
 const express = require('express')
 const mongoose = require('mongoose')
@@ -1538,6 +1539,7 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                     //console.log(curDate.getTime()>end_date.getTime())
                     if(curDate.getTime()<end_date.getTime()){
                         //console.log(r1[i])
+                        console.log(moment(end_date).format('LT'))
                         var spotStatusArrays = []
                         for(var j = 0;j<result1.length;j++){
                             if(result1[j].TOURNAMENT_ID.includes(r1[i].TOURNAMENT_ID)){
