@@ -578,6 +578,7 @@ userRouter.get('/downloadStats',async (req,res)=>{
         WALLET_BALANCE:0  
     }).lean()
     if(allUsers){
+        console.log(allUsers)
         tournamentModel.findOne({
             TOURNAMENT_ID:req.query.TOURNAMENT_ID
         },function(err,result){
@@ -588,7 +589,6 @@ userRouter.get('/downloadStats',async (req,res)=>{
             }
             if(result){
                 var usrArray = []
-                var result = []
                 for(var i=0;i<result.SPOT_STATUS_ARRAY.length;i++){
                     var a = result.SPOT_STATUS_ARRAY[i].split("-")
                     console.log(a)
