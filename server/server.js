@@ -78,6 +78,7 @@ io.on("connection",async (socket)=>{
             const pl1score = obj.PLAYER_1_SCORE
             const pl2score = obj.PLAYER_2_SCORE
             const set  = parseInt(obj.set,10) - 1;
+            console.log('Set No.:')
             console.log(obj.set);
             console.log(set);
             setscore_array_p1[set] = parseInt(pl1score,10)
