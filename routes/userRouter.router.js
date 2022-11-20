@@ -1543,10 +1543,10 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                             if(result1[j].TOURNAMENT_ID.includes(r1[i].TOURNAMENT_ID)){
                                 var cat = ""
                                 if(result1[j].CATEGORY=='MS'){
-                                    cat=`Men's Singles ${result1[j].AGE_CATEGORY}`
+                                    cat=`${result1[j].AGE_CATEGORY} Open Men's Singles`
                                 }
                                 else{
-                                    cat=`Women's Singles ${result1[j].AGE_CATEGORY}`
+                                    cat=`${result1[j].AGE_CATEGORY} Open Women's Singles`
                                 }
                                 console.log(result1[j].TOURNAMENT_NAME)
                                 console.log(result1[j].SPOT_STATUS_ARRAY)
