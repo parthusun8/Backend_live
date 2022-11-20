@@ -263,6 +263,16 @@ evrouter.get('/createMatches',async (req,res)=>{
         //     req.query.TOURNAMENT_ID = r[0]
 
         // }
+        // const trn = await tournament.findOne({
+        //     TOURNAMENT_ID:req.query.TOURNAMENT_ID
+        // })
+        // if(trn){
+        //     if(trn.STATUS==false){
+        //         res.status(200).send({
+
+        //         })
+        //     }
+        // }
         const result = await createMatches(req.query.TOURNAMENT_ID)
         if(result){
             tournament.findOneAndUpdate({
