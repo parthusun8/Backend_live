@@ -306,9 +306,9 @@ body {
                             12 Aug at <strong>19:00</strong>
                         </div> -->
                         <div class="match-score">
-                          <span class="match-score-number match-score-number--leading">Player 1</span>
+                          <span class="match-score-number match-score-number--leading" id="pl1name">Player 1</span>
                           <span class="match-score-divider">:</span>
-                          <span class="match-score-number">Player 2</span>
+                          <span class="match-score-number" id="pl2name">Player 2</span>
                       </div>
                         <div class="match-score">
                             <span class="match-score-number match-score-number--leading" id="pl1s1"><%=PLAYER1_SCORE.set1%></span>
@@ -416,13 +416,13 @@ body {
               console.log(dat1)
               $('.team-name.pl1').text(`${dat1.Name} (Player 1)`)
               $('.player1').attr('src',dat1.Profile_pic_url)
-              $('.match-score-number match-score-number--leading').text(`${dat1.Name}`)
+              $('#pl1name').text(`${dat1.Name}`)
             }
             if(dat2){
               console.log(dat2)
               $('.team-name.pl2').text(`${dat2.Name} (Player 2)`)
               $('.player2').attr('src',dat2.Profile_pic_url)
-              $('.match-score-number match-score-number').text(`${dat2.Name}`)
+              $('#pl2name').text(`${dat2.Name}`)
             }
           }
         })
