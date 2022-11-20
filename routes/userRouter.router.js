@@ -869,6 +869,7 @@ userRouter.get('/profilePicUrl',async(req,res)=>{
             USERID:req.query.USERID
         })
         if(usr){
+            console.log(usr)
             res.status(200).send({
                 Message:usr.PROFILE_PIC_URL
             })
