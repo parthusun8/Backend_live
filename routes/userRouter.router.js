@@ -574,43 +574,54 @@ userRouter.get('/download',async (req,res)=>{
 })
 userRouter.get('/downloadStats',async (req,res)=>{
     //reqd_tournament_id
-    tournamentModel.findOne({
-        TOURNAMENT_ID:req.query.TOURNAMENT_ID
-    },function(err,result){
-        if(err){
-            res.status(404).send({
-                Message:'Error in Receiving CSV'
-            })
-        }
-        if(result){
-            var usrArray = []
-            for(var i=0;i<result.SPOT_STATUS_ARRAY.length;i++){
-                var a = result.SPOT_STATUS_ARRAY[i].split("-")
-                console.log(a)
-                if(a[0]=='confirmed'){
-                    USER.findOne({
-                        USERID:a[1]
-                    },function(errr,ress){
-                        if(ress){
-                            usrArray = [...usrArray,{
-                                "NAME":ress.NAME,
-                                "USERID":ress.USERID,
-                                "PHONE":ress.PHONE,
-                                "POINTS":ress.POINTS,
-                            }]
-                        }
-                    })
-                }
+    const allUsers = await USER.find({
+        WALLET_BALANCE:0  
+    }).lean()
+    if(allUsers){
+        tournamentModel.findOne({
+            TOURNAMENT_ID:req.query.TOURNAMENT_ID
+        },function(err,result){
+            if(err){
+                res.status(404).send({
+                    Message:'Error in Receiving CSV'
+                })
             }
-            const fields = ["NAME","USERID","PHONE","POINTS"]
-            const csvparse = new csvgen({fields});
-            const data = csvparse.parse(usrArray)
-            console.log(data);
-            res.setHeader("Content-Type", "text/csv");
-            res.setHeader("Content-Disposition","attachment; filename=details.csv");
-            res.status(200).end(data);
-        }
-    })
+            if(result){
+                var usrArray = []
+                var result = []
+                for(var i=0;i<result.SPOT_STATUS_ARRAY.length;i++){
+                    var a = result.SPOT_STATUS_ARRAY[i].split("-")
+                    console.log(a)
+                    if(a[0]=='confirmed'){
+                        // USER.findOne({
+                        //     USERID:a[1]
+                        // },function(errr,ress){
+                        //     if(ress){
+                        //     }
+                        // })
+                        for(var j=0;j<allUsers.length;j++){
+                            if(a[1]==allUsers[j].USERID){
+                                usrArray = [...usrArray,{
+                                    "NAME":ress.NAME,
+                                    "USERID":ress.USERID,
+                                    "PHONE":ress.PHONE,
+                                    "POINTS":ress.POINTS,
+                                }]
+                            }
+                        }
+                    }
+                }
+                console.log(usrArray)
+                const fields = ["NAME","USERID","PHONE","POINTS"]
+                const csvparse = new csvgen({fields});
+                const data = csvparse.parse(usrArray)
+                console.log(data);
+                res.setHeader("Content-Type", "text/csv");
+                res.setHeader("Content-Disposition","attachment; filename=details.csv");
+                res.status(200).end(data);
+            }
+        })   
+    }
 })
 userRouter.get('/getConfirmationDetails',async (req,res)=>{
     //queryParams will have USERID and TOURNAMENT_ID
