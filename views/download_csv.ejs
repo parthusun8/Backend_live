@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a{
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://ardentsportsapis.herokuapp.com/downloadStats?TOURNAMENT_ID=<%=TOURNEY_ID%>" class="link">Download</a>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
+<!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        $(document).on('ready',function(){
+            const a = document.querySelector('.link')
+            a.click()
+        })
+    </script>
+</body>
+</html>

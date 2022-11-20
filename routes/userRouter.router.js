@@ -569,6 +569,9 @@ userRouter.get('/hosted',async (req,res)=>{
         }
     })
 })
+userRouter.get('/download',async (req,res)=>{
+    res.render('download_csv',{TOURNEY_ID:req.query.TOURNAMENT_ID})
+})
 userRouter.get('/downloadStats',async (req,res)=>{
     //reqd_tournament_id
     tournamentModel.findOne({
