@@ -1542,6 +1542,7 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                         for(var j = 0;j<result1.length;j++){
                             if(result1[j].TOURNAMENT_ID.includes(r1[i].TOURNAMENT_ID)){
                                 var cat = ""
+                                console.log(result1[j].AGE_CATEGORY)
                                 if(result1[j].CATEGORY=='MS'){
                                     cat=`${result1[j].AGE_CATEGORY} Men's Singles`
                                 }
