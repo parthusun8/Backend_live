@@ -286,7 +286,7 @@ evrouter.get('/createMatches',async (req,res)=>{
                 }
                 else{
                     const tid_base = req.query.TOURNAMENT_ID.split("-")[0]
-                    console.log(tid_base)
+                    console.log(`${tid_base} base id`)
                     onlytourneys.findOneAndUpdate({
                         TOURNAMENT_ID:tid_base
                     },{
