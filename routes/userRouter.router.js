@@ -1216,7 +1216,9 @@ userRouter.get('/endMatch',async (req,res)=>{
                         else{
                             set3 = 0
                         }
-                        if(set1+set2+set3>=2){
+                        const pl1sum = result4.MATCHES[matchid].PLAYER1_SCORE.set1 + result4.MATCHES[matchid].PLAYER1_SCORE.set2 + result4.MATCHES[matchid].PLAYER1_SCORE.set3
+                        const pl2sum = result4.MATCHES[matchid].PLAYER2_SCORE.set1 + result4.MATCHES[matchid].PLAYER2_SCORE.set2 + result4.MATCHES[matchid].PLAYER2_SCORE.set3
+                        if(pl1sum>pl2sum){
                             WINNER_ID = result4.MATCHES[matchid].PLAYER1
                             LOSER_ID = result4.MATCHES[matchid].PLAYER2
                         }
@@ -1562,7 +1564,7 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                     //console.log(curDate.getTime())
                     //console.log(end_date.getTime())
                     //console.log(curDate.getTime()>end_date.getTime())
-                    if(curDate.getTime()<end_date.getTime()){
+                    if(curDate.getTime()<start_time.getTime()&&r1[i].REGISTRATION_CLOSES_BEFORE>0){
                         //console.log(r1[i])
                         console.log(moment(end_date).format('LT'))
                         var spotStatusArrays = []

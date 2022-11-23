@@ -285,9 +285,21 @@ evrouter.get('/createMatches',async (req,res)=>{
                     throw error
                 }
                 else{
-                    res.status(200).send({
-                        Message:'Matches Created'
-                    })                    
+                    const tid_base = req.query.TOURNAMENT_ID.split("-")[0]
+                    onlytourneys.findOneAndUpdate({
+                        TOURNAMENT_ID:tid_base
+                    },{
+                        REGISTRATION_CLOSES_BEFORE:0
+                    },function(errr,resss){
+                        if(errr){
+                            throw errr
+                        }
+                        else{
+                            res.status(200).send({
+                                Message:'Matches Created'
+                            })                    
+                        }
+                    })
                 }
             })
         }
