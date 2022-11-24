@@ -947,6 +947,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                 console.log(result)
                 console.log('Finals')
                 var WINNER = ""
+                var LOSER = ""
                 if(result.MATCHES[matchid].PLAYER1=="Not Booked"||result.MATCHES[matchid].PLAYER1=="Not Yet Assigned"){
                     WINNER = result.MATCHES[matchid].PLAYER2
                 }
@@ -977,7 +978,9 @@ userRouter.get('/endMatch',async (req,res)=>{
                     else{
                         set3 = 0
                     }
-                    if(set1+set2+set3>=2){
+                    const pl1sum= result.MATCHES[matchid].PLAYER1_SCORE.set1 + result.MATCHES[matchid].PLAYER1_SCORE.set2 + result.MATCHES[matchid].PLAYER1_SCORE.set3
+                    const pl2sum = result.MATCHES[matchid].PLAYER2_SCORE.set1 + result.MATCHES[matchid].PLAYER2_SCORE.set2 + result.MATCHES[matchid].PLAYER2_SCORE.set3
+                    if(pl1sum>pl2sum){
                         WINNER = result.MATCHES[matchid].PLAYER1
                     }
                     else{
@@ -1023,7 +1026,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                                 USER.updateOne({
                                     USERID:WINNER
                                 },{
-                                    POINTS:f.POINTS+100
+                                    POINTS:f.POINTS+10
                                 },function(error,result){
                                     if(error){
                                         res.status(404).send({
@@ -1031,9 +1034,30 @@ userRouter.get('/endMatch',async (req,res)=>{
                                         })      
                                     }
                                     else{
-                                        res.status(200).send({
-                                            Message:'Successfully Updated Finals',
-                                            WINNER:WINNER
+                                        USER.findOne({
+                                            USERID:LOSER
+                                        },function(erre,resse){
+                                            if(resse){
+                                                USER.updateOne({
+                                                    USERID:LOSER
+                                                },{
+                                                    POINTS:resse.POINTS+5
+                                                },function(err3,ress3){
+                                                    if(ress3){
+                                                        res.status(200).send({
+                                                            Message:'Successfully Updated Finals',
+                                                            WINNER:WINNER
+                                                        })
+                                                    }
+                                                    else if(err3){
+                                                        console.log(err3)
+                                                        res.status(200).send({
+                                                            Message:'Error',
+                                                            WINNER:'None'
+                                                        })
+                                                    }
+                                                })
+                                            }
                                         })        
                                         
                                     }
