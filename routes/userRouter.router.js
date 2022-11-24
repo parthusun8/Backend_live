@@ -294,9 +294,9 @@ userRouter.get('/prizeMoney',async (req,res)=>{
         })
         if(result){
             res.status(200).send({
-            GOLD:result.GOLD,
-            SILVER:result.SILVER,
-            BRONZE:result.BRONZE
+            GOLD:`${result.GOLD}`,
+            SILVER:`${result.SILVER}`,
+            BRONZE:`${result.BRONZE}`
         })
         }
     }catch(error){
