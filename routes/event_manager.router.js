@@ -182,11 +182,32 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 //new_obj.PRIZE_POOL.split("-")
                 const entryfee = new_obj.ENTRY_FEE.split("-")
                 for(var i=0;i<categories.length;i++){
-                    if(categories[i]==`Men's Single`){
+                    if(categories[i]==`Men's Singles`){
                         categories[i] = `MS`
                     }
-                    else if(categories[i]==`Women's Single`){
+                    else if(categories[i]==`Women's Singles`){
                         categories[i] = `WS`
+                    }
+                    else if(categories[i]==`Men's Doubles`){
+                        categories[i] = `MD`
+                    }
+                    else if(categories[i]==`Women's Doubles`){
+                        categories[i] = `WD`
+                    }
+                    else if(categories[i]==`Mixed Doubles`){
+                        categories[i] = `MixD`
+                    }
+                    else if(categories[i]==`Boys Singles`){
+                        categories[i] = `BS`
+                    }
+                    else if(categories[i]==`Girls Singles`){
+                        categories[i] = `GS`
+                    }
+                    else if(categories[i]==`Boys Doubles`){
+                        categories[i] = `BD`
+                    }
+                    else if(categories[i]==`Girls Doubles`){
+                        categories[i] = `GD`
                     }
                 }
                 console.log(categories)
