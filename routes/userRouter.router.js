@@ -286,6 +286,28 @@ userRouter.post('/userProfileBuild',async(req,res)=>{
         })
     }
 })
+userRouter.get('/prizeMoney',async (req,res)=>{
+    //reqd tournament_id
+    try{
+        const result = await tournamentModel.findOne({
+            TOURNAMENT_ID:req.query.TOURNAMENT_ID
+        })
+        if(result){
+            res.status(200).send({
+            GOLD:result.GOLD,
+            SILVER:result.SILVER,
+            BRONZE:result.BRONZE
+        })
+        }
+    }catch(error){
+        console.log(error)
+        res.status(200).send({
+            GOLD:'NA',
+            SILVER:'NA',
+            BRONZE:'NA'
+        })
+    }
+})
 userRouter.get('/defaultProfilePic',async(req,res)=>{
     USER.updateMany({
         WALLET_BALANCE:0
