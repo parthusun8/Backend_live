@@ -1369,6 +1369,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                                 throw er
                             }
                             if(re){
+                                console.log('Winner Updating')
                                 USER.updateOne({
                                     USERID:WINNER
                                 },{
@@ -1378,6 +1379,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                                         throw err
                                     }
                                     if(rre){
+                                        console.log('Loser Updating')
                                         USER.findOne({
                                             USERID:LOSER_ID
                                         },function(er2,re2){
@@ -1394,6 +1396,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                                                         throw er3
                                                     }
                                                     if(re3){
+                                                        console.log('Updating Next Match Spot')
                                                         if(result4.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                                                             //write winner_id_logic
                                                             matchesmodel.updateOne({
