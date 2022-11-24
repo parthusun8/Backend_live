@@ -932,7 +932,7 @@ userRouter.get('/getScore',async (req,res)=>{
 })
 userRouter.post('/walkover',async (req,res)=>{
     //reqd, tournament_id,zero_indexed_matchid
-    const matchid = req.body.MATCHID
+    const matchid = parseInt(req.body.MATCHID)
     matchesmodel.findOne({
         TOURNAMENT_ID:req.body.TOURNAMENT_ID
     },function(err,ress){
