@@ -1723,6 +1723,26 @@ userRouter.post('/updateUserPayment',async (req,res)=>{
         })
     })
 })
+userRouter.post('/rules',async (req,res)=>{
+    const tid = req.body.TOURNAMENT_ID 
+    const rules = req.body.RULES 
+    tournamentModel.updateOne({
+        TOURNAMENT_ID:tid
+    },{
+        RULES:rules
+    },function(errr,resss){
+        if(errr){
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        else if(resss){
+            res.status(200).send({
+                Message:'Success'
+            })
+        }
+    })
+})
 userRouter.get('/success',async (req,res)=>{
     res.send('Success')
 })

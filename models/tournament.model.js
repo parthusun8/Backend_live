@@ -172,6 +172,10 @@ const bd =new mongoose.Schema({
   },
   ORGANIZER_ID:{
     type:String
+  },
+  RULES:{
+    type:String,
+    default:"N/A"
   }
 });
 
