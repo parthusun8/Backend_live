@@ -930,6 +930,87 @@ userRouter.get('/getScore',async (req,res)=>{
         }
     })
 })
+userRouter.post('/walkover',async (req,res)=>{
+    //reqd, tournament_id,zero_indexed_matchid
+    const matchid = req.body.MATCHID
+    matchesmodel.findOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+    },function(err,ress){
+        if(err){
+            console.log(err)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        else if(ress){
+            matchesmodel.updateOne({
+                TOURNAMENT_ID:req.body.TOURNAMENT_ID
+            },{
+                $set:{
+                    "MATCHES.$[elem].winner_id":req.body.WINNER_ID,
+                    "MATCHES.$[elem].completion_status":"Done"
+                }
+            },{
+                arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].MATCHID}] 
+            },function(errr,resss){
+                if(errr){
+                    res.status(404).send({
+                        Message:'Error'
+                    })
+                }
+                else if(resss){
+                    //update next match spot
+                    if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+                        matchesmodel.updateOne({
+                            TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                        },{
+                            $set:{
+                                "MATCHES.$[elem].PLAYER1":req.body.WINNER_ID
+                            }
+                        },{
+                            arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].NEXT_MATCH_ID}]
+                        },function(e,result2){
+                            if(e){
+                                console.log(e)
+                                res.status(404).send({
+                                    Message:'Error'
+                                })
+                            }
+                            if(result2){
+                                res.status(200).send({
+                                    Message:'Success',
+                                })
+                            }
+                        })
+                    }
+                    else if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==1){
+                        matchesmodel.updateOne({
+                            TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                        },{
+                            $set:{
+                                "MATCHES.$[elem].PLAYER2":req.body.WINNER_ID
+                            }
+                        },{
+                            arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].NEXT_MATCH_ID}]
+                        },function(e,result2){
+                            if(e){
+                                console.log(e)
+                                res.status(404).send({
+                                    Message:'Error'
+                                })
+                            }
+                            if(result2){
+                                res.status(200).send({
+                                    Message:'Success',
+                                })
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    })
+})
 userRouter.get('/endMatch',async (req,res)=>{
     //TOURNAMENT_ID and MATCHID,WINNER_ID
     const matchid = parseInt(req.query.MATCHID.split("-")[1])
