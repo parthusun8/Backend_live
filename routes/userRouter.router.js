@@ -1363,7 +1363,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                         console.log(WINNER_ID)
                         console.log(LOSER_ID)
                         USER.findOne({
-                            USERID:WINNER
+                            USERID:WINNER_ID
                         },function(er,re){
                             if(er){
                                 throw er
@@ -1371,7 +1371,7 @@ userRouter.get('/endMatch',async (req,res)=>{
                             if(re){
                                 console.log('Winner Updating')
                                 USER.updateOne({
-                                    USERID:WINNER
+                                    USERID:WINNER_ID
                                 },{
                                     POINTS:re.POINTS+10
                                 },function(err,rre){
