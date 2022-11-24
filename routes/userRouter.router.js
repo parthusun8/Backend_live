@@ -960,6 +960,7 @@ userRouter.post('/walkover',async (req,res)=>{
                 }
                 else if(resss){
                     //update next match spot
+                    console.log('Update Next Match Spot Walkover')
                     if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
                         matchesmodel.updateOne({
                             TOURNAMENT_ID:req.body.TOURNAMENT_ID
