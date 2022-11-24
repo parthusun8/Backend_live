@@ -1496,6 +1496,8 @@ userRouter.get('/allMatches', async (req,res)=>{
                                     TOURNAMENT_ID:req.query.TOURNAMENT_ID,
                                     PLAYER1_NAME:us1,
                                     PLAYER2_NAME:us2,
+                                    PLAYER1_ID:result.MATCHES[i].PLAYER1,
+                                    PLAYER2_ID:result.MATCHES[i].PLAYER2,
                                     MATCHID:result.MATCHES[i].MATCHID,
                                     SPORT_NAME:sport,
                                     LOCATION:result2.LOCATION,
