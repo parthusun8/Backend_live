@@ -3,6 +3,7 @@ const express = require('express')
 const tournament = require('../models/tournament.model')
 const {createMatches,saveMatch} = require('../Functions/createMatches.singles')
 const evrouter = express.Router()
+const ruleschema = require('../models/rules.mongo')
 const usermodel = require('../models/user.mongo')
 const matchesmodel = require('../models/matches.mongo')
 const onlytourneys = require('../models/tourney.mongo')
@@ -194,6 +195,7 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                 let tourneys = []
                 let tourneyMatches = []
                 let tourneyID = []
+                let rules = []
                 for(var i=0;i<categories.length;i++){
                     var obj = {...req.body}
                     console.log(categories[i])
@@ -215,11 +217,15 @@ evrouter.post('/createMultipleTournament',async (req,res)=>{
                         TOURNAMENT_ID:obj.TOURNAMENT_ID,
                         TOURNAMENT_NAME:obj.TOURNAMENT_NAME
                     }
+                    rules[i] = {
+                        TOURNAMENT_ID:obj.TOURNAMENT_ID
+                    }
                 }
                 const res1 = await tournament.insertMany(tourneys)  
                 const res2 = await matchesmodel.insertMany(tourneyMatches)
+                const res3 = await ruleschema.insertMany(rules)
                 //update_event_manager_hosted_tournaments
-                if(res1&&res2){
+                if(res1&&res2&&res3){
                     usermodel.updateOne({
                         USERID:req.body.USERID
                     },{

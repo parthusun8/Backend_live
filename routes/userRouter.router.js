@@ -1726,7 +1726,7 @@ userRouter.post('/updateUserPayment',async (req,res)=>{
 })
 userRouter.post('/rules',async (req,res)=>{
     const tid = req.body.TOURNAMENT_ID 
-    const rules = req.body.RULES 
+    const rules = req.body.RULES
     ruleschema.updateOne({
         TOURNAMENT_ID:tid
     },{
