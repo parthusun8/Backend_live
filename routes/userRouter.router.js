@@ -1048,6 +1048,11 @@ userRouter.post('/tourney_exists',async (req,res)=>{
                 Message:'Success'
             })
         }
+        else{
+            res.status(404).send({
+                Message:'Not Found'
+            })
+        }
     }catch(error){
         console.log(error)
         res.status(404).send({
