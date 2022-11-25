@@ -1036,6 +1036,25 @@ userRouter.post('/walkover',async (req,res)=>{
         }
     })
 })
+userRouter.get('/tourney_exists',async (req,res)=>{
+    //SPORT and TOURNAMENT_ID
+    try{
+        const result = await tournamentModel.findOne({
+            TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+            SPORT:req.query.SPORT
+        })
+        if(result){
+            res.status(200).send({
+                Message:'Success'
+            })
+        }
+    }catch(error){
+        console.log(error)
+        res.status(404).send({
+            Message:'Tournament not found'
+        })
+    }
+})
 userRouter.get('/endMatch',async (req,res)=>{
     //TOURNAMENT_ID and MATCHID,WINNER_ID
     const matchid = parseInt(req.query.MATCHID.split("-")[1])
