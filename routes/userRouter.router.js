@@ -1036,12 +1036,12 @@ userRouter.post('/walkover',async (req,res)=>{
         }
     })
 })
-userRouter.get('/tourney_exists',async (req,res)=>{
+userRouter.post('/tourney_exists',async (req,res)=>{
     //SPORT and TOURNAMENT_ID
     try{
         const result = await tournamentModel.findOne({
-            TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-            SPORT:req.query.SPORT
+            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+            SPORT:req.body.SPORT
         })
         if(result){
             res.status(200).send({
