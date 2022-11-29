@@ -1936,6 +1936,7 @@ userRouter.get('/getrules',async (req,res)=>{
 userRouter.post('/rules',async (req,res)=>{
     const tid = req.body.TOURNAMENT_ID 
     const rules = req.body.RULES
+    console.log(tid)
     console.log(rules)
     ruleschema.updateOne({
         TOURNAMENT_ID:tid
