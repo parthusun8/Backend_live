@@ -1911,6 +1911,28 @@ userRouter.post('/updateUserPayment',async (req,res)=>{
         })
     })
 })
+userRouter.get('/getrules',async (req,res)=>{
+    const tid = req.query.TOURNAMENT_ID
+    try{
+        const rules = await ruleschema.findOne({
+            TOURNAMENT_ID:tid
+        })
+        if(rules){
+            res.status(200).send({
+                Message:rules.RULES
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:'Tournament Doesnt Exist'
+            })
+        }
+    }catch(err){
+        res.status(404).send({
+            Message:'Error'
+        })
+    }
+})
 userRouter.post('/rules',async (req,res)=>{
     const tid = req.body.TOURNAMENT_ID 
     const rules = req.body.RULES
