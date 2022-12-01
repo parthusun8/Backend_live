@@ -741,7 +741,7 @@ userRouter.get('/isTimeExceeded',async (req,res)=>{
                 const starttimestamp = result.START_TIMESTAMP
                 const regclosesbefore = result.REGISTRATION_CLOSES_BEFORE
                 const d1 = new Date(new Date(starttimestamp).getTime() - regclosesbefore*60*60*1000).getTime()
-                const d2 = new Date(new Date().getTime() + istConstant).getTime()
+                const d2 = new Date(new Date().getTime()+istConstant).getTime()
                 if(d2>=d1){
                     res.status(200).send({
                         Message:"true"
@@ -1716,7 +1716,7 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                 for(let i=0;r1[i];i++){
                     //console.log(i)
                     //console.log(r1[i].TOURNAMENT_ID)
-                    const curDate = new Date(new Date().getTime())
+                    const curDate = new Date(new Date().getTime() + istConstant)
                     const end_date = new Date(r1[i].END_TIMESTAMP)
                     const start_time = new Date(r1[i].START_TIMESTAMP)
                     const temp_start_time = new Date(start_time.getTime() - r1[i].REGISTRATION_CLOSES_BEFORE*60*60*1000)
