@@ -1716,7 +1716,7 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                 for(let i=0;r1[i];i++){
                     //console.log(i)
                     //console.log(r1[i].TOURNAMENT_ID)
-                    const curDate = new Date(new Date().getTime() + istConstant)
+                    const curDate = new Date(new Date().getTime())
                     const end_date = new Date(r1[i].END_TIMESTAMP)
                     const start_time = new Date(r1[i].START_TIMESTAMP)
                     r1[i].START_TIME = moment(start_time).format('LT')
