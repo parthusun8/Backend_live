@@ -1725,7 +1725,7 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                     //console.log(curDate.getTime())
                     //console.log(end_date.getTime())
                     //console.log(curDate.getTime()>end_date.getTime())
-                    if(curDate.getTime()<start_time.getTime()&&r1[i].REGISTRATION_CLOSES_BEFORE>0){
+                    if(curDate.getTime()<temp_start_time.getTime()&&r1[i].REGISTRATION_CLOSES_BEFORE>0){
                         //console.log(r1[i])
                         console.log(moment(end_date).format('LT'))
                         var spotStatusArrays = []
