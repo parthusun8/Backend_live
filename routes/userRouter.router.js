@@ -1818,14 +1818,14 @@ userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=
                     USER.updateOne({
                         USERID: req.body.USERID
                     },{
-                        PROFILE_PIC_URL:`https://ardentsportsapis.herokuapp.com/getImage?key=${result.key}`
+                        PROFILE_PIC_URL:`https://ardent-api.onrender.com/getImage?key=${result.key}`
                     },function(err,result2){
                         if(err){
                             throw err
                         }
                         else{
                             res.status(200).send({
-                                Message:`https://ardentsportsapis.herokuapp.com/getImage?key=${result.key}`
+                                Message:`https://ardent-api.onrender.com/getImage?key=${result.key}`
                             })
                         }
                     })
