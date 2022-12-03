@@ -260,7 +260,7 @@ io.on("connection",(socket)=>{
                                 },function(error,result){
                                     if(error){
                                         console.log(error)
-                                        
+
                                     }
                                     if(result){
                                         if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)!=-1){
@@ -493,6 +493,7 @@ io.on('connection',async (socket)=>{
         })
         socket.on('finish-game', (objt)=>{
             //should have team_1 score,team_2_score,team_1_wickets,team_2_wickets,overs,batter_who_got
+            console.log('Game Finished')
         })
     })
 })
