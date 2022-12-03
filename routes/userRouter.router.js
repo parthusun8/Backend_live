@@ -183,6 +183,11 @@ userRouter.post('/createUser',async (req,res,next)=>{
         })
     }
 })
+userRouter.get('/checkHealth',async(req,res)=>{
+    res.status(200).send({
+        Message:'Health OK'
+    })
+})
 userRouter.post('/userResetPwd',async (req,res)=>{
     const query = {USERID:req.body.USERID}
     const user = await USER.exists(query)
