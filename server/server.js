@@ -260,6 +260,7 @@ io.on("connection",(socket)=>{
                                 },function(error,result){
                                     if(error){
                                         console.log(error)
+                                        
                                     }
                                     if(result){
                                         if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)!=-1){
