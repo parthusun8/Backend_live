@@ -184,6 +184,7 @@ userRouter.post('/createUser',async (req,res,next)=>{
     }
 })
 userRouter.get('/checkHealth',async(req,res)=>{
+    console.log('Health Check')
     res.status(200).send({
         Message:'Health OK'
     })
