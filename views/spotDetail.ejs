@@ -182,7 +182,7 @@ body {
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <script>
         $(window).load(()=>{
-          $('.location.back').html($('<a></a>').attr('href',`https://ardent-api.onrender.com/getBookingFixtures?TOURNAMENT_ID=${$('.tournamentID').text()}&USERID=${$('.namenew').text()}`).text('Go Back To Fixtures'))
+          $('.location.back').html($('<a></a>').attr('href',`http://52.66.209.218:3000/getBookingFixtures?TOURNAMENT_ID=${$('.tournamentID').text()}&USERID=${$('.namenew').text()}`).text('Go Back To Fixtures'))
           $('.location.back').css('color','white')
           $('.location.back').css('font-size','20px')
         })

@@ -1824,14 +1824,14 @@ userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=
                     USER.updateOne({
                         USERID: req.body.USERID
                     },{
-                        PROFILE_PIC_URL:`https://ardent-api.onrender.com/getImage?key=${result.key}`
+                        PROFILE_PIC_URL:`http://52.66.209.218:3000/getImage?key=${result.key}`
                     },function(err,result2){
                         if(err){
                             throw err
                         }
                         else{
                             res.status(200).send({
-                                Message:`https://ardent-api.onrender.com/getImage?key=${result.key}`
+                                Message:`http://52.66.209.218:3000/getImage?key=${result.key}`
                             })
                         }
                     })

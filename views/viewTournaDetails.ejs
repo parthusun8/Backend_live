@@ -264,7 +264,7 @@ footer {
             <script>
                 console.log($('.tid').text())
                 window.addEventListener('load',async ()=>{
-                    const res = await fetch('https://ardent-api.onrender.com/tournamentById',{
+                    const res = await fetch('http://52.66.209.218:3000/tournamentById',{
                     method:'POST',
                     headers:{
                         'content-type':'application/json'
@@ -273,7 +273,7 @@ footer {
                         TOURNAMENT_ID:$('.tid').text()
                     })
                 })
-                    const res2 = await fetch(`https://ardent-api.onrender.com/allMatchesSpots?TOURNAMENT_ID=${$('.tid').text()}`)
+                    const res2 = await fetch(`http://52.66.209.218:3000/allMatchesSpots?TOURNAMENT_ID=${$('.tid').text()}`)
                 if(res&&res2){
                     const data = await res.json()
                     const data2 = await res2.json()
@@ -293,7 +293,7 @@ footer {
                         $('.participantcount').text(`Count: ${c}`)
                         $('.participants').text(participants)
                         $('.participantprize').text(`Prize Pool: ${data.PRIZE_POOL}`)
-                        const winner = await fetch(`https://ardent-api.onrender.com/userDetails?USERID=${data2.Matches[data.NO_OF_KNOCKOUT_ROUNDS-2].winner_id}`)
+                        const winner = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${data2.Matches[data.NO_OF_KNOCKOUT_ROUNDS-2].winner_id}`)
                         if(winner){
                             const windata = await winner.json()
                             console.log(windata)

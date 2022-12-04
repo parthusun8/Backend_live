@@ -22,7 +22,7 @@
         window.addEventListener('load',async function(){
             alert($('.price').text())
             try{
-                const res1 = await fetch(`https://ardent-api.onrender.com/rzp_payment?amount=${$('.price').text()}00`)
+                const res1 = await fetch(`http://52.66.209.218:3000/rzp_payment?amount=${$('.price').text()}00`)
                 if(res1){
                     const data = await res1.json()
                     order_id = data.orderID
@@ -37,7 +37,7 @@
     "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": async function (response){
         try{
-            const res = await fetch(`https://ardent-api.onrender.com/updateUserPayment`,{
+            const res = await fetch(`http://52.66.209.218:3000/updateUserPayment`,{
                 method:'POST',
                 headers:{
                     "Content-type":"application/json"
@@ -53,10 +53,10 @@
                 const data = await res.json()
                 if(data){
                     if(data.Message=='paid'){
-                    window.location = "https://ardent-api.onrender.com/success"
+                    window.location = "http://52.66.209.218:3000/success"
                 }
                 else if(data.Message=='failure'){
-                    window.location = "https://ardent-api.onrender.com/failure"
+                    window.location = "http://52.66.209.218:3000/failure"
                 }
                 }
             }
@@ -87,7 +87,7 @@ rzp1.on('payment.failed', function (response){
         // alert(response.error.reason);
         // alert(response.error.metadata.order_id);
         // alert(response.error.metadata.payment_id);
-        window.location = "https://ardent-api.onrender.com/failure"
+        window.location = "http://52.66.209.218:3000/failure"
 });
 document.getElementById('rzp-button1').onclick = function(e){
     rzp1.open();
