@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=960px, initial-scale=1.0">
     <title>Document</title>
     <style>
 		html, body, .brackets {
@@ -74,7 +74,7 @@
 	.brackets div.bracketbox > span {
 		position: absolute;
 		left: 40px;
-		font-size: 0.85em;
+		font-size: 0.6em;
 	}
 	/* .brackets div.bracketbox > span.info1 {
 		position: absolute;
@@ -202,7 +202,7 @@
 	}
 
 
-	@media only screen and (max-width:700px){
+	/* @media only screen and (max-width:700px){
 		.brackets div.bracketbox > span.teama {
 			position: absolute;
 			left: 30px;
@@ -218,7 +218,6 @@
 	.brackets div.bracketbox > span {
 		position: absolute;
 		border-radius: 10px;
-		height:30vh;
 		width: 100%;
 	}
 	 .brackets > .group6 > div {
@@ -255,7 +254,7 @@
 		left: 80px;
 	}
 
-}
+} */
 </style>
 </head>
 <body>
@@ -345,7 +344,7 @@ function renderBrackets(struct) {
             if(gg.bye)
                 round.append('<div></div>');
             else
-                round.append('<div><div class="bracketbox"><span class="info1">'+gg.bracketNo+'</span><span class="info2">'+gg.bracketNo+`</span><span class="teama ${gg.teamnames[0]}">`+`<a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=${gg.teamnames[0]}">`+gg.teamnames[0]+`</a></span><span class="teamb ${gg.teamnames[1]}">`+`<a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=${gg.teamnames[1]}">`+gg.teamnames[1]+'</a></span></div></div>');
+                round.append('<div><div class="bracketbox">'+`<span class="teama ${gg.teamnames[0]}">`+`<a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=${gg.teamnames[0]}">`+gg.teamnames[0]+`</a></span><span class="teamb ${gg.teamnames[1]}">`+`<a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=${gg.teamnames[1]}">`+gg.teamnames[1]+'</a></span></div></div>');
         });
         group.append(round);
     }

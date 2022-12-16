@@ -16,6 +16,7 @@ const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
 const multer = require('multer')
 const razorpay = require('razorpay')
+const dbles = require('../models/doubles.mongo')
 const csvgen = require('json2csv').Parser
 const rzp_instance = new razorpay({
     key_id:'rzp_live_4JAecB352A9wtt',
@@ -378,6 +379,32 @@ userRouter.post('/userLogin',async (req,res)=>{
         })
     }
 })
+
+userRouter.post('/addDoublesPartner',async (req,res)=>{
+    const usr_to_be_found = await USER.findOne({
+        USERID:req.body.requested_player
+    })
+    if(usr_to_be_found){
+        const newplayer = new dbles({
+            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+            SPOT_NUMBER:req.body.SPOT_NUMBER,
+            PLAYER_1:req.body.PLAYER_1,
+            PLAYER_2:req.body.PLAYER_2
+        })
+        const r = await newplayer.save()
+        if(r){
+            res.status(200).send({
+                Message:"Player added"
+            })
+        }
+    }
+    else{
+        res.status(404).send({
+            Message:"Player not found"
+        })
+    }
+})
+
 userRouter.get('/getUserDetails',async (req,res)=>{
     const userid = req.query.USERID
     USER.findOne({
