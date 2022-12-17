@@ -17,6 +17,7 @@ const fs = require('fs')
 const multer = require('multer')
 const razorpay = require('razorpay')
 const dbles = require('../models/doubles.mongo')
+const timings = require('../models/timings.mongo')
 const csvgen = require('json2csv').Parser
 const rzp_instance = new razorpay({
     key_id:'rzp_live_4JAecB352A9wtt',
@@ -218,6 +219,54 @@ userRouter.post('/userProfileBuild',async(req,res)=>{
         console.log(err);
         res.status(404).send({
             Message:"Error in Profile creation"
+        })
+    }
+})
+userRouter.post('/updatePerMatchEstimatedTime',async (req,res)=>{
+    //reqd tournamentID and timing in minutes
+    const tid = req.body.TOURNAMENT_ID 
+    const time = req.body.PER_MATCH_ESTIMATED_TIME 
+    try{
+        const t = await timings.findOne({
+            TOURNAMENT_ID:tid
+        })
+        if(t){
+            timings.updateOne({
+                TOURNAMENT_ID:tid
+            },{
+                TIMING_IN_MINUTES:time
+            },function(e,r){
+                if(e){
+                    throw e
+                }
+                else{
+                    res.status(200).send({
+                        Message:'Updated'
+                    })
+                }
+            })
+        }
+        else{
+            const dt = {
+                TOURNAMENT_ID:tid,
+                TIMING_IN_MINUTES:time
+            }
+            const dt2 = new timings(dt)
+            const r2 = await dt2.save()
+            if(r2){
+                res.status(200).send({
+                    Message:'Updated'
+                })
+            }
+            else{
+                res.status(200).send({
+                    Message:'Error'
+                })
+            }
+        }
+    }catch(err){
+        res.status(200).send({
+            Message:'Error'
         })
     }
 })
@@ -1871,6 +1920,48 @@ userRouter.post('/postProfilePic',uploadoptions.single('image'),async (req,res)=
             Message:error.Message
         })
     }
+})
+
+userRouter.post('/extendBookingTime',async (req,res)=>{
+    const tid = req.body.TOURNAMENT_ID 
+    const hrs = req.body.HRS 
+    tournamentModel.findOne({
+        TOURNAMENT_ID:tid
+    },function(err,rr){
+        if(err){
+            res.status(404).send({
+                Message:'Error in increasing time'
+            })
+        }
+        else{
+            const start_time = new Date(new Date(rr.START_TIMESTAMP).getTime()+hrs*60*60*1000).toISOString()
+            tournamentModel.updateOne({
+                TOURNAMENT_ID:tid
+            },{
+                START_TIMESTAMP:start_time
+            },function(e,r){
+                if(e){
+                    res.status(404).send({
+                        Message:'Error in increasing time'
+                    })
+                }
+                else{
+                    res.status(200).send({
+                        Message:'Time increased'
+                    })
+                }
+            })
+        }
+    })
+})
+userRouter.get('/clearSpots',async (req,res)=>{
+    //TOURNAMENT_ID
+    //0-indexed SPOT NUMBER
+    tournamentModel.updateOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+    },{
+        
+    })
 })
 userRouter.get('/getImage',async(req,res)=>{
     const key = req.query.key
