@@ -222,6 +222,23 @@ userRouter.post('/userProfileBuild',async(req,res)=>{
         })
     }
 })
+userRouter.get('/perMatchEstimatedTime',async (req,res)=>{
+    const tid = req.query.TOURNAMENT_ID 
+    timings.findOne({
+        TOURNAMENT_ID:tid
+    },function(e,r){
+        if(e){
+            res.status(200).send({
+                Message:'Error'
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:r.TIMING_IN_MINUTES
+            })
+        }
+    })    
+})
 userRouter.post('/updatePerMatchEstimatedTime',async (req,res)=>{
     //reqd tournamentID and timing in minutes
     const tid = req.body.TOURNAMENT_ID 

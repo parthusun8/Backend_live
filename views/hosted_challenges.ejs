@@ -207,6 +207,14 @@
 	#bracs{
 		font-size: 0px;
 	}
+	.timings{
+		font-size:1.3rem;
+		color: white;
+		padding: 10px;
+		width:200px;
+		border: white;
+		border-radius: 10px;
+	}
 
 
 	/* @media only screen and (max-width:700px){
@@ -267,9 +275,6 @@
 <body>
 <div class="goToTournamentDetails">
     <button class="tdetails">Click Here to View Stats</button>
-</div>
-<div class="goToTournamentDetails">
-    <button class="tdetailsdownload"><a href="http://52.66.209.218:3000/downloadStats?TOURNAMENT_ID=<%=TOURNEY_ID%>">Download</a></button>
 </div>
 <div class="brackets" id="brackets"></div>
 <div class="bracs" id="bracs"><%=no_of_bracs%></div>
@@ -367,6 +372,7 @@ $('.tdetails').on('click',async function(){
     window.location =  `http://52.66.209.218:3000/tournamentdetails?TOURNAMENT_ID=${$("#tourney_id").text()}`
 })
 $(window).on('load', async function() {
+
     console.log('Hello')
     var opts = parseInt($('#bracs').text())
     if(!_.isNaN(opts) && opts <= _.last(knownBrackets))
@@ -387,6 +393,12 @@ $(window).on('load', async function() {
             //text(data.array[i].split("-")[1].slice(0,6))
             $(`.Spot.${i+1}`).css("color","#faf5f5")
 		}
+	}
+	const time_res = await fetch(`http://52.66.209.218:3000/perMatchEstimatedTime?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+	const time_data = await time_res.json()
+	if(time_data){
+		console.log('Hello2')
+		$('.goToTournamentDetails').append(`<div class = "timings">Per match Estimated Time is: ${time_data.Message} minutes</div>`)
 	}
 	const res2 = await fetch(`http://52.66.209.218:3000/allMatchesSpots?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const data2 = await res2.json()
