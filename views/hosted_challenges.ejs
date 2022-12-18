@@ -97,7 +97,7 @@
 		top: -13.5px;
 		background-color: white;
 		height: 20px;
-		width: 100px;
+		width: 90px;
 		padding	: 5px 20px 5px 20px;
 		border: 1px solid #5FD068;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -108,7 +108,7 @@
 		background-color: white;
 		
 		height: 20px;
-		width: 100px;
+		width: 90px;
 		padding	: 5px 20px 5px 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 		border: 1px solid #5FD068;
@@ -119,7 +119,7 @@
     background-color: #5FD068;
     border: 1px solid #5FD068;
 	height: 20px;
-		width: 100px;
+		width: 90px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 		padding	: 5px 20px 5px 20px;
 
@@ -212,8 +212,9 @@
 		color: white;
 		padding: 10px;
 		width:200px;
-		border: white;
+		border:2px solid white;
 		border-radius: 10px;
+		margin:20px 20px 0px 0px;
 	}
 
 
@@ -394,12 +395,6 @@ $(window).on('load', async function() {
             $(`.Spot.${i+1}`).css("color","#faf5f5")
 		}
 	}
-	const time_res = await fetch(`http://52.66.209.218:3000/perMatchEstimatedTime?TOURNAMENT_ID=${$("#tourney_id").text()}`)
-	const time_data = await time_res.json()
-	if(time_data){
-		console.log('Hello2')
-		$('.goToTournamentDetails').append(`<div class = "timings">Per match Estimated Time is: ${time_data.Message} minutes</div>`)
-	}
 	const res2 = await fetch(`http://52.66.209.218:3000/allMatchesSpots?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const data2 = await res2.json()
 	console.log(data2)
@@ -409,6 +404,29 @@ $(window).on('load', async function() {
 			$(`.Match.${i+1}`).css('color','#faf5f5')
 			$(`.Match.${i+1}`).css('background','#403b3b')
 			$(`.Match.${i+1}`).css('border','#403b3b')
+		}
+	}
+	const time_res = await fetch(`http://52.66.209.218:3000/perMatchEstimatedTime?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+	const time_data = await time_res.json()
+	if(time_data){
+		console.log('Hello2')
+		$('.goToTournamentDetails').append(`<div class = "timings">Per match Estimated Time is: ${time_data.Message} minutes</div>`)
+		const r = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+		const dt = r.json()
+		if(dt){
+			const starttime = dt.START_TIMESTAMP
+			const breaktime = parseInt(dt.BREAK_TIME,10)
+			$('.goToTournamentDetails').append(`<div class = "timings">Break Time is: ${dt.BREAK_TIME} minutes</div>`)
+			const numcourts= dt.NO_OF_COURTS
+			const matchtime = parseInt(time_data.Message,10)
+			for(var i=0;i<data2.Matches.length;i=i+numcourts){
+		const dt1 = new Date(starttime)
+		const dt2 = new Date(new Date(starttime).getTime()+matchtime)
+		for(var j=0;j<numcourts;j++){
+			$(`.Match.${i+j+1}`).append(`<h5>${moment(dt1).format('LT')} - ${moment(dt2).format('LT')}</h5>`)
+		}
+		starttime = new Date(new Date(starttime).getTime()+matchtime+breaktime).toISOString()
+	}
 		}
 	}
 });

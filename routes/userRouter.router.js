@@ -633,9 +633,9 @@ userRouter.get('/allTournaments',async (req,res)=>{
 })
 // get tournaments by USERID
 //get tournament by ID
-userRouter.post('/tournamentById',async (req,res)=>{
+userRouter.get('/tournamentById',async (req,res)=>{
     tournamentModel.findOne({
-        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
     },function(error,result){
         if(error){
             res.status(404).send({
