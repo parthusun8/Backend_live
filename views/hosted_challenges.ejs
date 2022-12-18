@@ -412,7 +412,7 @@ $(window).on('load', async function() {
 		console.log('Hello2')
 		$('.goToTournamentDetails').append(`<div class = "timings">Per match Estimated Time is: ${time_data.Message} minutes</div>`)
 		const r = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${$("#tourney_id").text()}`)
-		const dt = r.json()
+		const dt = await r.json()
 		if(dt){
 			const starttime = dt.START_TIMESTAMP
 			const breaktime = parseInt(dt.BREAK_TIME,10)
