@@ -467,6 +467,23 @@ userRouter.post('/userLogin',async (req,res)=>{
     }
 })
 
+userRouter.post('/searchDoublesPartner',async (req,res)=>{
+    const usr_to_be_found = await USER.findOne({
+        USERID:req.body.requested_player
+    })
+    if(usr_to_be_found){
+        res.status(200).send({
+            Message:'User Found',
+            USERID:usr_to_be_found.USERID,
+            NAME:usr_to_be_found.NAME
+        })
+    }
+    else{
+        res.status(404).send({
+            Message:"Player not found"
+        })
+    }
+})
 userRouter.post('/addDoublesPartner',async (req,res)=>{
     const usr_to_be_found = await USER.findOne({
         USERID:req.body.requested_player
@@ -1621,65 +1638,180 @@ userRouter.get('/allMatches', async (req,res)=>{
                 console.log(error)
             }
             if(result2){
-                matchesmodel.findOne({
-                    TOURNAMENT_ID:req.query.TOURNAMENT_ID
-                },function(error,result){
-                    if(error){
-                        console.log(error)
-                    }
-                    else{
-                        var mtches = []
-                        var sport = ""
-                        if(result.TOURNAMENT_ID[0]=='T'){
-                            sport = "Table Tennis"
+                if(result2.CATEGORY[result2.CATEGORY.length-1]=='S'){
+                    matchesmodel.findOne({
+                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                    },function(error,result){
+                        if(error){
+                            console.log(error)
                         }
                         else{
-                            sport = "Badminton"
-                        }
-                        for(var i=0;i<(result2.NO_OF_KNOCKOUT_ROUNDS)-1;i++){
-                            if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
-                                var us1 = ""
-                                var us2 = ""
-                                console.log(result.MATCHES[i].PLAYER1)
-                                console.log(result.MATCHES[i].PLAYER2)
-                                    for(let j = 0;j<allUsers.length;j++){
-                                        console.log(allUsers[j])
-                                        if(`${result.MATCHES[i].PLAYER1}`==`${allUsers[j].USERID}`){
-                                            us1 = allUsers[j].NAME
-                                            break
-                                        }
-                                    }
-                                    for(let k = 0;k<allUsers.length;k++){
-                                        if(`${result.MATCHES[i].PLAYER2}`==`${allUsers[k].USERID}`){
-                                            us2 = allUsers[k].NAME
-                                            break
-                                        }
-                                    }
-                                    if(us1==""){
-                                        us1="N/A"
-                                    }
-                                    if(us2==""){
-                                        us2="N/A"
-                                    }
-                                mtches.push({
-                                    TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                                    PLAYER1_NAME:us1,
-                                    PLAYER2_NAME:us2,
-                                    PLAYER1_ID:result.MATCHES[i].PLAYER1,
-                                    PLAYER2_ID:result.MATCHES[i].PLAYER2,
-                                    MATCHID:result.MATCHES[i].MATCHID,
-                                    SPORT_NAME:sport,
-                                    LOCATION:result2.LOCATION,
-                                    CITY:result2.CITY,
-                                    TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
-                                    IMG_URL:result2.IMG_URL,
-                                    PRIZE_POOL:`${result2.PRIZE_POOL}`
-                                }) 
+                            var mtches = []
+                            var sport = ""
+                            if(result.TOURNAMENT_ID[0]=='T'){
+                                sport = "Table Tennis"
                             }
+                            else{
+                                sport = "Badminton"
+                            }
+                            for(var i=0;i<(result2.NO_OF_KNOCKOUT_ROUNDS)-1;i++){
+                                if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
+                                    var us1 = ""
+                                    var us2 = ""
+                                    console.log(result.MATCHES[i].PLAYER1)
+                                    console.log(result.MATCHES[i].PLAYER2)
+                                        for(let j = 0;j<allUsers.length;j++){
+                                            console.log(allUsers[j])
+                                            if(`${result.MATCHES[i].PLAYER1}`==`${allUsers[j].USERID}`){
+                                                us1 = allUsers[j].NAME
+                                                break
+                                            }
+                                        }
+                                        for(let k = 0;k<allUsers.length;k++){
+                                            if(`${result.MATCHES[i].PLAYER2}`==`${allUsers[k].USERID}`){
+                                                us2 = allUsers[k].NAME
+                                                break
+                                            }
+                                        }
+                                        if(us1==""){
+                                            us1="N/A"
+                                        }
+                                        if(us2==""){
+                                            us2="N/A"
+                                        }
+                                    mtches.push({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                        PLAYER1_NAME:us1,
+                                        PLAYER2_NAME:us2,
+                                        PLAYER1_ID:result.MATCHES[i].PLAYER1,
+                                        PLAYER2_ID:result.MATCHES[i].PLAYER2,
+                                        MATCHID:result.MATCHES[i].MATCHID,
+                                        SPORT_NAME:sport,
+                                        LOCATION:result2.LOCATION,
+                                        CITY:result2.CITY,
+                                        TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
+                                        IMG_URL:result2.IMG_URL,
+                                        PRIZE_POOL:`${result2.PRIZE_POOL}`
+                                    }) 
+                                }
+                            }
+                                res.status(200).send(mtches)
                         }
-                            res.status(200).send(mtches)
-                    }
-                })
+                    })
+                }
+                else{
+                                        matchesmodel.findOne({
+                        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                    },function(error,result){
+                        if(error){
+                            console.log(error)
+                        }
+                        else{
+                            var mtches = []
+                            var sport = ""
+                            if(result.TOURNAMENT_ID[0]=='T'){
+                                sport = "Table Tennis"
+                            }
+                            else{
+                                sport = "Badminton"
+                            }
+                            for(var i=0;i<(result2.NO_OF_KNOCKOUT_ROUNDS)-1;i++){
+                                if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
+                                    var us1 = ""
+                                    var us2 = ""
+                                    console.log(result.MATCHES[i].PLAYER1)
+                                    //find doubles partner
+                                    var dbles_partner_1_id = ""
+                                    var dbles_partner_2_id = ""
+                                    dbles.findOne({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                        PLAYER_1:result.MATCHES[i].PLAYER1
+                                    },function(err,r1){
+                                        if(err){
+                                            res.status(200).send({
+                                                Message:'Error'
+                                            })
+                                        }
+                                        else{
+                                            dbles_partner_1_id = r1.PLAYER_2
+                                        }
+                                    })
+                                    console.log(result.MATCHES[i].PLAYER2)
+                                    dbles.findOne({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                        PLAYER_1:result.MATCHES[i].PLAYER2
+                                    },function(err,r1){
+                                        if(err){
+                                            res.status(200).send({
+                                                Message:'Error'
+                                            })
+                                        }
+                                        else{
+                                            dbles_partner_2_id = r1.PLAYER_2
+                                        }
+                                    })
+                                        for(let j = 0;j<allUsers.length;j++){
+                                            console.log(allUsers[j])
+                                            if(`${result.MATCHES[i].PLAYER1}`==`${allUsers[j].USERID}`){
+                                                us1 = allUsers[j].NAME
+                                                break
+                                            }
+                                        }
+                                        var us3 = ""
+                                        var us4 = ""
+                                        for(let j = 0;j<allUsers.length;j++){
+                                            console.log(allUsers[j])
+                                            if(`${dbles_partner_1_id}`==`${allUsers[j].USERID}`){
+                                                us3 = allUsers[j].NAME
+                                                break
+                                            }
+                                        }
+                                        for(let k = 0;k<allUsers.length;k++){
+                                            if(`${result.MATCHES[i].PLAYER2}`==`${allUsers[k].USERID}`){
+                                                us2 = allUsers[k].NAME
+                                                break
+                                            }
+                                        }
+                                        for(let k = 0;k<allUsers.length;k++){
+                                            if(`${dbles_partner_2_id}`==`${allUsers[k].USERID}`){
+                                                us4 = allUsers[k].NAME
+                                                break
+                                            }
+                                        }
+                                        if(us1==""){
+                                            us1="N/A"
+                                        }
+                                        if(us2==""){
+                                            us2="N/A"
+                                        }
+                                        if(us3==""){
+                                            us3="N/A"
+                                        }
+                                        if(us4==""){
+                                            us4="N/A"
+                                        }
+                                    mtches.push({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                        PLAYER1_NAME:us1,
+                                        PLAYER1_PARTNER:us3,
+                                        PLAYER2_NAME:us2,
+                                        PLAYER2_PARTNER:us4,
+                                        PLAYER1_ID:result.MATCHES[i].PLAYER1,
+                                        PLAYER2_ID:result.MATCHES[i].PLAYER2,
+                                        MATCHID:result.MATCHES[i].MATCHID,
+                                        SPORT_NAME:sport,
+                                        LOCATION:result2.LOCATION,
+                                        CITY:result2.CITY,
+                                        TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
+                                        IMG_URL:result2.IMG_URL,
+                                        PRIZE_POOL:`${result2.PRIZE_POOL}`
+                                    }) 
+                                }
+                            }
+                                res.status(200).send(mtches)
+                        }
+                    })   
+                }
             }
         })
     }
