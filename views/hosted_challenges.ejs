@@ -226,6 +226,14 @@
 		border-radius: 10px;
 		margin:20px 20px 0px 0px;
 	}
+	.timingChange > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: auto;
+		color: white;
+		background: #5FD068;
+	}
 
 	/* @media only screen and (max-width:700px){
 		.brackets div.bracketbox > span.teama {
@@ -295,6 +303,8 @@
 	<input type="time" class="endtime" placeholder="End Time">
 	<p>Date: </p>
 	<input type="Date" class="dayDateYear">
+	<p></p>
+	<button class="update">Update</button>
 </div>
 <div class="brackets" id="brackets"></div>
 <div class="bracs" id="bracs"><%=no_of_bracs%></div>
@@ -453,7 +463,7 @@ $(window).on('load', async function() {
 		console.log(d.getFullYear())
 		for(var j=0;j<numcourts;j++){
 			console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
-			$(`.Match.${i+j+1}`).append(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
+			$(`.Match.${i+j+1}`).append(`<h5 style={margin:3px}>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
 		}
 		starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
 	}
