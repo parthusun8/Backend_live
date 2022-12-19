@@ -469,7 +469,7 @@ userRouter.post('/userLogin',async (req,res)=>{
 
 userRouter.post('/searchDoublesPartner',async (req,res)=>{
     const usr_to_be_found = await USER.findOne({
-        USERID:req.body.requested_player
+        USERID:req.body.PLAYER_2 
     })
     if(usr_to_be_found){
         res.status(200).send({
@@ -486,7 +486,7 @@ userRouter.post('/searchDoublesPartner',async (req,res)=>{
 })
 userRouter.post('/addDoublesPartner',async (req,res)=>{
     const usr_to_be_found = await USER.findOne({
-        USERID:req.body.requested_player
+        USERID:req.body.PLAYER_2
     })
     if(usr_to_be_found){
         const newplayer = new dbles({
@@ -503,9 +503,21 @@ userRouter.post('/addDoublesPartner',async (req,res)=>{
         }
     }
     else{
-        res.status(404).send({
-            Message:"Player not found"
+        const newplayer = new dbles({
+            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+            SPOT_NUMBER:req.body.SPOT_NUMBER,
+            PLAYER_1:req.body.PLAYER_1,
+            PLAYER_2:"NA"
         })
+        const r = await newplayer.save()
+        if(r){
+            res.status(200).send({
+                Message:"Player added"
+            })
+        }
+        // res.status(404).send({
+        //     Message:"Player not found"
+        // })
     }
 })
 
