@@ -363,7 +363,8 @@ function renderBrackets(struct) {
         });
         group.append(round);
     }
-    group.append('<div class="r'+(groupCount+1)+'"><div class="final"><div class="bracketbox">'+`<span class="teamc Match ${(2*(groupCount+1)-1)}"><a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${(2*(groupCount+1)-1)}">Final</a>`+'</span></div></div></div>');
+	console.log(`${(Math.pow(2,groupCount)-1)}`)
+    group.append('<div class="r'+(groupCount+1)+'"><div class="final"><div class="bracketbox">'+`<span class="teamc Match ${(Math.pow(2,groupCount)-1)}"><a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${(Math.pow(2,groupCount)-1)}">Final</a>`+'</span></div></div></div>');
     $('#brackets').append(group);
 
     bracketCount++;
@@ -416,18 +417,23 @@ $(window).on('load', async function() {
 		const r = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 		const dt = await r.json()
 		if(dt){
-			const starttime = dt.START_TIMESTAMP
+			var starttime = dt.START_TIMESTAMP
 			const breaktime = parseInt(dt.BREAK_TIME,10)
 			$('.goToTournamentDetails').append(`<div class = "timings">Break Time is: ${dt.BREAK_TIME} minutes</div>`)
 			const numcourts= dt.NO_OF_COURTS
 			const matchtime = parseInt(time_data.Message,10)
+			console.log(typeof(matchtime))
+			console.log(data2.Matches.length)
 			for(var i=0;i<data2.Matches.length;i=i+numcourts){
-		const dt1 = new Date(starttime)
-		const dt2 = new Date(new Date(starttime).getTime()+matchtime)
+		const d = new Date(starttime)
+		const d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
+		console.log(d)
+		console.log(d2)
 		for(var j=0;j<numcourts;j++){
-			$(`.Match.${i+j+1}`).append(`<h5>${moment(dt1).format('LT')} - ${moment(dt2).format('LT')}</h5>`)
+			console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}</h5>`)
+			$(`.Match.${i+j+1}`).append(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}</h5>`)
 		}
-		starttime = new Date(new Date(starttime).getTime()+matchtime+breaktime).toISOString()
+		starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
 	}
 		}
 	}

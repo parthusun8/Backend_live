@@ -410,13 +410,34 @@ userRouter.get('/userDetails',async (req,res)=>{
             })
         }
         else if(result){
+            var Level = ''
+            var TotalPoints = ''
+            //level logic
+            //100 means level 1
+            //100 up means level 2
+            //200 up means level 3
+            if(result.POINTS<100){
+                Level = '1'
+                TotalPoints = "100"
+            }
+            else if(result.POINTS>=100&&result.POINTS<200){
+                Level = '2'
+                TotalPoints = "200"
+            }
+            else{
+                Level = '3'
+                TotalPoints = "500"
+            }
             res.status(200).send({
                 Message:'User found',
                 Name:result.NAME,
                 Phone:result.PHONE,
                 City:result.CITY,
                 Points:`${result.POINTS}`,
-                Profile_pic_url:result.PROFILE_PIC_URL
+                Profile_pic_url:result.PROFILE_PIC_URL,
+                PointsScored:`${result.POINTS}`,
+                Level:Level,
+                TotalPoints:TotalPoints
             })
         }
     })
