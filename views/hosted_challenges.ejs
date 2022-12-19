@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=960px, initial-scale=1.0">
+    <meta name="viewport" content="width=1200px, initial-scale=1.0">
     <title>Document</title>
     <style>
 		html, body, .brackets {
@@ -448,9 +448,12 @@ $(window).on('load', async function() {
 		const d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
 		console.log(d)
 		console.log(d2)
+		console.log(d.getDate())
+		console.log(d.getMonth())
+		console.log(d.getFullYear())
 		for(var j=0;j<numcourts;j++){
-			console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}</h5>`)
-			$(`.Match.${i+j+1}`).append(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}</h5>`)
+			console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
+			$(`.Match.${i+j+1}`).append(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
 		}
 		starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
 	}
