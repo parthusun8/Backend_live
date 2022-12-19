@@ -1853,42 +1853,52 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                             if(result1[j].TOURNAMENT_ID.includes(r1[i].TOURNAMENT_ID)){
                                 var cat = ""
                                 var cat_name = ""
+                                var type = ""
                                 console.log(result1[j].AGE_CATEGORY)
                                 if(result1[j].CATEGORY=='MS'){
                                     cat=`${result1[j].AGE_CATEGORY} Men's Singles`
                                     cat_name = "Men's Singles"
+                                    type="SINGLES"
                                 }
                                 else if(result1[j].CATEGORY=='WS'){
                                     cat=`${result1[j].AGE_CATEGORY} Women's Singles`
                                     cat_name = "Women's Singles"
+                                    type="SINGLES"
                                 }
                                 else if(result1[j].CATEGORY=='MD'){
                                     cat=`${result1[j].AGE_CATEGORY} Men's Doubles`
                                     cat_name = "Men's Doubles"
+                                    type="DOUBLES"
                                 }
                                 else if(result1[j].CATEGORY=='WD'){
                                     cat=`${result1[j].AGE_CATEGORY} Women's Doubles`
                                     cat_name = "Women's Doubles"
+                                    type="DOUBLES"
                                 }
                                 else if(result1[j].CATEGORY=='MixD'){
                                     cat=`${result1[j].AGE_CATEGORY} Mixed Doubles`
                                     cat_name = "Mixed Doubles"
+                                    type="DOUBLES"
                                 }
                                 else if(result1[j].CATEGORY=='BD'){
                                     cat=`${result1[j].AGE_CATEGORY} Boys Doubles`
                                     cat_name = "Boys Doubles"
+                                    type="DOUBLES"
                                 }
                                 else if(result1[j].CATEGORY=='BS'){
                                     cat=`${result1[j].AGE_CATEGORY} Boys Singles`
                                     cat_name = "Boys Singles"
+                                    type="SINGLES"
                                 }
                                 else if(result1[j].CATEGORY=='GS'){
                                     cat=`${result1[j].AGE_CATEGORY} Girls Singles`
                                     cat_name = "Girls Singles"
+                                    type="SINGLES"
                                 }
                                 else if(result1[j].CATEGORY=='GD'){
                                     cat=`${result1[j].AGE_CATEGORY} Girls Doubles`
                                     cat_name = "Girls Doubles"
+                                    type="DOUBLES"
                                 }
                                 console.log(result1[j].TOURNAMENT_NAME)
                                 console.log(result1[j].SPOT_STATUS_ARRAY)
@@ -1898,7 +1908,8 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                                     id: result1[j].TOURNAMENT_ID,
                                     array: result1[j].SPOT_STATUS_ARRAY,
                                     STATUS:r1[i].STATUS,
-                                    SPORT:r1[i].SPORT
+                                    SPORT:r1[i].SPORT,
+                                    CATEGORY_TYPE:type
                                 })
                             }
                         }
