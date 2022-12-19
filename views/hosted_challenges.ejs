@@ -217,6 +217,15 @@
 		margin:20px 20px 0px 0px;
 	}
 
+	.timingChange{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
 
 	/* @media only screen and (max-width:700px){
 		.brackets div.bracketbox > span.teama {
@@ -276,6 +285,16 @@
 <body>
 <div class="goToTournamentDetails">
     <button class="tdetails">Click Here to View Stats</button>
+</div>
+<div class="timingChange">
+	<p><b>Change Match Timings: </b></p>
+	<input type="text" id="matchno" placeholder="Match Number">
+	<p>Start Time: </p>
+	<input type="time" class="starttime" placeholder="Start Time">
+	<p>End Time: </p>
+	<input type="time" class="endtime" placeholder="End Time">
+	<p>Date: </p>
+	<input type="Date" class="dayDateYear">
 </div>
 <div class="brackets" id="brackets"></div>
 <div class="bracs" id="bracs"><%=no_of_bracs%></div>
