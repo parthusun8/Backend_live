@@ -326,7 +326,8 @@ io.on("connection",(socket)=>{
                 SPOT_STATUS_ARRAY:obj.USERID
             },{
                 $set:{
-                    "SPOT_STATUS_ARRAY.$":`confirmed-${obj.USERID}`
+                    "SPOT_STATUS_ARRAY.$":`confirmed-${obj.USERID}`,
+                    $position:parseInt(obj.btnId,10)
                 }
             },function(error,result){
                 if(error){
