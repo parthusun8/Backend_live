@@ -216,7 +216,10 @@
 		border-radius: 10px;
 		margin:20px 20px 0px 0px;
 	}
-
+	.times{
+		margin:15px;
+		width: 100px;
+	}
 	.timingChange{
 		font-size:0.8rem;
 		color: yellow;
@@ -463,11 +466,15 @@ $(window).on('load', async function() {
 		console.log(d.getFullYear())
 		for(var j=0;j<numcourts;j++){
 			console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
-			$(`.Match.${i+j+1}`).append(`<h5 style={margin:3px}>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
+			$(`.Match.${i+j+1}`).append(`<div class="times ${i+j+1}">${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</div>`)
 		}
 		starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
 	}
 		}
+		$('.update').on('click',()=>{
+			console.log(document.querySelector('.starttime').value)
+			console.log(document.querySelector('.dayDateYear').value)
+		})
 	}
 });
 });
