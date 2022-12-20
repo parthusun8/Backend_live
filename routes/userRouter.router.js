@@ -20,8 +20,8 @@ const dbles = require('../models/doubles.mongo')
 const timings = require('../models/timings.mongo')
 const csvgen = require('json2csv').Parser
 const rzp_instance = new razorpay({
-    key_id:'rzp_live_4JAecB352A9wtt',
-   key_secret:'UhkUVQq781FVniExGipwVCwi'
+    key_id:'rzp_test_MKSizWXlqa0LsE',
+   key_secret:'000II2IEeqG4k6rD07W3HBDX'
 })
 const s3 = new S3({
     region:'ap-south-1',
