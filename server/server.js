@@ -263,9 +263,11 @@ io.on("connection",(socket)=>{
 
                                     }
                                     if(result){
-                                        if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)!=-1){
+                                        if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)==parseInt(obj.btnId,10)){
                                             console.log(result.SPOT_STATUS_ARRAY)
                                             console.log(`Payment already done ${obj.USERID}`)
+                                            //here check if other spots containing the user name has been marked or not, if so then remove and replace with index of that spot
+
                                             io.to(obj.TOURNAMENT_ID).emit("not-to-be-removed")
                                         }
                                         else{
@@ -301,7 +303,7 @@ io.on("connection",(socket)=>{
                                         }
                                     }
                                 })
-                            },1000*600)
+                            },1000*25)
 
                         }
                     })
