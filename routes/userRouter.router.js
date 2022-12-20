@@ -824,7 +824,7 @@ userRouter.get('/getConfirmationDetails',async (req,res)=>{
                     const city = result2.CITY
                     const addr = result2.LOCATION
                     const entryFee = `${result2.ENTRY_FEE}`
-                    const category = "Men's Singles"
+                    const category = result2.CATEGORY
                     res.status(200).send({
                         username : name_of_user,
                         tournament_name : tname,
