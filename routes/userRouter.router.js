@@ -837,14 +837,20 @@ userRouter.get('/getConfirmationDetails',async (req,res)=>{
                                 const addr = result2.LOCATION
                                 const entryFee = `${result2.ENTRY_FEE}`
                                 const category = result2.CATEGORY
-                                res.status(200).send({
-                                    username : `${name_of_user} and ${r1.PLAYER_2}`,
-                                    tournament_name : tname,
-                                    tournament_city : city,
-                                    address : addr,
-                                    fee : entryFee,
-                                    cat : category
-                                })                                
+                                USER.findOne({
+                                    USERID:r1.PLAYER_2
+                                },function(e2,r2){
+                                    if(r2){
+                                        res.status(200).send({
+                                            username : `${name_of_user} and ${r2.NAME}`,
+                                            tournament_name : tname,
+                                            tournament_city : city,
+                                            address : addr,
+                                            fee : entryFee,
+                                            cat : category
+                                        })                                
+                                    }
+                                })
                             }
                         })
 
