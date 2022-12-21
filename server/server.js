@@ -239,7 +239,7 @@ io.on("connection",(socket)=>{
                         SPOT_STATUS_ARRAY:`${obj.btnID}`
                     },{
                         $set:{
-                            "SPOT_STATUS_ARRAY.$":obj.USERID
+                            "SPOT_STATUS_ARRAY.$":`${obj.USERID}-${obj.btnID}`
                         }
                     },function(error,result){
                         if(error){
@@ -303,7 +303,7 @@ io.on("connection",(socket)=>{
                                         }
                                     }
                                 })
-                            },1000*25)
+                            },1000*40)
 
                         }
                     })
@@ -323,11 +323,10 @@ io.on("connection",(socket)=>{
             
             tournament.findOneAndUpdate({
                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                SPOT_STATUS_ARRAY:obj.USERID
+                SPOT_STATUS_ARRAY:`${obj.USERID}-${obj.btnId}`
             },{
                 $set:{
                     "SPOT_STATUS_ARRAY.$":`confirmed-${obj.USERID}`,
-                    $position:parseInt(obj.btnId,10)
                 }
             },function(error,result){
                 if(error){
