@@ -254,6 +254,7 @@ io.on("connection",(socket)=>{
                             }))
                             setTimeout(()=>{
                                 console.log('In spot clicked return tourna')
+                                console.log(parseInt(obj.btnId,10))
                                 console.log(obj.TOURNAMENT_ID)
                                 tournamentModel.findOne({
                                     TOURNAMENT_ID:obj.TOURNAMENT_ID
