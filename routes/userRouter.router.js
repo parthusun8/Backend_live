@@ -799,44 +799,99 @@ userRouter.get('/downloadStats',async (req,res)=>{
 })
 userRouter.get('/getConfirmationDetails',async (req,res)=>{
     //queryParams will have USERID and TOURNAMENT_ID
-    USER.findOne({
-        USERID:req.query.USERID
-    },function(error,result){
-        if(error){
-            console.log(error)
-            res.status(404).send({
-                Message:'Failure'
-            })
-        }
-        if(result){
-            const name_of_user = result.NAME
-            tournamentModel.findOne({
-                TOURNAMENT_ID:req.query.TOURNAMENT_ID
-            },function(error,result2){
-                if(error){
-                    console.log(error)
-                    res.status(404).send({
-                        Message:'Error in fetching tournament'
-                    })
-                }
-                if(result2){
-                    const tname = result2.TOURNAMENT_NAME
-                    const city = result2.CITY
-                    const addr = result2.LOCATION
-                    const entryFee = `${result2.ENTRY_FEE}`
-                    const category = result2.CATEGORY
-                    res.status(200).send({
-                        username : name_of_user,
-                        tournament_name : tname,
-                        tournament_city : city,
-                        address : addr,
-                        fee : entryFee,
-                        cat : category
-                    })
-                }
-            })
-        }
-    })
+    const dblebool = req.query.TOURNAMENT_ID.split("-")[1][1]
+    if(dblebool=='D'){
+        USER.findOne({
+            USERID:req.query.USERID
+        },function(error,result){
+            if(error){
+                console.log(error)
+                res.status(404).send({
+                    Message:'Failure'
+                })
+            }
+            if(result){
+                const name_of_user = result.NAME
+                tournamentModel.findOne({
+                    TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                },function(error,result2){
+                    if(error){
+                        console.log(error)
+                        res.status(404).send({
+                            Message:'Error in fetching tournament'
+                        })
+                    }
+                    if(result2){
+                        dbles.findOne({
+                            TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                            PLAYER_1:req.query.USERID
+                        },function(e1,r1){
+                            if(e1){
+                                res.status(200).send({
+                                    Message:'Failure'
+                                })
+                            }
+                            else{
+                                const tname = result2.TOURNAMENT_NAME
+                                const city = result2.CITY
+                                const addr = result2.LOCATION
+                                const entryFee = `${result2.ENTRY_FEE}`
+                                const category = result2.CATEGORY
+                                res.status(200).send({
+                                    username : `${name_of_user} and ${r1.PLAYER_2}`,
+                                    tournament_name : tname,
+                                    tournament_city : city,
+                                    address : addr,
+                                    fee : entryFee,
+                                    cat : category
+                                })                                
+                            }
+                        })
+
+                    }
+                })
+            }
+        })        
+    }else{
+        USER.findOne({
+            USERID:req.query.USERID
+        },function(error,result){
+            if(error){
+                console.log(error)
+                res.status(404).send({
+                    Message:'Failure'
+                })
+            }
+            if(result){
+                const name_of_user = result.NAME
+                tournamentModel.findOne({
+                    TOURNAMENT_ID:req.query.TOURNAMENT_ID
+                },function(error,result2){
+                    if(error){
+                        console.log(error)
+                        res.status(404).send({
+                            Message:'Error in fetching tournament'
+                        })
+                    }
+                    if(result2){
+                        const tname = result2.TOURNAMENT_NAME
+                        const city = result2.CITY
+                        const addr = result2.LOCATION
+                        const entryFee = `${result2.ENTRY_FEE}`
+                        const category = result2.CATEGORY
+                        res.status(200).send({
+                            username : name_of_user,
+                            tournament_name : tname,
+                            tournament_city : city,
+                            address : addr,
+                            fee : entryFee,
+                            cat : category
+                        })
+                    }
+                })
+            }
+        })
+    }
 })
 userRouter.get('/hostedTournaments',async (req,res)=>{
     try{
