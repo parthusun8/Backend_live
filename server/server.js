@@ -321,6 +321,7 @@ io.on("connection",(socket)=>{
             console.log(obj.TOURNAMENT_ID);
             const selectedButton = obj.btnId
             const btID = parseInt(obj.btnId,10)
+            console.log(`${obj.USERID}-${btID-1}}`)
             tournament.findOneAndUpdate({
                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
                 SPOT_STATUS_ARRAY:`${obj.USERID}-${btID-1}}`
