@@ -273,7 +273,7 @@ io.on("connection",(socket)=>{
                                         else{
                                             tournament.updateOne({
                                                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                                                SPOT_STATUS_ARRAY:obj.USERID
+                                                SPOT_STATUS_ARRAY:`${obj.USERID}-${obj.btnId}`
                                             },{
                                                 $set:{
                                                     "SPOT_STATUS_ARRAY.$":`${obj.btnID}`
