@@ -1807,81 +1807,81 @@ userRouter.get('/allMatches', async (req,res)=>{
                                         }
                                         else{
                                             dbles_partner_1_id = r1.PLAYER_2
+                                            dbles.findOne({
+                                                TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                                PLAYER_1:result.MATCHES[i].PLAYER2
+                                            },function(err2,r2){
+                                                if(err2){
+                                                    res.status(200).send({
+                                                        Message:'Error'
+                                                    })
+                                                }
+                                                else{
+                                                    dbles_partner_2_id = r2.PLAYER_2
+                                                }
+                                                for(let j = 0;j<allUsers.length;j++){
+                                                    console.log(allUsers[j])
+                                                    if(`${result.MATCHES[i].PLAYER1}`==`${allUsers[j].USERID}`){
+                                                        us1 = allUsers[j].NAME
+                                                        break
+                                                    }
+                                                }
+                                                var us3 = ""
+                                                var us4 = ""
+                                                for(let j = 0;j<allUsers.length;j++){
+                                                    console.log(allUsers[j])
+                                                    if(`${dbles_partner_1_id}`==`${allUsers[j].USERID}`){
+                                                        us3 = allUsers[j].NAME
+                                                        break
+                                                    }
+                                                }
+                                                for(let k = 0;k<allUsers.length;k++){
+                                                    if(`${result.MATCHES[i].PLAYER2}`==`${allUsers[k].USERID}`){
+                                                        us2 = allUsers[k].NAME
+                                                        break
+                                                    }
+                                                }
+                                                for(let k = 0;k<allUsers.length;k++){
+                                                    if(`${dbles_partner_2_id}`==`${allUsers[k].USERID}`){
+                                                        us4 = allUsers[k].NAME
+                                                        break
+                                                    }
+                                                }
+                                                if(us1==""){
+                                                    us1="N/A"
+                                                }
+                                                if(us2==""){
+                                                    us2="N/A"
+                                                }
+                                                if(us3==""){
+                                                    us3="N/A"
+                                                }
+                                                if(us4==""){
+                                                    us4="N/A"
+                                                }
+                                            mtches.push({
+                                                TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                                PLAYER1_NAME:us1,
+                                                PLAYER1_PARTNER:us3,
+                                                PLAYER2_NAME:us2,
+                                                PLAYER2_PARTNER:us4,
+                                                PLAYER1_ID:result.MATCHES[i].PLAYER1,
+                                                PLAYER2_ID:result.MATCHES[i].PLAYER2,
+                                                MATCHID:result.MATCHES[i].MATCHID,
+                                                SPORT_NAME:sport,
+                                                LOCATION:result2.LOCATION,
+                                                CITY:result2.CITY,
+                                                TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
+                                                IMG_URL:result2.IMG_URL,
+                                                PRIZE_POOL:`${result2.PRIZE_POOL}`
+                                            }) 
+                                            })
                                         }
                                     })
                                     console.log(result.MATCHES[i].PLAYER2)
-                                    dbles.findOne({
-                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                                        PLAYER_1:result.MATCHES[i].PLAYER2
-                                    },function(err,r1){
-                                        if(err){
-                                            res.status(200).send({
-                                                Message:'Error'
-                                            })
-                                        }
-                                        else{
-                                            dbles_partner_2_id = r1.PLAYER_2
-                                        }
-                                    })
-                                        for(let j = 0;j<allUsers.length;j++){
-                                            console.log(allUsers[j])
-                                            if(`${result.MATCHES[i].PLAYER1}`==`${allUsers[j].USERID}`){
-                                                us1 = allUsers[j].NAME
-                                                break
-                                            }
-                                        }
-                                        var us3 = ""
-                                        var us4 = ""
-                                        for(let j = 0;j<allUsers.length;j++){
-                                            console.log(allUsers[j])
-                                            if(`${dbles_partner_1_id}`==`${allUsers[j].USERID}`){
-                                                us3 = allUsers[j].NAME
-                                                break
-                                            }
-                                        }
-                                        for(let k = 0;k<allUsers.length;k++){
-                                            if(`${result.MATCHES[i].PLAYER2}`==`${allUsers[k].USERID}`){
-                                                us2 = allUsers[k].NAME
-                                                break
-                                            }
-                                        }
-                                        for(let k = 0;k<allUsers.length;k++){
-                                            if(`${dbles_partner_2_id}`==`${allUsers[k].USERID}`){
-                                                us4 = allUsers[k].NAME
-                                                break
-                                            }
-                                        }
-                                        if(us1==""){
-                                            us1="N/A"
-                                        }
-                                        if(us2==""){
-                                            us2="N/A"
-                                        }
-                                        if(us3==""){
-                                            us3="N/A"
-                                        }
-                                        if(us4==""){
-                                            us4="N/A"
-                                        }
-                                    mtches.push({
-                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                                        PLAYER1_NAME:us1,
-                                        PLAYER1_PARTNER:us3,
-                                        PLAYER2_NAME:us2,
-                                        PLAYER2_PARTNER:us4,
-                                        PLAYER1_ID:result.MATCHES[i].PLAYER1,
-                                        PLAYER2_ID:result.MATCHES[i].PLAYER2,
-                                        MATCHID:result.MATCHES[i].MATCHID,
-                                        SPORT_NAME:sport,
-                                        LOCATION:result2.LOCATION,
-                                        CITY:result2.CITY,
-                                        TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
-                                        IMG_URL:result2.IMG_URL,
-                                        PRIZE_POOL:`${result2.PRIZE_POOL}`
-                                    }) 
+                                    res.status(200).send(mtches)
                                 }
                             }
-                                res.status(200).send(mtches)
                         }
                     })   
                 }
