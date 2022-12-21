@@ -254,7 +254,7 @@ io.on("connection",(socket)=>{
                             }))
                             setTimeout(()=>{
                                 console.log('In spot clicked return tourna')
-                                console.log(parseInt(obj.btnId,10))
+                                console.log(parseInt(obj.btnID,10))
                                 console.log(obj.TOURNAMENT_ID)
                                 tournamentModel.findOne({
                                     TOURNAMENT_ID:obj.TOURNAMENT_ID
@@ -264,7 +264,7 @@ io.on("connection",(socket)=>{
 
                                     }
                                     if(result){
-                                        if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)==parseInt(obj.btnId,10)){
+                                        if(result.SPOT_STATUS_ARRAY.indexOf(`confirmed-${obj.USERID}`)==parseInt(obj.btnID,10)){
                                             console.log(result.SPOT_STATUS_ARRAY)
                                             console.log(`Payment already done ${obj.USERID}`)
                                             //here check if other spots containing the user name has been marked or not, if so then remove and replace with index of that spot
@@ -274,7 +274,7 @@ io.on("connection",(socket)=>{
                                         else{
                                             tournament.updateOne({
                                                 TOURNAMENT_ID:obj.TOURNAMENT_ID,
-                                                SPOT_STATUS_ARRAY:`${obj.USERID}-${obj.btnId}`
+                                                SPOT_STATUS_ARRAY:`${obj.USERID}-${obj.btnID}`
                                             },{
                                                 $set:{
                                                     "SPOT_STATUS_ARRAY.$":`${obj.btnID}`
