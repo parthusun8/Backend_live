@@ -1754,7 +1754,9 @@ userRouter.get('/allMatches', async (req,res)=>{
                                     mtches.push({
                                         TOURNAMENT_ID:req.query.TOURNAMENT_ID,
                                         PLAYER1_NAME:us1,
+                                        PLAYER1_PARTNER:"N/A",
                                         PLAYER2_NAME:us2,
+                                        PLAYER2_PARTNER:"N/A",
                                         PLAYER1_ID:result.MATCHES[i].PLAYER1,
                                         PLAYER2_ID:result.MATCHES[i].PLAYER2,
                                         MATCHID:result.MATCHES[i].MATCHID,
