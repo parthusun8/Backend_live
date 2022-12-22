@@ -1734,7 +1734,6 @@ userRouter.get('/allMatches', async (req,res)=>{
                                     console.log(result.MATCHES[i].PLAYER1)
                                     console.log(result.MATCHES[i].PLAYER2)
                                         for(let j = 0;j<allUsers.length;j++){
-                                            console.log(allUsers[j])
                                             if(`${result.MATCHES[i].PLAYER1}`==`${allUsers[j].USERID}`){
                                                 us1 = allUsers[j].NAME
                                                 break
@@ -1792,7 +1791,10 @@ userRouter.get('/allMatches', async (req,res)=>{
                                 if(result.MATCHES[i].completion_status=="Not Complete"&&!((result.MATCHES[i].PLAYER1=="Not Booked"||result.MATCHES[i].PLAYER1=="Not Yet Assigned")&&(result.MATCHES[i].PLAYER2=="Not Booked"||result.MATCHES[i].PLAYER2=="Not Yet Assigned"))){
                                     var us1 = ""
                                     var us2 = ""
+                                    var user_1 = result.MATCHES[i].PLAYER1
+                                    var user_2 = result.MATCHES[i].PLAYER2 
                                     console.log(result.MATCHES[i].PLAYER1)
+                                    console.log(result.MATCHES[i].PLAYER2)
                                     //find doubles partner
                                     var dbles_partner_1_id = ""
                                     var dbles_partner_2_id = ""
@@ -1807,9 +1809,11 @@ userRouter.get('/allMatches', async (req,res)=>{
                                         }
                                         else{
                                             dbles_partner_1_id = r1.PLAYER_2
+                                            console.log(result.MATCHES[i].PLAYER1)
+                                            console.log(req.query.TOURNAMENT_ID)
                                             dbles.findOne({
                                                 TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                                                PLAYER_1:result.MATCHES[i].PLAYER2
+                                                PLAYER_1:user_2
                                             },function(err2,r2){
                                                 if(err2){
                                                     res.status(200).send({
@@ -1820,8 +1824,7 @@ userRouter.get('/allMatches', async (req,res)=>{
                                                     dbles_partner_2_id = r2.PLAYER_2
                                                 }
                                                 for(let j = 0;j<allUsers.length;j++){
-                                                    console.log(allUsers[j])
-                                                    if(`${result.MATCHES[i].PLAYER1}`==`${allUsers[j].USERID}`){
+                                                    if(`${user_1}`==`${allUsers[j].USERID}`){
                                                         us1 = allUsers[j].NAME
                                                         break
                                                     }
@@ -1829,14 +1832,13 @@ userRouter.get('/allMatches', async (req,res)=>{
                                                 var us3 = ""
                                                 var us4 = ""
                                                 for(let j = 0;j<allUsers.length;j++){
-                                                    console.log(allUsers[j])
                                                     if(`${dbles_partner_1_id}`==`${allUsers[j].USERID}`){
                                                         us3 = allUsers[j].NAME
                                                         break
                                                     }
                                                 }
                                                 for(let k = 0;k<allUsers.length;k++){
-                                                    if(`${result.MATCHES[i].PLAYER2}`==`${allUsers[k].USERID}`){
+                                                    if(`${user_2}`==`${allUsers[k].USERID}`){
                                                         us2 = allUsers[k].NAME
                                                         break
                                                     }
@@ -1874,14 +1876,15 @@ userRouter.get('/allMatches', async (req,res)=>{
                                                 TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
                                                 IMG_URL:result2.IMG_URL,
                                                 PRIZE_POOL:`${result2.PRIZE_POOL}`
-                                            }) 
+                                            })
+                                            console.log(mtches) 
                                             })
                                         }
                                     })
                                     console.log(result.MATCHES[i].PLAYER2)
-                                    res.status(200).send(mtches)
                                 }
                             }
+                            res.status(200).send(mtches)
                         }
                     })   
                 }
