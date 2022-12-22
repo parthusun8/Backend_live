@@ -488,36 +488,61 @@ userRouter.post('/addDoublesPartner',async (req,res)=>{
     const usr_to_be_found = await USER.findOne({
         USERID:req.body.PLAYER_2
     })
-    if(usr_to_be_found){
-        const newplayer = new dbles({
+    const doc = await dbles.findOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+        PLAYER_1:req.body.PLAYER_1
+    })
+    if(doc){
+        dbles.updateOne({
             TOURNAMENT_ID:req.body.TOURNAMENT_ID,
-            SPOT_NUMBER:req.body.SPOT_NUMBER,
-            PLAYER_1:req.body.PLAYER_1,
+            PLAYER_1:req.body.PLAYER_1
+        },{
             PLAYER_2:req.body.PLAYER_2
+        },function(e,r){
+            if(e){
+                res.status(200).send({
+                    Message:'Error'
+                })
+            }
+            else{
+                res.status(200).send({
+                    Message:'Added a player'
+                })
+            }
         })
-        const r = await newplayer.save()
-        if(r){
-            res.status(200).send({
-                Message:"Player added"
-            })
-        }
     }
     else{
-        const newplayer = new dbles({
-            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
-            SPOT_NUMBER:req.body.SPOT_NUMBER,
-            PLAYER_1:req.body.PLAYER_1,
-            PLAYER_2:"NA"
-        })
-        const r = await newplayer.save()
-        if(r){
-            res.status(200).send({
-                Message:"Player added"
+        if(usr_to_be_found){
+            const newplayer = new dbles({
+                TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+                SPOT_NUMBER:req.body.SPOT_NUMBER,
+                PLAYER_1:req.body.PLAYER_1,
+                PLAYER_2:req.body.PLAYER_2
             })
+            const r = await newplayer.save()
+            if(r){
+                res.status(200).send({
+                    Message:"Player added"
+                })
+            }
         }
-        // res.status(404).send({
-        //     Message:"Player not found"
-        // })
+        else{
+            const newplayer = new dbles({
+                TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+                SPOT_NUMBER:req.body.SPOT_NUMBER,
+                PLAYER_1:req.body.PLAYER_1,
+                PLAYER_2:"NA"
+            })
+            const r = await newplayer.save()
+            if(r){
+                res.status(200).send({
+                    Message:"Player added"
+                })
+            }
+            // res.status(404).send({
+            //     Message:"Player not found"
+            // })
+        }
     }
 })
 
