@@ -1836,62 +1836,67 @@ userRouter.get('/allMatches', async (req,res)=>{
                                         TOURNAMENT_ID:req.query.TOURNAMENT_ID,
                                         PLAYER_1:user_2
                                     }) 
-                                    dbles_partner_1_id = dat1.PLAYER_2
-                                    dbles_partner_2_id = dat2.PLAYER_2
-                                    if(dat1&&dat2){
-                                        for(let j = 0;j<allUsers.length;j++){
-                                            if(`${user_1}`==`${allUsers[j].USERID}`){
-                                                us1 = allUsers[j].NAME
-                                                break
-                                            }
-                                        }
-                                        for(let k = 0;k<allUsers.length;k++){
-                                            if(`${user_2}`==`${allUsers[k].USERID}`){
-                                                us2 = allUsers[k].NAME
-                                                break
-                                            }
-                                        }
-                                        for(let k = 0;k<allUsers.length;k++){
-                                            if(`${dbles_partner_1_id}`==`${allUsers[k].USERID}`){
-                                                us3 = allUsers[k].NAME
-                                                break
-                                            }
-                                        }
-                                        for(let k = 0;k<allUsers.length;k++){
-                                            if(`${dbles_partner_2_id}`==`${allUsers[k].USERID}`){
-                                                us4 = allUsers[k].NAME
-                                                break
-                                            }
-                                        }
-                                        if(us1==""){
-                                            us1="N/A"
-                                        }
-                                        if(us2==""){
-                                            us2="N/A"
-                                        }
-                                        if(us3==""){
-                                            us3="N/A"
-                                        }
-                                        if(us4==""){
-                                            us4="N/A"
-                                        }
-                                        mtches.push({
-                                            TOURNAMENT_ID:req.query.TOURNAMENT_ID,
-                                            PLAYER1_NAME:us1,
-                                            PLAYER1_PARTNER:us3,
-                                            PLAYER2_NAME:us2,
-                                            PLAYER2_PARTNER:us4,
-                                            PLAYER1_ID:result.MATCHES[i].PLAYER1,
-                                            PLAYER2_ID:result.MATCHES[i].PLAYER2,
-                                            MATCHID:result.MATCHES[i].MATCHID,
-                                            SPORT_NAME:sport,
-                                            LOCATION:result2.LOCATION,
-                                            CITY:result2.CITY,
-                                            TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
-                                            IMG_URL:result2.IMG_URL,
-                                            PRIZE_POOL:`${result2.PRIZE_POOL}`
-                                        })
+                                    if(dat1){
+                                        dbles_partner_1_id = dat1.PLAYER_2
                                     }
+                                    else{
+                                        dbles_partner_1_id = "N/A"
+                                    }
+                                    if(dat2){
+                                        dbles_partner_2_id = "N/A"
+                                    }
+                                    for(let j = 0;j<allUsers.length;j++){
+                                        if(`${user_1}`==`${allUsers[j].USERID}`){
+                                            us1 = allUsers[j].NAME
+                                            break
+                                        }
+                                    }
+                                    for(let k = 0;k<allUsers.length;k++){
+                                        if(`${user_2}`==`${allUsers[k].USERID}`){
+                                            us2 = allUsers[k].NAME
+                                            break
+                                        }
+                                    }
+                                    for(let k = 0;k<allUsers.length;k++){
+                                        if(`${dbles_partner_1_id}`==`${allUsers[k].USERID}`){
+                                            us3 = allUsers[k].NAME
+                                            break
+                                        }
+                                    }
+                                    for(let k = 0;k<allUsers.length;k++){
+                                        if(`${dbles_partner_2_id}`==`${allUsers[k].USERID}`){
+                                            us4 = allUsers[k].NAME
+                                            break
+                                        }
+                                    }
+                                    if(us1==""){
+                                        us1="N/A"
+                                    }
+                                    if(us2==""){
+                                        us2="N/A"
+                                    }
+                                    if(us3==""){
+                                        us3="N/A"
+                                    }
+                                    if(us4==""){
+                                        us4="N/A"
+                                    }
+                                    mtches.push({
+                                        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                                        PLAYER1_NAME:us1,
+                                        PLAYER1_PARTNER:us3,
+                                        PLAYER2_NAME:us2,
+                                        PLAYER2_PARTNER:us4,
+                                        PLAYER1_ID:result.MATCHES[i].PLAYER1,
+                                        PLAYER2_ID:result.MATCHES[i].PLAYER2,
+                                        MATCHID:result.MATCHES[i].MATCHID,
+                                        SPORT_NAME:sport,
+                                        LOCATION:result2.LOCATION,
+                                        CITY:result2.CITY,
+                                        TOURNAMENT_NAME:result2.TOURNAMENT_NAME,
+                                        IMG_URL:result2.IMG_URL,
+                                        PRIZE_POOL:`${result2.PRIZE_POOL}`
+                                    })
                                 }
                             }
                             res.status(200).send(mtches)
