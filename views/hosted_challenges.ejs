@@ -480,6 +480,7 @@ $(window).on('load', async function() {
 					$(`.Match.${i+j+k+1}`).append(`<div class="times ${i+j+k+1}">${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</div>`)
 				}
 			}
+			console.log(matchtime*60*1000+breaktime*60*1000)
 			starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
 			d = new Date(starttime)
 			d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
