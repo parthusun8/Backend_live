@@ -456,7 +456,7 @@ $(window).on('load', async function() {
 			const matchtime = parseInt(time_data.Message,10)
 			console.log(typeof(matchtime))
 			console.log(data2.Matches.length)
-			var inc = data2.Matches.length/2
+			var inc = Math.floor(data2.Matches.length)
 			console.log(inc + 'iinc');
 			var d = new Date(starttime)
 		var d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
@@ -465,12 +465,18 @@ $(window).on('load', async function() {
 		console.log(d.getDate())
 		console.log(d.getMonth())
 		console.log(d.getFullYear())
-			for(var i=0;i<=inc;i=i+inc){
+			for(var i=0;i<=data2.Matches.length;i=i+inc){
+				inc/=2 
+				console.log(`i: ${i}`)
+				if(inc<1){
+			break
+		}
 				console.log(inc + 'iinc');
-		for(var j=0;j<=inc;j=j+numcourts){
+		for(var j=0;j<inc;j=j+numcourts){
 			for(var k=0;k<numcourts;k++){
 				console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
-				if(i+j+k+1<=inc){
+				console.log(i+j+k+1)
+				if(i+j+k+1<=i+inc){
 					$(`.Match.${i+j+k+1}`).append(`<div class="times ${i+j+k+1}">${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</div>`)
 				}
 			}
@@ -478,7 +484,6 @@ $(window).on('load', async function() {
 			d = new Date(starttime)
 			d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
 		}
-		inc=inc/2
 	}
 		}
 		$('.update').on('click',()=>{
