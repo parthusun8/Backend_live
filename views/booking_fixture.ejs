@@ -366,7 +366,7 @@ $(window).on('load', async function() {
                 $(`.Spot.${i+1}`).css("background","#fa4848")
                 $(`.Spot.${i+1}`).css("border","1px solid #fa4848")    
             }
-			$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetails?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}&ORIGINAL=${$('#user_id').text()}`).text(data.array[i].split("-")[1].slice(0,6) + `${i+1}`))
+			$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetails?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}&ORIGINAL=${$('#user_id').text()}`).text(data.array[i].split("-")[1].slice(0,6) + ` ${i+1}`))
             //text(data.array[i].split("-")[1].slice(0,6))
             $(`.Spot.${i+1}`).css("color","#faf5f5")
 		} 
@@ -389,7 +389,7 @@ $(window).on('load', async function() {
 	}
 	for(var i=0;i<data2.Matches.length;i++){
 		if(data2.Matches[i].winner_id){
-			$(`.Match.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${i+1}`).text(data2.Matches[i].winner_id.slice(0,6)))
+			$(`.Match.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${i+1}`).text(data2.Matches[i].winner_id.slice(0,6)+` ${i+1}`))
 			$(`.Match.${i+1}`).css('color','#faf5f5')
 			$(`.Match.${i+1}`).css('background','#403b3b')
 			$(`.Match.${i+1}`).css('border','#403b3b')
