@@ -489,7 +489,21 @@ $(window).on('load', async function() {
 		}
 		$('.update').on('click',()=>{
 			console.log(document.querySelector('.starttime').value)
+			const hrs = parseInt(document.querySelector('.starttime').value.split(":")[0])
+			const min = parseInt(document.querySelector('.starttime').value.split(":")[1])
+			const ehrs = parseInt(document.querySelector('.endtime').value.split(":")[0])
+			const emin = parseInt(document.querySelector('.endtime').value.split(":")[1])
 			console.log(document.querySelector('.dayDateYear').value)
+			const year = parseInt(document.querySelector('.dayDateYear').value.split("-")[0])
+			const month = parseInt(document.querySelector('.dayDateYear').value.split("-")[1])
+			const day = parseInt(document.querySelector('.dayDateYear').value.split("-")[2])
+			const tstamp = new Date(new Date(year,month-1,day,hrs,min).getTime()).toISOString()
+			const tstampend = new Date(new Date(year,month-1,day,ehrs,emin).getTime()).toISOString()
+			const st = new Date(tstamp)
+			const et = new Date(tstampend)
+			const matchno = document.querySelector('#matchno').value
+			$(`.times.${matchno}`).text(`${moment(st).format('LT')} - ${moment(et).format('LT')}(${st.getDate()}-${st.getMonth()+1}-${st.getFullYear()})`)
+			console.log(tstamp)
 		})
 	}
 });
