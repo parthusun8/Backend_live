@@ -837,6 +837,7 @@ userRouter.get('/getConfirmationDetails',async (req,res)=>{
                 })
             }
             if(result){
+                console.log(result)
                 const name_of_user = result.NAME
                 tournamentModel.findOne({
                     TOURNAMENT_ID:req.query.TOURNAMENT_ID
@@ -848,6 +849,7 @@ userRouter.get('/getConfirmationDetails',async (req,res)=>{
                         })
                     }
                     if(result2){
+                        console.log('In doubles result')
                         dbles.findOne({
                             TOURNAMENT_ID:req.query.TOURNAMENT_ID,
                             PLAYER_1:req.query.USERID
