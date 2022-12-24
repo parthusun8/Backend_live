@@ -825,6 +825,7 @@ userRouter.get('/downloadStats',async (req,res)=>{
 userRouter.get('/getConfirmationDetails',async (req,res)=>{
     //queryParams will have USERID and TOURNAMENT_ID
     const dblebool = req.query.TOURNAMENT_ID.split("-")[1][1]
+    console.log(dblebool)
     if(dblebool=='D'){
         USER.findOne({
             USERID:req.query.USERID
@@ -2351,6 +2352,71 @@ userRouter.post('/rules',async (req,res)=>{
             })
         }
     })
+})
+userRouter.get('/matchTimings',async (req,res)=>{
+    //get matchtimings array
+    const dat = await timings.find({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    }).lean()
+    if(dat){
+        res.status(200).send({
+            array:dat
+        })
+    }
+    else{
+        res.status(404).send({
+            message:'None'
+        })
+    }
+})
+userRouter.post('/updateMatchTimings',async (req,res)=>{
+    //TOURNAMENT_ID
+    //MATCHID
+    //START_TIMESTAMP
+    //END_TIMESTAMP
+    const dat = await timings.findOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+        MATCHID:req.body.MATCHID
+    })
+    if(dat){
+        timings.updateOne({
+            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+        MATCHID:req.body.MATCHID
+        },{
+            START_TIMESTAMP:req.body.START_TIMESTAMP,
+            END_TIMESTAMP:req.body.END_TIMESTAMP
+        },function(e,r){
+            if(e){
+                res.status(404).send({
+                    Message:'Error'
+                })
+            }
+            else{
+                res.status(200).send({
+                    Message:'Updated'
+                })
+            }
+        })
+    }
+    else{
+        const tbu = new timings({
+            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+            MATCHID:req.body.MATCHID,
+            START_TIMESTAMP:req.body.START_TIMESTAMP,
+            END_TIMESTAMP:req.body.END_TIMESTAMP
+        })
+        const r2 = await tbu.save()
+        if(r2){
+            res.status(200).send({
+                Message:'Updated'
+            })
+        }
+        else{
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+    }
 })
 userRouter.get('/success',async (req,res)=>{
     res.send('Success')

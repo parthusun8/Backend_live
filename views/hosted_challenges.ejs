@@ -487,7 +487,7 @@ $(window).on('load', async function() {
 		}
 	}
 		}
-		$('.update').on('click',()=>{
+		$('.update').on('click',async ()=>{
 			console.log(document.querySelector('.starttime').value)
 			const hrs = parseInt(document.querySelector('.starttime').value.split(":")[0])
 			const min = parseInt(document.querySelector('.starttime').value.split(":")[1])
@@ -504,6 +504,7 @@ $(window).on('load', async function() {
 			const matchno = document.querySelector('#matchno').value
 			$(`.times.${matchno}`).text(`${moment(st).format('LT')} - ${moment(et).format('LT')}(${st.getDate()}-${st.getMonth()+1}-${st.getFullYear()})`)
 			console.log(tstamp)
+			// const fetch_post = await fetch()
 		})
 	}
 });
