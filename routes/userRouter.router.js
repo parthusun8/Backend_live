@@ -18,6 +18,7 @@ const multer = require('multer')
 const razorpay = require('razorpay')
 const dbles = require('../models/doubles.mongo')
 const timings = require('../models/timings.mongo')
+const matchtiming = require('../models/matchtimings.mongo')
 const csvgen = require('json2csv').Parser
 const rzp_instance = new razorpay({
     key_id:'rzp_test_MKSizWXlqa0LsE',
@@ -2370,7 +2371,7 @@ userRouter.post('/rules',async (req,res)=>{
 })
 userRouter.get('/matchTimings',async (req,res)=>{
     //get matchtimings array
-    const dat = await timings.find({
+    const dat = await matchtiming.find({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID
     }).lean()
     if(dat){
@@ -2389,7 +2390,7 @@ userRouter.post('/updateMatchTimings',async (req,res)=>{
     //MATCHID
     //START_TIMESTAMP
     //END_TIMESTAMP
-    const dat = await timings.findOne({
+    const dat = await matchtiming.findOne({
         TOURNAMENT_ID:req.body.TOURNAMENT_ID,
         MATCHID:req.body.MATCHID
     })
