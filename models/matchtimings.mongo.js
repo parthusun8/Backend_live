@@ -13,4 +13,4 @@ const timings = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('timing',timings)
+module.exports = mongoose.model('matchtiming',timings)
