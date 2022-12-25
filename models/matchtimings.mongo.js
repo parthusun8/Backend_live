@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const timings = new mongoose.Schema({
     TOURNAMENT_ID:{
         type:String
