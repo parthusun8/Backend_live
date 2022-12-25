@@ -504,7 +504,21 @@ $(window).on('load', async function() {
 			const matchno = document.querySelector('#matchno').value
 			$(`.times.${matchno}`).text(`${moment(st).format('LT')} - ${moment(et).format('LT')}(${st.getDate()}-${st.getMonth()+1}-${st.getFullYear()})`)
 			console.log(tstamp)
-			// const fetch_post = await fetch()
+			const fetch_post = await fetch(`http://52.66.209.218:3000/updateMatchTimings`,{
+				method:'POST',
+				headers:{
+					'Content-type':'application/json'
+				},
+				body:JSON.stringify({
+					TOURNAMENT_ID:$("#tourney_id").text(),
+					MATCHID:`${parseInt(document.querySelector('#matchno').value,10)-1}`,
+					START_TIMESTAMP:tstamp,
+					END_TIMESTAMP:tstampend
+				})
+			})
+			if(fetch_post){
+				console.log('updated')
+			}
 		})
 	}
 });
