@@ -2395,6 +2395,7 @@ userRouter.post('/updateMatchTimings',async (req,res)=>{
         MATCHID:req.body.MATCHID
     })
     if(dat){
+        console.log('dat')
         timings.updateOne({
             TOURNAMENT_ID:req.body.TOURNAMENT_ID,
         MATCHID:req.body.MATCHID
@@ -2415,7 +2416,8 @@ userRouter.post('/updateMatchTimings',async (req,res)=>{
         })
     }
     else{
-        const tbu = new timings({
+        console.log('tbu')
+        const tbu = new matchtiming({
             TOURNAMENT_ID:req.body.TOURNAMENT_ID,
             MATCHID:req.body.MATCHID,
             START_TIMESTAMP:req.body.START_TIMESTAMP,
@@ -2423,6 +2425,7 @@ userRouter.post('/updateMatchTimings',async (req,res)=>{
         })
         const r2 = await tbu.save()
         if(r2){
+            console.log('r2')
             res.status(200).send({
                 Message:'Updated'
             })

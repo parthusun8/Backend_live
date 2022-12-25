@@ -398,6 +398,8 @@ $(window).on('load', async function() {
 			$(`.Match.${i+1}`).css('background','#0000ff')
 		}
 	}
+	const prev_set_timings = await fetch(`http://52.66.209.218:3000/matchTimings?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+		const prev_set_timing_dat = await prev_set_timings.json()
 	const time_res = await fetch(`http://52.66.209.218:3000/perMatchEstimatedTime?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const time_data = await time_res.json()
 	if(time_data){
@@ -438,6 +440,14 @@ $(window).on('load', async function() {
 			starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
 			d = new Date(starttime)
 			d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
+		}
+	}
+	if(prev_set_timing_dat){
+		console.log(prev_set_timing_dat)
+		for(var i = 0;i<prev_set_timing_dat.array.length;i++){
+			const d = new Date(prev_set_timing_dat.array[i].START_TIMESTAMP)
+			const d2 = new Date(prev_set_timing_dat.array[i].END_TIMESTAMP)
+			$(`.times.${parseInt(prev_set_timing_dat.array[i].MATCHID,10)+1}`).html(`${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})`)
 		}
 	}
 		}

@@ -447,6 +447,8 @@ $(window).on('load', async function() {
 		console.log('Hello2')
 		$('.goToTournamentDetails').append(`<div class = "timings">Per match Estimated Time is: ${time_data.Message} minutes</div>`)
 		const r = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+		const prev_set_timings = await fetch(`http://52.66.209.218:3000/matchTimings?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+		const prev_set_timing_dat = await prev_set_timings.json()
 		const dt = await r.json()
 		if(dt){
 			var starttime = dt.START_TIMESTAMP
@@ -486,6 +488,15 @@ $(window).on('load', async function() {
 			d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
 		}
 	}
+	if(prev_set_timing_dat){
+		console.log(prev_set_timing_dat)
+		for(var i = 0;i<prev_set_timing_dat.array.length;i++){
+			const d = new Date(prev_set_timing_dat.array[i].START_TIMESTAMP)
+			const d2 = new Date(prev_set_timing_dat.array[i].END_TIMESTAMP)
+			$(`.times.${parseInt(prev_set_timing_dat.array[i].MATCHID,10)+1}`).html(`${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})`)
+		}
+	}
+
 		}
 		$('.update').on('click',async ()=>{
 			console.log(document.querySelector('.starttime').value)
@@ -507,7 +518,7 @@ $(window).on('load', async function() {
 			const fetch_post = await fetch(`http://52.66.209.218:3000/updateMatchTimings`,{
 				method:'POST',
 				headers:{
-					'Content-type':'application/json'
+					'Content-Type':'application/json'
 				},
 				body:JSON.stringify({
 					TOURNAMENT_ID:$("#tourney_id").text(),
