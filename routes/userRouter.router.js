@@ -438,7 +438,9 @@ userRouter.get('/userDetails',async (req,res)=>{
                 Profile_pic_url:result.PROFILE_PIC_URL,
                 PointsScored:`${result.POINTS}`,
                 Level:Level,
-                TotalPoints:TotalPoints
+                TotalPoints:TotalPoints,
+                TOTAL_TOURNAMENTS:result.CURRENT_TOURNAMENTS,
+                TROPHIES:result.TROPHIES
             })
         }
     })
@@ -2443,4 +2445,9 @@ userRouter.get('/success',async (req,res)=>{
 userRouter.get('/failure',async (req,res)=>{
     res.send('Failure')
 })
+//TOURNAMENT_STREAK
+//TROPHIES
+//updating doubles partner
+//remove spots
+//showing doubles partner in fixtures and in match_live_view
 module.exports = userRouter;
