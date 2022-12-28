@@ -373,7 +373,7 @@ io.on("connection",(socket)=>{
                                                 else{
                                                     if(dr.PLAYER_2!='N.A'){
                                                         user.updateOne({
-                                                            USERID:obj.USERID
+                                                            USERID:dr.PLAYER_2
                                                         },{
                                                             $push:{
                                                                 CURRENT_TOURNAMENTS:obj.TOURNAMENT_ID   
