@@ -825,6 +825,25 @@ userRouter.get('/downloadStats',async (req,res)=>{
         })   
     }
 })
+userRouter.post('/updateBreakTime',async (req,res)=>{
+    tournamentModel.updateOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+    },{
+        BREAK_TIME:req.body.BREAK_TIME
+    },function(e,r){
+        if(e){
+            console.log(e)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:'Updated'
+            })
+        }
+    })
+})
 userRouter.get('/getConfirmationDetails',async (req,res)=>{
     //queryParams will have USERID and TOURNAMENT_ID
     const dblebool = req.query.TOURNAMENT_ID.split("-")[1][1]

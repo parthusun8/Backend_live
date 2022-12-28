@@ -254,7 +254,23 @@
 		color: white;
 		background: #5FD068;
 	}
-
+	.updateBreaktime{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.updateBreakimte > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: 5px auto;
+		color: white;
+		background: #5FD068;
+	}
 	/* @media only screen and (max-width:700px){
 		.brackets div.bracketbox > span.teama {
 			position: absolute;
@@ -313,6 +329,12 @@
 <body>
 <div class="goToTournamentDetails">
     <button class="tdetails">Click Here to View Stats</button>
+</div>
+<div class="updateBreaktime">
+	<p>To view match timings update break time first...</p>
+	<p><b>Update Break Time (min): </b></p>
+	<input type="text" class = "breaktime">
+	<button class="updatebreaktime">Update</button>
 </div>
 <div class="timingChange">
 	<p><b>Change Match Timings: </b></p>
@@ -464,6 +486,23 @@ $(window).on('load', async function() {
 			$(`.Match.${i+1}`).css('border','#403b3b')
 		}
 	}
+	$('.updatebreaktime').on('click',async ()=>{
+		const p = '52.66.209.218'
+		const r = await fetch(`http://52.66.209.218:3000/updateBreakTime?TOURNAMENT_ID=${$("#tourney_id").text()}`,{
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json'
+			},
+			body:JSON.stringify({
+				TOURNAMENT_ID:$("#tourney_id").text(),
+				BREAK_TIME:document.querySelector('.breaktime').value
+			})
+		})
+		const d = await r.json()
+		if(d.Message=='Updated'){
+			location.reload()
+		}
+	})
 	const time_res = await fetch(`http://52.66.209.218:3000/perMatchEstimatedTime?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const time_data = await time_res.json()
 	if(time_data){
@@ -480,8 +519,8 @@ $(window).on('load', async function() {
 			const numcourts= dt.NO_OF_COURTS
 			const matchtime = parseInt(time_data.Message,10)
 			console.log(typeof(matchtime))
-			console.log(data2.Matches.length)
-			var inc = Math.floor(data2.Matches.length)
+			console.log(dt.SPOT_STATUS_ARRAY.length/2-1)
+			var inc = Math.floor(dt.SPOT_STATUS_ARRAY.length)
 			console.log(inc + 'iinc');
 			var d = new Date(starttime)
 		var d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
@@ -490,7 +529,7 @@ $(window).on('load', async function() {
 		console.log(d.getDate())
 		console.log(d.getMonth())
 		console.log(d.getFullYear())
-			for(var i=0;i<=data2.Matches.length;i=i+inc){
+			for(var i=0;i<=dt.SPOT_STATUS_ARRAY.length-1;i=i+inc){
 				inc/=2 
 				console.log(`i: ${i}`)
 				if(inc<1){
