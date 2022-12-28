@@ -9,6 +9,7 @@ const user = require('../models/user.mongo')
 const instacricket = require('../models/instacricket.mongo');
 const tournamentModel = require('../models/tournament.model');
 const matchesmodel = require('../models/matches.mongo')
+const dbles = require('../models/doubles.mongo')
 
 const io = new Server(server,{
     cors: {
@@ -359,10 +360,44 @@ io.on("connection",(socket)=>{
                                         console.log(error);
                                     }
                                     else{
-                                        console.log('emitting booking-confirmed')
-                                        io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
-                                            btnID:`${selectedButton}`
-                                        }))
+                                        //here add condition for doubles
+                                        if(obj.TOURNAMENT_ID.split("-")[1].includes('D')){
+                                            //find the doubles guy and also add tournament to his bookings
+                                            dbles.findOne({
+                                                TOURNAMENT_ID:obj.TOURNAMENT_ID,
+                                                PLAYER_1:obj.USERID
+                                            },function(de,dr){
+                                                if(de){
+                                                    console.log(de)
+                                                }
+                                                else{
+                                                    if(dr.PLAYER_2!='N.A'){
+                                                        user.updateOne({
+                                                            USERID:obj.USERID
+                                                        },{
+                                                            $push:{
+                                                                CURRENT_TOURNAMENTS:obj.TOURNAMENT_ID   
+                                                            }},async function(ue,ur){
+                                                                if(ue){
+                                                                    console.log(ue)
+                                                                }
+                                                                else{
+                                                                    console.log('emitting booking-confirmed')
+                                                                    io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
+                                                                        btnID:`${selectedButton}`
+                                                                    })) 
+                                                                }
+                                                            })                   
+                                                    }
+                                                }
+                                            })
+                                        }
+                                        else{
+                                            console.log('emitting booking-confirmed')
+                                            io.to(obj1.TOURNAMENT_ID).emit('booking-confirmed',JSON.stringify({
+                                                btnID:`${selectedButton}`
+                                            }))
+                                        }
                                     }
                                 })
                             }
