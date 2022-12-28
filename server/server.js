@@ -372,6 +372,7 @@ io.on("connection",(socket)=>{
                                                 }
                                                 else{
                                                     if(dr.PLAYER_2!='N.A'){
+                                                        console.log('player2 update')
                                                         user.updateOne({
                                                             USERID:dr.PLAYER_2
                                                         },{
