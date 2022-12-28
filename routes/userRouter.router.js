@@ -2398,7 +2398,7 @@ userRouter.post('/updateMatchTimings',async (req,res)=>{
     })
     if(dat){
         console.log('dat')
-        timings.updateOne({
+        matchtiming.updateOne({
             TOURNAMENT_ID:req.body.TOURNAMENT_ID,
         MATCHID:req.body.MATCHID
         },{
@@ -2445,9 +2445,69 @@ userRouter.get('/success',async (req,res)=>{
 userRouter.get('/failure',async (req,res)=>{
     res.send('Failure')
 })
-//TOURNAMENT_STREAK
-//TROPHIES
+
 //updating doubles partner
 //remove spots
 //showing doubles partner in fixtures and in match_live_view
+userRouter.post('/removeBooking',async (req,res)=>{
+    console.log(req.body)
+    //if singles and doubles
+    if(req.body.TOURNAMENT_ID.split("-")[1].includes('D')){
+        //remove from player and partner
+    }
+    else{
+        //remove from player
+        //first vacate spotStatus Array
+        tournamentModel.findOne({
+            TOURNAMENT_ID:req.body.TOURNAMENT_ID
+        },async function(e,r){
+            if(e){
+                res.status(404).send({
+                    Message:'Error'
+                })
+            }
+            else{
+                console.log('Else')
+                const usr = r.SPOT_STATUS_ARRAY[req.body.SPOTID] 
+                const actual_usr = usr.split("-")[1]
+                USER.updateOne({
+                    USERID:actual_usr
+                },{
+                    $pull:{
+                        CURRENT_TOURNAMENTS:req.body.TOURNAMENT_ID
+                    }
+                },async function(e2,r2){
+                    if(e2){
+                        res.status(404).send({
+                            Message:'Error'
+                        })
+                    }
+                    else{
+                        //Now remove from spot status array
+                        console.log('else2')
+                        tournamentModel.updateOne({
+                            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+                            SPOT_STATUS_ARRAY:usr
+                        },{
+                            $set:{
+                                "SPOT_STATUS_ARRAY.$":`${req.body.SPOTID}`
+                            }
+                        },function(e3,r3){
+                            if(e3){
+                                res.status(404).send({
+                                    Message:'Error'
+                                })
+                            }
+                            else{
+                                res.status(200).send({
+                                    Message:'Error removed'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })        
+    }
+})
 module.exports = userRouter;

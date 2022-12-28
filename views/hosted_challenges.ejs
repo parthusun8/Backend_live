@@ -237,6 +237,23 @@
 		color: white;
 		background: #5FD068;
 	}
+	.vacatespot{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.vacatespot > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: 5px auto;
+		color: white;
+		background: #5FD068;
+	}
 
 	/* @media only screen and (max-width:700px){
 		.brackets div.bracketbox > span.teama {
@@ -308,6 +325,12 @@
 	<input type="Date" class="dayDateYear">
 	<p></p>
 	<button class="update">Update</button>
+</div>
+<div class="vacatespot">
+	<p><b>Vacate Spot</b></p>
+	<p><b>Spot Number</b></p>
+	<input type="text" class="spotnumber">
+	<button class="spotvacate">Confirm</button>
 </div>
 <div class="brackets" id="brackets"></div>
 <div class="bracs" id="bracs"><%=no_of_bracs%></div>
@@ -498,6 +521,25 @@ $(window).on('load', async function() {
 	}
 
 		}
+		$('.spotvacate').on('click',async ()=>{
+			const spot_value = document.querySelector('.spotnumber').value 
+			const actual_number = parseInt(spot_value,10) - 1
+			const tid = $('#tourney_id').text()
+			const res = await fetch(`http://52.66.209.218:3000/removeBooking`,{
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body:JSON.stringify({
+					SPOTID:actual_number,
+					TOURNAMENT_ID:tid
+				})
+			})
+			const dat = await res.json()
+			if(dat){
+				$(`.Spot.${actual_number+1}`).text(` Spot ${actual_number+1}`)
+			}
+		})
 		$('.update').on('click',async ()=>{
 			console.log(document.querySelector('.starttime').value)
 			const hrs = parseInt(document.querySelector('.starttime').value.split(":")[0])
@@ -528,7 +570,7 @@ $(window).on('load', async function() {
 				})
 			})
 			if(fetch_post){
-				console.log('updated')
+				alert('updated')
 			}
 		})
 	}
