@@ -434,13 +434,13 @@ userRouter.get('/userDetails',async (req,res)=>{
                 Name:result.NAME,
                 Phone:result.PHONE,
                 City:result.CITY,
-                Points:`${result.POINTS}`,
+                Points:`${result.POINTS/parseInt(TotalPoints,10)}`,
                 Profile_pic_url:result.PROFILE_PIC_URL,
                 PointsScored:`${result.POINTS}`,
                 Level:Level,
                 TotalPoints:TotalPoints,
-                TOTAL_TOURNAMENTS:result.CURRENT_TOURNAMENTS,
-                TROPHIES:result.TROPHIES
+                TOTAL_TOURNAMENTS:`${result.CURRENT_TOURNAMENTS.length}`,
+                TROPHIES:`${result.TROPHIES.length}`
             })
         }
     })
