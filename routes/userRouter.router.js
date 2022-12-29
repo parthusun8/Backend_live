@@ -429,12 +429,13 @@ userRouter.get('/userDetails',async (req,res)=>{
                 Level = '3'
                 TotalPoints = "500"
             }
+            var ps = result.POINTS/parseInt(TotalPoints,10)
             res.status(200).send({
                 Message:'User found',
                 Name:result.NAME,
                 Phone:result.PHONE,
                 City:result.CITY,
-                Points:`${result.POINTS/parseInt(TotalPoints,10)}`,
+                Points:`${ps}`,
                 Profile_pic_url:result.PROFILE_PIC_URL,
                 PointsScored:`${result.POINTS}`,
                 Level:Level,
