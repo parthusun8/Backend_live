@@ -446,7 +446,43 @@ userRouter.get('/userDetails',async (req,res)=>{
         }
     })
 })
-
+userRouter.get('/userDetailsName',async (req,res)=>{
+    USER.findOne({
+        USERID:req.query.USERID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'User not found'
+            })
+        }
+        else if(result){
+            var Level = ''
+            var TotalPoints = ''
+            //level logic
+            //100 means level 1
+            //100 up means level 2
+            //200 up means level 3
+            if(result.POINTS<100){
+                Level = '1'
+                TotalPoints = "100"
+            }
+            else if(result.POINTS>=100&&result.POINTS<200){
+                Level = '2'
+                TotalPoints = "200"
+            }
+            else{
+                Level = '3'
+                TotalPoints = "500"
+            }
+            var ps = result.POINTS/parseInt(TotalPoints,10)
+            res.status(200).send({
+                Message:'User found',
+                Name:result.NAME
+            })
+        }
+    })
+})
 userRouter.post('/userLogin',async (req,res)=>{
     const loginid = req.body.loginid
     const pwd = req.body.pwd
@@ -1220,8 +1256,12 @@ userRouter.get('/getScore',async (req,res)=>{
             else{
                 result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].MATCHID = req.query.MATCHID.split(" ")[1]
                 result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1].TOURNAMENT_NAME = result.TOURNAMENT_NAME
-                res.render('match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
-
+                if(req.query.TOURNAMENT_ID[0]=='B'){
+                    res.render('match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
+                }
+                else if(req.query.TOURNAMENT_ID[0]=='T'){
+                    res.render('table_tennis_match_view',result.MATCHES[parseInt(req.query.MATCHID.split(" ")[1])-1])
+                }
             }
         }
     })

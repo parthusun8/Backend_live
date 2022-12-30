@@ -72,8 +72,8 @@ io.on("connection",async (socket)=>{
         // }
         //update-score event for tabletennis
         //obj must also contain set details
-        var setscore_array_p1 = [0,0,0]
-        var setscore_array_p2 = [0,0,0]
+        var setscore_array_p1 = [0,0,0,0,0]
+        var setscore_array_p2 = [0,0,0,0,0]
         socket.on('update-score',async (obj1)=>{
             const obj = JSON.parse(obj1)
             const pl1score = obj.PLAYER_1_SCORE
@@ -108,6 +108,21 @@ io.on("connection",async (socket)=>{
                     "MATCHES.$[elem].PLAYER2_SCORE.set3":pl2score
                 }
 
+            }
+            else if(obj.set=='4'){
+                update_query = {
+                    "MATCHES.$[elem].PLAYER1_SCORE.set4":pl1score
+                    ,
+                    "MATCHES.$[elem].PLAYER2_SCORE.set4":pl2score
+                }
+
+            }
+            else if(obj.set=='5'){
+                update_query = {
+                    "MATCHES.$[elem].PLAYER1_SCORE.set5":pl1score
+                    ,
+                    "MATCHES.$[elem].PLAYER2_SCORE.set5":pl2score
+                }
             }
             try{
                 const match = await matchesmodel.updateOne({

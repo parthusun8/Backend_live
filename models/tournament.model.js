@@ -29,8 +29,15 @@ const bdmatch = new mongoose.Schema({
       set3:{
           type:Number,
           default:0
+      },
+      set4:{
+        type:Number,
+        default:0
+      },
+      set5:{
+        type:Number,
+        default:0
       }
-
   },
   PLAYER2_SCORE:{
       set1:{
@@ -44,6 +51,14 @@ const bdmatch = new mongoose.Schema({
       set3:{
           type:Number,
           default:0
+      },
+      set4:{
+        type:Number,
+        default:0
+      },
+      set5:{
+        type:Number,
+        default:0
       }
   },
   ROUND_NO:{

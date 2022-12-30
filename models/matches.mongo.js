@@ -34,6 +34,14 @@ const bdmatch = new mongoose.Schema({
         set3:{
             type:Number,
             default:0
+        },
+        set4:{
+            type:Number,
+            default:0
+        },
+        set5:{
+            type:Number,
+            default:0
         }
   
     },
@@ -47,6 +55,14 @@ const bdmatch = new mongoose.Schema({
             default:0
         },
         set3:{
+            type:Number,
+            default:0
+        },
+        set4:{
+            type:Number,
+            default:0
+        },
+        set5:{
             type:Number,
             default:0
         }
