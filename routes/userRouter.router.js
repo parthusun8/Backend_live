@@ -446,6 +446,52 @@ userRouter.get('/userDetails',async (req,res)=>{
         }
     })
 })
+userRouter.get('/winnerDetails',async (req,res)=>{
+    USER.findOne({
+        USERID:req.query.USERID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'User not found'
+            })
+        }
+        else if(result){
+            var Level = ''
+            var TotalPoints = ''
+            //level logic
+            //100 means level 1
+            //100 up means level 2
+            //200 up means level 3
+            if(result.POINTS<100){
+                Level = '1'
+                TotalPoints = "100"
+            }
+            else if(result.POINTS>=100&&result.POINTS<200){
+                Level = '2'
+                TotalPoints = "200"
+            }
+            else{
+                Level = '3'
+                TotalPoints = "500"
+            }
+            var ps = result.POINTS/parseInt(TotalPoints,10)
+            res.status(200).send({
+                Message:'User found',
+                Name:result.NAME,
+                Phone:result.PHONE,
+                City:result.CITY,
+                Points:`${ps}`,
+                Profile_pic_url:result.PROFILE_PIC_URL,
+                PointsScored:`${result.POINTS}`,
+                Level:Level,
+                TotalPoints:TotalPoints,
+                TOTAL_TOURNAMENTS:result.CURRENT_TOURNAMENTS.length,
+                TROPHIES:result.TROPHIES
+            })
+        }
+    })
+})
 userRouter.get('/userDetailsName',async (req,res)=>{
     USER.findOne({
         USERID:req.query.USERID
@@ -1806,8 +1852,27 @@ userRouter.get('/endMatch',async (req,res)=>{
     })
 })
 userRouter.get('/trophy',async (req,res)=>{
+    console.log('Hello')
     //userid and Tournament ID to be passed
-    res.render('final_winner',{WINNER_ID:req.query.USERID,TOURNAMENT_NAME:req.query.TOURNAMENT_NAME})
+    res.render('final_winner',{WINNER_ID:req.query.USERID})
+})
+userRouter.get('/startscoring',async (req,res)=>{
+    //TOURNAMENT_ID,
+    //MATCHID: 0-indexed
+    matchesmodel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },async function(e,r){
+        if(e){
+            res.status(404).send({
+                Message:'Wrong Credentials'
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:r.MATCHES[parseInt(req.query.MATCHID,10)]
+            })
+        }
+    })
 })
 userRouter.get('/allMatches', async (req,res)=>{
     //tournament id

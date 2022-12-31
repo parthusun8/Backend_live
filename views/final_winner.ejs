@@ -131,21 +131,49 @@ body,
   .modal-btn:nth-of-type(2) {
     margin-left: 30px;
   }
+  .winnerid{
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
+  }
 }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="modal modal--congratulations">
-            <div class="modal-top">
-                <img class="modal-icon u-imgResponsive" src="https://media.istockphoto.com/vectors/vector-flat-golden-trophy-vector-id1176397624?k=20&m=1176397624&s=612x612&w=0&h=yICH7de39SwB1sDP4-kBHFS8bJz4srdu_HOrBC9KvzY=" alt="Trophy" />
-                <div class="modal-header">Congratulations!! <%=WINNER_ID%></div>
-                <div class="modal-subheader">You have Won!! <%=TOURNAMENT_NAME%></div>
-            </div>
-            <div class="modal-bottom">
-                <button class="modal-btn u-btn u-btn--share" disabled>&copy;Ardent Sports</button>
-            </div>
-        </div>
-    </div>
+<div class="winnerid"><%=WINNER_ID%></div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+  //fetch the winner details
+  $(window).on('load',async ()=>{
+    console.log('Hello')
+    console.log(`http://localhost:3000/winnerDetails?USERID=${$('.winnerid').text()}`)
+    const r = await fetch(`http://localhost:3000/winnerDetails?USERID=${$('.winnerid').text()}`)
+
+  const dt = await r.json()
+  if(dt){
+    for(var i=0;i<dt.TROPHIES.length;i++){
+      //fetch TOURNAMENT DETAILS
+      const twon = await fetch(`http://localhost:3000/tournamentById?TOURNAMENT_ID=${dt.TROPHIES[i]}`)
+      const twon_dt = await twon.json()
+      if(twon_dt){
+        console.log(twon_dt)
+        document.querySelector('body').insertAdjacentHTML('beforeend',`
+      <div class="wrapper">
+      <div class="modal modal--congratulations">
+          <div class="modal-top">
+              <img class="modal-icon u-imgResponsive" src="https://media.istockphoto.com/vectors/vector-flat-golden-trophy-vector-id1176397624?k=20&m=1176397624&s=612x612&w=0&h=yICH7de39SwB1sDP4-kBHFS8bJz4srdu_HOrBC9KvzY=" alt="Trophy" />
+              <div class="modal-header">Congratulations!! </div>
+              <div class="modal-subheader">You have Won!! </div>
+          </div>
+          <div class="modal-bottom">
+              <button class="modal-btn u-btn u-btn--share" disabled>&copy;Ardent Sports</button>
+          </div>
+      </div>
+  </div>`)
+      }
+    }
+  }
+  })
+</script>
 </html>
