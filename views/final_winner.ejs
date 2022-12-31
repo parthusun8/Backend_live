@@ -147,14 +147,15 @@ body,
   //fetch the winner details
   $(window).on('load',async ()=>{
     console.log('Hello')
-    console.log(`http://localhost:3000/winnerDetails?USERID=${$('.winnerid').text()}`)
-    const r = await fetch(`http://localhost:3000/winnerDetails?USERID=${$('.winnerid').text()}`)
+    const p ='http://52.66.209.218/'
+    console.log(`http://52.66.209.218:3000/winnerDetails?USERID=${$('.winnerid').text()}`)
+    const r = await fetch(`http://52.66.209.218:3000/winnerDetails?USERID=${$('.winnerid').text()}`)
 
   const dt = await r.json()
   if(dt){
     for(var i=0;i<dt.TROPHIES.length;i++){
       //fetch TOURNAMENT DETAILS
-      const twon = await fetch(`http://localhost:3000/tournamentById?TOURNAMENT_ID=${dt.TROPHIES[i]}`)
+      const twon = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${dt.TROPHIES[i]}`)
       const twon_dt = await twon.json()
       if(twon_dt){
         console.log(twon_dt)
