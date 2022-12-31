@@ -1422,8 +1422,12 @@ userRouter.get('/endMatch',async (req,res)=>{
                     else{
                         set3 = 0
                     }
-                    const pl1sum= result.MATCHES[matchid].PLAYER1_SCORE.set1 + result.MATCHES[matchid].PLAYER1_SCORE.set2 + result.MATCHES[matchid].PLAYER1_SCORE.set3
-                    const pl2sum = result.MATCHES[matchid].PLAYER2_SCORE.set1 + result.MATCHES[matchid].PLAYER2_SCORE.set2 + result.MATCHES[matchid].PLAYER2_SCORE.set3
+                    var pl1sum= result.MATCHES[matchid].PLAYER1_SCORE.set1 + result.MATCHES[matchid].PLAYER1_SCORE.set2 + result.MATCHES[matchid].PLAYER1_SCORE.set3
+                    var pl2sum = result.MATCHES[matchid].PLAYER2_SCORE.set1 + result.MATCHES[matchid].PLAYER2_SCORE.set2 + result.MATCHES[matchid].PLAYER2_SCORE.set3
+                    if(req.query.TOURNAMENT_ID[0]=='T'){
+                        pl1sum+=result.MATCHES[matchid].PLAYER1_SCORE.set4+result.MATCHES[matchid].PLAYER1_SCORE.set5
+                        pl2sum+=result.MATCHES[matchid].PLAYER2_SCORE.set4+result.MATCHES[matchid].PLAYER2_SCORE.set5
+                    }
                     if(pl1sum>pl2sum){
                         WINNER = result.MATCHES[matchid].PLAYER1
                     }
@@ -1685,8 +1689,12 @@ userRouter.get('/endMatch',async (req,res)=>{
                         else{
                             set3 = 0
                         }
-                        const pl1sum = result4.MATCHES[matchid].PLAYER1_SCORE.set1 + result4.MATCHES[matchid].PLAYER1_SCORE.set2 + result4.MATCHES[matchid].PLAYER1_SCORE.set3
-                        const pl2sum = result4.MATCHES[matchid].PLAYER2_SCORE.set1 + result4.MATCHES[matchid].PLAYER2_SCORE.set2 + result4.MATCHES[matchid].PLAYER2_SCORE.set3
+                        var pl1sum = result4.MATCHES[matchid].PLAYER1_SCORE.set1 + result4.MATCHES[matchid].PLAYER1_SCORE.set2 + result4.MATCHES[matchid].PLAYER1_SCORE.set3
+                        var pl2sum = result4.MATCHES[matchid].PLAYER2_SCORE.set1 + result4.MATCHES[matchid].PLAYER2_SCORE.set2 + result4.MATCHES[matchid].PLAYER2_SCORE.set3
+                        if(req.query.TOURNAMENT_ID[0]=='T'){
+                            pl1sum+=result4.MATCHES[matchid].PLAYER1_SCORE.set4+result4.MATCHES[matchid].PLAYER1_SCORE.set5
+                            pl2sum+=result4.MATCHES[matchid].PLAYER2_SCORE.set4+result4.MATCHES[matchid].PLAYER2_SCORE.set5
+                        }
                         if(pl1sum>pl2sum){
                             WINNER_ID = result4.MATCHES[matchid].PLAYER1
                             LOSER_ID = result4.MATCHES[matchid].PLAYER2
