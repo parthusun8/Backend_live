@@ -929,9 +929,9 @@ userRouter.post('/updateBreakTime',async (req,res)=>{
 })
 userRouter.get('/getConfirmationDetails',async (req,res)=>{
     //queryParams will have USERID and TOURNAMENT_ID
-    const dblebool = req.query.TOURNAMENT_ID.split("-")[1][1]
+    const dblebool = req.query.TOURNAMENT_ID.split("-")[1]
     console.log(dblebool)
-    if(dblebool=='D'){
+    if(dblebool.includes('D')){
         USER.findOne({
             USERID:req.query.USERID
         },function(error,result){
