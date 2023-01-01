@@ -1426,7 +1426,7 @@ userRouter.get('/endMatch',async (req,res)=>{
     console.log(matchid)
     matchesmodel.findOne({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID
-    },function(error,result){
+    },async function(error,result){
         if(error){
             res.status(404).send({
                 Message:'Error in tourna fetching'
@@ -1487,79 +1487,86 @@ userRouter.get('/endMatch',async (req,res)=>{
                     console.log('733')
                     console.log(WINNER)
                 }
-                matchesmodel.findOneAndUpdate({
-                    TOURNAMENT_ID : req.query.TOURNAMENT_ID
-                },{ 
-                    $set:{
-                        "MATCHES.$[elem].winner_id":WINNER,
-                        "MATCHES.$[elem].completion_status":"Done"
-                    }
-                },{
-                    arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].MATCHID}]
-                },function(error,d){
-                    if(error){
-                        res.status(404).send({
-                            Message:'Error in final processing'
-                        })
-                    }
-                    else{
-                        //update user
-                        USER.findOneAndUpdate({
-                            USERID:WINNER
-                        },{
-                            $push:{
-                                TROPHIES:req.query.TOURNAMENT_ID
-                            }
-                        },function(error,f){
-                            if(error){
-                                res.status(404).send({
-                                    Message:'Error in final processing'
-                                })                                        
-                            }
-                            else{
-                                USER.updateOne({
-                                    USERID:WINNER
-                                },{
-                                    POINTS:f.POINTS+10
-                                },function(error,result){
-                                    if(error){
-                                        res.status(404).send({
-                                            Message:'Error in final processing'
-                                        })      
-                                    }
-                                    else{
-                                        USER.findOne({
-                                            USERID:LOSER
-                                        },function(erre,resse){
-                                            if(resse){
-                                                USER.updateOne({
-                                                    USERID:LOSER
-                                                },{
-                                                    POINTS:resse.POINTS+5
-                                                },function(err3,ress3){
-                                                    if(ress3){
-                                                        res.status(200).send({
-                                                            Message:'Successfully Updated Finals',
-                                                            WINNER:WINNER
-                                                        })
-                                                    }
-                                                    else if(err3){
-                                                        console.log(err3)
-                                                        res.status(200).send({
-                                                            Message:'Error',
-                                                            WINNER:'None'
-                                                        })
-                                                    }
-                                                })
-                                            }
-                                        })        
-                                        
-                                    }
-                                })
-                            }
-                        })
-                    }
+                //trial
+                const winner_name = await USER.findOne({
+                    USERID:WINNER
                 })
+                if(winner_name){
+                    matchesmodel.findOneAndUpdate({
+                        TOURNAMENT_ID : req.query.TOURNAMENT_ID
+                    },{ 
+                        $set:{
+                            "MATCHES.$[elem].winner_id":WINNER,
+                            "MATCHES.$[elem].winner_name":winner_name.NAME,
+                            "MATCHES.$[elem].completion_status":"Done"
+                        }
+                    },{
+                        arrayFilters:[{"elem.MATCHID":result.MATCHES[matchid].MATCHID}]
+                    },function(error,d){
+                        if(error){
+                            res.status(404).send({
+                                Message:'Error in final processing'
+                            })
+                        }
+                        else{
+                            //update user
+                            USER.findOneAndUpdate({
+                                USERID:WINNER
+                            },{
+                                $push:{
+                                    TROPHIES:req.query.TOURNAMENT_ID
+                                }
+                            },function(error,f){
+                                if(error){
+                                    res.status(404).send({
+                                        Message:'Error in final processing'
+                                    })                                        
+                                }
+                                else{
+                                    USER.updateOne({
+                                        USERID:WINNER
+                                    },{
+                                        POINTS:f.POINTS+10
+                                    },function(error,result){
+                                        if(error){
+                                            res.status(404).send({
+                                                Message:'Error in final processing'
+                                            })      
+                                        }
+                                        else{
+                                            USER.findOne({
+                                                USERID:LOSER
+                                            },function(erre,resse){
+                                                if(resse){
+                                                    USER.updateOne({
+                                                        USERID:LOSER
+                                                    },{
+                                                        POINTS:resse.POINTS+5
+                                                    },function(err3,ress3){
+                                                        if(ress3){
+                                                            res.status(200).send({
+                                                                Message:'Successfully Updated Finals',
+                                                                WINNER:WINNER
+                                                            })
+                                                        }
+                                                        else if(err3){
+                                                            console.log(err3)
+                                                            res.status(200).send({
+                                                                Message:'Error',
+                                                                WINNER:'None'
+                                                            })
+                                                        }
+                                                    })
+                                                }
+                                            })        
+                                            
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
             }
             else if(result.MATCHES[matchid].PLAYER2=="Not Booked"||result.MATCHES[matchid].PLAYER2=="Not Yet Assigned"){
                 var WINNER = result.MATCHES[matchid].PLAYER1    
@@ -2733,5 +2740,20 @@ userRouter.post('/removeBooking',async (req,res)=>{
             }
         })        
     }
+})
+userRouter.get('/finddoublespartner',async (req,res)=>{
+    dbles.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+        PLAYER_1:req.query.USERID
+    },function(e,r){
+        if(r){
+            res.status(200).send(r)
+        }
+        else{
+            res.status(404).send({
+                Message:'error'
+            })
+        }
+    })
 })
 module.exports = userRouter;
