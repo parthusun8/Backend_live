@@ -467,12 +467,22 @@ $(window).on('load', async function() {
 	const res = await fetch(`http://52.66.209.218:3000/spotStatusArray?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const data = await res.json()
 	console.log(data)
+	const sp_array = new Map()
+	for(var i=0;i<data.array.length;i++){
+		if(data.array[i].includes("confirmed")){
+			sp_array.set(data.array[i].split("-")[1],i+1)
+		}
+	}
 	for(var i=0;i<data.array.length;i++){
 		if(data.array[i].includes("confirmed")){
 			$(`.Spot.${i+1}`).text(data.array[i].split("-")[1].slice(0,6))
-			$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetailsTourna?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}`).text(data.array[i].split("-")[1].slice(0,6)))
-            //text(data.array[i].split("-")[1].slice(0,6))
-            $(`.Spot.${i+1}`).css("color","#faf5f5")
+			const usr_name = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${data.array[i].split("-")[1]}`)
+			const usr_name_deets = await usr_name.json()
+			if(usr_name_deets){
+				$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetailsTourna?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}`).text(usr_name_deets.Name))
+				//text(data.array[i].split("-")[1].slice(0,6))
+				$(`.Spot.${i+1}`).css("color","#faf5f5")
+			}
 		}
 	}
 	const res2 = await fetch(`http://52.66.209.218:3000/allMatchesSpots?TOURNAMENT_ID=${$("#tourney_id").text()}`)
