@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=1200px, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+		html, body, .brackets {
+		width: 100%;
+		min-height: 100%;
+		font-family: "Arial", sans-serif;
+    background: #7F8487;
+	}
+    .tdetails{
+        color: white;
+        height: 30px;
+        max-width: 200px;
+        padding: 5px;
+        background: blue;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 2px 2px black;
+    }
+	.tdetailsdownload{
+        color: white;
+        height: 30px;
+        max-width: 200px;
+        padding: 5px;
+        background: blue;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 2px 2px black;
+    }
+	#tourney_id{
+        visibility: hidden;        
+    }
+   a:link {
+     color: white;
+     text-decoration: none;
+   }
+
+  a:visited {color: white;}
+  a:hover {color: white;}
+  a:active {color: #C0F0FC}
+
+	.metroBtn {
+		background-color: #2E7BCC;
+		color: #fff;
+		font-size: 1.1em;
+		padding: 10px;
+		display: inline-block;
+		margin-bottom: 30px;
+		cursor: pointer;
+	}
+	.brackets > div {
+		vertical-align: top;
+		clear: both;
+	}
+	.brackets > div > div {
+		float: left;
+		height: 100%;
+	}
+	.brackets > div > div > div {
+		margin: 50px 0;
+	}
+	.brackets div.bracketbox {
+		position: relative;
+		width: 100%; height: 100%;
+    border-top: 2px solid white;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+	}
+	.brackets div.bracketbox > span {
+		position: absolute;
+		left: 40px;
+		font-size: 0.6em;
+	}
+	/* .brackets div.bracketbox > span.info1 {
+		position: absolute;
+		top: -20px;
+		left: 280px;
+		font-size: 0.8em;
+		color: #BBB;
+
+
+	} */
+
+	/* .brackets div.bracketbox > span.info2 {
+		position: absolute;
+		bottom: -20px;
+		left: 280px;
+		font-size: 0.8em;
+		color: #BBB;
+	} */
+	.brackets div.bracketbox > span.teama {
+		top: -13.5px;
+		background-color: white;
+		height: 20px;
+		width: 90px;
+		padding	: 5px 20px 5px 20px;
+		border: 1px solid #5FD068;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: #5FD068;
+	}
+	.brackets div.bracketbox > span.teamb {
+		bottom: -13.5px;
+		background-color: white;
+		
+		height: 20px;
+		width: 90px;
+		padding	: 5px 20px 5px 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+		border: 1px solid #5FD068;
+    background-color: #5FD068;
+	}
+	.brackets div.bracketbox > span.teamc {
+		bottom: -13.5px;
+    background-color: #5FD068;
+    border: 1px solid #5FD068;
+	height: 20px;
+		width: 90px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+		padding	: 5px 20px 5px 20px;
+
+	}
+	.brackets > .group2 {
+		height: 260px;
+		width: 25%;
+	}
+	.brackets > .group4 {
+		height: 260px;
+		width: 75%;
+	}
+	.brackets > .group5 {
+		height: 260px;
+		width: 75%;
+	}
+	.brackets > .group2 > div {
+		width: 49%;
+	}
+	.brackets > .group3 {
+		height: 320px;
+		width: 50%;
+	}
+	.brackets > .group3 > div {
+		width: 32.7%;
+	}
+	.brackets > .group4 > div {
+		width: 24.5%;
+	}
+	.brackets > .group5 > div {
+		width: 19.6%;
+	}
+	.brackets > .group6 {
+		height: 2000px;
+	}
+	.brackets > .group6 > div {
+		width: 16.3%;
+	}
+	.brackets > .group7 > div {
+		width: 13.3%;
+	}
+	.brackets > div > .r1 > div {
+		height: 60px;
+	}
+	.brackets > div > .r2 > div {
+		margin: 80px 0 110px 0;
+		height: 110px;
+	}
+	.brackets > div > .r3 > div {
+		margin: 135px 0 220px 0;
+		height: 220px;
+	}
+	.brackets > div > .r4 > div {
+		margin: 250px 0 445px 0;
+		height: 445px;
+	}
+	.brackets > div > .r5 > div {
+		margin: 460px 0 900px 0;
+		height: 900px;
+	}
+	.brackets > div > .r6 > div {
+		margin: 900px 0 0 0;
+		height : 1800px;
+	}
+	.brackets > div > .r7 > div {
+		margin: 1800px 0 0 0;
+	}
+	.brackets div.final > div.bracketbox {
+		border-top: 0px;
+		border-right: 0px;
+		height: 0px;
+	}
+	.brackets > div > .r4 > div.drop {
+		height: 180px;
+		margin-bottom: 0px;
+	}
+	.brackets > div > .r5 > div.final.drop {
+		margin-top: 345px;
+		margin-bottom: 0px;
+		height: 1px;
+	}
+	.brackets > div > div > div:last-of-type {
+		margin-bottom: 0px;
+	}
+	#bracs{
+		font-size: 0px;
+	}
+	.timings{
+		font-size:1.3rem;
+		color: white;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.times{
+		margin:15px;
+		width: 100px;
+	}
+	.timingChange{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.timingChange > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: auto;
+		color: white;
+		background: #5FD068;
+	}
+	.addplayer{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.addplayer > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: 5px auto;
+		color: white;
+		background: #5FD068;
+	}
+	.updateBreaktime{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.updateBreakimte > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: 5px auto;
+		color: white;
+		background: #5FD068;
+	}
+	/* @media only screen and (max-width:700px){
+		.brackets div.bracketbox > span.teama {
+			position: absolute;
+			left: 30px;
+			top:-10px;
+	}
+	.brackets div.bracketbox > span.teamb {
+		position: absolute;
+		left: 30px;
+		bottom: -20px;
+
+	}
+
+	.brackets div.bracketbox > span {
+		position: absolute;
+		border-radius: 10px;
+		width: 100%;
+	}
+	 .brackets > .group6 > div {
+		position: sticky;
+	}
+
+	.brackets > div > .r1 > div {
+		position: relative;
+		left: -30px;
+		top: -5px;
+	}
+
+	.brackets > div > .r2 > div {
+		position: relative;
+		left: 25px;
+		top:-5px;
+	}
+	.brackets > div > .r3 > div {
+		position: relative;
+		left: 48px;
+	}
+	.brackets > div > .r4 > div {
+		position: relative;
+		left: 65px;
+	}
+
+	.brackets > div > .r5 > div {
+		position: relative;
+		left: 80px;
+		margin-left: 10px;
+	}
+	.brackets > div > .r6 > div {
+		position: relative;
+		left: 80px;
+	}
+
+} */
+</style>
+</head>
+<body>
+<div class="addplayer">
+	<p><b>Spot Number</b></p>
+	<input type="text" class="spotnumber">
+    <p><b>Player ID</b></p>
+	<input type="text" class="playerentry">
+	<button class="addplayernow">Confirm</button>
+</div>
+<div class="brackets" id="brackets"></div>
+<div class="bracs" id="bracs"><%=no_of_bracs%></div>
+<div class="tourney_id" id="tourney_id"><%=TOURNEY_ID%></div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
+
+<!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+<script>
+    	$(document).on('ready', function() {
+$()
+var knownBrackets = [2,4,8,16,32,64], // brackets with "perfect" proportions (full fields, no byes)
+
+    exampleTeams  = [] // because a bracket needs some teams!
+    bracketCount = 0;console.log($(exampleTeams).length);
+    for(let i=1;i<=64;i++){
+        exampleTeams.push(`Spot ${i}`)
+    }
+/*
+ * Build our bracket "model"
+ */
+var matchid = 1
+function getBracket(base) {
+
+    var closest 		= _.find(knownBrackets, function(k) { return k>=base; }),
+        byes 			= closest-base;
+
+    if(byes>0)	base = closest;
+
+    var brackets 	= [],
+        round 		= 1,
+        baseT 		= base/2,
+        baseC 		= base/2,
+        teamMark	= 0,
+        nextInc		= base/2;
+    for(i=1;i<=(base-1);i++) {
+        var	baseR = i/baseT,
+            isBye = false;
+
+        if(byes>0 && (i%2!=0 || byes>=(baseT-i))) {
+            isBye = true;
+            byes--;
+        }
+
+        var last = _.map(_.filter(brackets, function(b) { return b.nextGame == i; }), function(b) { return {game:b.bracketNo,teams:b.teamnames}; });
+		//[last[0].teams[_.random(1)],last[1].teams[_.random(1)]]
+		brackets.push({
+            lastGames:	round==1 ? null : [last[0].game,last[1].game],
+            nextGame:	nextInc+i>base-1?null:nextInc+i,
+            teamnames:	round==1 ? [exampleTeams[teamMark],exampleTeams[teamMark+1]] : [`Match ${matchid-base}`,`Match ${matchid+1-base}`],
+            bracketNo:	i,
+            roundNo:	round,
+            bye:		isBye
+        });
+		matchid += 2
+        teamMark+=2;
+        if(i%2!=0)	nextInc--;
+        while(baseR>=1) {
+            round++;
+            baseC/= 2;
+            baseT = baseT + baseC;
+            baseR = i/baseT;
+        }
+    }
+
+    renderBrackets(brackets);
+}
+
+/*
+ * Inject our brackets
+ */
+function renderBrackets(struct) {
+    var groupCount	= _.uniq(_.map(struct, function(s) { return s.roundNo; })).length;
+
+    var group	= $('<div class="group'+(groupCount+1)+'" id="b'+bracketCount+'"></div>'),
+        grouped = _.groupBy(struct, function(s) { return s.roundNo; });
+    for(g=1;g<=groupCount;g++) {
+        var round = $('<div class="r'+g+'"></div>');
+        _.each(grouped[g], function(gg) {
+            if(gg.bye)
+                round.append('<div></div>');
+            else
+                round.append('<div><div class="bracketbox">'+`<span class="teama ${gg.teamnames[0]}">`+`<a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=${gg.teamnames[0]}">`+gg.teamnames[0]+`</a></span><span class="teamb ${gg.teamnames[1]}">`+`<a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=${gg.teamnames[1]}">`+gg.teamnames[1]+'</a></span></div></div>');
+        });
+        group.append(round);
+    }
+	console.log(`${(Math.pow(2,groupCount)-1)}`)
+    group.append('<div class="r'+(groupCount+1)+'"><div class="final"><div class="bracketbox">'+`<span class="teamc Match ${(Math.pow(2,groupCount)-1)}"><a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${(Math.pow(2,groupCount)-1)}">Final</a>`+'</span></div></div></div>');
+    $('#brackets').append(group);
+
+    bracketCount++;
+    $('html,body').animate({
+        scrollTop: $("#b"+(bracketCount-1)).offset().top
+    });
+}
+$('.tdetails').on('click',async function(){
+    window.location =  `http://52.66.209.218:3000/tournamentdetails?TOURNAMENT_ID=${$("#tourney_id").text()}`
+})
+$(window).on('load', async function() {
+
+    console.log('Hello')
+    var opts = parseInt($('#bracs').text())
+    if(!_.isNaN(opts) && opts <= _.last(knownBrackets))
+        getBracket(opts);
+    else
+        alert('The bracket size you specified is not currently supported.');
+        $('#clear').off('click');
+        $('#clear').on('click',function(){
+            $('#brackets').html("");
+        });
+	const res = await fetch(`http://52.66.209.218:3000/spotStatusArray?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+	const data = await res.json()
+	console.log(data)
+	const sp_array = new Map()
+	for(var i=0;i<data.array.length;i++){
+		if(data.array[i].includes("confirmed")){
+			sp_array.set(data.array[i].split("-")[1],i+1)
+		}
+	}
+	for(var i=0;i<data.array.length;i++){
+		if(data.array[i].includes("confirmed")){
+			$(`.Spot.${i+1}`).text(data.array[i].split("-")[1].slice(0,6))
+			const usr_name = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${data.array[i].split("-")[1]}`)
+			const usr_name_deets = await usr_name.json()
+			if(usr_name_deets){
+				$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetailsTourna?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}`).text(usr_name_deets.Name))
+				//text(data.array[i].split("-")[1].slice(0,6))
+				$(`.Spot.${i+1}`).css("color","#faf5f5")
+			}
+		}
+	}
+	const res2 = await fetch(`http://52.66.209.218:3000/allMatchesSpots?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+	const data2 = await res2.json()
+	console.log(data2)
+	for(var i=0;i<data2.Matches.length;i++){
+		if(data2.Matches[i].winner_id){
+			$(`.Match.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${i+1}`).text(data2.Matches[i].winner_id.slice(0,6)))
+			$(`.Match.${i+1}`).css('color','#faf5f5')
+			$(`.Match.${i+1}`).css('background','#403b3b')
+			$(`.Match.${i+1}`).css('border','#403b3b')
+		}
+		if(data2.Matches[i].winner_name){
+			$(`.Match.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${i+1}`).text(data2.Matches[i].winner_name))
+			$(`.Match.${i+1}`).css('color','#faf5f5')
+			$(`.Match.${i+1}`).css('background','#403b3b')
+			$(`.Match.${i+1}`).css('border','#403b3b')
+		}
+	}
+	$('.updatebreaktime').on('click',async ()=>{
+		const p = '52.66.209.218'
+		const r = await fetch(`http://52.66.209.218:3000/updateBreakTime?TOURNAMENT_ID=${$("#tourney_id").text()}`,{
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json'
+			},
+			body:JSON.stringify({
+				TOURNAMENT_ID:$("#tourney_id").text(),
+				BREAK_TIME:document.querySelector('.breaktime').value
+			})
+		})
+		const d = await r.json()
+		if(d.Message=='Updated'){
+			location.reload()
+		}
+	})
+	const time_res = await fetch(`http://52.66.209.218:3000/perMatchEstimatedTime?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+	const time_data = await time_res.json()
+	if(time_data){
+		console.log('Hello2')
+		$('.goToTournamentDetails').append(`<div class = "timings">Per match Estimated Time is: ${time_data.Message} minutes</div>`)
+		const r = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+		const prev_set_timings = await fetch(`http://52.66.209.218:3000/matchTimings?TOURNAMENT_ID=${$("#tourney_id").text()}`)
+		const prev_set_timing_dat = await prev_set_timings.json()
+		const dt = await r.json()
+		if(dt){
+			var starttime = dt.START_TIMESTAMP
+			const breaktime = parseInt(dt.BREAK_TIME,10)
+			$('.goToTournamentDetails').append(`<div class = "timings">Break Time is: ${dt.BREAK_TIME} minutes</div>`)
+			const numcourts= dt.NO_OF_COURTS
+			const matchtime = parseInt(time_data.Message,10)
+			console.log(typeof(matchtime))
+			console.log(dt.SPOT_STATUS_ARRAY.length/2-1)
+			var inc = Math.floor(dt.SPOT_STATUS_ARRAY.length)
+			console.log(inc + 'iinc');
+			var d = new Date(starttime)
+		var d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
+		console.log(d)
+		console.log(d2)
+		console.log(d.getDate())
+		console.log(d.getMonth())
+		console.log(d.getFullYear())
+			for(var i=0;i<=dt.SPOT_STATUS_ARRAY.length-1;i=i+inc){
+				inc/=2 
+				console.log(`i: ${i}`)
+				if(inc<1){
+			break
+		}
+				console.log(inc + 'iinc');
+		for(var j=0;j<inc;j=j+numcourts){
+			for(var k=0;k<numcourts;k++){
+				console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
+				console.log(i+j+k+1)
+				if(i+j+k+1<=i+inc){
+					$(`.Match.${i+j+k+1}`).append(`<div class="times ${i+j+k+1}">${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</div>`)
+				}
+			}
+			console.log(matchtime*60*1000+breaktime*60*1000)
+			starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
+			d = new Date(starttime)
+			d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
+		}
+	}
+	if(prev_set_timing_dat){
+		console.log(prev_set_timing_dat)
+		for(var i = 0;i<prev_set_timing_dat.array.length;i++){
+			const d = new Date(prev_set_timing_dat.array[i].START_TIMESTAMP)
+			const d2 = new Date(prev_set_timing_dat.array[i].END_TIMESTAMP)
+			$(`.times.${parseInt(prev_set_timing_dat.array[i].MATCHID,10)+1}`).html(`${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})`)
+		}
+	}
+
+		}
+		$('.spotvacate').on('click',async ()=>{
+			const spot_value = document.querySelector('.spotnumber').value 
+			const actual_number = parseInt(spot_value,10) - 1
+			const tid = $('#tourney_id').text()
+			const res = await fetch(`http://52.66.209.218:3000/removeBooking`,{
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body:JSON.stringify({
+					SPOTID:actual_number,
+					TOURNAMENT_ID:tid
+				})
+			})
+			const dat = await res.json()
+			if(dat){
+				$(`.Spot.${actual_number+1}`).text(` Spot ${actual_number+1}`)
+			}
+		})
+		$('.update').on('click',async ()=>{
+			console.log(document.querySelector('.starttime').value)
+			const hrs = parseInt(document.querySelector('.starttime').value.split(":")[0])
+			const min = parseInt(document.querySelector('.starttime').value.split(":")[1])
+			const ehrs = parseInt(document.querySelector('.endtime').value.split(":")[0])
+			const emin = parseInt(document.querySelector('.endtime').value.split(":")[1])
+			console.log(document.querySelector('.dayDateYear').value)
+			const year = parseInt(document.querySelector('.dayDateYear').value.split("-")[0])
+			const month = parseInt(document.querySelector('.dayDateYear').value.split("-")[1])
+			const day = parseInt(document.querySelector('.dayDateYear').value.split("-")[2])
+			const tstamp = new Date(new Date(year,month-1,day,hrs,min).getTime()).toISOString()
+			const tstampend = new Date(new Date(year,month-1,day,ehrs,emin).getTime()).toISOString()
+			const st = new Date(tstamp)
+			const et = new Date(tstampend)
+			const matchno = document.querySelector('#matchno').value
+			$(`.times.${matchno}`).text(`${moment(st).format('LT')} - ${moment(et).format('LT')}(${st.getDate()}-${st.getMonth()+1}-${st.getFullYear()})`)
+			console.log(tstamp)
+			const fetch_post = await fetch(`http://52.66.209.218:3000/updateMatchTimings`,{
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body:JSON.stringify({
+					TOURNAMENT_ID:$("#tourney_id").text(),
+					MATCHID:`${parseInt(document.querySelector('#matchno').value,10)-1}`,
+					START_TIMESTAMP:tstamp,
+					END_TIMESTAMP:tstampend
+				})
+			})
+			if(fetch_post){
+				alert('updated')
+			}
+		})
+	}
+    $('.addplayernow').on('click',async ()=>{
+        //find, then add
+        try {
+            alert("Processing Request..")
+            const usr = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${document.querySelector('.playerentry').value}`)
+            const usr_deets = await usr.json()
+            if(usr_deets){
+                const r = await fetch(`http://52.66.209.218:3000/addSinglesPlayerToSpot?TOURNAMENT_ID=${$("#tourney_id").text()}&SPOT_NUMBER=${parseInt(document.querySelector('.spotnumber').value)-1}&USERID=${document.querySelector('.playerentry').value}`)
+                const rjson = await r.json()
+                if(rjson){
+                $(`.Spot.${document.querySelector('.spotnumber').value}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetailsTourna?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}`).text(usr_deets.Name))
+				//text(data.array[i].split("-")[1].slice(0,6))
+				$(`.Spot.${document.querySelector('.spotnumber').value}`).css("color","#faf5f5")
+                }
+            }
+        } catch (error) {
+            alert("Error in adding user")
+        }
+    })
+});
+});
+</script>
+</body>
+</html>

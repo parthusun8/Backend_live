@@ -2779,4 +2779,75 @@ userRouter.get('/finddoublespartner',async (req,res)=>{
         }
     })
 })
+userRouter.get('/addSinglesPlayerToSpot',async (req,res)=>{
+    //tournament_id
+    //spot_number
+    tournamentModel.updateOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+        SPOT_STATUS_ARRAY:req.query.SPOT_NUMBER
+    },{
+        $set:{
+            "SPOT_STATUS_ARRAY.$":req.query.USERID
+        }
+    },function(e,r){
+        if(e){
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        else{
+            USER.updateOne({
+                USERID:req.query.USERID
+            },{
+                $push:{
+                    CURRENT_TOURNAMENTS:req.query.TOURNAMENT_ID   
+                }
+            },async function(e2,r2){
+                if(e2){
+                    res.status(404).send({
+                        Message:'Error'
+                    })
+                }
+                else{
+                    res.status(200).send({
+                        Message:'Updated'
+                    })
+                }
+            })
+        }
+    })
+})
+userRouter.get('/getLivFixtures',async (req,res)=>{
+    //TOURNAMENT_ID required
+    tournamentModel.findOne({
+        TOURNAMENT_ID:req.query.TOURNAMENT_ID
+    },function(error,result){
+        if(error){
+            console.log(error)
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        if(result){
+            console.log(result)
+            matchesmodel.findOne({
+                TOURNAMENT_ID:result.TOURNAMENT_ID
+            },function(error,d){
+                if(error){
+                    res.status(404).send({
+                        Message:'Error'
+                    })      
+                }
+                else{
+                    if(d.MATCHES.length==0){
+                        res.render('not_started_view',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS,USERID:req.query.USERID})
+                    }
+                    else{
+                        res.render('live_maintainer',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS,USERID:req.query.USERID})
+                    }
+                }
+            })
+        }
+    })
+})
 module.exports = userRouter;
