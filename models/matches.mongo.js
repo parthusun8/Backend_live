@@ -84,6 +84,9 @@ const bdmatch = new mongoose.Schema({
     winner_id:{
         type:String
     },
+    winner_name:{
+        type:String
+    },
     completion_status:{
         type:String,
         default:"Not Complete"
