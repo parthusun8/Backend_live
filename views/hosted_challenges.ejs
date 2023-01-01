@@ -485,6 +485,12 @@ $(window).on('load', async function() {
 			$(`.Match.${i+1}`).css('background','#403b3b')
 			$(`.Match.${i+1}`).css('border','#403b3b')
 		}
+		if(data2.Matches[i].winner_name){
+			$(`.Match.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${i+1}`).text(data2.Matches[i].winner_name))
+			$(`.Match.${i+1}`).css('color','#faf5f5')
+			$(`.Match.${i+1}`).css('background','#403b3b')
+			$(`.Match.${i+1}`).css('border','#403b3b')
+		}
 	}
 	$('.updatebreaktime').on('click',async ()=>{
 		const p = '52.66.209.218'
