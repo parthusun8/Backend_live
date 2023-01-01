@@ -2782,12 +2782,13 @@ userRouter.get('/finddoublespartner',async (req,res)=>{
 userRouter.get('/addSinglesPlayerToSpot',async (req,res)=>{
     //tournament_id
     //spot_number
+    console.log(req.query)
     tournamentModel.updateOne({
         TOURNAMENT_ID:req.query.TOURNAMENT_ID,
         SPOT_STATUS_ARRAY:req.query.SPOT_NUMBER
     },{
         $set:{
-            "SPOT_STATUS_ARRAY.$":req.query.USERID
+            "SPOT_STATUS_ARRAY.$":`confirmed-${req.query.USERID}`
         }
     },function(e,r){
         if(e){

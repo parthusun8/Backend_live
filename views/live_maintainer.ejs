@@ -453,6 +453,7 @@ $(window).on('load', async function() {
 			sp_array.set(data.array[i].split("-")[1],i+1)
 		}
 	}
+    console.log(data.array)
 	for(var i=0;i<data.array.length;i++){
 		if(data.array[i].includes("confirmed")){
 			$(`.Spot.${i+1}`).text(data.array[i].split("-")[1].slice(0,6))
@@ -612,7 +613,6 @@ $(window).on('load', async function() {
     $('.addplayernow').on('click',async ()=>{
         //find, then add
         try {
-            alert("Processing Request..")
             const usr = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${document.querySelector('.playerentry').value}`)
             const usr_deets = await usr.json()
             if(usr_deets){
