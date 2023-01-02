@@ -153,25 +153,41 @@ body,
 
   const dt = await r.json()
   if(dt){
-    for(var i=0;i<dt.TROPHIES.length;i++){
-      //fetch TOURNAMENT DETAILS
-      const twon = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${dt.TROPHIES[i]}`)
-      const twon_dt = await twon.json()
-      if(twon_dt){
-        console.log(twon_dt)
-        document.querySelector('body').insertAdjacentHTML('beforeend',`
+    if(dt.TROPHIES.length==0){
+      document.querySelector('body').insertAdjacentHTML('beforeend',`
       <div class="wrapper">
       <div class="modal modal--congratulations">
           <div class="modal-top">
-              <img class="modal-icon u-imgResponsive" src="https://media.istockphoto.com/vectors/vector-flat-golden-trophy-vector-id1176397624?k=20&m=1176397624&s=612x612&w=0&h=yICH7de39SwB1sDP4-kBHFS8bJz4srdu_HOrBC9KvzY=" alt="Trophy" />
-              <div class="modal-header">Congratulations!! </div>
-              <div class="modal-subheader">You have Won!! ${twon_dt.TOURNAMENT_NAME}</div>
+              <div class="modal-header">Dear User, You have not won any Trophies Yet</div>
+              <div class="modal-subheader">Participate any Tournaments and win points!!</div>
           </div>
           <div class="modal-bottom">
               <button class="modal-btn u-btn u-btn--share" disabled>&copy;Ardent Sports</button>
           </div>
       </div>
   </div>`)
+    }
+    else{
+      for(var i=0;i<dt.TROPHIES.length;i++){
+        //fetch TOURNAMENT DETAILS
+        const twon = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${dt.TROPHIES[i]}`)
+        const twon_dt = await twon.json()
+        if(twon_dt){
+          console.log(twon_dt)
+          document.querySelector('body').insertAdjacentHTML('beforeend',`
+        <div class="wrapper">
+        <div class="modal modal--congratulations">
+            <div class="modal-top">
+                <img class="modal-icon u-imgResponsive" src="https://media.istockphoto.com/vectors/vector-flat-golden-trophy-vector-id1176397624?k=20&m=1176397624&s=612x612&w=0&h=yICH7de39SwB1sDP4-kBHFS8bJz4srdu_HOrBC9KvzY=" alt="Trophy" />
+                <div class="modal-header">Congratulations!! </div>
+                <div class="modal-subheader">You have Won!! ${twon_dt.TOURNAMENT_NAME}</div>
+            </div>
+            <div class="modal-bottom">
+                <button class="modal-btn u-btn u-btn--share" disabled>&copy;Ardent Sports</button>
+            </div>
+        </div>
+    </div>`)
+        }
       }
     }
   }
