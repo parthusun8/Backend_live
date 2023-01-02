@@ -347,7 +347,7 @@ body {
                         <div class="team-logo">
                             <img src="https://assets.codepen.io/285131/chelsea.svg" class="player2"/>
                         </div>
-                        <h2 class="team-name pl2"><%=PLAYER2%><span>(Player 1)</span></h2>
+                        <h2 class="team-name pl2"><%=PLAYER2%><span>(Player 2)</span></h2>
                     </div>
                 </div>
             </div>
@@ -395,7 +395,7 @@ body {
         sktButton.click()
         })
         $(window).load(async function(){
-          if($('.player2id').text()=='Not Booked'&&$('.player1id').text()!='Not Booked'){
+          if($('.player2id').text()=='Not Booked'||$('.player2id').text()=='Not Yet Assigned'&&$('.player1id').text()!='Not Booked'){
             const pl1 = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${$('.player1id').text()}`)
             const dat1 = await pl1.json()
             if(dat1){
@@ -421,7 +421,7 @@ body {
             }
           }  
           }
-          else if($('.player1id').text()=='Not Booked'&&$('.player2id').text()!='Not Booked'){
+          else if($('.player1id').text()=='Not Booked'||$('.player1id').text()=='Not Yet Assigned'&&$('.player2id').text()!='Not Booked'){
             const pl2 = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${$('.player2id').text()}`)
             const dat2 = await pl2.json()
             if(dat2){
@@ -462,7 +462,30 @@ body {
               $('#pl2name').text(`${dat2.Name}`)
             }
             if($("#TID").text().split("-")[1].includes('D')){
-            //fetch the doubles partner and append
+              const playerdeets = await fetch(`http://52.66.209.218:3000/finddoublespartner?TOURNAMENT_ID=${$("#TID").text()}&USERID=${$('.player2id').text()}`)
+            const r = await playerdeets.json()
+            if(r){
+              console.log(r)
+              if(r.PLAYER_2!='N.A'||r.PLAYER_2!='NA'||r.PLAYER_2!='N/A'||r.PLAYER_2!='na'||r.PLAYER_2!='n.a'||r.PLAYER_2!='n/a'){
+                const pl2 = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${r.PLAYER_2}`) 
+                const d = await pl2.json()
+                if(d){
+                  $('.team-name.pl2').text(`${dat2.Name} and ${d.Name}-(Player 2)`)
+                }   
+              }
+            }
+            const playerdeets2 = await fetch(`http://52.66.209.218:3000/finddoublespartner?TOURNAMENT_ID=${$("#TID").text()}&USERID=${$('.player1id').text()}`)
+            const r2 = await playerdeets2.json()
+            if(r2){
+              console.log(r2)
+              if(r2.PLAYER_2!='N.A'||r2.PLAYER_2!='NA'||r2.PLAYER_2!='N/A'||r2.PLAYER_2!='na'||r2.PLAYER_2!='n.a'||r2.PLAYER_2!='n/a'){
+                const pl2 = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${r2.PLAYER_2}`) 
+                const d = await pl2.json()
+                if(d){
+                  $('.team-name.pl1').text(`${dat1.Name} and ${d.Name}-(Player 1)`)
+                }   
+              }
+            }
           }
           }
         })
