@@ -407,7 +407,7 @@ body {
           if($("#TID").text().split("-")[1].includes('D')){
 
             //fetch the doubles partner and append
-            const playerdeets = await fetch(`http://localhost:3000/finddoublespartner?TOURNAMENT_ID=${$("#TID").text()}&USERID=${$('.player1id').text()}`)
+            const playerdeets = await fetch(`http://52.66.209.218:3000/finddoublespartner?TOURNAMENT_ID=${$("#TID").text()}&USERID=${$('.player1id').text()}`)
             const r = await playerdeets.json()
             if(r){
               console.log(r)
@@ -430,7 +430,7 @@ body {
             $('.player2').attr('src',dat2.Profile_pic_url)
           }
           if($("#TID").text().split("-")[1].includes('D')){
-            const playerdeets = await fetch(`http://localhost:3000/finddoublespartner?TOURNAMENT_ID=${$("#TID").text()}&USERID=${$('.player2id').text()}`)
+            const playerdeets = await fetch(`http://52.66.209.218:3000/finddoublespartner?TOURNAMENT_ID=${$("#TID").text()}&USERID=${$('.player2id').text()}`)
             const r = await playerdeets.json()
             if(r){
               console.log(r)
