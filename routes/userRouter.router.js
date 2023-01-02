@@ -2841,14 +2841,91 @@ userRouter.get('/getLivFixtures',async (req,res)=>{
                 }
                 else{
                     if(d.MATCHES.length==0){
-                        res.render('not_started_view',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS,USERID:req.query.USERID})
+                        res.render('live_maintainer',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS})
                     }
                     else{
-                        res.render('live_maintainer',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS,USERID:req.query.USERID})
+                        res.render('live_maintainer',{TOURNEY_ID:req.query.TOURNAMENT_ID,no_of_bracs:result.NO_OF_KNOCKOUT_ROUNDS})
                     }
                 }
             })
         }
     })
+})
+userRouter.post('/addDoublesPartnerOnSpot',async (req,res)=>{
+    const usr_to_be_found = await USER.findOne({
+        USERID:req.body.PLAYER_2
+    })
+    const doc = await dbles.findOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+        PLAYER_1:req.body.PLAYER_1
+    })
+    if(doc){
+        dbles.updateOne({
+            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+            PLAYER_1:req.body.PLAYER_1
+        },{
+            PLAYER_2:req.body.PLAYER_2
+        },function(e,r){
+            if(e){
+                res.status(200).send({
+                    Message:'Error'
+                })
+            }
+            else{
+                USER.updateOne({
+                    USERID:req.body.PLAYER_2
+                },{
+                    $push:{
+                        CURRENT_TOURNAMENTS:req.body.TOURNAMENT_ID   
+                    }
+                },function(e2,r2){
+                    res.status(200).send({
+                        Message:'Added a player'
+                    })
+                })
+            }
+        })
+    }
+    else{
+        if(usr_to_be_found){
+            const newplayer = new dbles({
+                TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+                SPOT_NUMBER:req.body.SPOT_NUMBER,
+                PLAYER_1:req.body.PLAYER_1,
+                PLAYER_2:req.body.PLAYER_2
+            })
+            const r = await newplayer.save()
+            if(r){
+                USER.updateOne({
+                    USERID:req.body.PLAYER_2
+                },{
+                    $push:{
+                        CURRENT_TOURNAMENTS:req.body.TOURNAMENT_ID   
+                    }
+                },function(e2,r2){
+                    res.status(200).send({
+                        Message:'Added a player'
+                    })
+                })
+            }
+        }
+        else{
+            const newplayer = new dbles({
+                TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+                SPOT_NUMBER:req.body.SPOT_NUMBER,
+                PLAYER_1:req.body.PLAYER_1,
+                PLAYER_2:"NA"
+            })
+            const r = await newplayer.save()
+            if(r){
+                res.status(200).send({
+                    Message:"Player added"
+                })
+            }
+            // res.status(404).send({
+            //     Message:"Player not found"
+            // })
+        }
+    }
 })
 module.exports = userRouter;

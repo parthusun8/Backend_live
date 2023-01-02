@@ -254,6 +254,23 @@
 		color: white;
 		background: #5FD068;
 	}
+    .adddoublesplayer{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.adddoublesplayer > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: 5px auto;
+		color: white;
+		background: #5FD068;
+	}
 	.updateBreaktime{
 		font-size:0.8rem;
 		color: yellow;
@@ -444,6 +461,39 @@ $(window).on('load', async function() {
         $('#clear').on('click',function(){
             $('#brackets').html("");
         });
+        if($("#tourney_id").text().split("-")[1].includes('D')){
+            document.querySelector('.addplayer').insertAdjacentHTML('afterend',
+            `<div class="adddoublesplayer">
+                <p><b>Add A Partner:</b></p>
+	        <p><b>Player ID</b></p>
+	        <input type="text" class="player_1_id">
+    <p><b>Partner ID</b></p>
+	<input type="text" class="player_2_id">
+	<button class="addpartner">Confirm</button>
+</div>`)
+        }
+        $('.addpartner').on('click',async ()=>{
+            const tid = $("#tourney_id").text()
+            const pl1 = document.querySelector('.player_1_id').value
+            const pl2 = document.querySelector('.player_2_id').value
+            const isplayerAdded = await fetch(`http://52.66.209.218:3000/addDoublesPartnerOnSpot`,{
+                method:'POST',
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    TOURNAMENT_ID:tid,
+                    PLAYER_1:pl1,
+                    PLAYER_2:pl2
+                })
+            })
+            const is_player_res = await isplayerAdded.json()
+            if(is_player_res){
+                if(is_player_res.Message!='error'){
+                    alert("Added Player")
+                }
+            }
+        })
 	const res = await fetch(`http://52.66.209.218:3000/spotStatusArray?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const data = await res.json()
 	console.log(data)
