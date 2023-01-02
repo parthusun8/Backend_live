@@ -340,7 +340,7 @@ function renderBrackets(struct) {
         });
         group.append(round);
     }
-    group.append('<div class="r'+(groupCount+1)+'"><div class="final"><div class="bracketbox">'+`<span class="teamc Match ${(2*(groupCount+1)-1)}"><a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${(2*(groupCount+1)-1)}">Final</a>`+'</span></div></div></div>');
+    group.append('<div class="r'+(groupCount+1)+'"><div class="final"><div class="bracketbox">'+`<span class="teamc Match ${(Math.pow(2,groupCount)-1)}"><a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${(2*(groupCount+1)-1)}">Final</a>`+'</span></div></div></div>');
     $('#brackets').append(group);
 
     bracketCount++;
