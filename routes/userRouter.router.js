@@ -2845,9 +2845,20 @@ userRouter.get('/finddoublespartner',async (req,res)=>{
             res.status(200).send(r)
         }
         else{
-            res.status(404).send({
-                Message:'error'
+            dbles.findOne({
+                TOURNAMENT_ID:req.query.TOURNAMENT_ID,
+                PLAYER_2:req.query.USERID
+            },function(e2,r2){
+                if(e2){
+                    res.status(404).send({
+                        Message:'error'
+                    })
+                }
+                else{
+                    res.status(200).send(r2)
+                }
             })
+
         }
     })
 })
