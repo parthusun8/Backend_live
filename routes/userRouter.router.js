@@ -1319,7 +1319,7 @@ userRouter.post('/walkover',async (req,res)=>{
     console.log(req.body.WINNER_ID)
     matchesmodel.findOne({
         TOURNAMENT_ID:req.body.TOURNAMENT_ID
-    },function(err,ress){
+    },async function(err,ress){
         if(err){
             console.log(err)
             res.status(404).send({
@@ -1327,72 +1327,145 @@ userRouter.post('/walkover',async (req,res)=>{
             })
         }
         else if(ress){
-            matchesmodel.updateOne({
-                TOURNAMENT_ID:req.body.TOURNAMENT_ID
-            },{
-                $set:{
-                    "MATCHES.$[elem].winner_id":req.body.WINNER_ID,
-                    "MATCHES.$[elem].completion_status":"Done"
-                }
-            },{
-                arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].MATCHID}] 
-            },function(errr,resss){
-                if(errr){
-                    res.status(404).send({
-                        Message:'Error'
-                    })
-                }
-                else if(resss){
-                    //update next match spot
-                    console.log('Update Next Match Spot Walkover')
-                    if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
-                        matchesmodel.updateOne({
-                            TOURNAMENT_ID:req.body.TOURNAMENT_ID
-                        },{
-                            $set:{
-                                "MATCHES.$[elem].PLAYER1":req.body.WINNER_ID
-                            }
-                        },{
-                            arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].NEXT_MATCH_ID}]
-                        },function(e,result2){
-                            if(e){
-                                console.log(e)
-                                res.status(404).send({
-                                    Message:'Error'
-                                })
-                            }
-                            if(result2){
-                                res.status(200).send({
-                                    Message:'Success',
-                                })
-                            }
-                        })
-                    }
-                    else if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==1){
-                        matchesmodel.updateOne({
-                            TOURNAMENT_ID:req.body.TOURNAMENT_ID
-                        },{
-                            $set:{
-                                "MATCHES.$[elem].PLAYER2":req.body.WINNER_ID
-                            }
-                        },{
-                            arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].NEXT_MATCH_ID}]
-                        },function(e,result2){
-                            if(e){
-                                console.log(e)
-                                res.status(404).send({
-                                    Message:'Error'
-                                })
-                            }
-                            if(result2){
-                                res.status(200).send({
-                                    Message:'Success',
-                                })
-                            }
-                        })
-                    }
-                }
+            const winner_name_deet = await USER.findOne({
+                USERID:req.body.WINNER_ID
             })
+            const wn_deet = await winner_name_deet.json()
+            if(wn_deet){
+                matchesmodel.updateOne({
+                    TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                },{
+                    $set:{
+                        "MATCHES.$[elem].winner_id":req.body.WINNER_ID,
+                        "MATCHES.$[elem].winner_name":wn_deet.NAME,
+                        "MATCHES.$[elem].completion_status":"Done"
+                    }
+                },{
+                    arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].MATCHID}] 
+                },async function(errr,resss){
+                    if(errr){
+                        res.status(404).send({
+                            Message:'Error'
+                        })
+                    }
+                    else if(resss){
+                        //update next match spot
+                        if(ress.MATCHES.length-2==matchid){
+                            //update tournament_won
+                            const twon_update = await USER.updateOne({
+                                USERID:req.body.WINNER_ID
+                            },{
+                                $push:{
+                                    TROPHIES:req.body.TOURNAMENT_ID
+                                }
+                            })
+                            if(twon_update){
+                                console.log('Update Next Match Spot Walkover')
+                                if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+                                    matchesmodel.updateOne({
+                                        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                                    },{
+                                        $set:{
+                                            "MATCHES.$[elem].PLAYER1":req.body.WINNER_ID
+                                        }
+                                    },{
+                                        arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].NEXT_MATCH_ID}]
+                                    },function(e,result2){
+                                        if(e){
+                                            console.log(e)
+                                            res.status(404).send({
+                                                Message:'Error'
+                                            })
+                                        }
+                                        if(result2){
+                                            res.status(200).send({
+                                                Message:'Success',
+                                            })
+                                        }
+                                    })
+                                }
+                                else if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==1){
+                                    matchesmodel.updateOne({
+                                        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                                    },{
+                                        $set:{
+                                            "MATCHES.$[elem].PLAYER2":req.body.WINNER_ID
+                                        }
+                                    },{
+                                        arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].NEXT_MATCH_ID}]
+                                    },function(e,result2){
+                                        if(e){
+                                            console.log(e)
+                                            res.status(404).send({
+                                                Message:'Error'
+                                            })
+                                        }
+                                        if(result2){
+                                            res.status(200).send({
+                                                Message:'Success',
+                                            })
+                                        }
+                                    })
+                                }
+                            }
+                        }
+                        else{
+                            console.log('Update Next Match Spot Walkover')
+                            if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==0){
+                                matchesmodel.updateOne({
+                                    TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                                },{
+                                    $set:{
+                                        "MATCHES.$[elem].PLAYER1":req.body.WINNER_ID
+                                    }
+                                },{
+                                    arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].NEXT_MATCH_ID}]
+                                },function(e,result2){
+                                    if(e){
+                                        console.log(e)
+                                        res.status(404).send({
+                                            Message:'Error'
+                                        })
+                                    }
+                                    if(result2){
+                                        res.status(200).send({
+                                            Message:'Success',
+                                        })
+                                    }
+                                })
+                            }
+                            else if(ress.MATCHES[matchid].NEXT_MATCH_PLAYER_SPOT==1){
+                                matchesmodel.updateOne({
+                                    TOURNAMENT_ID:req.body.TOURNAMENT_ID
+                                },{
+                                    $set:{
+                                        "MATCHES.$[elem].PLAYER2":req.body.WINNER_ID
+                                    }
+                                },{
+                                    arrayFilters:[{"elem.MATCHID":ress.MATCHES[matchid].NEXT_MATCH_ID}]
+                                },function(e,result2){
+                                    if(e){
+                                        console.log(e)
+                                        res.status(404).send({
+                                            Message:'Error'
+                                        })
+                                    }
+                                    if(result2){
+                                        res.status(200).send({
+                                            Message:'Success',
+                                        })
+                                    }
+                                })
+                            }
+                        }
+                    }
+                })
+            }
+            else{
+                res.status(404).send({
+                    Message:'Error'
+                })
+            }
         }
     })
 })
