@@ -386,19 +386,6 @@ $(window).on('load', async function() {
 		} 
 	}
 	var dbles_partner = 'none'
-	if($("#tourney_id").text().split("-")[1].includes('D')){
-		//find the partner
-		const r = await fetch(`http://52.66.209.218:3000/finddoublespartner?TOURNAMENT_ID=${$("#tourney_id").text()}&USERID=${$('#user_id').text()}`)
-		const rjson = await r.json()
-		if(r){
-			if(r.PLAYER_1==$('#user_id').text()){
-				dbles_partner = r.PLAYER_2
-			}
-			else{
-				dbles_partner = r.PLAYER_1
-			}
-		}
-	}
 	const res2 = await fetch(`http://52.66.209.218:3000/allMatchesSpots?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const data2 = await res2.json()
 	console.log(data2)
@@ -418,7 +405,7 @@ $(window).on('load', async function() {
 		}
 	}
 	for(var i=0;i<data2.Matches.length;i++){
-		if(data2.Matches[i].PLAYER1==$('#user_id').text()||data2.Matches[i].PLAYER2==$('#user_id').text()||data2.Matches[i].PLAYER1==dbles_partner||data2.Matches[i].PLAYER2==dbles_partner){
+		if(data2.Matches[i].PLAYER1==$('#user_id').text()||data2.Matches[i].PLAYER2==$('#user_id').text()){
 			console.log('Hello' + `${i}`)
 			$(`.Match.${i+1}`).css('background','#0000ff')
 		}
@@ -474,6 +461,40 @@ $(window).on('load', async function() {
 			const d2 = new Date(prev_set_timing_dat.array[i].END_TIMESTAMP)
 			$(`.times.${parseInt(prev_set_timing_dat.array[i].MATCHID,10)+1}`).html(`${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})`)
 		}
+	}
+		}
+	}
+	if($("#tourney_id").text().split("-")[1].includes('D')){
+		//find the partner
+		const r = await fetch(`http://52.66.209.218:3000/finddoublespartner?TOURNAMENT_ID=${$("#tourney_id").text()}&USERID=${$('#user_id').text()}`)
+		const rjson = await r.json()
+		if(rjson){
+			if(rjson.PLAYER_1==$('#user_id').text()){
+				dbles_partner = rjson.PLAYER_2
+			}
+			else{
+				dbles_partner = rjson.PLAYER_1
+			}
+			for(var i=0;i<data2.Matches.length;i++){
+		if(data2.Matches[i].PLAYER1==$('#user_id').text()||data2.Matches[i].PLAYER2==$('#user_id').text()||data2.Matches[i].PLAYER1==dbles_partner||data2.Matches[i].PLAYER2==dbles_partner){
+			console.log('Hello' + `${i}`)
+			$(`.Match.${i+1}`).css('background','#0000ff')
+		}
+	}
+	for(var i=0;i<data.array.length;i++){
+		if(data.array[i].includes("confirmed")){
+            if(data.array[i].split("-")[1]==dbles_partner){
+                $(`.Spot.${i+1}`).css("background","#fa4848")
+                $(`.Spot.${i+1}`).css("border","1px solid #fa4848")    
+            }
+			const usr_name = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${data.array[i].split("-")[1]}`)
+			const usr_name_deets = await usr_name.json()
+			if(usr_name_deets){
+				$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetails?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}&ORIGINAL=${$('#user_id').text()}`).text(usr_name_deets.Name + `, Spot: ${sp_array.get(data.array[i].split("-")[1])}`))
+				//text(data.array[i].split("-")[1].slice(0,6))
+				$(`.Spot.${i+1}`).css("color","#faf5f5")
+			}
+		} 
 	}
 		}
 	}	
