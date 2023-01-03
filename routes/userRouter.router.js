@@ -1327,10 +1327,9 @@ userRouter.post('/walkover',async (req,res)=>{
             })
         }
         else if(ress){
-            const winner_name_deet = await USER.findOne({
+            const wn_deet = await USER.findOne({
                 USERID:req.body.WINNER_ID
             })
-            const wn_deet = await winner_name_deet.json()
             if(wn_deet){
                 matchesmodel.updateOne({
                     TOURNAMENT_ID:req.body.TOURNAMENT_ID
