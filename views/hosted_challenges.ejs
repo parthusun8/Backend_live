@@ -218,7 +218,8 @@
 	}
 	.times{
 		margin:15px;
-		width: 100px;
+		padding: 10px;
+		width: 105px;
 	}
 	.timingChange{
 		font-size:0.8rem;
@@ -263,7 +264,41 @@
 		border-radius: 10px;
 		margin:20px 20px 0px 0px;
 	}
-	.updateBreakimte > button{
+	.updateBreaktime > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: 5px auto;
+		color: white;
+		background: #5FD068;
+	}
+	.addplayer{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.addplayer > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: 5px auto;
+		color: white;
+		background: #5FD068;
+	}
+	.noofcourts{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.noofcourts > button{
 		height: 30px;
 		width: 60px;
 		padding: 5px;
@@ -336,6 +371,14 @@
 	<input type="text" class = "breaktime">
 	<button class="updatebreaktime">Update</button>
 </div>
+<div class="addplayer">
+    <p><b>All Spot Changes must be done before Tournament is started by Organizer</b></p>
+	<p><b>Spot Number</b></p>
+	<input type="text" class="spotnumber">
+    <p><b>Player ID</b></p>
+	<input type="text" class="playerentry">
+	<button class="addplayernow">Confirm</button>
+</div>
 <div class="timingChange">
 	<p><b>Change Match Timings: </b></p>
 	<input type="text" id="matchno" placeholder="Match Number">
@@ -354,6 +397,12 @@
 	<p><b>Spot Number</b></p>
 	<input type="text" class="spotnumber">
 	<button class="spotvacate">Confirm</button>
+</div>
+<div class="noofcourts">
+	<p><b>Update No. of Courts</b></p>
+	<p><b>Number: </b></p>
+	<input type="text" class="courtnumber">
+	<button class="courtupdate">Confirm</button>
 </div>
 <div class="brackets" id="brackets"></div>
 <div class="bracs" id="bracs"><%=no_of_bracs%></div>
@@ -465,6 +514,39 @@ $(window).on('load', async function() {
         $('#clear').on('click',function(){
             $('#brackets').html("");
         });
+		if($("#tourney_id").text().split("-")[1].includes('D')){
+            document.querySelector('.addplayer').insertAdjacentHTML('afterend',
+            `<div class="adddoublesplayer">
+                <p><b>Add A Partner:</b></p>
+	        <p><b>Player ID</b></p>
+	        <input type="text" class="player_1_id">
+    <p><b>Partner ID</b></p>
+	<input type="text" class="player_2_id">
+	<button class="addpartner">Confirm</button>
+</div>`)
+        }
+		$('.addpartner').on('click',async ()=>{
+            const tid = $("#tourney_id").text()
+            const pl1 = document.querySelector('.player_1_id').value
+            const pl2 = document.querySelector('.player_2_id').value
+            const isplayerAdded = await fetch(`http://52.66.209.218:3000/addDoublesPartnerOnSpot`,{
+                method:'POST',
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    TOURNAMENT_ID:tid,
+                    PLAYER_1:pl1,
+                    PLAYER_2:pl2
+                })
+            })
+            const is_player_res = await isplayerAdded.json()
+            if(is_player_res){
+                if(is_player_res.Message!='error'){
+                    alert("Added Player")
+                }
+            }
+        })
 	const res = await fetch(`http://52.66.209.218:3000/spotStatusArray?TOURNAMENT_ID=${$("#tourney_id").text()}`)
 	const data = await res.json()
 	console.log(data)
@@ -503,6 +585,24 @@ $(window).on('load', async function() {
 			$(`.Match.${i+1}`).css('border','#403b3b')
 		}
 	}
+	$('.addplayernow').on('click',async ()=>{
+        //find, then add
+        try {
+            const usr = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${document.querySelector('.playerentry').value}`)
+            const usr_deets = await usr.json()
+            if(usr_deets){
+                const r = await fetch(`http://52.66.209.218:3000/addSinglesPlayerToSpot?TOURNAMENT_ID=${$("#tourney_id").text()}&SPOT_NUMBER=${parseInt(document.querySelector('.spotnumber').value)-1}&USERID=${document.querySelector('.playerentry').value}`)
+                const rjson = await r.json()
+                if(rjson){
+                $(`.Spot.${document.querySelector('.spotnumber').value}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetailsTourna?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}`).text(usr_deets.Name))
+				//text(data.array[i].split("-")[1].slice(0,6))
+				$(`.Spot.${document.querySelector('.spotnumber').value}`).css("color","#faf5f5")
+                }
+            }
+        } catch (error) {
+            alert("Error in adding user")
+        }
+    })
 	$('.updatebreaktime').on('click',async ()=>{
 		const p = '52.66.209.218'
 		const r = await fetch(`http://52.66.209.218:3000/updateBreakTime?TOURNAMENT_ID=${$("#tourney_id").text()}`,{
@@ -513,6 +613,23 @@ $(window).on('load', async function() {
 			body:JSON.stringify({
 				TOURNAMENT_ID:$("#tourney_id").text(),
 				BREAK_TIME:document.querySelector('.breaktime').value
+			})
+		})
+		const d = await r.json()
+		if(d.Message=='Updated'){
+			location.reload()
+		}
+	})
+	$('.courtupdate').on('click',async ()=>{
+		const p = '52.66.209.218'
+		const r = await fetch(`http://localhost:3000/updateNoOfCourts`,{
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json'
+			},
+			body:JSON.stringify({
+				TOURNAMENT_ID:$("#tourney_id").text(),
+				NO_OF_COURTS:parseInt(document.querySelector('.courtnumber').value,10)
 			})
 		})
 		const d = await r.json()

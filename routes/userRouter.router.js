@@ -3011,4 +3011,29 @@ userRouter.post('/addDoublesPartnerOnSpot',async (req,res)=>{
         }
     }
 })
+userRouter.post('/updateNoOfCourts',async (req,res)=>{
+    //get tournament id
+    //get no_of_courts
+    console.log('Hello')
+    console.log(req.body)
+    tournamentModel.updateOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID
+    },{
+        NO_OF_COURTS:req.body.NO_OF_COURTS  
+    })
+},function(e,r){
+    if(e){
+        console.log(e)
+        res.status(404).send({
+            Message:'Unable to update'
+        })
+    }
+    else{
+        console.log('Hi')
+        res.status(200).send({
+            Message:'Updated'
+        })
+    }
+})
+
 module.exports = userRouter;
