@@ -3020,8 +3020,8 @@ userRouter.post('/updateNoOfCourts',async (req,res)=>{
         TOURNAMENT_ID:req.body.TOURNAMENT_ID
     },{
         NO_OF_COURTS:req.body.NO_OF_COURTS  
-    })
-},function(e,r){
+    }
+,function(e,r){
     if(e){
         console.log(e)
         res.status(404).send({
@@ -3034,6 +3034,7 @@ userRouter.post('/updateNoOfCourts',async (req,res)=>{
             Message:'Updated'
         })
     }
+})
 })
 
 module.exports = userRouter;
