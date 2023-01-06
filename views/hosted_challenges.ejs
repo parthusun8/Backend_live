@@ -622,7 +622,7 @@ $(window).on('load', async function() {
 	})
 	$('.courtupdate').on('click',async ()=>{
 		const p = '52.66.209.218'
-		const r = await fetch(`http://localhost:3000/updateNoOfCourts`,{
+		const r = await fetch(`http://52.66.209.218:3000/updateNoOfCourts`,{
 			method:'POST',
 			headers:{
 				'Content-Type':'application/json'
