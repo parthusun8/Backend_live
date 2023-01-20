@@ -289,6 +289,23 @@
 		color: white;
 		background: #5FD068;
 	}
+	.adddoublesplayer{
+		font-size:0.8rem;
+		color: yellow;
+		padding: 10px;
+		width:200px;
+		border:2px solid white;
+		border-radius: 10px;
+		margin:20px 20px 0px 0px;
+	}
+	.adddoublesplayer > button{
+		height: 30px;
+		width: 60px;
+		padding: 5px;
+		margin: 5px auto;
+		color: white;
+		background: #5FD068;
+	}
 	.noofcourts{
 		font-size:0.8rem;
 		color: yellow;
@@ -656,8 +673,8 @@ $(window).on('load', async function() {
 			console.log(dt.SPOT_STATUS_ARRAY.length/2-1)
 			var inc = Math.floor(dt.SPOT_STATUS_ARRAY.length)
 			console.log(inc + 'iinc');
-			var d = new Date(starttime)
-		var d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
+			var d = new Date(new Date(starttime).getTime()-5*60*60*1000-30*60*1000)
+		var d2 = new Date(new Date(starttime).getTime()-5*60*60*1000-30*60*1000+matchtime*60*1000)
 		console.log(d)
 		console.log(d2)
 		console.log(d.getDate())
@@ -675,13 +692,13 @@ $(window).on('load', async function() {
 				console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
 				console.log(i+j+k+1)
 				if(i+j+k+1<=i+inc){
-					$(`.Match.${i+j+k+1}`).append(`<div class="times ${i+j+k+1}">${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</div>`)
+					$(`.Match.${i+j+k+1}`).append(`<div class="times ${i+j+k+1}">${moment(d).format('LT')} - ${moment(d2).format('LT')}<p>(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</p></div>`)
 				}
 			}
 			console.log(matchtime*60*1000+breaktime*60*1000)
 			starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
-			d = new Date(starttime)
-			d2 = new Date(new Date(starttime).getTime()+matchtime*60*1000)
+			d = new Date(new Date(starttime).getTime()-5*60*60*1000-30*60*1000)
+			d2 = new Date(new Date(starttime).getTime()-5*60*60*1000-30*60*1000+matchtime*60*1000)
 		}
 	}
 	if(prev_set_timing_dat){
@@ -689,7 +706,7 @@ $(window).on('load', async function() {
 		for(var i = 0;i<prev_set_timing_dat.array.length;i++){
 			const d = new Date(prev_set_timing_dat.array[i].START_TIMESTAMP)
 			const d2 = new Date(prev_set_timing_dat.array[i].END_TIMESTAMP)
-			$(`.times.${parseInt(prev_set_timing_dat.array[i].MATCHID,10)+1}`).html(`${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})`)
+			$(`.times.${parseInt(prev_set_timing_dat.array[i].MATCHID,10)+1}`).html(`${moment(d).format('LT')} - ${moment(d2).format('LT')}<p>(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</p>`)
 		}
 	}
 
