@@ -3036,5 +3036,26 @@ userRouter.post('/updateNoOfCourts',async (req,res)=>{
     }
 })
 })
-
+userRouter.post('/changeStartEndTimings',async (req,res)=>{
+    //tournament_id
+    //start_date
+    //start_time
+    console.log('request')
+    tournamentModel.updateOne({
+        TOURNAMENT_ID:req.body.TOURNAMENT_ID 
+    },{
+        START_TIMESTAMP:req.body.START_TIMESTAMP
+    },async function(e,r){
+        if(e){
+            res.status(404).send({
+                Message:'Error'
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:'updated'
+            })
+        }
+    })
+})
 module.exports = userRouter;

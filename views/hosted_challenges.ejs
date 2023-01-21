@@ -408,6 +408,15 @@
 	<p></p>
 	<button class="update">Update</button>
 </div>
+<div class="timingChange2">
+	<p><b>Change Tournament Timings: </b></p>
+	<p>Start Time: </p>
+	<input type="time" class="starttime2" placeholder="Start Time">
+	<p>Date: </p>
+	<input type="Date" class="dayDateYear2">
+	<p></p>
+	<button class="update2">Update</button>
+</div>
 <div class="vacatespot">
 	<p><b>All Spot Changes must be done before Tournament is started by Organizer</b></p>
 	<p><b>Vacate Spot</b></p>
@@ -761,6 +770,40 @@ $(window).on('load', async function() {
 			})
 			if(fetch_post){
 				alert('updated')
+			}
+		})
+		$('.update2').on('click',async ()=>{
+			console.log(document.querySelector('.starttime2').value)
+			const hrs = parseInt(document.querySelector('.starttime2').value.split(":")[0])
+			const min = parseInt(document.querySelector('.starttime2').value.split(":")[1])
+			// const ehrs = parseInt(document.querySelector('.endtime').value.split(":")[0])
+			// const emin = parseInt(document.querySelector('.endtime').value.split(":")[1])
+			console.log(document.querySelector('.dayDateYear2').value)
+			const year = parseInt(document.querySelector('.dayDateYear2').value.split("-")[0])
+			const month = parseInt(document.querySelector('.dayDateYear2').value.split("-")[1])
+			const day = parseInt(document.querySelector('.dayDateYear2').value.split("-")[2])
+			const tstamp = new Date(new Date(year,month-1,day,hrs,min).getTime()+5*60*60*1000+30*60*1000).toISOString()
+			// const tstampend = new Date(new Date(year,month-1,day,ehrs,emin).getTime()).toISOString()
+			const st = new Date(tstamp)
+			// const et = new Date(tstampend)
+			// const matchno = document.querySelector('#matchno').value
+			// $(`.times.${matchno}`).text(`${moment(st).format('LT')} - ${moment(et).format('LT')}(${st.getDate()}-${st.getMonth()+1}-${st.getFullYear()})`)
+			console.log(tstamp)
+			const p = '52.66.209.218'
+			const fetch_post = await fetch(`http://52.66.209.218:3000/changeStartEndTimings`,{
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body:JSON.stringify({
+					TOURNAMENT_ID:$("#tourney_id").text(),
+					// MATCHID:`${parseInt(document.querySelector('#matchno').value,10)-1}`,
+					START_TIMESTAMP:tstamp,
+					// END_TIMESTAMP:tstampend
+				})
+			})
+			if(fetch_post){
+				location.reload()
 			}
 		})
 	}
