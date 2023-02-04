@@ -646,6 +646,26 @@ $(window).on('load', async function() {
             alert("Error in adding user")
         }
     })
+			$('.spotvacate').on('click',async ()=>{
+			const spot_value = document.querySelector('.spotnumber').value 
+			const actual_number = parseInt(spot_value,10) - 1
+			const tid = $('#tourney_id').text()
+			const res = await fetch(`http://52.66.209.218:3000/removeBooking`,{
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body:JSON.stringify({
+					SPOTID:actual_number,
+					TOURNAMENT_ID:tid
+				})
+			})
+			const dat = await res.json()
+			if(dat){
+				// $(`.Spot.${actual_number+1}`).text(` Spot ${actual_number+1}`)
+				location.reload()
+			}
+		})
 	$('.updatebreaktime').on('click',async ()=>{
 		const p = '52.66.209.218'
 		const r = await fetch(`http://52.66.209.218:3000/updateBreakTime?TOURNAMENT_ID=${$("#tourney_id").text()}`,{
@@ -737,25 +757,7 @@ $(window).on('load', async function() {
 	}
 
 		}
-		$('.spotvacate').on('click',async ()=>{
-			const spot_value = document.querySelector('.spotnumber').value 
-			const actual_number = parseInt(spot_value,10) - 1
-			const tid = $('#tourney_id').text()
-			const res = await fetch(`http://52.66.209.218:3000/removeBooking`,{
-				method:'POST',
-				headers:{
-					'Content-Type':'application/json'
-				},
-				body:JSON.stringify({
-					SPOTID:actual_number,
-					TOURNAMENT_ID:tid
-				})
-			})
-			const dat = await res.json()
-			if(dat){
-				$(`.Spot.${actual_number+1}`).text(` Spot ${actual_number+1}`)
-			}
-		})
+
 		$('.update').on('click',async ()=>{
 			console.log(document.querySelector('.starttime').value)
 			const hrs = parseInt(document.querySelector('.starttime').value.split(":")[0])
