@@ -7,7 +7,7 @@ const {
 } = require("../Functions/createMatches.singles");
 const evrouter = express.Router();
 const ruleschema = require("../models/rules.mongo");
-const cricketmodel = require("../models/cricket.mongo");
+const cricketmodel = require("../models/cricket.model");
 const usermodel = require("../models/user.mongo");
 const matchesmodel = require("../models/matches.mongo");
 const onlytourneys = require("../models/tourney.mongo");
@@ -133,7 +133,7 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
       req.body["IMG_URL"] = url[req.body.SPORT];
 
       const spotArray = [];
-      const no_of_spots = req.body.NO_OF_KNOCKOUT_ROUNDS.split("-");
+      const no_of_spots = req.body.NO_OF_KNOCK_OUT_ROUNDS.split("-");
       for (let i = 0; i < no_of_spots.length; i++) {
         var arr = new Array();
         for (let j = 0; j < no_of_spots[i]; j++) {
@@ -201,7 +201,7 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
         console.log(`Categories as per request: ${new_obj.CATEGORY}`);
         const categories = new_obj.CATEGORY.split("-");
         const agecategories = new_obj.AGE_CATEGORY.split("-");
-        const poolsize = new_obj.NO_OF_KNOCKOUT_ROUNDS.split("-");
+        const poolsize = new_obj.NO_OF_KNOCK_OUT_ROUNDS.split("-");
         const gold = new_obj.GOLD.split("-");
         const silver = new_obj.SILVER.split("-");
         const bronze = new_obj.BRONZE.split("-");
@@ -253,16 +253,17 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
         }
 
         if (req.body.SPORT == "Cricket") {
-          const cricket = await new cricketmodel({
+          const cricket = {
             TOURNAMENT_ID:
               req.body.TOURNAMENT_ID +
               "-" +
-              categories[i] +
+              categories[0] +
               "-" +
-              agecategories[i],
+              agecategories[0],
             SUBSTITUTE: parseInt(req.body.SUBSTITUTE),
             TEAM_SIZE: parseInt(req.body.TEAM_SIZE),
-          }).save();
+          }
+          await cricketmodel.insertMany([cricket]);
           if (!cricket) {
             res.status(400).send("Some error in creating Cricket tournament");
           } else {
