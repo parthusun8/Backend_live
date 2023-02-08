@@ -252,15 +252,20 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
           };
         }
 
-        if(req.body.SPORT == "Cricket"){
+        if (req.body.SPORT == "Cricket") {
           const cricket = await new cricketmodel({
-            TOURNAMENT_ID: req.body.TOURNAMENT_ID,
+            TOURNAMENT_ID:
+              req.body.TOURNAMENT_ID +
+              "-" +
+              categories[i] +
+              "-" +
+              agecategories[i],
             SUBSTITUTE: parseInt(req.body.SUBSTITUTE),
             TEAM_SIZE: parseInt(req.body.TEAM_SIZE),
           }).save();
-          if(!cricket){
+          if (!cricket) {
             res.status(400).send("Some error in creating Cricket tournament");
-          } else{
+          } else {
             console.log("Cricket tournament created");
           }
         }
@@ -295,7 +300,7 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
           );
         }
       }
-    } else{
+    } else {
       res.status(404).send({
         Message: "User not found",
       });
