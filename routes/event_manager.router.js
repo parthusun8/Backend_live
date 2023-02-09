@@ -262,6 +262,8 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
               agecategories[0],
             SUBSTITUTE: parseInt(req.body.SUBSTITUTE),
             TEAM_SIZE: parseInt(req.body.TEAM_SIZE),
+            OVERS : parseInt(req.body.OVERS),
+            BALL_TYPE : parseInt(req.body.BALL_TYPE),
           }
           await cricketmodel.insertMany([cricket]);
           if (!cricket) {

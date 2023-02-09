@@ -12,6 +12,14 @@ const cricketschema = new mongoose.Schema({
         type:Number,
         default:0,
         required:true
+    },
+    OVERS:{
+        type: Number,
+        required: true
+    },
+    BALL_TYPE : {
+        type: String,
+        required: true
     }
 });
 
