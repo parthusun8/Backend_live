@@ -240,6 +240,27 @@ userRouter.get('/perMatchEstimatedTime',async (req,res)=>{
         }
     })    
 })
+userRouter.post('/findUserByID',async (req,res)=>{
+    try{
+        const r = await USER.findOne({
+            USERID:req.body.USERID
+        })
+        if(r){
+            var response = r
+            response['Message'] = 'Success'
+            res.status(200).send(response)
+        }
+        else{
+            res.status(200).send({
+                Message:'Failure'
+            })
+        }
+    }catch(e){
+        res.status(404).send({
+            Message:'Error'
+        })
+    }
+})
 userRouter.post('/updatePerMatchEstimatedTime',async (req,res)=>{
     //reqd tournamentID and timing in minutes
     const tid = req.body.TOURNAMENT_ID 
