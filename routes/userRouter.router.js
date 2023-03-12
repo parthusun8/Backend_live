@@ -261,6 +261,20 @@ userRouter.post('/findUserByID',async (req,res)=>{
         })
     }
 })
+userRouter.post('/removeUser', async (req,res)=>{
+    const query = {USERID: req.body.USERID}
+    const user = await USER.exists(query)
+    if(user){
+        const newuser = await USER.findOneAndDelete(query)
+        res.status(200).send({
+            Message:'USER Deleted'
+        })
+    }else{
+        res.status(404).send({
+            Message:'USER does not Exist'
+        })
+    }
+});
 userRouter.post('/updatePerMatchEstimatedTime',async (req,res)=>{
     //reqd tournamentID and timing in minutes
     const tid = req.body.TOURNAMENT_ID 
