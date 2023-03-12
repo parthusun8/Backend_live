@@ -240,6 +240,27 @@ userRouter.get('/perMatchEstimatedTime',async (req,res)=>{
         }
     })    
 })
+userRouter.post('/findUserByID',async (req,res)=>{
+    try{
+        const r = await USER.findOne({
+            USERID:req.body.USERID
+        })
+        if(r){
+            var response = r
+            response['Message'] = 'Success'
+            res.status(200).send(response)
+        }
+        else{
+            res.status(200).send({
+                Message:'Failure'
+            })
+        }
+    }catch(e){
+        res.status(404).send({
+            Message:'Error'
+        })
+    }
+})
 userRouter.post('/updatePerMatchEstimatedTime',async (req,res)=>{
     //reqd tournamentID and timing in minutes
     const tid = req.body.TOURNAMENT_ID 
@@ -2698,103 +2719,104 @@ userRouter.get('/failure',async (req,res)=>{
 userRouter.post('/removeBooking',async (req,res)=>{
     console.log(req.body)
     //if singles and doubles
-    if(req.body.TOURNAMENT_ID.split("-")[1].includes('D')){
-        console.log('In Doubles removal')
-        //remove from player and partner
-        tournamentModel.findOne({
-            TOURNAMENT_ID:req.body.TOURNAMENT_ID
-        },async function(e,r){
-            if(e){
-                res.status(404).send({
-                    Message:'Error'
-                })
-            }
-            else{
-                console.log('Else')
-                const usr = r.SPOT_STATUS_ARRAY[req.body.SPOTID] 
-                const actual_usr = usr.split("-")[1]
-                USER.updateOne({
-                    USERID:actual_usr
-                },{
-                    $pull:{
-                        CURRENT_TOURNAMENTS:req.body.TOURNAMENT_ID
-                    }
-                },async function(e2,r2){
-                    if(e2){
-                        res.status(404).send({
-                            Message:'Error'
-                        })
-                    }
-                    else{
-                        //Now remove from spot status array
-                        //now fetch the doubles ID and remove it from there
+    // if(req.body.TOURNAMENT_ID.split("-")[1].includes('D')){
+    //     console.log('In Doubles removal')
+    //     //remove from player and partner
+    //     tournamentModel.findOne({
+    //         TOURNAMENT_ID:req.body.TOURNAMENT_ID
+    //     },async function(e,r){
+    //         if(e){
+    //             res.status(404).send({
+    //                 Message:'Error'
+    //             })
+    //         }
+    //         else{
+    //             console.log('Else')
+    //             const usr = r.SPOT_STATUS_ARRAY[req.body.SPOTID] 
+    //             const actual_usr = usr.split("-")[1]
+    //             USER.updateOne({
+    //                 USERID:actual_usr
+    //             },{
+    //                 $pull:{
+    //                     CURRENT_TOURNAMENTS:req.body.TOURNAMENT_ID
+    //                 }
+    //             },async function(e2,r2){
+    //                 if(e2){
+    //                     res.status(404).send({
+    //                         Message:'Error'
+    //                     })
+    //                 }
+    //                 else{
+    //                     //Now remove from spot status array
+    //                     //now fetch the doubles ID and remove it from there
 
-                        const usr2 = await dbles.findOne({
-                            TOURNAMENT_ID:req.body.TOURNAMENT_ID,
-                            PLAYER_1:actual_usr
-                        })
-                        if(usr2){
-                            if(usr2.PLAYER_2!='N.A'||usr2.PLAYER_2!='na'||usr2.PLAYER_2!='N/A'||usr2.PLAYER_2!='NA'){
-                                const removal_res = await USER.updateOne({
-                                    USERID:usr2.PLAYER_2
-                                },{
-                                    $pull:{
-                                        CURRENT_TOURNAMENTS:req.body.TOURNAMENT_ID
-                                    }
-                                })
-                                if(removal_res){
-                                    tournamentModel.updateOne({
-                                        TOURNAMENT_ID:req.body.TOURNAMENT_ID,
-                                        SPOT_STATUS_ARRAY:usr
-                                    },{
-                                        $set:{
-                                            "SPOT_STATUS_ARRAY.$":`${req.body.SPOTID}`
-                                        }
-                                    },function(e3,r3){
-                                        if(e3){
-                                            res.status(404).send({
-                                                Message:'Error'
-                                            })
-                                        }
-                                        else{
-                                            res.status(200).send({
-                                                Message:'Error removed'
-                                            })
-                                        }
-                                    })
-                                }
-                            }
-                            else{
-                                tournamentModel.updateOne({
-                                    TOURNAMENT_ID:req.body.TOURNAMENT_ID,
-                                    SPOT_STATUS_ARRAY:usr
-                                },{
-                                    $set:{
-                                        "SPOT_STATUS_ARRAY.$":`${req.body.SPOTID}`
-                                    }
-                                },function(e3,r3){
-                                    if(e3){
-                                        res.status(404).send({
-                                            Message:'Error'
-                                        })
-                                    }
-                                    else{
-                                        res.status(200).send({
-                                            Message:'Error removed'
-                                        })
-                                    }
-                                })
-                            }
-                        }
-                        console.log('else2')
-                    }
-                })
-            }
-        })
-    }
-    else{
+    //                     const usr2 = await dbles.findOne({
+    //                         TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+    //                         PLAYER_1:actual_usr
+    //                     })
+    //                     if(usr2){
+    //                         if(usr2.PLAYER_2!='N.A'||usr2.PLAYER_2!='na'||usr2.PLAYER_2!='N/A'||usr2.PLAYER_2!='NA'){
+    //                             const removal_res = await USER.updateOne({
+    //                                 USERID:usr2.PLAYER_2
+    //                             },{
+    //                                 $pull:{
+    //                                     CURRENT_TOURNAMENTS:req.body.TOURNAMENT_ID
+    //                                 }
+    //                             })
+    //                             if(removal_res){
+    //                                 tournamentModel.updateOne({
+    //                                     TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+    //                                     SPOT_STATUS_ARRAY:usr
+    //                                 },{
+    //                                     $set:{
+    //                                         "SPOT_STATUS_ARRAY.$":`${req.body.SPOTID}`
+    //                                     }
+    //                                 },function(e3,r3){
+    //                                     if(e3){
+    //                                         res.status(404).send({
+    //                                             Message:'Error'
+    //                                         })
+    //                                     }
+    //                                     else{
+    //                                         res.status(200).send({
+    //                                             Message:'Error removed'
+    //                                         })
+    //                                     }
+    //                                 })
+    //                             }
+    //                         }
+    //                         else{
+    //                             tournamentModel.updateOne({
+    //                                 TOURNAMENT_ID:req.body.TOURNAMENT_ID,
+    //                                 SPOT_STATUS_ARRAY:usr
+    //                             },{
+    //                                 $set:{
+    //                                     "SPOT_STATUS_ARRAY.$":`${req.body.SPOTID}`
+    //                                 }
+    //                             },function(e3,r3){
+    //                                 if(e3){
+    //                                     res.status(404).send({
+    //                                         Message:'Error'
+    //                                     })
+    //                                 }
+    //                                 else{
+    //                                     res.status(200).send({
+    //                                         Message:'Error removed'
+    //                                     })
+    //                                 }
+    //                             })
+    //                         }
+    //                     }
+    //                     console.log('else2')
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
+
         //remove from player
         //first vacate spotStatus Array
+        console.log('Remove Booking')
         tournamentModel.findOne({
             TOURNAMENT_ID:req.body.TOURNAMENT_ID
         },async function(e,r){
@@ -2845,7 +2867,7 @@ userRouter.post('/removeBooking',async (req,res)=>{
                 })
             }
         })        
-    }
+    
 })
 userRouter.get('/finddoublespartner',async (req,res)=>{
     dbles.findOne({
