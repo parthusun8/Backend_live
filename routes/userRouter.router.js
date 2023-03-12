@@ -2349,6 +2349,11 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                         var spotStatusArrays = []
                         for(var j = 0;j<result1.length;j++){
                             if(result1[j].TOURNAMENT_ID.includes(r1[i].TOURNAMENT_ID)){
+
+                                //PARTH REMOVE THIS LATER WHEN IMAGE UPLOADED TO S3
+                                if(result1[j].SPORT == "Cricket"){
+                                    r1[i].IMG_URL = "https://img.freepik.com/premium-vector/cricket-player-logo-design-vector-icon-symbol-template-illustration_647432-117.jpg?w=740"
+                                }
                                 var cat = ""
                                 var cat_name = ""
                                 var type = ""
@@ -2397,6 +2402,10 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                                     cat=`${result1[j].AGE_CATEGORY} Girls Doubles`
                                     cat_name = "Girls Doubles"
                                     type="DOUBLES"
+                                } else if(result1[j].CATEGORY=='CR'){
+                                    cat=`${result1[j].AGE_CATEGORY} Cricket`
+                                    cat_name = "Cricket"
+                                    type="Eleven"
                                 }
                                 console.log(result1[j].TOURNAMENT_NAME)
                                 console.log(result1[j].SPOT_STATUS_ARRAY)
@@ -2411,11 +2420,13 @@ userRouter.get('/baseTournaments',async(req,res)=>{
                                 })
                             }
                         }
-                        r1[i].spotStatusArrays = spotStatusArrays
+                        r1[i].spotStatusArrays = spotStatusArrays;
+                        console.log(r2);
                         r2.push(r1[i])
                     }
                 }
                 res.status(200).send(r2)
+                console.log("RETURN" + r2)
             }
         }
     }catch(error){
