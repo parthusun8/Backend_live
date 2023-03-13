@@ -21,6 +21,7 @@ const timings = require('../models/timings.mongo')
 const matchtiming = require('../models/matchtimings.mongo')
 const csvgen = require('json2csv').Parser
 const pwd_reset = require('../models/password_reset.mongo')
+const nodemailer = require('nodemailer')
 
 const rzp_instance = new razorpay({
     key_id:'rzp_live_4JAecB352A9wtt',
@@ -3136,7 +3137,7 @@ userRouter.post('/resetpwdOtpgen',async (req,res)=>{
                 // setup email data with unicode symbols
                 let mailOptions = {
                     from: 'ardentsport1@gmail.com', // sender address
-                    to: req.body.participant, // list of user
+                    to: req.body.USERID, // list of user
                     subject: 'Password Reset', // Subject line
                     text:`Here is your One Time Password`, // plain text body
                     html: `<b>${otp} - please do not share with anyone</b>` // html body
@@ -3155,6 +3156,7 @@ userRouter.post('/resetpwdOtpgen',async (req,res)=>{
             }
         }
     }catch(e){
+        console.log(e)
         res.status(500).send({
             Message:'Error'
         })
