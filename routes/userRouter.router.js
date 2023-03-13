@@ -3175,13 +3175,14 @@ userRouter.post('/resetpwdOtpgen',async (req,res)=>{
         })
     }
 })
-userRouter.post('otpVerify',async (req,res)=>{
+userRouter.post('/otpVerify',async (req,res)=>{
     try{
-        const p_reset = await pwd_reset.find({
+        const p_reset = await pwd_reset.findOne({
             USERID:req.body.USERID
         })
         if(p_reset){
-            if(p_reset.OTP===req.body.OTP){
+            console.log(p_reset)
+            if(p_reset.OTP==req.body.OTP){
                 res.status(200).send({
                     Message:'Success'
                 })
