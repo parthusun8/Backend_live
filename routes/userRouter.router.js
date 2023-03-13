@@ -3117,12 +3117,25 @@ userRouter.post('/resetpwdOtpgen',async (req,res)=>{
         if(user){
             //update password reset
             const otp = Math.floor(100000 + Math.random() * 900000)
-            const p_reset = new pwd_reset({
-                USERID:req.body.USERID,
-                OTP:`${otp}`,
-                TIMESTAMP:`${new Date().toISOString()}`
+            const p_gen = await pwd_reset.find({
+                USERID:req.body.USERID
             })
-            const r = await p_reset.save()
+            let r;
+            if(p_gen){
+                r = await pwd_reset.updateOne({
+                    USERID:req.body.USERID
+                },{
+                    OTP:`${otp}`
+                })
+            }
+            else{
+                const p_reset = new pwd_reset({
+                    USERID:req.body.USERID,
+                    OTP:`${otp}`,
+                    TIMESTAMP:`${new Date().toISOString()}`
+                })
+                r = await p_reset.save()
+            }
             if(r){
                 let transporter = nodemailer.createTransport({
                     service: 'gmail',
