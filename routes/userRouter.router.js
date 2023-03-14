@@ -22,6 +22,9 @@ const matchtiming = require('../models/matchtimings.mongo')
 const tourneyMongo = require('../models/tourney.mongo')
 const cricketModel = require('../models/cricket.model')
 const csvgen = require('json2csv').Parser
+const pwd_reset = require('../models/password_reset.mongo')
+const nodemailer = require('nodemailer')
+
 const rzp_instance = new razorpay({
     key_id:'rzp_live_4JAecB352A9wtt',
    key_secret:'UhkUVQq781FVniExGipwVCwi'
@@ -3106,5 +3109,123 @@ userRouter.post('/changeStartEndTimings',async (req,res)=>{
             })
         }
     })
+})
+
+userRouter.post('/resetpwdOtpgen',async (req,res)=>{
+    try{
+        const user = await USER.findOne({
+            USERID:req.body.USERID
+        })
+        if(user){
+            //update password reset
+            const otp = Math.floor(100000 + Math.random() * 900000)
+            const p_gen = await pwd_reset.find({
+                USERID:req.body.USERID
+            })
+            let r;
+            if(p_gen){
+                r = await pwd_reset.updateOne({
+                    USERID:req.body.USERID
+                },{
+                    OTP:`${otp}`
+                })
+            }
+            else{
+                const p_reset = new pwd_reset({
+                    USERID:req.body.USERID,
+                    OTP:`${otp}`,
+                    TIMESTAMP:`${new Date().toISOString()}`
+                })
+                r = await p_reset.save()
+            }
+            if(r){
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'ardentsport1@gmail.com',
+                        pass: 'lzklutweytlbdhqx'
+                    }
+                });
+                
+                // setup email data with unicode symbols
+                let mailOptions = {
+                    from: 'ardentsport1@gmail.com', // sender address
+                    to: req.body.USERID, // list of user
+                    subject: 'Password Reset', // Subject line
+                    text:`Here is your One Time Password`, // plain text body
+                    html: `<b>${otp} - please do not share with anyone</b>` // html body
+                };
+                
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                    res.status(200).send({
+                        Message:'Success'
+                    })
+                });
+            }
+        }
+    }catch(e){
+        console.log(e)
+        res.status(500).send({
+            Message:'Error'
+        })
+    }
+})
+userRouter.post('/otpVerify',async (req,res)=>{
+    try{
+        const p_reset = await pwd_reset.findOne({
+            USERID:req.body.USERID
+        })
+        if(p_reset){
+            console.log(p_reset)
+            if(p_reset.OTP==req.body.OTP){
+                res.status(200).send({
+                    Message:'Success'
+                })
+            }
+            else{
+                res.status(200).send({
+                    Message:'Failure'
+                })
+            }
+        }else{
+            res.status(200).send({
+                Message:'Invalid Credentials'
+            })
+        }
+    }catch(e){
+        res.status(500).send({
+            Message:'Error'
+        })
+    }
+})
+userRouter.post('/updatePwd',async (req,res)=>{
+    try{
+        const u = await USER.updateOne({
+            USERID:req.body.USERID
+        },{
+           PWD:req.body.NEWPWD 
+        })
+        if(u){
+            res.status(200).send({
+                Message:'Success'
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:'Failure'
+            })
+        }
+    }catch(e){
+        res.status(500).send({
+            Message:'Error'
+        })
+    }
 })
 module.exports = userRouter;
