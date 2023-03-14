@@ -19,6 +19,8 @@ const razorpay = require('razorpay')
 const dbles = require('../models/doubles.mongo')
 const timings = require('../models/timings.mongo')
 const matchtiming = require('../models/matchtimings.mongo')
+const tourneyMongo = require('../models/tourney.mongo')
+const cricketModel = require('../models/cricket.model')
 const csvgen = require('json2csv').Parser
 const rzp_instance = new razorpay({
     key_id:'rzp_live_4JAecB352A9wtt',
