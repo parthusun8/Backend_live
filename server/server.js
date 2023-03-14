@@ -9,7 +9,8 @@ const user = require('../models/user.mongo')
 const instacricket = require('../models/instacricket.mongo');
 const tournamentModel = require('../models/tournament.model');
 const matchesmodel = require('../models/matches.mongo')
-const dbles = require('../models/doubles.mongo')
+const dbles = require('../models/doubles.mongo');
+const cricketModel = require('../models/cricket.model');
 
 const io = new Server(server,{
     cors: {
@@ -203,6 +204,8 @@ io.on("connection",async (socket)=>{
         })
     })
 })
+
+
 io.on("connection",(socket)=>{
     console.log(socket.id)
     socket.on('join-booking',(objk)=>{
@@ -218,16 +221,28 @@ io.on("connection",(socket)=>{
                 })
             }
             if(result){
+                console.log(result)
                 const spotStatusArray = result.SPOT_STATUS_ARRAY
                 console.log("Inside join-booking");
                 console.log(result.SPOT_STATUS_ARRAY)
                 console.log("Emitted Spot Status Array")
-                socket.emit('spotStatusArray',JSON.stringify({
+                var output = {
                     total_spots:result.NO_OF_KNOCKOUT_ROUNDS,
                     array:spotStatusArray,
                     prize_pool:result.PRIZE_POOL,
                     entry_fee:result.ENTRY_FEE
-                }))
+                };
+
+                if(result.SPORT == "Cricket"){
+                    const cricket = cricketModel.findOne({
+                        TOURNAMENT_ID:tid
+                    });
+                    output.TEAM_SIZE = cricket.TEAM_SIZE;
+                    output.SUBSTITUTE = cricket.SUBSTITUTE;
+                    output.OVERS = cricket.OVERS;
+                    output.BALL_TYPE = cricket.BALL_TYPE;
+                }
+                socket.emit('spotStatusArray',JSON.stringify(output));
                 socket.join(obj1.TOURNAMENT_ID)
             }
          })
@@ -326,6 +341,9 @@ io.on("connection",(socket)=>{
                     })
                 }
             })
+        })
+        socket.on('add-cricket-moongose', (obj) => {
+            console.log("In add cricket mongoose");
         })
         socket.on('cancel-spot',(obj)=>{
             spotArray[obj.selectedButton].shift()
