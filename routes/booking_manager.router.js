@@ -122,10 +122,10 @@ BookingRouter.post('/addSubstitutePlayers', async (req, res) => {
     try{
         const result1 = await Player.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID, CAPTAIN : req.body.CAPTAIN});
         if(!result1){
-            Player.create({
+            await Player.create({
                 TOURNAMENT_ID: req.body.TOURNAMENT_ID,
                 CAPTAIN : req.body.CAPTAIN,
-                PLAYERS : [req.body.CAPTAIN],
+                PLAYERS : [{USERID : req.body.CAPTAIN, NAME : req.body.CAPTAIN}],
                 SUBSTITUTE : [],
             });
         }
