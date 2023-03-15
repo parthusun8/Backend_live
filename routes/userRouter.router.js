@@ -23,6 +23,7 @@ const tourneyMongo = require('../models/tourney.mongo')
 const cricketModel = require('../models/cricket.model')
 const csvgen = require('json2csv').Parser
 const pwd_reset = require('../models/password_reset.mongo')
+const version = require('../models/version.mongo')
 const nodemailer = require('nodemailer')
 
 const rzp_instance = new razorpay({
@@ -59,6 +60,15 @@ userRouter.get('/',(req,res)=>{
     }
     else{
         res.render('fixture',{no_of_bracs:req.query.no_of_spots})
+    }
+})
+userRouter.get('/version',async (req,res)=>{
+    try{
+        res.render('version');
+    }catch(e){
+        res.status(500).send({
+            Message:'Error'
+        })
     }
 })
 userRouter.get('/getTournamentFixtures',async (req,res)=>{
@@ -3219,6 +3229,49 @@ userRouter.post('/updatePwd',async (req,res)=>{
         else{
             res.status(200).send({
                 Message:'Failure'
+            })
+        }
+    }catch(e){
+        res.status(500).send({
+            Message:'Error'
+        })
+    }
+})
+userRouter.post('/updateVersion',async(req,res)=>{
+    try{
+        const u = await version.updateOne({
+            key:1
+        },{
+            androidVersion:req.body.androidVersion,
+            iosVersion:req.body.iosVersion
+        })
+        if(u){
+            res.status(200).send({
+                Message:'Success'
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:'Failure'
+            })
+        }
+    }catch(e){
+        res.status(500).send({
+            Message:'Error'
+        })
+    }
+})
+userRouter.get('/getVersion',async (req,res)=>{
+    try{
+        const v = await version.findOne({
+            key:1
+        })
+        if(v){
+            res.status(200).send(v)
+        }
+        else{
+            res.status(401).send({
+                Message:'Bad Request'
             })
         }
     }catch(e){

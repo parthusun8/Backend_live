@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Version</title>
+</head>
+<body>
+    <form>
+        <label for="android-version">Android Version:</label>
+        <input type="text" id="android-version" name="android-version"><br><br>
+        
+        <label for="ios-version">iOS Version:</label>
+        <input type="text" id="ios-version" name="ios-version"><br><br>
+        
+        <button class="submit">Submit</button>
+      </form>
+      <script>
+        function submitFormData() {
+  // Get the values of the input fields
+  const androidVersion = document.getElementById("android-version").value;
+  const iosVersion = document.getElementById("ios-version").value;
+
+  // Create an object with the form data
+  const formData = {
+    androidVersion: androidVersion,
+    iosVersion: iosVersion,
+  };
+
+  // Send the form data as JSON using the fetch API,,52.66.209.218
+  fetch("http://52.66.209.218:3000/updateVersion", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+              console.log("Form data submitted successfully:", data);
+              prompt("Submitted!!")
+
+    })
+    .catch((error) => {
+      console.error("Error submitting form data:", error);
+    });
+}
+    const updatebtn = document.querySelector('.submit')
+    updatebtn.addEventListener('click',submitFormData);
+      </script>
+</body>
+</html>
