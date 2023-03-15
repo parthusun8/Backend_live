@@ -1169,9 +1169,8 @@ userRouter.get('/myBookings',async (req,res)=>{
         })
         if(result){
             if(result.CURRENT_TOURNAMENTS.length==0){
-                res.status(200).send([]) 
-            
-            ;}
+                res.status(200).send([]);
+            }
             else{
                 var r1 = []
                 for(let i =0; i< result.CURRENT_TOURNAMENTS.length;i++){
