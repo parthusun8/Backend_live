@@ -5,7 +5,6 @@ const USERProfile = require('../models/userprofile.model')
 const tournamentModel = require('../models/tournament.model')
 const onlytournamentModel = require('../models/tourney.mongo')
 const matchesmodel = require('../models/matches.mongo')
-
 const BookingRouter = express.Router()
 const S3 = require('aws-sdk/clients/s3')
 const timings = require('../models/timings.mongo')
@@ -101,11 +100,12 @@ BookingRouter.post('/validatePlayerCricket', async (req, res) => {
 BookingRouter.post('/addTeamPlayers', async (req, res) => {
     try{
         const result1 = await Player.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID, CAPTAIN : req.body.CAPTAIN});
+        console.log(result1);
         if(!result1){
-            Player.create({
+            await Player.create({
                 TOURNAMENT_ID: req.body.TOURNAMENT_ID,
                 CAPTAIN : req.body.CAPTAIN,
-                PLAYERS : [req.body.CAPTAIN],
+                PLAYERS : [{USERID : req.body.CAPTAIN, NAME : req.body.CAPTAIN}],
                 SUBSTITUTE : [],
             });
         }
@@ -118,7 +118,7 @@ BookingRouter.post('/addTeamPlayers', async (req, res) => {
     }
 })
 
-BookingRouter.post('/addSubstitute', async (req, res) => {
+BookingRouter.post('/addSubstitutePlayers', async (req, res) => {
     try{
         const result1 = await Player.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID, CAPTAIN : req.body.CAPTAIN});
         if(!result1){
@@ -137,6 +137,7 @@ BookingRouter.post('/addSubstitute', async (req, res) => {
         res.status(400).send("Something Went Wrong");
     }
 });
+
 BookingRouter.post('/removePlayer', async (req, res) => {
 
 });
