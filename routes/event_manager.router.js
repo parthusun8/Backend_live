@@ -126,7 +126,7 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
         "Table Tennis":
           "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/icons8-ping-pong-96.png",
         Cricket:
-          "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/cricket.png",
+          "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/cricket.jpeg",
       };
       const initials = { Badminton: "BA", "Table Tennis": "TT", Cricket: "CR" };
       req.body["COLOR"] = colors[req.body.SPORT];
