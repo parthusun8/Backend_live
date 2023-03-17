@@ -108,7 +108,8 @@ BookingRouter.post("/cricketTeamName", async (req, res) => {
         { TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN },
         {$set : {TEAM_NAME: req.body.NAME }}
       );
-      res.status(200).send("Team Name Updated");
+      const result = Player.findOne({TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN});
+      res.status(200).send("Team Name Updated" + result);
     } else {
       res.status(201).send("Incorrect Tournament ID");
     }
