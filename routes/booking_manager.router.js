@@ -103,21 +103,23 @@ BookingRouter.post("/cricketTeamName", async (req, res) => {
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
       CAPTAIN: req.body.CAPTAIN,
     });
-    console.log(req.body);
+
+    console.log({"TEAM_NAME": req.body.NAME });
     if (result1) {
-      await Player.findOneAndUpdate(
+      await Player.updateOne(
         { TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN },
-        {$set : {TEAM_NAME: req.body.NAME }}
+        { $set : {TEAM_NAME: req.body.NAME}}
       );
       var result = await Player.findOne({TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN});
-      result[body] = req.body;
+      result["body"] = req.body;
       res.status(200).send(result);
+      console.log(result);
     } else {
       res.status(201).send("Incorrect Tournament ID");
     }
   } catch (e) {
     console.log("Error Occured");
-    res.status(400).send("Something Went Wrong");
+    res.status(400).send("Something Went Wrong" + e);
   }
 });
 
