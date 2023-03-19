@@ -3123,63 +3123,59 @@ userRouter.post('/changeStartEndTimings',async (req,res)=>{
 
 userRouter.post('/resetpwdOtpgen',async (req,res)=>{
     try{
-        const user = await USER.findOne({
-            USERID:req.body.USERID
-        })
-        if(user){
-            //update password reset
-            const otp = Math.floor(100000 + Math.random() * 900000)
-            const p_gen = await pwd_reset.find({
-                USERID:req.body.USERID
-            })
-            let r;
-            if(p_gen){
-                r = await pwd_reset.updateOne({
-                    USERID:req.body.USERID
-                },{
-                    OTP:`${otp}`
-                })
-            }
-            else{
-                const p_reset = new pwd_reset({
-                    USERID:req.body.USERID,
-                    OTP:`${otp}`,
-                    TIMESTAMP:`${new Date().toISOString()}`
-                })
-                r = await p_reset.save()
-            }
-            if(r){
-                let transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    port: 465,
-                    secure: true,
-                    auth: {
-                        user: 'ardentsport1@gmail.com',
-                        pass: 'lzklutweytlbdhqx'
-                    }
-                });
-                
-                // setup email data with unicode symbols
-                let mailOptions = {
-                    from: 'ardentsport1@gmail.com', // sender address
-                    to: req.body.USERID, // list of user
-                    subject: 'Password Reset', // Subject line
-                    text:`Here is your One Time Password`, // plain text body
-                    html: `<b>${otp} - please do not share with anyone</b>` // html body
-                };
-                
-                // send mail with defined transport object
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        return console.log(error);
-                    }
-                    console.log('Message sent: %s', info.messageId);
-                    res.status(200).send({
-                        Message:'Success'
+                    //update password reset
+                    const otp = Math.floor(100000 + Math.random() * 900000)
+                    const p_gen = await pwd_reset.find({
+                        USERID:req.body.USERID
                     })
-                });
-            }
-        }
+                    let r;
+                    if(p_gen){
+                        r = await pwd_reset.updateOne({
+                            USERID:req.body.USERID
+                        },{
+                            OTP:`${otp}`
+                        })
+                    }
+                    else{
+                        const p_reset = new pwd_reset({
+                            USERID:req.body.USERID,
+                            OTP:`${otp}`,
+                            TIMESTAMP:`${new Date().toISOString()}`
+                        })
+                        r = await p_reset.save()
+                    }
+                    if(r){
+                        let transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            port: 465,
+                            secure: true,
+                            auth: {
+                                user: 'ardentsport1@gmail.com',
+                                pass: 'lzklutweytlbdhqx'
+                            }
+                        });
+                        
+                        // setup email data with unicode symbols
+                        let mailOptions = {
+                            from: 'ardentsport1@gmail.com', // sender address
+                            to: req.body.USERID, // list of user
+                            subject: 'Password Reset', // Subject line
+                            text:`Here is your One Time Password`, // plain text body
+                            html: `<b>${otp} - please do not share with anyone</b>` // html body
+                        };
+                        
+                        // send mail with defined transport object
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                                throw(error)
+                            }
+                            console.log('Message sent: %s', info.messageId);
+                            res.status(200).send({
+                                Message:'Success'
+                            })
+                        });
+                    }
     }catch(e){
         console.log(e)
         res.status(500).send({
