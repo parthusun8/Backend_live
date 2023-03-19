@@ -126,7 +126,7 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
         "Table Tennis":
           "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/icons8-ping-pong-96.png",
         Cricket:
-          "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/cricket.png",
+          "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/cricket.jpeg",
       };
       const initials = { Badminton: "BA", "Table Tennis": "TT", Cricket: "CR" };
       req.body["COLOR"] = colors[req.body.SPORT];
@@ -211,10 +211,14 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
         const entryfee = new_obj.ENTRY_FEE.split("-");
         for (var i = 0; i < categories.length; i++) {
           for (var i = 0; i < categories.length; i++) {
-            categories[i] = categories[i]
-              .split(" ")
-              .map((w) => w.charAt(0))
-              .join("");
+            if (categories[i] == "Mixed Doubles") {
+              categories[i] = "MixD";
+            } else {
+              categories[i] = categories[i]
+                .split(" ")
+                .map((w) => w.charAt(0))
+                .join("");
+            }
           }
         }
         console.log(categories);
@@ -262,9 +266,9 @@ evrouter.post("/createMultipleTournament", async (req, res) => {
               agecategories[0],
             SUBSTITUTE: parseInt(req.body.SUBSTITUTE),
             TEAM_SIZE: parseInt(req.body.TEAM_SIZE),
-            OVERS : parseInt(req.body.OVERS),
-            BALL_TYPE : parseInt(req.body.BALL_TYPE),
-          }
+            OVERS: parseInt(req.body.OVERS),
+            BALL_TYPE: parseInt(req.body.BALL_TYPE),
+          };
           await cricketmodel.insertMany([cricket]);
           if (!cricket) {
             res.status(400).send("Some error in creating Cricket tournament");

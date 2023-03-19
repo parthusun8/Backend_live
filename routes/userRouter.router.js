@@ -1169,9 +1169,8 @@ userRouter.get('/myBookings',async (req,res)=>{
         })
         if(result){
             if(result.CURRENT_TOURNAMENTS.length==0){
-                res.status(200).send([]) 
-            
-            ;}
+                res.status(200).send([]);
+            }
             else{
                 var r1 = []
                 for(let i =0; i< result.CURRENT_TOURNAMENTS.length;i++){
@@ -2381,7 +2380,7 @@ userRouter.get('/baseTournaments',async(req,res)=>{
 
                                 //PARTH REMOVE THIS LATER WHEN IMAGE UPLOADED TO S3
                                 if(result1[j].SPORT == "Cricket"){
-                                    r1[i].IMG_URL = "https://img.freepik.com/premium-vector/cricket-player-logo-design-vector-icon-symbol-template-illustration_647432-117.jpg?w=740"
+                                    r1[i].IMG_URL = "https://ardentbucketnew.s3.ap-south-1.amazonaws.com/cricket.jpeg"
                                 }
                                 var cat = ""
                                 var cat_name = ""

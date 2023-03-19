@@ -4,6 +4,7 @@ const cors = require('cors')
 const userRouter = require('../routes/userRouter.router')
 const livrouter = require('../routes/live_maintainer.router')
 const evrouter = require('../routes/event_manager.router')
+const BookingRouter = require('../routes/booking_manager.router')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
@@ -18,5 +19,6 @@ app.use(express.json());
 app.use(userRouter);
 app.use(livrouter);
 app.use(evrouter);
+app.use(BookingRouter);
 app.use(express.static(`${__dirname}/staticfiles`))
 module.exports = app
