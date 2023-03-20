@@ -226,11 +226,13 @@ BookingRouter.post("/removeSubstitue", async (req, res) => {
       TOURNAMENT_ID: request.TOURNAMENT_ID,
       CAPTAIN: request.CAPTAIN,
     });
+    console.log(result1);
     if (result1) {
       const result = await Player.updateOne(
         { TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN },
         { $pull: { SUBSTITUTE: { NAME: req.body.NAME } } }
-      );
+        );
+      console.log(result);
       if (result) res.status(200).send("Substitute Removed");
       else
         res.status(201).send("Looks like you have already removed the Substitute");
