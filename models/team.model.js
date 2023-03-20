@@ -8,6 +8,12 @@ const cricketTeam = new mongoose.Schema({
     },
     SUBSTITUTE : {
         type:[Object],
+    },
+    TEAM_NAME:{
+        type:String,
+    },
+    CAPTAIN:{
+        type:String,
     }
 });
 
