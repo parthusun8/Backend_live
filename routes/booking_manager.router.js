@@ -30,6 +30,7 @@ BookingRouter.get("/getPlayers", async (req, res) => {
     });
     console.log(result);
     if (result) {
+      
       const result1 = {
         TOURNAMENT_ID: result.TOURNAMENT_ID,
         CAPTAIN: captain_id,
