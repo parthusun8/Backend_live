@@ -30,7 +30,7 @@ BookingRouter.get("/getPlayers", async (req, res) => {
     });
     console.log(result);
     if (result) {
-      
+
       const result1 = {
         TOURNAMENT_ID: result.TOURNAMENT_ID,
         CAPTAIN: captain_id,
@@ -207,6 +207,35 @@ BookingRouter.post("/removePlayer", async (req, res) => {
       if (result) res.status(200).send("Player Removed");
       else
         res.status(201).send("Looks like you have already removed the player");
+    } else {
+      res.status(201).send("Incorrect Tournament ID");
+    }
+  } catch (e) {
+    console.log("Error Occured");
+    res.status(400).send("Something Went Wrong");
+  }
+});
+BookingRouter.post("/removeSubstitue", async (req, res) => {
+  try {
+    var request = {
+      TOURNAMENT_ID: req.body.TOURNAMENT_ID,
+      CAPTAIN: req.body.CAPTAIN,
+      NAME: req.body.NAME,
+    };
+    const result1 = await Player.findOne({
+      TOURNAMENT_ID: request.TOURNAMENT_ID,
+      CAPTAIN: request.CAPTAIN,
+    });
+    console.log(result1);
+    if (result1) {
+      const result = await Player.updateOne(
+        { TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN },
+        { $pull: { SUBSTITUTE: { NAME: req.body.NAME } } }
+        );
+      console.log(result);
+      if (result) res.status(200).send("Substitute Removed");
+      else
+        res.status(201).send("Looks like you have already removed the Substitute");
     } else {
       res.status(201).send("Incorrect Tournament ID");
     }
