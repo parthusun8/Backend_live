@@ -103,23 +103,16 @@ BookingRouter.post("/cricketTeamName", async (req, res) => {
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
       CAPTAIN: req.body.CAPTAIN,
     });
-
-    console.log({"TEAM_NAME": req.body.NAME });
     if (result1) {
-      await Player.updateOne(
+      await Player.findOneAndUpdate(
         { TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN },
-        { $set : {TEAM_NAME: req.body.NAME}}
+        { TEAM_NAME: req.body.NAME }
       );
-      var result = await Player.findOne({TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN});
-      result["body"] = req.body;
-      res.status(200).send(result);
-      console.log(result);
-    } else {
-      res.status(201).send("Incorrect Tournament ID");
+      res.status(200).send("Team Name Added");
     }
   } catch (e) {
     console.log("Error Occured");
-    res.status(400).send("Something Went Wrong" + e);
+    res.status(400).send("Error Occured");
   }
 });
 
@@ -193,7 +186,33 @@ BookingRouter.post("/addSubstitutePlayers", async (req, res) => {
   }
 });
 
-BookingRouter.post("/removePlayer", async (req, res) => {});
+BookingRouter.post("/removePlayer", async (req, res) => {
+  try {
+    var request = {
+      TOURNAMENT_ID: req.body.TOURNAMENT_ID,
+      CAPTAIN: req.body.CAPTAIN,
+      NAME: req.body.NAME,
+    };
+    const result1 = await Player.findOne({
+      TOURNAMENT_ID: request.TOURNAMENT_ID,
+      CAPTAIN: request.CAPTAIN,
+    });
+    if (result1) {
+      const result = await Player.updateOne(
+        { TOURNAMENT_ID: req.body.TOURNAMENT_ID, CAPTAIN: req.body.CAPTAIN },
+        { $pull: { PLAYERS: { NAME: req.body.NAME } } }
+      );
+      if (result) res.status(200).send("Player Removed");
+      else
+        res.status(201).send("Looks like you have already removed the player");
+    } else {
+      res.status(201).send("Incorrect Tournament ID");
+    }
+  } catch (e) {
+    console.log("Error Occured");
+    res.status(400).send("Something Went Wrong");
+  }
+});
 BookingRouter.post("/removeSubstitute", async (req, res) => {});
 BookingRouter.post("/submitTeam", async (req, res) => {});
 module.exports = BookingRouter;
