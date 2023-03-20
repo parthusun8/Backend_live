@@ -35,6 +35,7 @@ BookingRouter.get("/getPlayers", async (req, res) => {
         CAPTAIN: captain_id,
         PLAYERS: result.PLAYERS,
         SUBSTITUTE: result.SUBSTITUTE,
+        TEAM_NAME : result.TEAM_NAME,
       };
       console.log(result1);
       res.status(200).send(result1);
