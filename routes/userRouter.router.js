@@ -1178,7 +1178,9 @@ userRouter.get('/myBookings',async (req,res)=>{
                         const tournament = await tournamentModel.findOne({
                             TOURNAMENT_ID:result.CURRENT_TOURNAMENTS[i]
                         })
-                        r1.push(tournament)
+                        if(r1){
+                            r1.push(tournament)
+                        }
                     }catch(error){
                         console.log(error)
                     }
