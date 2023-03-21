@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const team = require('./team.model.js');
 const batting = new mongoose.Schema({
     STRIKER : {
-        type : String,
+        type : String
     },
     NON_STRIKER : {
         type : String,
@@ -20,7 +20,7 @@ const inning = new mongoose.Schema({
     CURRENT_OVER : {
         type : String,
         default : ""
-    }, 
+    },
     BATTING_DETAILS : {
         type : batting,
     },
@@ -54,7 +54,8 @@ const match = new mongoose.Schema({
         default : false
     },
     WINNER : {
-        type : String, //TEAM NAME
+        type : String,
+        default : "ONGOING"//TEAM NAME
     },
     FIRST_INNING_DONE : {
         type : Boolean, //TRUE IF FIRST INNING IS COMPLETED
@@ -75,7 +76,7 @@ const scoringSchema = new mongoose.Schema({
         type: Number,
         default : 0,
         required: true
-    }, 
+    },
     TOTAL_OVERS : {
         type: Number,
     },

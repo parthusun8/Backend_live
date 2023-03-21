@@ -18,6 +18,11 @@ const player = new mongoose.Schema({
     },
     SCORE : { //runs scored by player while batting
         type: Number,
+        default : 0
+    },
+    BALLS : {
+        type : Number,
+        default : 0
     }
 });
 const substitutes = new mongoose.Schema({
@@ -29,7 +34,7 @@ const substitutes = new mongoose.Schema({
         type:String,
         required : true,
     }, 
-    RUNS : {
+    RUNS : { //runs given by player while balling
         type: Number,
         default : 0,
     }, 
@@ -37,6 +42,9 @@ const substitutes = new mongoose.Schema({
         type: Number,
         default : 0,
     },
+    SCORE : { //runs scored by player while batting
+        type: Number,
+    }
 });
 const cricketTeam = new mongoose.Schema({
     TOURNAMENT_ID: {
