@@ -136,7 +136,7 @@ BookingRouter.post("/getCricketTourneyDetails", async (req, res) => {
 
 BookingRouter.post("/addTeamPlayers", async (req, res) => {
   try {
-    if(!req.player.NAME || !req.player.USERID || req.player.NAME == "" || req.player.USERID == ""){
+    if(!req.body.player.NAME || !req.body.player.USERID || req.body.player.NAME == "" || req.body.player.USERID == ""){
       res.status(400).send("Player Name or Player ID is missing");
       return;
     }
@@ -163,13 +163,14 @@ BookingRouter.post("/addTeamPlayers", async (req, res) => {
     res.status(200).send("Player Added");
   } catch (e) {
     console.log("Error Occured");
+    console.log(e);
     res.status(400).send("Something Went Wrong");
   }
 });
 
 BookingRouter.post("/addSubstitutePlayers", async (req, res) => {
   try {
-    if(!req.substitute.NAME || !req.substitute.USERID || req.substitute.NAME == "" || req.substitute.USERID == ""){
+    if(!req.body.substitute.NAME || !req.body.substitute.USERID || req.body.substitute.NAME == "" || req.body.substitute.USERID == ""){
       res.status(400).send("Player Name or Player ID is missing");
       return;
     }
