@@ -136,6 +136,10 @@ BookingRouter.post("/getCricketTourneyDetails", async (req, res) => {
 
 BookingRouter.post("/addTeamPlayers", async (req, res) => {
   try {
+    if(!req.body.player.NAME || !req.body.player.USERID || req.body.player.NAME == "" || req.body.player.USERID == ""){
+      res.status(400).send("Player Name or Player ID is missing");
+      return;
+    }
     const result1 = await Player.findOne({
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
       CAPTAIN: req.body.CAPTAIN,
@@ -148,6 +152,7 @@ BookingRouter.post("/addTeamPlayers", async (req, res) => {
         CAPTAIN: req.body.CAPTAIN,
         PLAYERS: [{ USERID: req.body.CAPTAIN, NAME: req.body.CAPTAIN }],
         SUBSTITUTE: [],
+        TEAM_NAME : ""
       });
     }
     const player = req.body.player;
@@ -158,12 +163,17 @@ BookingRouter.post("/addTeamPlayers", async (req, res) => {
     res.status(200).send("Player Added");
   } catch (e) {
     console.log("Error Occured");
+    console.log(e);
     res.status(400).send("Something Went Wrong");
   }
 });
 
 BookingRouter.post("/addSubstitutePlayers", async (req, res) => {
   try {
+    if(!req.body.substitute.NAME || !req.body.substitute.USERID || req.body.substitute.NAME == "" || req.body.substitute.USERID == ""){
+      res.status(400).send("Player Name or Player ID is missing");
+      return;
+    }
     const result1 = await Player.findOne({
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
       CAPTAIN: req.body.CAPTAIN,
@@ -174,6 +184,7 @@ BookingRouter.post("/addSubstitutePlayers", async (req, res) => {
         CAPTAIN: req.body.CAPTAIN,
         PLAYERS: [{ USERID: req.body.CAPTAIN, NAME: req.body.CAPTAIN }],
         SUBSTITUTE: [],
+        TEAM_NAME : "",
       });
     }
     const subs = req.body.substitute;
