@@ -137,6 +137,8 @@ ScoringRouter.post("/updateToss", async (req, res) => {
       var teamPlayers = [
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS,
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS,
+        checkExists.TOTAL_OVERS,
+        checkExists.WICKETS,
       ];
       res.status(200).send(teamPlayers);
     }
@@ -147,5 +149,19 @@ ScoringRouter.post("/updateToss", async (req, res) => {
 });
 
 //For Striker, Non Striker
-ScoringRouter.post("/updatePlayers", async (req, res) => {});
+ScoringRouter.post("/updatePlayers", async (req, res) => {
+  var A = {
+    TOURNAMENT_ID: "",
+    BATTING: {
+      STRIKER_INDEX: 0,
+      NON_STRIKER_INDEX: 1,
+    },
+    BOWLING: {
+      BALLER_INDEX: 0,
+    },
+  };
+
+  try {
+  } catch (e) {}
+});
 module.exports = ScoringRouter;
