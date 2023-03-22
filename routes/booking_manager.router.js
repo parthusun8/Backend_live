@@ -24,13 +24,23 @@ BookingRouter.get("/getPlayers", async (req, res) => {
   try {
     const tournament_id = req.query.TOURNAMENT_ID;
     const captain_id = req.query.CAPTAIN;
-    const result = await Player.findOne({
+    var result = await Player.findOne({
       TOURNAMENT_ID: tournament_id,
       CAPTAIN: captain_id,
     });
     console.log(result);
+    if(!result){
+      await Player.create({
+        TEAM_NAME: "",
+        TOURNAMENT_ID: tournament_id,
+        CAPTAIN: captain_id,
+        PLAYERS: [{ USERID: captain_id, NAME: captain_id }],
+        SUBSTITUTE: [],
+        TEAM_NAME : ""
+      });
+      result = await Player.findOne({TOURNAMENT_ID : tournament_id, CAPTAIN : captain_id})
+    }
     if (result) {
-
       const result1 = {
         TOURNAMENT_ID: result.TOURNAMENT_ID,
         CAPTAIN: captain_id,
@@ -44,6 +54,7 @@ BookingRouter.get("/getPlayers", async (req, res) => {
       res.status(201).send("Incorrect Tournament ID or User Id");
     }
   } catch (e) {
+    console.log(e);
     res.status(400).send("Error Occured");
   }
 });

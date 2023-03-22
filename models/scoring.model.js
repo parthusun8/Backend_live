@@ -1,5 +1,68 @@
 const mongoose = require('mongoose')
-const team = require('./team.model.js');
+const player = new mongoose.Schema({
+    NAME : {
+        type:String,
+        required : true,
+    }, 
+    USERID : {
+        type:String,
+        required : true,
+    }, 
+    RUNS : { //runs given by player while balling
+        type: Number,
+        default : 0,
+    }, 
+    WICKETS : {
+        type: Number,
+        default : 0,
+    },
+    SCORE : { //runs scored by player while batting
+        type: Number,
+        default : 0
+    },
+    BALLS : {
+        type : Number,
+        default : 0
+    }
+});
+const substitutes = new mongoose.Schema({
+    NAME : {
+        type:String,
+        required : true,
+    }, 
+    USERID : {
+        type:String,
+        required : true,
+    }, 
+    RUNS : { //runs given by player while balling
+        type: Number,
+        default : 0,
+    }, 
+    WICKETS : {
+        type: Number,
+        default : 0,
+    },
+    SCORE : { //runs scored by player while batting
+        type: Number,
+    }
+});
+const team = new mongoose.Schema({
+    TOURNAMENT_ID: {
+        type: String,
+    },
+    PLAYERS : {
+        type:[player],
+    },
+    SUBSTITUTE : {
+        type:[substitutes],
+    },
+    TEAM_NAME:{
+        type:String,
+    },
+    CAPTAIN:{
+        type:String,
+    }
+}); 
 const batting = new mongoose.Schema({
     STRIKER : {
         type : String
@@ -92,4 +155,4 @@ const scoringSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('scoring',scoringSchema)
+module.exports = mongoose.model('scoring',scoringSchema);
