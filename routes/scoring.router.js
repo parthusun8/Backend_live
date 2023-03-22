@@ -356,11 +356,6 @@ ScoringRouter.post("/usualScore", async (req, res) => {
   }
 });
 
-ScoringRouter.post("/noballScore", async (req, res) => {});
-ScoringRouter.post("/wideScore", async (req, res) => {});
-ScoringRouter.post("/byeScore", async (req, res) => {});
-ScoringRouter.post("/outScore", async (req, res) => {});
-ScoringRouter.post("/changeInningCricket", async (req, res) => {});
 ScoringRouter.post("/changeOverCricket", async (req, res) => {
   var checkExists = {};
   try {
@@ -372,24 +367,50 @@ ScoringRouter.post("/changeOverCricket", async (req, res) => {
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].FIRST_INNING_DONE;
       var inning_no = 0;
       if (first) inning_no = 1;
-      await score.updateOne(
-        { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
-        {
-            $push : {
-                [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.COMPLETED_OVER_DETAILS`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[inning_no].CURRENT_OVER
-            }
-        },
-        {
-          $set: {
-            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.CURRENT_OVER`]: "",
-            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.OVERS_DONE`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[inning_no].OVERS_DONE + 1,
-            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.STRIKER`]: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[inning_no].BATTING_DETAILS.NON_STRIKER,
-            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.NON_STRIKER`]: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[inning_no].BATTING_DETAILS.STRIKER,
-            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BALLER`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS[req.body.baller_index]
-          },
-        }
-      );
-      res.status(200).send("Over Changed Successfully");
+      if (
+        checkExists.TOTAL_OVERS !=
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[inning_no]
+          .OVERS_DONE
+      ) {
+        await score.updateOne(
+          { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
+          {
+            $push: {
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.COMPLETED_OVER_DETAILS`]:
+                checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
+                  inning_no
+                ].CURRENT_OVER,
+            },
+          }
+        );
+        await score.updateOne(
+          { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
+          {
+            $set: {
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.CURRENT_OVER`]:
+                "",
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.OVERS_DONE`]:
+                checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
+                  inning_no
+                ].OVERS_DONE + 1,
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.STRIKER`]:
+                checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
+                  inning_no
+                ].BATTING_DETAILS.NON_STRIKER,
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.NON_STRIKER`]:
+                checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
+                  inning_no
+                ].BATTING_DETAILS.STRIKER,
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BALLER`]:
+                checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1]
+                  .PLAYERS[req.body.baller_index],
+            },
+          }
+        );
+        res.status(200).send("Over Changed Successfully");
+      } else {
+        res.status(200).send("INNINGS IS COMPLETED");
+      }
     } else {
       console.log("Wrong Tournament ID");
       res.status(400).send("Wrong Tournament ID");
@@ -403,4 +424,11 @@ ScoringRouter.post("/changeOverCricket", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+
+ScoringRouter.post("/noballScore", async (req, res) => {});
+ScoringRouter.post("/wideScore", async (req, res) => {});
+ScoringRouter.post("/byeScore", async (req, res) => {});
+ScoringRouter.post("/outScore", async (req, res) => {});
+ScoringRouter.post("/changeInningCricket", async (req, res) => {});
+
 module.exports = ScoringRouter;
