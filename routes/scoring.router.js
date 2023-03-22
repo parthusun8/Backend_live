@@ -115,7 +115,7 @@ ScoringRouter.post("/updateToss", async (req, res) => {
       );
       const tossWonBy = req.body.TEAM_NAME;
       const teamFormat = req.body.TEAM_FORMAT;
-      if (tossWonBy != teamFormat[0]) {
+      if (tossWonBy != teamFormat[0] && req.body.CHOSEN_TO == "BAT") {
         var temp =
           checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1];
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1] =
@@ -137,6 +137,9 @@ ScoringRouter.post("/updateToss", async (req, res) => {
       var teamPlayers = [
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS,
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS,
+        checkExists.TOTAL_OVERS,
+        checkExists.WICKETS,
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].FIRST_INNING_DONE,
       ];
       res.status(200).send(teamPlayers);
     }
@@ -147,5 +150,26 @@ ScoringRouter.post("/updateToss", async (req, res) => {
 });
 
 //For Striker, Non Striker
-ScoringRouter.post("/updatePlayers", async (req, res) => {});
+ScoringRouter.post("/updatePlayers", async (req, res) => {
+  try {
+    var checkExists = await score.findOne({TOURNAMENT_ID: req.body.TOURNAMENT_ID}, {MATCHES:1, CURRENT_MATCH_NUMBER:1});
+    if(checkExists){
+        var first = checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].FIRST_INNING_DONE;
+        var inning_no = 0;
+        if(first) inning_no = 1;
+
+        await score.updateOne({TOURNAMENT_ID: req.body.TOURNAMENT_ID}, {$set : {
+            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.STRIKER`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS[req.body.BATTING.STRIKER_INDEX],
+            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.NON_STRIKER`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS[req.body.BATTING.NON_STRIKER_INDEX],
+            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BALLER`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS[req.body.BOWLING.BALLER_INDEX],
+        }});
+        res.status(200).send("Striker, Non-Striker, Baller Updated");
+    } else{
+        res.status(400).send("Wrong Tournament ID");
+    }
+
+  } catch (e) {
+    res.status(400).send("Error Occured");
+  }
+});
 module.exports = ScoringRouter;
