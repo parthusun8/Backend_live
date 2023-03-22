@@ -425,10 +425,35 @@ ScoringRouter.post("/changeOverCricket", async (req, res) => {
   }
 });
 
+ScoringRouter.post("/changeInningCricket", async (req, res) => {
+    var checkExists = {};
+    try{
+        checkExists = await score.findOne({TOURNAMENT_ID: req.body.TOURNAMENT_ID});
+        if(checkExists){
+            if(checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].FIRST_INNING_DONE == false){
+                await score.updateOne({TOURNAMENT_ID: req.body.TOURNAMENT_ID}, {
+                    $set: {
+                        [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.FIRST_INNING_DONE`]: true,
+                        [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1],
+                        [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0],
+                    }
+                });
+                res.status(200).send("First Inning Completed");
+            }
+        } else{
+            res.status(200).send("Inning Already Changed");
+        }
+    } catch(e){
+        console.log(e);
+        await score.updateOne({TOURNAMENT_ID: req.body.TOURNAMENT_ID}, checkExists);
+        res.status(400).send("Error Occured");
+    }
+});
+
 ScoringRouter.post("/noballScore", async (req, res) => {});
 ScoringRouter.post("/wideScore", async (req, res) => {});
 ScoringRouter.post("/byeScore", async (req, res) => {});
 ScoringRouter.post("/outScore", async (req, res) => {});
-ScoringRouter.post("/changeInningCricket", async (req, res) => {});
+
 
 module.exports = ScoringRouter;
