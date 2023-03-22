@@ -80,6 +80,9 @@ const scoringSchema = new mongoose.Schema({
     TOTAL_OVERS : {
         type: Number,
     },
+    WICKETS : {
+        type: Number,
+    },
     COMPLETED_MATCHES : { //TO STORE ALL THE MATCHES THAT ARE COMPLETED
         type : [Object],
         default : [],
