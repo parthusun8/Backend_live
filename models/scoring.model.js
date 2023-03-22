@@ -128,6 +128,10 @@ const match = new mongoose.Schema({
         //basically first team A batting, then team B batting so 2 innings
         type : [inning],
         default : []
+    },
+    TOSS: {
+        type : String,
+        default : "NOT YET DECIDED"
     }
 });
 const scoringSchema = new mongoose.Schema({
