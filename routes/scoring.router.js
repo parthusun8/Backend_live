@@ -16,18 +16,20 @@ const score = require("../models/scoring.model");
 
 ScoringRouter.post('/startScoringFlow', async (req, res) =>{
     try{
-        const checkExists = await score.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID});
+        var checkExists = await score.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID});
 
         if(!checkExists){
             const CricketDoc = await cricketModel.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID});
-
+            const Tournament = await tournamentModel.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID});
             const GetAllTeams = await Player.find({TOURNAMENT_ID : req.body.TOURNAMENT_ID});
-
+            // console.log(GetAllTeams);
             //CREATING ONLY FIRST SET OF MATCHES
             var matchesArray = [];
             var matchNo = 0;
             var inningArray = [];
-            for(var i=0; i<CricketDoc.TEAM_SIZE; i+=2){
+            for(var i=0; i<Tournament.NO_OF_KNOCKOUT_ROUNDS; i+=2){
+
+                console.log("Curently Doing ", GetAllTeams[i], GetAllTeams[i+1]);
                 var teamArray = [];
                 var inningArray = [];
                 for(var j=0; j<2; j++){
@@ -52,7 +54,7 @@ ScoringRouter.post('/startScoringFlow', async (req, res) =>{
                     });
                 }
 
-                matchesArray.append({
+                matchesArray.push({
                     MATCH_ID : matchNo,
                     TOURNAMENT_ID : req.body.TOURNAMENT_ID,
                     TEAMS : teamArray,
