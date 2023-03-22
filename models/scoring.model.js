@@ -116,7 +116,7 @@ const inning = new mongoose.Schema({
     },
     WICKETS : {
         type : Number,
-        type : 0
+        default : 0
     }
 });
 const match = new mongoose.Schema({
