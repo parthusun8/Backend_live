@@ -139,6 +139,7 @@ ScoringRouter.post("/updateToss", async (req, res) => {
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS,
         checkExists.TOTAL_OVERS,
         checkExists.WICKETS,
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].FIRST_INNING_DONE,
       ];
       res.status(200).send(teamPlayers);
     }
