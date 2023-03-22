@@ -65,10 +65,23 @@ const team = new mongoose.Schema({
 }); 
 const batting = new mongoose.Schema({
     STRIKER : {
-        type : String
+        type : {
+            NAME : {
+                type: String,
+            },
+            USERID : {
+                type: String,
+            }
+        }
     },
     NON_STRIKER : {
-        type : String,
+        type : {
+            NAME : {
+                type: String,
+            }, USERID : {
+                type : String,
+            }
+        },
     },
     SCORE : {
         type : Number,
@@ -88,7 +101,14 @@ const inning = new mongoose.Schema({
         type : batting,
     },
     BALLER : {
-        type : String,
+        type : {
+            NAME : {
+                type : String,
+            },
+            USERID : {
+                type : String,
+            }
+        },
     },
     OVERS_DONE : {
         type : Number,
