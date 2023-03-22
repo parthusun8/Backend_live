@@ -113,24 +113,32 @@ ScoringRouter.post("/updateToss", async (req, res) => {
           },
         }
       );
-      res.status(200).send("Toss details successfully updated");
-
       const tossWonBy = req.body.TEAM_NAME;
       const teamFormat = req.body.TEAM_FORMAT;
       if (tossWonBy != teamFormat[0]) {
+        var temp =
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1];
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1] =
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0];
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0] = temp;
         const resss = await score.updateOne(
           { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
           {
             $set: {
               [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0`]:
                 checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1],
-                [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1`]:
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1`]:
                 checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0],
             },
           }
         );
         console.log("Updated Team Order ");
       }
+      var teamPlayers = [
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS,
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS,
+      ];
+      res.status(200).send(teamPlayers);
     }
   } catch (e) {
     console.log(e);
@@ -138,4 +146,6 @@ ScoringRouter.post("/updateToss", async (req, res) => {
   }
 });
 
+//For Striker, Non Striker
+ScoringRouter.post("/updatePlayers", async (req, res) => {});
 module.exports = ScoringRouter;
