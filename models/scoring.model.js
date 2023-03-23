@@ -166,8 +166,8 @@ const match = new mongoose.Schema({
         default : false
     },
     WINNER : {
-        type : String,
-        default : "ONGOING"//TEAM NAME
+        type : Object,
+        default : {}//TEAM NAME
     },
     FIRST_INNING_DONE : {
         type : Boolean, //TRUE IF FIRST INNING IS COMPLETED
