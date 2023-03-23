@@ -23,6 +23,18 @@ const player = new mongoose.Schema({
     BALLS : {
         type : Number,
         default : 0
+    }, 
+    BALLS_USED : {
+        type : Number,
+        default : 0
+    },
+    FOURS : {
+        type : Number,
+        default : 0
+    },
+    SIX : {
+        type : Number,
+        default : 0
     }
 });
 const substitutes = new mongoose.Schema({
@@ -44,6 +56,23 @@ const substitutes = new mongoose.Schema({
     },
     SCORE : { //runs scored by player while batting
         type: Number,
+        default : 0
+    },
+    BALLS : {
+        type : Number,
+        default : 0
+    }, 
+    BALLS_USED : {
+        type : Number,
+        default : 0
+    },
+    FOURS : {
+        type : Number,
+        default : 0
+    },
+    SIX : {
+        type : Number,
+        default : 0
     }
 });
 const team = new mongoose.Schema({
