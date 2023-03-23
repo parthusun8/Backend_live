@@ -528,14 +528,15 @@ ScoringRouter.post("/changeInningCricket", async (req, res) => {
   }
 });
 ScoringRouter.post("/outScore", async (req, res) => {
+  //Update Balls Count
   var checkExists = {};
   var ways = {
-    LBW: "LBW",
-    Bowled: "B",
+    "LBW": "LBW",
+    "Bowled": "B",
     "Catch Out": "C",
     "Stricker Run Out": "RO",
     "Non Stricker Run Out": "RO",
-    Stumped: "ST",
+    "Stumped": "ST",
     "Hit Wicket": "HW",
   };
   try {
@@ -548,12 +549,12 @@ ScoringRouter.post("/outScore", async (req, res) => {
       var inning_no = 0;
       if (first) inning_no = 1;
 
-      var striker_index = -1;
+      var baller_index = -1;
 
       for (
         var i = 0;
         i <
-        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS
           .length;
         i++
       ) {
@@ -564,17 +565,37 @@ ScoringRouter.post("/outScore", async (req, res) => {
             inning_no
           ].BALLER.USERID
         ) {
-          striker_index = i;
+          baller_index = i;
           break;
         }
       }
 
       if (req.body.remarks == "Non Stricker Run Out") {
+        var non_striker_index = -1;
+
+      for (
+        var i = 0;
+        i <
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS
+          .length;
+        i++
+      ) {
+        if (
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
+            .PLAYERS[i].USERID ==
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
+            inning_no
+          ].BATTING_DETAILS.NON_STRIKER.USERID
+        ) {
+          non_striker_index = i;
+          break;
+        }
+      }
         await score.updateOne(
           { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
           {
             $set: {
-              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1.PLAYERS.${striker_index}.WICKETS`]: 1,
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1.PLAYERS.${baller_index}.WICKETS`]: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS[baller_index].WICKETS + 1,
               [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.NON_STRIKER`]:
                 checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
                   .PLAYERS[req.body.index],
@@ -588,15 +609,43 @@ ScoringRouter.post("/outScore", async (req, res) => {
                 checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
                   inning_no
                 ].WICKETS + 1,
+              
+                [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1.PLAYERS.${baller_index}.BALLS`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS[baller_index].BALLS + 1,
+
+                [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0.PLAYERS.${non_striker_index}.BALLS_USED`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED + 1,
             },
           }
         );
       } else {
+
+        var striker_index = -1;
+
+      for (
+        var i = 0;
+        i <
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS
+          .length;
+        i++
+      ) {
+        if (
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
+            .PLAYERS[i].USERID ==
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
+            inning_no
+          ].BATTING_DETAILS.STRIKER.USERID
+        ) {
+          striker_index = i;
+          break;
+        }
+      }
+
+      
+
         await score.updateOne(
           { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
           {
             $set: {
-              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0.PLAYERS.${striker_index}.WICKETS`]: 1,
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1.PLAYERS.${baller_index}.WICKETS`]: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS[baller_index].WICKETS +1,
               [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.STRIKER`]:
                 checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
                   .PLAYERS[req.body.index],
@@ -606,6 +655,11 @@ ScoringRouter.post("/outScore", async (req, res) => {
                 ].CURRENT_OVER +
                 ways[req.body.remarks] +
                 "-",
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.WICKETS`]: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[inning_no].WICKETS + 1,
+
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1.PLAYERS.${baller_index}.BALLS`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS[baller_index].BALLS + 1,
+
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0.PLAYERS.${striker_index}.BALLS_USED}`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS[striker_index].BALLS_USED + 1,
             },
           }
         );
@@ -623,8 +677,11 @@ ScoringRouter.post("/outScore", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+
 ScoringRouter.post("/specialRuns", async (req, res) => {
   var checkExists = {};
+
+  //BALLS COUNT UPDATE
   var ways = {
     "No Ball": "NB",
     "Wide Ball": "WD",
