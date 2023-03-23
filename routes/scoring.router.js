@@ -481,12 +481,12 @@ ScoringRouter.post("/changeInningCricket", async (req, res) => {
 ScoringRouter.post("/outScore", async (req, res) => {
   var checkExists = {};
   var ways = {
-    LBW: "LBW",
-    Bowled: "B",
+    "LBW": "LBW",
+    "Bowled": "B",
     "Catch Out": "C",
     "Stricker Run Out": "RO",
     "Non Stricker Run Out": "RO",
-    Stumped: "ST",
+    "Stumped": "ST",
     "Hit Wicket": "HW",
   };
   try {
@@ -509,7 +509,7 @@ ScoringRouter.post("/outScore", async (req, res) => {
         i++
       ) {
         if (
-          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1]
             .PLAYERS[i].USERID ==
           checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
             inning_no
@@ -670,4 +670,5 @@ ScoringRouter.post("/specialRuns", async (req, res) => {
   }
 });
 
+ScoringRouter.post("/endMatchCricket", async (req, res) => {});
 module.exports = ScoringRouter;
