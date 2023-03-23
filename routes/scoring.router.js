@@ -341,6 +341,7 @@ ScoringRouter.post("/usualScore", async (req, res) => {
             [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0.PLAYERS.${striker_index}.BALLS_USED}`]:
               checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
                 .PLAYERS[striker_index].BALLS_USED + 1,
+            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1.PLAYERS.${baller_index}.BALLS`]: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS[baller_index].BALLS + 1,
           },
         }
       );
