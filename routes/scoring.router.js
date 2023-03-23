@@ -330,9 +330,9 @@ ScoringRouter.post("/usualScore", async (req, res) => {
             [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0.PLAYERS.${striker_index}.SCORE`]:
               checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
                 .PLAYERS[striker_index].SCORE + reqscore,
-            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0.PLAYERS.${striker_index}.BALLS`]:
+            [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0.PLAYERS.${striker_index}.BALLS_USED`]:
               checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
-                .PLAYERS[striker_index].BALLS + 1,
+                .PLAYERS[striker_index].BALLS_USED + 1,
 
             [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1.PLAYERS.${baller_index}.RUNS`]:
               checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1]
@@ -421,11 +421,11 @@ ScoringRouter.post("/changeOverCricket", async (req, res) => {
         i++
       ) {
         if (
-          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1]
             .PLAYERS[i].USERID ==
           checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
             inning_no
-          ].BATTING_DETAILS.STRIKER.USERID
+          ].BALLER.USERID
         ) {
           striker_index = i;
           break;
@@ -468,7 +468,7 @@ ScoringRouter.post("/changeOverCricket", async (req, res) => {
               [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BALLER`]:
                 checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1]
                   .PLAYERS[req.body.baller_index],
-              ['MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.0.PLAYERS.${striker_index}.BALLS_USED'] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].PLAYERS[striker_index].BALLS_USED + 1,
+              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.TEAMS.1.PLAYERS.${striker_index}.BALLS`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1].PLAYERS[striker_index].BALLS + 1,
             },
           }
         );
