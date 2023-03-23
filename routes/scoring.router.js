@@ -123,12 +123,7 @@ ScoringRouter.post("/updateToss", async (req, res) => {
       );
       const tossWonBy = req.body.TEAM_NAME;
       const teamFormat = req.body.TEAM_FORMAT;
-      if (tossWonBy != teamFormat[0] && req.body.CHOSEN_TO == "BAT") {
-        // var temp =
-        //   checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1];
-        // checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1] =
-        //   checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0];
-        // checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0] = temp;
+      if (tossWonBy != teamFormat[0] && req.body.CHOSEN_TO == "BAT" || tossWonBy == teamFormat[0] && req.body.CHOSEN_TO == "BALL") {
         const resss = await score.updateOne(
           { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
           {
@@ -142,19 +137,34 @@ ScoringRouter.post("/updateToss", async (req, res) => {
         );
         console.log("Updated Team Order ");
       }
-      var teamPlayers = {
-        one: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
-          .PLAYERS,
-        two: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1]
-          .PLAYERS,
-        overs: checkExists.TOTAL_OVERS,
-        wickets: checkExists.WICKETS,
-        first:
-          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER]
-            .FIRST_INNING_DONE,
-      };
-
-      res.status(200).send(teamPlayers);
+      if (tossWonBy != teamFormat[0] && req.body.CHOSEN_TO == "BAT" || tossWonBy == teamFormat[0] && req.body.CHOSEN_TO == "BALL"){
+        var teamPlayers = {
+            two: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
+              .PLAYERS,
+            one: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1]
+              .PLAYERS,
+            overs: checkExists.TOTAL_OVERS,
+            wickets: checkExists.WICKETS,
+            first:
+              checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER]
+                .FIRST_INNING_DONE,
+          };
+          res.status(200).send(teamPlayers);
+      } else{
+        var teamPlayers = {
+            one: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
+              .PLAYERS,
+            two: checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1]
+              .PLAYERS,
+            overs: checkExists.TOTAL_OVERS,
+            wickets: checkExists.WICKETS,
+            first:
+              checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER]
+                .FIRST_INNING_DONE,
+          };
+    
+          res.status(200).send(teamPlayers);
+      }     
     }
   } catch (e) {
     console.log(e);
