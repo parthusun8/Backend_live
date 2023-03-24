@@ -873,6 +873,7 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
         );
         winningTeam =
           checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1];
+        res.status(200).send(winningTeam.TEAM_NAME);
       } else {
         await score.updateOne(
           {
@@ -887,6 +888,7 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
         );
         winningTeam =
           checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0];
+          res.status(200).send(winningTeam.TEAM_NAME);
       }
 
       if (checkExists.CURRENT_MATCH_NUMBER % 2 == 1) {
@@ -932,7 +934,6 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
         );
         console.log("Added a new Match");
       }
-      res.status(200).send("Match Ended");
     } else {
       res.status(400).send("Invalid Tournament ID");
     }
