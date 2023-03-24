@@ -527,9 +527,11 @@ ScoringRouter.post("/changeInningCricket", async (req, res) => {
           }
         );
         res.status(200).send("First Inning Completed");
+      } else{
+        res.status(200).send("Next Inning Has Already Started");
       }
     } else {
-      res.status(200).send("Inning Already Changed");
+      res.status(200).send("Wrong Tournament Id");
     }
   } catch (e) {
     console.log(e);
@@ -806,7 +808,6 @@ ScoringRouter.post("/specialRuns", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
-ScoringRouter.post("/changeStrike", async (req, res) => {});
 ScoringRouter.post("/endMatchCricket", async (req, res) => {
   var checkExists = {};
   try {
@@ -913,4 +914,6 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+ScoringRouter.post("/changeStrike", async (req, res) => {});
+
 module.exports = ScoringRouter;
