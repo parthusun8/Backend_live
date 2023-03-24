@@ -719,7 +719,6 @@ ScoringRouter.post("/specialRuns", async (req, res) => {
   var runs = {
     "No Ball": 1,
     "Wide Ball": 1,
-    "Wide + 4": 5,
     "Bye Ball": 0,
   };
   try {
@@ -772,15 +771,7 @@ ScoringRouter.post("/specialRuns", async (req, res) => {
               checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1][
                 "PLAYERS"
               ][baller_index].RUNS + 1,
-          },
-        }
-      );
 
-      if (req.body.remarks == "Bye Ball" || req.body.remarks == "No Ball") {
-        await score.updateOne(
-          { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
-          {
-            $set: {
               [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.SCORE`]:
                 checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[
                   inning_no
@@ -792,10 +783,9 @@ ScoringRouter.post("/specialRuns", async (req, res) => {
                 ][baller_index].RUNS +
                 req.body.score -
                 1,
-            },
-          }
-        );
-      }
+          },
+        }
+      );
       res.status(200).send("Special Runs Managed");
     } else {
       console.log("Invalid Tournament ID");
