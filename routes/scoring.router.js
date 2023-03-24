@@ -922,7 +922,7 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
                 MATCH_ID: checkExists.MATCHES.length + 1,
                 TOURNAMENT_ID: req.body.TOURNAMENT_ID,
                 TEAMS: [
-                  checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].WINNER,
+                  checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER - 1].WINNER,
                   winningTeam,
                 ],
                 INNING: inningArray,
