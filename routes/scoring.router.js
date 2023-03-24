@@ -704,8 +704,6 @@ ScoringRouter.post("/outScore", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
-
-
 ScoringRouter.post("/specialRuns", async (req, res) => {
   var checkExists = {};
   var ways = {
