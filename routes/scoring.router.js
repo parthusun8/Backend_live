@@ -704,6 +704,8 @@ ScoringRouter.post("/outScore", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+
+//Update No ball pe score
 ScoringRouter.post("/specialRuns", async (req, res) => {
   var checkExists = {};
 
@@ -774,7 +776,7 @@ ScoringRouter.post("/specialRuns", async (req, res) => {
         }
       );
 
-      if (req.body.remarks == "Bye Ball") {
+      if (req.body.remarks == "Bye Ball" || req.body.remarks == "No Ball") {
         await score.updateOne(
           { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
           {
