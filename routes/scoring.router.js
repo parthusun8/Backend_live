@@ -914,6 +914,34 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
-ScoringRouter.post("/changeStrike", async (req, res) => {});
+ScoringRouter.post("/changeStrike", async (req, res) => {
+  var checkExists = {};
+  try {
+    checkExists = await score.findOne({
+      TOURNAMENT_ID: req.body.TOURNAMENT_ID,
+    });
+    if (checkExists) {
+      var first =
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].FIRST_INNING_DONE;
+      var inning_no = 0;
+      if (first) inning_no = 1;
+
+      await score.updateOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID}, {
+        $set : {
+          [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.STRIKER`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[inning_no].BATTING_DETAILS.NON_STRIKER,
+
+          [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.INNING.${inning_no}.BATTING_DETAILS.NON_STRIKER`] : checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[inning_no].BATTING_DETAILS.STRIKER
+        }
+      })
+      res.status(200).send("Striker, Non-Striker Changed");
+    } else{
+      res.status(200).send("Wrong Tournament Id");
+    }
+  } catch(e){
+    console.log("Error Occured");
+    await score.updateOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID}, checkExists);
+    res.status(400).send("Error Occured");
+  }
+});
 
 module.exports = ScoringRouter;
