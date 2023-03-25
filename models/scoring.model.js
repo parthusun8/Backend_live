@@ -205,6 +205,10 @@ const scoringSchema = new mongoose.Schema({
     },
     MATCHES : {
         type : [match],
+    }, 
+    TOTAL_MATCHES : {
+        type : Number,
+        default : 0
     }
 });
 

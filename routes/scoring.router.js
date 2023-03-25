@@ -86,6 +86,7 @@ ScoringRouter.post("/startScoringFlow", async (req, res) => {
         TOTAL_OVERS: CricketDoc.OVERS,
         WICKETS: CricketDoc.TEAM_SIZE,
         MATCHES: matchesArray,
+        TOTAL_MATCHES: Tournament.NO_OF_KNOCKOUT_ROUNDS - 1,
       };
       console.log("newDoc " + newDoc);
       const newScoreDoc = new score(newDoc);
@@ -95,12 +96,17 @@ ScoringRouter.post("/startScoringFlow", async (req, res) => {
         TOURNAMENT_ID: req.body.TOURNAMENT_ID,
       });
     }
-    const cuurMatchNum = checkExists.CURRENT_MATCH_NUMBER;
-    console.log("Current Match " + checkExists.MATCHES[cuurMatchNum]);
-    const currTeam = checkExists.MATCHES[cuurMatchNum].TEAMS;
-    const teamNames = [currTeam[0].TEAM_NAME, currTeam[1].TEAM_NAME];
-    console.log("Final Result " + teamNames);
-    res.status(200).send(teamNames);
+
+    if (checkExists.CURRENT_MATCH_NUMBER == checkExists.TOTAL_MATCHES) {
+      res.status(200).send({message : "All Matches Completed"});
+    } else {
+      const cuurMatchNum = checkExists.CURRENT_MATCH_NUMBER;
+      console.log("Current Match " + checkExists.MATCHES[cuurMatchNum]);
+      const currTeam = checkExists.MATCHES[cuurMatchNum].TEAMS;
+      const teamNames = [currTeam[0].TEAM_NAME, currTeam[1].TEAM_NAME];
+      console.log("Final Result " + teamNames);
+      res.status(200).send({message : `Starting Scoring`,team : teamNames});
+    }
   } catch (e) {
     console.log(e);
     res.status(400).send("Error Occured");
@@ -1016,7 +1022,6 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
     });
     if (checkExists) {
-
       checkExists.CURRENT_MATCH_NUMBER -= 1;
 
       var returnVal = {
@@ -1071,9 +1076,9 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
           countExtra += 0.1;
         }
       }
-      if(countExtra < 0.6){
+      if (countExtra < 0.6) {
         returnVal.scoreCard[0].TeamOvers += countExtra;
-      } else{
+      } else {
         returnVal.scoreCard[0].TeamOvers += 1;
       }
 
@@ -1112,9 +1117,9 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
         }
       }
 
-      if(countExtra < 0.6){
+      if (countExtra < 0.6) {
         returnVal.scoreCard[1].TeamOvers += countExtra;
-      } else{
+      } else {
         returnVal.scoreCard[1].TeamOvers += 1;
       }
 
