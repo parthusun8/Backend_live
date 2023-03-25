@@ -503,6 +503,8 @@ ScoringRouter.post("/changeOverCricket", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+
+//CHANGE OVER ALSO
 ScoringRouter.post("/changeInningCricket", async (req, res) => {
   var checkExists = {};
   try {
@@ -1014,6 +1016,9 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
     });
     if (checkExists) {
+
+      checkExists.CURRENT_MATCH_NUMBER -= 1;
+
       var returnVal = {
         scoreCard: [
           {
