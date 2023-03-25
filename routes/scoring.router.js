@@ -98,14 +98,14 @@ ScoringRouter.post("/startScoringFlow", async (req, res) => {
     }
 
     if (checkExists.CURRENT_MATCH_NUMBER == checkExists.TOTAL_MATCHES) {
-      res.status(200).send("All Matches Completed");
+      res.status(200).send({message : "All Matches Completed"});
     } else {
       const cuurMatchNum = checkExists.CURRENT_MATCH_NUMBER;
       console.log("Current Match " + checkExists.MATCHES[cuurMatchNum]);
       const currTeam = checkExists.MATCHES[cuurMatchNum].TEAMS;
       const teamNames = [currTeam[0].TEAM_NAME, currTeam[1].TEAM_NAME];
       console.log("Final Result " + teamNames);
-      res.status(200).send(teamNames);
+      res.status(200).send({message : `Starting Scoring`,team : teamNames});
     }
   } catch (e) {
     console.log(e);
