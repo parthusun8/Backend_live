@@ -843,96 +843,111 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
     });
     if (checkExists) {
-      await score.updateOne(
-        { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
-        {
-          $set: {
-            CURRENT_MATCH_NUMBER: checkExists.CURRENT_MATCH_NUMBER + 1,
-          },
-        }
-      );
-
-      //Check Who Won
-      var firstInningScore =
-        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[0]
-          .BATTING_DETAILS.SCORE;
-      var secondInningScore =
-        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[1]
-          .BATTING_DETAILS.SCORE;
-
-      var winningTeam = {};
-      if (firstInningScore > secondInningScore) {
+      console.log(checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
+        .TEAM_NAME);
+      if (
+        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
+          .TEAM_NAME == req.body.batting_team_name
+      ) {
         await score.updateOne(
           { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
           {
             $set: {
-              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.WINNER`]:
-                checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1],
+              CURRENT_MATCH_NUMBER: checkExists.CURRENT_MATCH_NUMBER + 1,
             },
           }
         );
-        winningTeam =
-          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1];
-        res.status(200).send(winningTeam.TEAM_NAME);
-      } else {
-        await score.updateOne(
-          {
-            TOURNAMENT_ID: req.body.TOURNAMENT_ID,
-          },
-          {
-            $set: {
-              [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.WINNER`]:
-                checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0],
-            },
-          }
-        );
-        winningTeam =
-          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0];
+
+        //Check Who Won
+        var firstInningScore =
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[0]
+            .BATTING_DETAILS.SCORE;
+        var secondInningScore =
+          checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[1]
+            .BATTING_DETAILS.SCORE;
+
+        var winningTeam = {};
+        if (firstInningScore > secondInningScore) {
+          await score.updateOne(
+            { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
+            {
+              $set: {
+                [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.WINNER`]:
+                  checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER]
+                    .TEAMS[1],
+              },
+            }
+          );
+          winningTeam =
+            checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[1];
           res.status(200).send(winningTeam.TEAM_NAME);
-      }
-
-      if (checkExists.CURRENT_MATCH_NUMBER % 2 == 1) {
-        var inningArray = [];
-        for (var i = 0; i < 2; i += 1) {
-          inningArray.push({
-            COMPLETED_OVER_DETAILS: [],
-            CURRENT_OVER: "",
-            BATTING_DETAILS: {
-              STRIKER: {
-                NAME: "",
-                USERID: "",
-              },
-              NON_STRIKER: {
-                NAME: "",
-                USERID: "",
-              },
-              SCORE: 0,
+        } else {
+          await score.updateOne(
+            {
+              TOURNAMENT_ID: req.body.TOURNAMENT_ID,
             },
-            BALLER: {
-              NAME: "",
-              USERID: "",
-            },
-            OVERS_DONE: 0,
-            WICKETS: 0,
-          });
+            {
+              $set: {
+                [`MATCHES.${checkExists.CURRENT_MATCH_NUMBER}.WINNER`]:
+                  checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER]
+                    .TEAMS[0],
+              },
+            }
+          );
+          winningTeam =
+            checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0];
+          res.status(200).send(winningTeam.TEAM_NAME);
         }
-        await score.updateOne(
-          { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
-          {
-            $push: {
-              MATCHES: {
-                MATCH_ID: checkExists.MATCHES.length + 1,
-                TOURNAMENT_ID: req.body.TOURNAMENT_ID,
-                TEAMS: [
-                  checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER - 1].WINNER,
-                  winningTeam,
-                ],
-                INNING: inningArray,
+
+        if (checkExists.CURRENT_MATCH_NUMBER % 2 == 1) {
+          var inningArray = [];
+          for (var i = 0; i < 2; i += 1) {
+            inningArray.push({
+              COMPLETED_OVER_DETAILS: [],
+              CURRENT_OVER: "",
+              BATTING_DETAILS: {
+                STRIKER: {
+                  NAME: "",
+                  USERID: "",
+                },
+                NON_STRIKER: {
+                  NAME: "",
+                  USERID: "",
+                },
+                SCORE: 0,
               },
-            },
+              BALLER: {
+                NAME: "",
+                USERID: "",
+              },
+              OVERS_DONE: 0,
+              WICKETS: 0,
+            });
           }
+          await score.updateOne(
+            { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
+            {
+              $push: {
+                MATCHES: {
+                  MATCH_ID: checkExists.MATCHES.length + 1,
+                  TOURNAMENT_ID: req.body.TOURNAMENT_ID,
+                  TEAMS: [
+                    checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER - 1]
+                      .WINNER,
+                    winningTeam,
+                  ],
+                  INNING: inningArray,
+                },
+              },
+            }
+          );
+          console.log("Added a new Match");
+        }
+      } else {
+        console.log(
+          "Already Done End Match Once. Cant Do Again. Go to Score a challenge page, enter tournament id and play a new match"
         );
-        console.log("Added a new Match");
+        res.status(200).send("Already Done End Match Once. Cant Do Again. Go to Score a challenge page, enter tournament id and play a new match");
       }
     } else {
       res.status(400).send("Invalid Tournament ID");
@@ -987,5 +1002,6 @@ ScoringRouter.post("/changeStrike", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+ScoringRouter.post("/getScoreCard", async (req, res) => {});
 
 module.exports = ScoringRouter;
