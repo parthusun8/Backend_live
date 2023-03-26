@@ -1380,6 +1380,7 @@ ScoringRouter.get("/fullScoreCard", async (req, res) => {
           FOURS: checkExists.MATCHES[req.query.match_no].TEAMS[1].PLAYERS[i].FOURS,
           SIXES: checkExists.MATCHES[req.query.match_no].TEAMS[1].PLAYERS[i].SIX,
           OUT: checkExists.MATCHES[req.query.match_no].TEAMS[1].PLAYERS[i].OUT,
+          sr : (checkExists.MATCHES[req.query.match_no].TEAMS[1].PLAYERS[i].SCORE/checkExists.MATCHES[req.query.match_no].TEAMS[1].PLAYERS[i].BALLS_USED)*100
         });
         returnVal.SCORECARD[0].BALLING.push({
           NAME: checkExists.MATCHES[req.query.match_no].TEAMS[1].PLAYERS[i].NAME,
