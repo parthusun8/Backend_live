@@ -335,10 +335,15 @@
                             ];
                             currData["TEAMS"] = bothTeams;
                             currData["WINNER"] = winnerTeam;
-                            var bothTeamPlayers = [
-                                curr["TEAMS"][0]["PLAYERS"],
-                                curr["TEAMS"][1]["PLAYERS"],
-                            ];
+                            var bothTeamPlayers = [];
+
+                            for(var j=0; j<2; j++){
+                                bothTeamPlayers[j] = "";
+                                for(var k = 0; k<curr["TEAMS"][j]["PLAYERS"].length; k++){
+                                    bothTeamPlayers[j] += curr["TEAMS"][j]["PLAYERS"][k]["NAME"].replace(/\s/g, "") + ",";
+                                }
+                            }
+                            
                             currData["PLAYERS"] = bothTeamPlayers;
                             groupArray.push(currData);
                             matchNo++;
@@ -384,6 +389,7 @@
             function renderBrackets(struct, final) {
                 var matchNo = 0;
                 var groupCount = Object.keys(struct).length;
+                var tid = $("#tourney_id").text().replace(/\s/g, "");
                 console.log(groupCount);
                 console.log("Bracket Count" + bracketCount);
                 var group = $(
@@ -401,8 +407,10 @@
                     _.each(grouped[g], function (gg) {
                         if(g == 1){
                             //PLAYER NAMES UI
+                            var url = "http://localhost:3000/teamPlayerViewOnFixtures?players=" + gg["PLAYERS"][0];
+                            var url2 = "http://localhost:3000/teamPlayerViewOnFixtures?players=" + gg["PLAYERS"][1];
                             round.append(
-                            '<div><div class="bracketbox"></span><span class="teama"><a href="http://localhost:3000/?no_of_spots=8">' +
+                            '<div><div class="bracketbox"></span><span class="teama"><a href='+url+'>' +
                             gg["TEAMS"][0] +
                             '</a></span><span class="teamb">' +
                             gg["TEAMS"][1] +
@@ -410,12 +418,16 @@
                         );
                         } else{
                             //SCORE CARD UI
+                            console.log(tid);
+                            var url = `http://localhost:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo}`;
+                            var url2 = `http://localhost:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo+1}`;
+                            console.log(url);
                             round.append(
-                            '<div><div class="bracketbox"></span><span class="teama">' + 
+                            '<div><div class="bracketbox"></span><span class="teama"><a href='+url+'>' + 
                             gg["TEAMS"][0] +
-                            '</span><span class="teamb">' +
+                            '</a></span><span class="teamb"><a href='+url2+'>' +
                             gg["TEAMS"][1] +
-                            "</span></div></div>"
+                            "</a></span></div></div>"
                         );
                         matchNo+=2;
                         }

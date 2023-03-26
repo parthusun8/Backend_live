@@ -1319,4 +1319,16 @@ ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
       res.status(400).send("Error Occured");
     }
 });
+ScoringRouter.get("/teamPlayerViewOnFixtures", async (req, res) => {
+  try{
+    console.log(req.query.players);
+    res.status(200).render("teamdetails", {
+      players : req.query.players
+    })
+  } catch(e){
+    console.log("Error Occured");
+    console.log(e);
+    res.status(200).render("Something Went Wrong");
+  }
+});
 module.exports = ScoringRouter;
