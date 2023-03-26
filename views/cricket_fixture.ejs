@@ -407,8 +407,8 @@
                     _.each(grouped[g], function (gg) {
                         if(g == 1){
                             //PLAYER NAMES UI
-                            var url = "http://localhost:3000/teamPlayerViewOnFixtures?players=" + gg["PLAYERS"][0];
-                            var url2 = "http://localhost:3000/teamPlayerViewOnFixtures?players=" + gg["PLAYERS"][1];
+                            var url = "http://52.66.209.218:3000/teamPlayerViewOnFixtures?players=" + gg["PLAYERS"][0];
+                            var url2 = "http://52.66.209.218:3000/teamPlayerViewOnFixtures?players=" + gg["PLAYERS"][1];
                             round.append(
                             '<div><div class="bracketbox"></span><span class="teama"><a href='+url+'>' +
                             gg["TEAMS"][0] +
@@ -419,8 +419,8 @@
                         } else{
                             //SCORE CARD UI
                             console.log(tid);
-                            var url = `http://localhost:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo}`;
-                            var url2 = `http://localhost:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo+1}`;
+                            var url = `http://52.66.209.218:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo}`;
+                            var url2 = `http://52.66.209.218:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo+1}`;
                             console.log(url);
                             round.append(
                             '<div><div class="bracketbox"></span><span class="teama"><a href='+url+'>' + 
