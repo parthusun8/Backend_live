@@ -27,6 +27,8 @@
 
         .container{
             width: 90%;
+            height: 80vh;
+            overflow: scroll;
             background-color: #50595a;
             border-radius: 10px;
         }
@@ -65,17 +67,19 @@
         .tossDetails{
             text-align: center;
             color: white;
-            font-size: 18px;
+            font-size: 15px;
             padding: 10px;
         }
 
         table{
             width: 100%;
             color: white;
+            overflow: scroll;
         }
 
         th{
             font-size: 18px;
+            padding-bottom: 15px;
         }
 
         td{
@@ -86,20 +90,23 @@
             margin-bottom: 50px;
         }
 
-        .firstTeamContent{
+        .firstInningsContent{
             display: block;
         }
 
-        .secondTeamContent{
+        .secondInningsContent{
             display: none;
         }
 
-        .firstTeamBatsmenDetails, .secondTeamBatsmenDetails{
+        .firstInningsBatsmenDetails, .secondInningsBatsmenDetails{
             margin-top: 10px;
+            /* background-color: red; */
+            margin: 50px 0px 50px 0px;
             text-align: center;
         }
+        
 
-        .firstTeamBowlerDetails, .secondTeamBowlerDetails{
+        .firstInningsBowlerDetails, .secondInningsBowlerDetails{
             margin-top: 50px;
             text-align: center;
         }
@@ -110,13 +117,13 @@
         <div class="container">
             <h2 class="heading">Match Score Card</h2>
             <div class="tabs">
-                <div class="tab firstTeamTab active" onclick="switchTabs()">Team A</div>
-                <div class="tab secondTeamTab" onclick="switchTabs()">Team B</div>
+                <div class="tab firstInningsTab active" onclick="switchTabs()">Innings 1</div>
+                <div class="tab secondInningsTab" onclick="switchTabs()">Innings 2</div>
             </div>
             <div class="content">
-                <h3 class="tossDetails">Team A won the toss and chose to bat</h3>
-                <div class="firstTeamContent">
-                    <table class="firstTeamBatsmenDetails">
+                <h3 class="tossDetails">Team A won the toss and chose to bat first.</h3>
+                <div class="firstInningsContent">
+                    <table class="firstInningsBatsmenDetails">
                         <thead>
                             <tr>
                                 <th>Batsman</th>
@@ -124,57 +131,29 @@
                                 <th>Balls</th>
                                 <th>4s</th>
                                 <th>6s</th>
-                                <th>SR</th>
+                                <th>S/R</th>
                             </tr>
                         </thead>
-                        <tbody>
-                                <td>TA Player 1<br><strong>Not out</strong></td>
-                                <td>100</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>1</td>
-                                <td>100</td>
-                            </tr>
-                            <tr>
-                                <td>TA Player 2<br><strong>Not out</strong></td>
-                                <td>100</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>1</td>
-                                <td>100</td>
-                            </tr>
+                        <tbody class="firstInningsBatsmenScoreDetails">
                         </tbody>
                     </table>
-                    <table class="secondTeamBowlerDetails">
+                    <table class="firstInningsBowlerDetails">
                         <thead>
                             <tr>
                                 <th>Bowler</th>
-                                <th>Overs</th>
-                                <th>Runs</th>
-                                <th>Wickets</th>
-                                <th>Economy</th>
+                                <th>O</th>
+                                <th>R</th>
+                                <th>W</th>
+                                <th>E</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>TA Player 1</td>
-                                <td>10</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>10</td>
-                            </tr>
-                            <tr>
-                                <td>TA Player 2</td>
-                                <td>10</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>10</td>
-                            </tr>
+                        <tbody class="firstInningsBowlerPerformance">
+                            <hr>
                         </tbody>
                     </table>
                 </div>
-                <div class="secondTeamContent">
-                    <table class="secondTeamBatsmenDetails">
+                <div class="secondInningsContent">
+                    <table class="secondInningsBatsmenDetails">
                         <thead>
                             <tr>
                                 <th>Batsman</th>
@@ -182,61 +161,24 @@
                                 <th>Balls</th>
                                 <th>4s</th>
                                 <th>6s</th>
-                                <th>SR</th>
+                                <th>S/R</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>TB Player 1<br><strong>Out</strong></td>
-                                <td>100</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>1</td>
-                                <td>100</td>
-                            </tr>
-                            <tr>
-                                <td>TB Player 2<br><strong>Not out</strong></td>
-                                <td>100</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>1</td>
-                                <td>100</td>
-                            </tr>
-                            <tr>
-                                <td>TB Player 3<br><strong>Not out</strong></td>
-                                <td>100</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>1</td>
-                                <td>100</td>
-                            </tr>
+                        <tbody class="secondInningsBatsmenScoreDetails">
                         </tbody>
                     </table>
-                    <table class="firstTeamBowlerDetails">
+                    <table class="secondInningsBowlerDetails">
                         <thead>
                             <tr>
                                 <th>Bowler</th>
-                                <th>Overs</th>
-                                <th>Runs</th>
-                                <th>Wickets</th>
-                                <th>Economy</th>
+                                <th>O</th>
+                                <th>R</th>
+                                <th>W</th>
+                                <th>E</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>TB Player 1</td>
-                                <td>10</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>10</td>
-                            </tr>
-                            <tr>
-                                <td>TA Player 2</td>
-                                <td>10</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>10</td>
-                            </tr>
+                        <hr>
+                        <tbody class="secondInningsBowlerPerformance"> 
                         </tbody>
                     </table>
                 </div>
@@ -249,20 +191,88 @@
     let data = JSON.parse($("#data").text());
     console.log(data);
     function switchTabs(){
-        console.log("switching tabs");
-        if($(".firstTeamTab").hasClass("active"))
+        if($(".firstInningsTab").hasClass("active"))
         {
-            $(".firstTeamTab").removeClass("active");
-            $(".secondTeamTab").addClass("active");
-            $(".firstTeamContent").css("display","none");
-            $(".secondTeamContent").css("display","block");
+            $(".firstInningsTab").removeClass("active");
+            $(".secondInningsTab").addClass("active");
+            $(".firstInningsContent").css("display","none");
+            $(".secondInningsContent").css("display","block");
         }
         else{
-            $(".secondTeamTab").removeClass("active");
-            $(".firstTeamTab").addClass("active");
-            $(".secondTeamContent").css("display","none");
-            $(".firstTeamContent").css("display","block");
+            $(".secondInningsTab").removeClass("active");
+            $(".firstInningsTab").addClass("active");
+            $(".secondInningsContent").css("display","none");
+            $(".firstInningsContent").css("display","block");
         }
+    }
+
+    // render first innings details
+    let firstInningsBatsmenDetails = data.SCORECARD[0].BATTING;
+    let firstInningsBowlerDetails = data.SCORECARD[0].BALLING;
+
+    for(let i=0; i<firstInningsBatsmenDetails.length; i++){
+        if(firstInningsBatsmenDetails[i].SCORE==0){
+            continue;
+        }
+        $('.firstInningsBatsmenScoreDetails').append(
+            `<tr>
+                <td>${firstInningsBatsmenDetails[i].NAME}<br><strong>${firstInningsBatsmenDetails[i].OUT?"Out":"Not out"}</strong></td>
+                <td>${firstInningsBatsmenDetails[i].SCORE}</td>
+                <td>${firstInningsBatsmenDetails[i].BALLS}</td>
+                <td>${firstInningsBatsmenDetails[i].FOURS}</td>
+                <td>${firstInningsBatsmenDetails[i].SIXES}</td>
+                <td>${firstInningsBatsmenDetails[i].sr}</td>
+            </tr>`
+        );
+    }
+    for(let i=0; i<firstInningsBowlerDetails.length; i++){
+        if(firstInningsBowlerDetails[i].RUNS==0){
+            continue;
+        }
+        $('.firstInningsBowlerPerformance').append(
+            `<tr>
+                <td>${firstInningsBowlerDetails[i].NAME}</td>
+                <td>${firstInningsBowlerDetails[i].OVERS}</td>
+                <td>${firstInningsBowlerDetails[i].RUNS}</td>
+                <td>${firstInningsBowlerDetails[i].WICKETS}</td>
+                <td>${firstInningsBowlerDetails[i].ECON}</td>
+            </tr>`
+        );
+    }
+
+    // render second innings details
+    let secondInningsBatsmenDetails = data.SCORECARD[1].BATTING;
+    let secondInningsBowlerDetails = data.SCORECARD[1].BALLING;
+
+    for(let i=0; i<secondInningsBatsmenDetails.length; i++){
+        if(secondInningsBatsmenDetails[i].SCORE==0){
+            continue;
+        }
+        $('.secondInningsBatsmenDetails').append(
+            `<tr>
+                <td>${secondInningsBatsmenDetails[i].NAME}<br><strong>${secondInningsBatsmenDetails[i].OUT?"Out":"Not out"}</strong></td>
+                <td>${secondInningsBatsmenDetails[i].SCORE}</td>
+                <td>${secondInningsBatsmenDetails[i].BALLS}</td>
+                <td>${secondInningsBatsmenDetails[i].FOURS}</td>
+                <td>${secondInningsBatsmenDetails[i].SIXES}</td>
+                <td>${secondInningsBatsmenDetails[i].sr}</td>
+            </tr>`
+        );
+    }
+    for(let i=0; i<secondInningsBowlerDetails.length; i++){
+        if(secondInningsBowlerDetails[i].RUNS==0){
+            continue;
+        }
+        console.log(secondInningsBowlerDetails[i].NAME);
+        $('.secondInningsBowlerPerformance').append(
+            `<tr>
+                <td>${secondInningsBowlerDetails[i].NAME}</td>
+                <td>${secondInningsBowlerDetails[i].OVERS}</td>
+                <td>${secondInningsBowlerDetails[i].RUNS}</td>
+                <td>${secondInningsBowlerDetails[i].WICKETS}</td>
+                <td>${secondInningsBowlerDetails[i].ECON}</td>
+            </tr>`
+        );
     }
 </script>
 </html>
