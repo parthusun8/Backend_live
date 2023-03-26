@@ -45,9 +45,10 @@
 	.brackets div.bracketbox {
 		position: relative;
 		width: 100%; height: 100%;
-    border-top: 2px solid white;
-    border-right: 2px solid white;
-    border-bottom: 2px solid white;
+        background-color: cyan;
+    border-top: 2px solid rgb(140, 25, 25);
+    border-right: 2px solid rgb(5, 192, 61);
+    border-bottom: 2px solid rgb(69, 9, 220);
 	}
 	.brackets div.bracketbox > span {
 		position: absolute;
@@ -178,7 +179,7 @@
 	.brackets > div > div > div:last-of-type {
 		margin-bottom: 0px;
 	}
-	#bracs{
+	#bracs, #allData{
 		font-size: 0px;
 	}
 
@@ -241,15 +242,18 @@
 <body>
 <div class="brackets" id="brackets"></div>
 <div class="bracs" id="bracs"><%=no_of_bracs%></div>
+<div class="tourney_id" id="tourney_id"><%=TOURNAMENT_ID%></div>
+<div class="allData" id="allData"><%=allData%></div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
 <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
     	$(document).on('ready', function() {
+            var data = JSON.parse($('#allData').text());
 
-var knownBrackets = [2,4,8,16,32,64], // brackets with "perfect" proportions (full fields, no byes)
+    var knownBrackets = [2,4,8,16,32,64], // brackets with "perfect" proportions (full fields, no byes)
 
-    exampleTeams  = [] // because a bracket needs some teams!
+    exampleTeams  = data.MATCHES // because a bracket needs some teams!
     bracketCount = 0;console.log($(exampleTeams).length);
     for(let i=1;i<=64;i++){
         exampleTeams.push(`Spot ${i}`)
@@ -282,14 +286,16 @@ function getBracket(base) {
 
         var last = _.map(_.filter(brackets, function(b) { return b.nextGame == i; }), function(b) { return {game:b.bracketNo,teams:b.teamnames}; });
 		//[last[0].teams[_.random(1)],last[1].teams[_.random(1)]]
+        console.log(exampleTeams[teamMark]);
 		brackets.push({
             lastGames:	round==1 ? null : [last[0].game,last[1].game],
             nextGame:	nextInc+i>base-1?null:nextInc+i,
-            teamnames:	round==1 ? [exampleTeams[teamMark],exampleTeams[teamMark+1]] : [`TBA`,`TBA`],
+            teamnames:	round==1 ? [exampleTeams[teamMark]["TEAMS"][0]["TEAM_NAME"],exampleTeams[teamMark]["TEAMS"][1]["TEAM_NAME"]] : [`TBA`,`TBA`],
             bracketNo:	i,
             roundNo:	round,
             bye:		isBye
         });
+        // console.log(brackets);
 		matchid += 2
         teamMark+=2;
         if(i%2!=0)	nextInc--;
@@ -309,17 +315,17 @@ function getBracket(base) {
  */
 function renderBrackets(struct) {
     var groupCount	= _.uniq(_.map(struct, function(s) { return s.roundNo; })).length;
-
-    var group	= $('<div class="group'+(groupCount+1)+'" id="b'+bracketCount+'"></div>'),
+    console.log(groupCount);
+    console.log("Bracket Count" + bracketCount);
+    var group = $('<div class="group'+(groupCount+1)+'" id="b'+bracketCount+'"></div>'),
         grouped = _.groupBy(struct, function(s) { return s.roundNo; });
+    console.log(grouped);
     for(g=1;g<=groupCount;g++) {
         var round = $('<div class="r'+g+'"></div>');
         _.each(grouped[g], function(gg) {
-            if(gg.bye)
-                round.append('<div></div>');
-            else
                 round.append('<div><div class="bracketbox"></span><span class="teama">'+gg.teamnames[0]+'</span><span class="teamb">'+gg.teamnames[1]+'</span></div></div>');
         });
+        console.log(round[0].innerHTML);
         group.append(round);
     }
     group.append('<div class="r'+(groupCount+1)+'"><div class="final"><div class="bracketbox"><span class="teamc">TBA'+'</span></div></div></div>');
@@ -334,6 +340,8 @@ function renderBrackets(struct) {
 $(window).on('load', function() {
     console.log('Hello')
     var opts = parseInt($('#bracs').text())
+    var TOURNAMENT_ID = $('#tourney_id').text();
+    console.log(TOURNAMENT_ID);
     if(!_.isNaN(opts) && opts <= _.last(knownBrackets)){
         getBracket(opts);
 		$('button').prop('disabled',true)
@@ -345,6 +353,9 @@ $(window).on('load', function() {
         $('#clear').on('click',function(){
             $('#brackets').html("");
         });
+    // var allData = <%-JSON.stringify(allData)%>;
+    var data = JSON.parse($('#allData').text());
+    console.log(data);
 });
 
 
