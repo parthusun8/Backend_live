@@ -88,6 +88,13 @@
     <div class="data" id="data" style="visibility: hidden;">
         <%=data%>
     </div>
+    <div class="tourn" id="tourn" style="visibility: hidden;">
+        <%=TOURNAMENT_ID%>
+    </div>
+    <div class="match" id="match" style="visibility: hidden;">
+        <%=match_no%>
+    </div>
+    
     <script>
         var data = JSON.parse($('#data').text());
         console.log(data);

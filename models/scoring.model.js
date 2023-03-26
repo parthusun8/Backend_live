@@ -35,6 +35,9 @@ const player = new mongoose.Schema({
     SIX : {
         type : Number,
         default : 0
+    }, OUT : {
+        type : Boolean,
+        default : false
     }
 });
 const substitutes = new mongoose.Schema({
@@ -181,6 +184,10 @@ const match = new mongoose.Schema({
         default : []
     },
     TOSS: {
+        type : String,
+        default : "NOT YET DECIDED"
+    },
+    TOSS_WINNER : {
         type : String,
         default : "NOT YET DECIDED"
     }
