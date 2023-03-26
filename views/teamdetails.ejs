@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .allCenter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #272c2d;
+        }
+
+        .container{
+            width: 90%;
+            background-color: #50595a;
+            border-radius: 10px;
+        }
+
+        .heading{
+            text-align: center;
+            color: white;
+            font-size: 30px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="allCenter">
+        <div class="container">
+            <h2 class="heading">Team Players</h2>
+        </div>
+    </div>
+    <div class="players" id="players" style="display: none;"><%=players%></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        var players = $('#players').text().split(",");
+        console.log(players);
+        var container = $('.container');
+        for(var i=0; i<players.length-1; i++){
+            var player = players[i];
+            var playerDiv = $('<div class="player"></div>');
+            playerDiv.text(player);
+            playerDiv.css({
+                "color": "white",
+                "font-size": "20px",
+                "padding": "10px",
+                "margin": "10px",
+                "background-color": "#272c2d",
+                "border-radius": "10px",
+                "text-align": "center"
+            });
+            container.append(playerDiv);
+        }
+    </script>
+</body>
+</html>

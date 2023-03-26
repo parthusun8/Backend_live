@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cricket Fixtures</title>
+    <style>
+        html,
+        body,
+        .brackets {
+            width: 100%;
+            min-height: 100%;
+            font-family: "Arial", sans-serif;
+            background: #7f8487;
+            color: white;
+        }
+
+		a:link {
+			color: white;
+			text-decoration: none;
+		}
+
+		a:visited {
+			color: white;
+		}
+
+		a:hover {
+			color: white;
+		}
+
+        a:active {
+            color: #c0f0fc;
+        }
+
+        .metroBtn {
+            background-color: #2e7bcc;
+            color: #fff;
+            font-size: 1.1em;
+            padding: 10px;
+            display: inline-block;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+		.brackets>div {
+			vertical-align: top;
+			clear: both;
+		}
+
+		.brackets>div>div {
+			float: left;
+			height: 100%;
+		}
+
+		.brackets>div>div>div {
+			margin: 50px 0;
+		}
+
+        .brackets div.bracketbox {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            /* background-color: cyan; */
+            border-top: 2px solid rgb(140, 25, 25);
+            border-right: 2px solid rgb(5, 192, 61);
+            border-bottom: 2px solid rgb(69, 9, 220);
+        }
+
+		.brackets div.bracketbox>span {
+			position: absolute;
+			left: 40px;
+			font-size: 0.85em;
+		}
+
+		/* .brackets div.bracketbox > span.info1 {
+		position: absolute;
+		top: -20px;
+		left: 280px;
+		font-size: 0.8em;
+		color: #BBB;
+
+
+	} */
+
+		/* .brackets div.bracketbox > span.info2 {
+		position: absolute;
+		bottom: -20px;
+		left: 280px;
+		font-size: 0.8em;
+		color: #BBB;
+	} */
+        .brackets div.bracketbox>span.teama {
+            top: -13.5px;
+            background-color: white;
+            padding: 5px 20px 5px 20px;
+            border: 1px solid #000000;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            border-radius: 20px;
+            background-color: #4a1974;
+        }
+
+        .brackets div.bracketbox>span.teamb {
+            bottom: -13.5px;
+            background-color: white;
+            padding: 5px 20px 5px 20px;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            border: 1px solid #000000;
+            border-radius: 20px;
+            background-color: #8f3a20;
+        }
+
+        .brackets div.bracketbox>span.teamc {
+            bottom: -13.5px;
+            background-color: #91a893;
+            border: 1px solid #f1fff2;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            border-radius: 20px;
+            padding: 5px 20px 5px 20px;
+        }
+
+		
+
+		.brackets>.group2 {
+			height: 260px;
+			width: 25%;
+		}
+
+		.brackets>.group4 {
+			height: 260px;
+			width: 75%;
+		}
+
+		.brackets>.group5 {
+			height: 260px;
+			width: 75%;
+		}
+
+		.brackets>.group2>div {
+			width: 49%;
+		}
+
+		.brackets>.group3 {
+			height: 320px;
+			width: 50%;
+		}
+
+		.brackets>.group3>div {
+			width: 32.7%;
+		}
+
+		.brackets>.group4>div {
+			width: 24.5%;
+		}
+
+		.brackets>.group5>div {
+			width: 19.6%;
+		}
+
+		.brackets>.group6 {
+			height: 2000px;
+		}
+
+		.brackets>.group6>div {
+			width: 16.3%;
+		}
+
+		.brackets>.group7>div {
+			width: 13.3%;
+		}
+
+		.brackets>div>.r1>div {
+			height: 60px;
+		}
+
+		.brackets>div>.r2>div {
+			margin: 80px 0 110px 0;
+			height: 110px;
+		}
+
+		.brackets>div>.r3>div {
+			margin: 135px 0 220px 0;
+			height: 220px;
+		}
+
+		.brackets>div>.r4>div {
+			margin: 250px 0 445px 0;
+			height: 445px;
+		}
+
+		.brackets>div>.r5>div {
+			margin: 460px 0 900px 0;
+			height: 900px;
+		}
+
+		.brackets>div>.r6>div {
+			margin: 900px 0 0 0;
+			height: 1800px;
+		}
+
+		.brackets>div>.r7>div {
+			margin: 1800px 0 0 0;
+		}
+
+		.brackets div.final>div.bracketbox {
+			border-top: 0px;
+			border-right: 0px;
+			height: 0px;
+		}
+
+		.brackets>div>.r4>div.drop {
+			height: 180px;
+			margin-bottom: 0px;
+		}
+
+		.brackets>div>.r5>div.final.drop {
+			margin-top: 345px;
+			margin-bottom: 0px;
+			height: 1px;
+		}
+
+		.brackets>div>div>div:last-of-type {
+			margin-bottom: 0px;
+		}
+
+		#bracs,
+		#allData {
+			font-size: 0px;
+		}
+
+        @media only screen and (max-width: 700px) {
+            .brackets div.bracketbox>span.teama {
+                position: absolute;
+                left: 30px;
+                top: -10px;
+            }
+
+            .brackets div.bracketbox>span.teamb {
+                position: absolute;
+                left: 30px;
+                bottom: -20px;
+            }
+
+			.brackets div.bracketbox>span {
+				position: absolute;
+				border-radius: 10px;
+				width: 100%;
+			}
+
+			.brackets>.group6>div {
+				position: sticky;
+			}
+
+			.brackets>div>.r1>div {
+				position: relative;
+				left: -30px;
+				top: -5px;
+			}
+
+			.brackets>div>.r2>div {
+				position: relative;
+				left: 25px;
+				top: -5px;
+			}
+
+			.brackets>div>.r3>div {
+				position: relative;
+				left: 48px;
+			}
+
+			.brackets>div>.r4>div {
+				position: relative;
+				left: 65px;
+			}
+
+			.brackets>div>.r5>div {
+				position: relative;
+				left: 80px;
+				margin-left: 10px;
+			}
+
+            .brackets>div>.r6>div {
+                position: relative;
+                left: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="brackets" id="brackets"></div>
+    <div class="bracs" id="bracs">
+        <%=no_of_bracs%>
+    </div>
+    <div class="tourney_id" id="tourney_id">
+        <%=TOURNAMENT_ID%>
+    </div>
+    <div class="allData" id="allData">
+        <%=allData%>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
+    <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        $(document).on("ready", function () {
+            var data = JSON.parse($("#allData").text())["MATCHES"];
+            var currMatchNumber = JSON.parse($("#allData").text())[
+                "CURRENT_MATCH_NUMBER"
+            ];
+            var totalTeams = parseInt($("#bracs").text()) / 2;
+
+            var knownBrackets = [2, 4, 8, 16, 32, 64],
+                exampleTeams = [];
+
+            function getBracket() {
+                var brackets = {};
+                var groupNo = 1;
+                console.log(data);
+                var matchNo = 0;
+                while (totalTeams >= 1) {
+                    var groupArray = [];
+                    if (currMatchNumber >= matchNo) {
+                        for (var i = 0; i < totalTeams; i++) {
+                            var curr = data[matchNo];
+                            // console.log(curr["WINNER"]);
+                            var currData = { MATCH_ID: curr.MATCH_ID };
+                            var winnerTeam = "TBD";
+                            if(currData["WINNER"]?.["NAME"] != "TBD"){
+                                winnerTeam = curr["WINNER"]["TEAM_NAME"];
+                            }
+                            var bothTeams = [
+                                curr["TEAMS"][0]["TEAM_NAME"],
+                                curr["TEAMS"][1]["TEAM_NAME"],
+                            ];
+                            currData["TEAMS"] = bothTeams;
+                            currData["WINNER"] = winnerTeam;
+                            var bothTeamPlayers = [];
+
+                            for(var j=0; j<2; j++){
+                                bothTeamPlayers[j] = "";
+                                for(var k = 0; k<curr["TEAMS"][j]["PLAYERS"].length; k++){
+                                    bothTeamPlayers[j] += curr["TEAMS"][j]["PLAYERS"][k]["NAME"].replace(/\s/g, "") + ",";
+                                }
+                            }
+                            
+                            currData["PLAYERS"] = bothTeamPlayers;
+                            groupArray.push(currData);
+                            matchNo++;
+                        }
+                    }
+                    else{
+                        for(var i=0; i<totalTeams; i++){
+                            var currData = { MATCH_ID: matchNo };
+                            var bothTeams = ["TBD", "TBD"];
+                            currData["TEAMS"] = bothTeams;
+                            currData["WINNER"] = "TBD";
+                            currData["PLAYERS"] = [[], []];
+                            groupArray.push(currData);
+                            matchNo++;
+                        }
+                    }
+                    brackets[groupNo] = groupArray;
+                    groupNo++;
+                    totalTeams /= 2;
+                }
+                console.log(brackets);
+                console.log(matchNo);
+                var finalDetails = {
+                    "NAME" : "TBD",
+                    "PLAYERS" : []
+                };
+
+                if(currMatchNumber == matchNo){
+                    finalDetails = {
+                        "NAME" : data[data.length - 1]["WINNER"]["TEAM_NAME"],
+                        "PLAYERS" : []
+                    }
+                }
+                renderBrackets(brackets, finalDetails);
+            }
+
+            /*
+             * Inject our brackets
+             */
+
+            //JUST TO MAKE IT WORK
+            var bracketCount = 0;
+            function renderBrackets(struct, final) {
+                var matchNo = 0;
+                var groupCount = Object.keys(struct).length;
+                var tid = $("#tourney_id").text().replace(/\s/g, "");
+                console.log(groupCount);
+                console.log("Bracket Count" + bracketCount);
+                var group = $(
+                    '<div class="group' +
+                    (groupCount + 1) +
+                    '" id="b' +
+                    bracketCount +
+                    '"></div>'
+                ),
+                    grouped = struct;
+                console.log(grouped);
+                for (g = 1; g <= groupCount; g++) {
+                    var round = $('<div class="r' + g + '"></div>');
+                    console.log(grouped[g]);
+                    _.each(grouped[g], function (gg) {
+                        if(g == 1){
+                            //PLAYER NAMES UI
+                            var url = "http://52.66.209.218:3000/teamPlayerViewOnFixtures?players=" + gg["PLAYERS"][0];
+                            var url2 = "http://52.66.209.218:3000/teamPlayerViewOnFixtures?players=" + gg["PLAYERS"][1];
+                            round.append(
+                            '<div><div class="bracketbox"></span><span class="teama"><a href='+url+'>' +
+                            gg["TEAMS"][0] +
+                            '</a></span><span class="teamb">' +
+                            gg["TEAMS"][1] +
+                            "</span></div></div>"
+                        );
+                        } else{
+                            //SCORE CARD UI
+                            console.log(tid);
+                            var url = `http://52.66.209.218:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo}`;
+                            var url2 = `http://52.66.209.218:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo+1}`;
+                            console.log(url);
+                            round.append(
+                            '<div><div class="bracketbox"></span><span class="teama"><a href='+url+'>' + 
+                            gg["TEAMS"][0] +
+                            '</a></span><span class="teamb"><a href='+url2+'>' +
+                            gg["TEAMS"][1] +
+                            "</a></span></div></div>"
+                        );
+                        matchNo+=2;
+                        }
+                    });
+                    console.log(round[0].innerHTML);
+                    group.append(round);
+                }
+                group.append(
+                    '<div class="r' +
+                    (groupCount + 1) +
+                    '"><div class="final"><div class="bracketbox"><span class="teamc">' + (final.NAME) +
+                    "</span></div></div></div>"
+                );
+                $("#brackets").append(group);
+
+                bracketCount++;
+                $("html,body").animate({
+                    scrollTop: $("#b" + (bracketCount - 1)).offset().top,
+                });
+            }
+
+            $(window).on("load", function () {
+                console.log("Hello");
+                var opts = parseInt($("#bracs").text());
+                var TOURNAMENT_ID = $("#tourney_id").text();
+                console.log(TOURNAMENT_ID);
+                if (!_.isNaN(opts) && $.inArray(opts, knownBrackets) != -1) {
+                    getBracket();
+                    $("button").prop("disabled", true);
+                } else alert("The bracket size you specified is not currently supported.");
+
+                $("#clear").off("click");
+                $("#clear").on("click", function () {
+                    $("#brackets").html("");
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -35,6 +35,9 @@ const player = new mongoose.Schema({
     SIX : {
         type : Number,
         default : 0
+    }, OUT : {
+        type : Boolean,
+        default : false
     }
 });
 const substitutes = new mongoose.Schema({
@@ -167,7 +170,9 @@ const match = new mongoose.Schema({
     },
     WINNER : {
         type : Object,
-        default : {}//TEAM NAME
+        default : {
+            "NAME" : "TBD"
+        }//TEAM NAME
     },
     FIRST_INNING_DONE : {
         type : Boolean, //TRUE IF FIRST INNING IS COMPLETED
@@ -179,6 +184,10 @@ const match = new mongoose.Schema({
         default : []
     },
     TOSS: {
+        type : String,
+        default : "NOT YET DECIDED"
+    },
+    TOSS_WINNER : {
         type : String,
         default : "NOT YET DECIDED"
     }
@@ -205,7 +214,7 @@ const scoringSchema = new mongoose.Schema({
     },
     MATCHES : {
         type : [match],
-    }, 
+    },
     TOTAL_MATCHES : {
         type : Number,
         default : 0
