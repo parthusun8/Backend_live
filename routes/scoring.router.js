@@ -1155,5 +1155,22 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
-
+ScoringRouter.get("/cricketFixtures", async (req, res) =>{
+  try{
+    var checkExists = await score.findOne({TOURNAMENT_ID: req.query.TOURNAMENT_ID});
+    console.log(checkExists.TOTAL_MATCHES);
+    if(checkExists){
+      res.render("cricket_fixture", {
+        TOURNEY_ID: req.query.TOURNAMENT_ID,
+        no_of_bracs: checkExists.TOTAL_MATCHES + 1,
+        USERID: req.query.USERID,
+      });
+    }
+    
+  } catch(e){
+    console.log("Error Occured");
+    console.log(e);
+    res.status(200).render("version");
+  }
+});
 module.exports = ScoringRouter;
