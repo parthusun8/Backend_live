@@ -435,10 +435,11 @@
                     console.log(round[0].innerHTML);
                     group.append(round);
                 }
+                var url = `http://52.66.209.218:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo}`;
                 group.append(
                     '<div class="r' +
                     (groupCount + 1) +
-                    '"><div class="final"><div class="bracketbox"><span class="teamc">' + (final.NAME) +
+                    '"><div class="final"><div class="bracketbox"><span class="teamc"><a href='+ url + '>' + (final.NAME) +
                     "</span></div></div></div>"
                 );
                 $("#brackets").append(group);
