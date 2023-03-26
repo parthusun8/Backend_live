@@ -10,7 +10,7 @@
 		width: 100%;
 		min-height: 100%;
 		font-family: "Arial", sans-serif;
-    background: #7F8487;
+    background: #47474D;
 	color: white;
 	}
    a:link {
@@ -78,7 +78,11 @@
 		border: 1px solid #000000;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         border-radius: 20px;
-        background-color: #4A1974;
+        background-color: #2b2a2f;
+	}
+	/* Use this class for winner teams */
+	.brackets div.bracketbox > span.match_winner{
+		background-color: #b65556;
 	}
 	.brackets div.bracketbox > span.teamb {
 		bottom: -13.5px;
@@ -87,7 +91,7 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 		border: 1px solid #000000;
         border-radius: 20px;
-    background-color: #8F3A20;
+    background-color: #2b2a2f;
 	}
 	.brackets div.bracketbox > span.teamc {
 		bottom: -13.5px;
@@ -186,12 +190,12 @@
 	@media only screen and (max-width:700px){
 		.brackets div.bracketbox > span.teama {
 			position: absolute;
-			left: 30px;
+			left: 100px;
 			top:-10px;
 	}
 	.brackets div.bracketbox > span.teamb {
 		position: absolute;
-		left: 30px;
+		left: 100px;
 		bottom: -20px;
 
 	}
@@ -318,7 +322,7 @@ function renderBrackets(struct) {
             if(gg.bye)
                 round.append('<div></div>');
             else
-                round.append('<div><div class="bracketbox"></span><span class="teama">'+gg.teamnames[0]+'</span><span class="teamb">'+gg.teamnames[1]+'</span></div></div>');
+                round.append('<div><div class="bracketbox"></span><span class="match_winner teama">'+gg.teamnames[0]+'</span><span class="teamb">'+gg.teamnames[1]+'</span></div></div>');
         });
         group.append(round);
     }
