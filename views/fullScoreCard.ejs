@@ -6,12 +6,263 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        .data{
+            display: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .allCenter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #272c2d;
+        }
+
+        .container{
+            width: 90%;
+            background-color: #50595a;
+            border-radius: 10px;
+        }
+
+        .heading{
+            text-align: center;
+            color: white;
+            font-size: 30px;
+            padding: 10px;
+        }
+
+        .tabs{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tab{
+            width: 50%;
+            height: 50px;
+            background-color: #272c2d;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: rgba(207,87,87,0.5);
+        }
+
+        .active{
+            background-color: rgba(207,87,87,1);
+        }
+
+        .tossDetails{
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+        }
+
+        table{
+            width: 100%;
+            color: white;
+        }
+
+        th{
+            font-size: 18px;
+        }
+
+        td{
+            font-size: 15px;
+        }
+
+        .content{
+            margin-bottom: 50px;
+        }
+
+        .firstTeamContent{
+            display: block;
+        }
+
+        .secondTeamContent{
+            display: none;
+        }
+
+        .firstTeamBatsmenDetails, .secondTeamBatsmenDetails{
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .firstTeamBowlerDetails, .secondTeamBowlerDetails{
+            margin-top: 50px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+    <div class="allCenter">
+        <div class="container">
+            <h2 class="heading">Match Score Card</h2>
+            <div class="tabs">
+                <div class="tab firstTeamTab active" onclick="switchTabs()">Team A</div>
+                <div class="tab secondTeamTab" onclick="switchTabs()">Team B</div>
+            </div>
+            <div class="content">
+                <h3 class="tossDetails">Team A won the toss and chose to bat</h3>
+                <div class="firstTeamContent">
+                    <table class="firstTeamBatsmenDetails">
+                        <thead>
+                            <tr>
+                                <th>Batsman</th>
+                                <th>Runs</th>
+                                <th>Balls</th>
+                                <th>4s</th>
+                                <th>6s</th>
+                                <th>SR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <td>TA Player 1<br><strong>Not out</strong></td>
+                                <td>100</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>1</td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td>TA Player 2<br><strong>Not out</strong></td>
+                                <td>100</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>1</td>
+                                <td>100</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="secondTeamBowlerDetails">
+                        <thead>
+                            <tr>
+                                <th>Bowler</th>
+                                <th>Overs</th>
+                                <th>Runs</th>
+                                <th>Wickets</th>
+                                <th>Economy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TA Player 1</td>
+                                <td>10</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>TA Player 2</td>
+                                <td>10</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="secondTeamContent">
+                    <table class="secondTeamBatsmenDetails">
+                        <thead>
+                            <tr>
+                                <th>Batsman</th>
+                                <th>Runs</th>
+                                <th>Balls</th>
+                                <th>4s</th>
+                                <th>6s</th>
+                                <th>SR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TB Player 1<br><strong>Out</strong></td>
+                                <td>100</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>1</td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td>TB Player 2<br><strong>Not out</strong></td>
+                                <td>100</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>1</td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td>TB Player 3<br><strong>Not out</strong></td>
+                                <td>100</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>1</td>
+                                <td>100</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="firstTeamBowlerDetails">
+                        <thead>
+                            <tr>
+                                <th>Bowler</th>
+                                <th>Overs</th>
+                                <th>Runs</th>
+                                <th>Wickets</th>
+                                <th>Economy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TB Player 1</td>
+                                <td>10</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>TA Player 2</td>
+                                <td>10</td>
+                                <td>100</td>
+                                <td>10</td>
+                                <td>10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="data" id="data"><%=data%></div>
 </body>
 <script>
     let data = JSON.parse($("#data").text());
     console.log(data);
+    function switchTabs(){
+        console.log("switching tabs");
+        if($(".firstTeamTab").hasClass("active"))
+        {
+            $(".firstTeamTab").removeClass("active");
+            $(".secondTeamTab").addClass("active");
+            $(".firstTeamContent").css("display","none");
+            $(".secondTeamContent").css("display","block");
+        }
+        else{
+            $(".secondTeamTab").removeClass("active");
+            $(".firstTeamTab").addClass("active");
+            $(".secondTeamContent").css("display","none");
+            $(".firstTeamContent").css("display","block");
+        }
+    }
 </script>
 </html>
