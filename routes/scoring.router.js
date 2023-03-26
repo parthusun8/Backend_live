@@ -1390,7 +1390,7 @@ ScoringRouter.get("/fullScoreCard", async (req, res) => {
           ECON : (checkExists.MATCHES[req.query.match_no].TEAMS[1].PLAYERS[i].RUNS/parseFloat(checkExists.MATCHES[req.query.match_no].TEAMS[1].PLAYERS[i].BALLS/6).toFixed(1))
         });
       }
-      res.status(200).send(returnVal);
+      res.status(200).render("fullScoreCard", {data : JSON.stringify(returnVal)});
     } else {
       res.status(200).send("Wrong Tournament Id");
     }

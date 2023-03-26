@@ -81,7 +81,7 @@
                     <div class="secondTeamScore" style="display: flex;"></div>
                 </div>
                 <div class="result"></div>
-                <a class="scorecard" href="/scorecard">Scorecard ></a>
+                <a class="scorecard" id="scorecard" href="#">Scorecard ></a>
             </div>
         </div>
     </div>
@@ -104,6 +104,12 @@
         $('.secondTeamName').text(data.scoreCard[1].TeamName);
         $('.secondTeamScore').text(data.scoreCard[1].TeamTotal + '/' + data.scoreCard[1].TeamWickets+' ('+data.scoreCard[1].TeamOvers+')');
         $('.result').text(data.WinnerTeam + ' won ');
+
+        $(window).on('load', function() {
+            var tourn = $('#tourn').text().replace(/\s/g, "");
+            var match = $('#match').text().replace(/\s/g, "");
+            $('.scorecard').attr('href', 'http://localhost:3000/fullScoreCard?TOURNAMENT_ID=' + tourn + '&match_no=' + match);
+        });
     </script>
 </body>
 
