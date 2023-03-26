@@ -1162,7 +1162,7 @@ ScoringRouter.get("/cricketFixtures", async (req, res) =>{
     if(checkExists){
       res.render("cricket_fixture", {
         TOURNEY_ID: req.query.TOURNAMENT_ID,
-        no_of_bracs: checkExists.TOTAL_MATCHES + 1,
+        no_of_bracs: 64,
         USERID: req.query.USERID,
       });
     }

@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=1200px, initial-scale=1.0">
-    <title>Cricket Fixtures</title>
-    <style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<style>
 		html, body, .brackets {
 		width: 100%;
 		min-height: 100%;
 		font-family: "Arial", sans-serif;
-    background: #8A8D90;
+    background: #7F8487;
+	color: white;
 	}
-	#tourney_id{
-        visibility: hidden;        
-    }
    a:link {
      color: white;
      text-decoration: none;
@@ -77,29 +75,26 @@
 		top: -13.5px;
 		background-color: white;
 		padding	: 5px 20px 5px 20px;
-		
-		height: 20px;
-		width: 100px;
-		border: 1px solid #5FD068;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    background-color: #5FD068;
+		border: 1px solid #000000;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        border-radius: 20px;
+        background-color: #4A1974;
 	}
 	.brackets div.bracketbox > span.teamb {
 		bottom: -13.5px;
 		background-color: white;
 		padding	: 5px 20px 5px 20px;
-		
-		height: 20px;
-		width: 100px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-		border: 1px solid #5FD068;
-    background-color: #5FD068;
+		border: 1px solid #000000;
+        border-radius: 20px;
+    background-color: #8F3A20;
 	}
 	.brackets div.bracketbox > span.teamc {
 		bottom: -13.5px;
-    background-color: #5FD068;
-    border: 1px solid #5FD068;
+    background-color: #91A893;
+    border: 1px solid #F1FFF2;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 20px;
 		padding	: 5px 20px 5px 20px;
 
 	}
@@ -183,18 +178,12 @@
 	.brackets > div > div > div:last-of-type {
 		margin-bottom: 0px;
 	}
-    #user_id{
-        visibility: hidden;
-    }
 	#bracs{
 		font-size: 0px;
 	}
-	.times{
-		margin:15px;
-		width: 100px;
-	}
 
-	/* @media only screen and (max-width:700px){
+
+	@media only screen and (max-width:700px){
 		.brackets div.bracketbox > span.teama {
 			position: absolute;
 			left: 30px;
@@ -246,25 +235,16 @@
 		left: 80px;
 	}
 
-} */
+}
 </style>
 </head>
 <body>
 <div class="brackets" id="brackets"></div>
 <div class="bracs" id="bracs"><%=no_of_bracs%></div>
-<div class="tourney_id" id="tourney_id"><%=TOURNEY_ID%></div>
-<div class="user_id" id="user_id"><%=USERID%></div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
 <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-
-
 <script>
-	var starttime = "2022-12-06T14:30:00.000Z"
-	const breaktime = 5*60*1000
-	const matchtime = 20*60*1000
-	const numcourts = 5
     	$(document).on('ready', function() {
 
 var knownBrackets = [2,4,8,16,32,64], // brackets with "perfect" proportions (full fields, no byes)
@@ -305,7 +285,7 @@ function getBracket(base) {
 		brackets.push({
             lastGames:	round==1 ? null : [last[0].game,last[1].game],
             nextGame:	nextInc+i>base-1?null:nextInc+i,
-            teamnames:	round==1 ? [exampleTeams[teamMark],exampleTeams[teamMark+1]] : [`Match ${matchid-base}`,`Match ${matchid+1-base}`],
+            teamnames:	round==1 ? [exampleTeams[teamMark],exampleTeams[teamMark+1]] : [`TBA`,`TBA`],
             bracketNo:	i,
             roundNo:	round,
             bye:		isBye
@@ -338,11 +318,11 @@ function renderBrackets(struct) {
             if(gg.bye)
                 round.append('<div></div>');
             else
-                round.append('<div><div class="bracketbox"><span class="info1">'+gg.bracketNo+'</span><span class="info2">'+gg.bracketNo+`</span><span class="teama ${gg.teamnames[0]}">`+`<a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=${gg.teamnames[0]}">`+gg.teamnames[0]+`</a></span><span class="teamb ${gg.teamnames[1]}">`+`<a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=${gg.teamnames[1]}">`+gg.teamnames[1]+'</a></span></div></div>');
+                round.append('<div><div class="bracketbox"></span><span class="teama">'+gg.teamnames[0]+'</span><span class="teamb">'+gg.teamnames[1]+'</span></div></div>');
         });
         group.append(round);
     }
-    group.append('<div class="r'+(groupCount+1)+'"><div class="final"><div class="bracketbox">'+`<span class="teamc Match ${(Math.pow(2,groupCount)-1)}"><a href="http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${(2*(groupCount+1)-1)}">Final</a>`+'</span></div></div></div>');
+    group.append('<div class="r'+(groupCount+1)+'"><div class="final"><div class="bracketbox"><span class="teamc">TBA'+'</span></div></div></div>');
     $('#brackets').append(group);
 
     bracketCount++;
@@ -351,156 +331,22 @@ function renderBrackets(struct) {
     });
 }
 
-$(window).on('load', async function() {
+$(window).on('load', function() {
     console.log('Hello')
     var opts = parseInt($('#bracs').text())
-    if(!_.isNaN(opts) && opts <= _.last(knownBrackets))
+    if(!_.isNaN(opts) && opts <= _.last(knownBrackets)){
         getBracket(opts);
+		$('button').prop('disabled',true)
+	}
     else
         alert('The bracket size you specified is not currently supported.');
+
         $('#clear').off('click');
         $('#clear').on('click',function(){
             $('#brackets').html("");
         });
-	const res = await fetch(`http://52.66.209.218:3000/spotStatusArray?TOURNAMENT_ID=${$("#tourney_id").text()}`)
-	const data = await res.json()
-	console.log(data)
-		//Make a spot and username map
-		const sp_array = new Map()
-	for(var i=0;i<data.array.length;i++){
-		if(data.array[i].includes("confirmed")){
-			sp_array.set(data.array[i].split("-")[1],i+1)
-		}
-	}
-	for(var i=0;i<data.array.length;i++){
-		if(data.array[i].includes("confirmed")){
-            if(data.array[i].split("-")[1]==$('#user_id').text()){
-                $(`.Spot.${i+1}`).css("background","#fa4848")
-                $(`.Spot.${i+1}`).css("border","1px solid #fa4848")    
-            }
-			const usr_name = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${data.array[i].split("-")[1]}`)
-			const usr_name_deets = await usr_name.json()
-			if(usr_name_deets){
-				$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetails?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}&ORIGINAL=${$('#user_id').text()}`).text(`${sp_array.get(data.array[i].split("-")[1])}: `+usr_name_deets.Name))
-				//text(data.array[i].split("-")[1].slice(0,6))
-				$(`.Spot.${i+1}`).css("color","#faf5f5")
-			}
-		} 
-	}
-	var dbles_partner = 'none'
-	const res2 = await fetch(`http://52.66.209.218:3000/allMatchesSpots?TOURNAMENT_ID=${$("#tourney_id").text()}`)
-	const data2 = await res2.json()
-	console.log(data2)
-	for(var i=0;i<data2.Matches.length;i++){
-		if(data2.Matches[i].winner_id){
-			$(`.Match.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${i+1}`).text(data2.Matches[i].winner_id.slice(0,6)+`, Spot: ${sp_array.get(data2.Matches[i].winner_id)}`))
-			$(`.Match.${i+1}`).css('color','#faf5f5')
-			$(`.Match.${i+1}`).css('background','#403b3b')
-			$(`.Match.${i+1}`).css('border','#403b3b')
-		}
-		if(data2.Matches[i].winner_name){
-			console.log(data2.Matches[i].winner_name)
-			$(`.Match.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/getScore?TOURNAMENT_ID=${$("#tourney_id").text()}&MATCHID=Match ${i+1}`).text(`${sp_array.get(data2.Matches[i].winner_id)}: `+data2.Matches[i].winner_name))
-			$(`.Match.${i+1}`).css('color','#faf5f5')
-			$(`.Match.${i+1}`).css('background','#403b3b')
-			$(`.Match.${i+1}`).css('border','#403b3b')
-		}
-	}
-	for(var i=0;i<data2.Matches.length;i++){
-		if(data2.Matches[i].PLAYER1==$('#user_id').text()||data2.Matches[i].PLAYER2==$('#user_id').text()){
-			console.log('Hello' + `${i}`)
-			$(`.Match.${i+1}`).css('background','#0000ff')
-		}
-	}
-	const prev_set_timings = await fetch(`http://52.66.209.218:3000/matchTimings?TOURNAMENT_ID=${$("#tourney_id").text()}`)
-		const prev_set_timing_dat = await prev_set_timings.json()
-	const time_res = await fetch(`http://52.66.209.218:3000/perMatchEstimatedTime?TOURNAMENT_ID=${$("#tourney_id").text()}`)
-	const time_data = await time_res.json()
-	if(time_data){
-		console.log('Hello2')
-		const r = await fetch(`http://52.66.209.218:3000/tournamentById?TOURNAMENT_ID=${$("#tourney_id").text()}`)
-		const dt = await r.json()
-		if(dt){			var starttime = dt.START_TIMESTAMP
-			const breaktime = parseInt(dt.BREAK_TIME,10)
-			$('.goToTournamentDetails').append(`<div class = "timings">Break Time is: ${dt.BREAK_TIME} minutes</div>`)
-			const numcourts= dt.NO_OF_COURTS
-			const matchtime = parseInt(time_data.Message,10)
-			console.log(typeof(matchtime))
-			console.log(data2.Matches.length)
-			var inc = Math.floor(data2.Matches.length)
-			console.log(inc + 'iinc');
-			var d = new Date(new Date(starttime).getTime()-5*60*60*1000-30*60*1000)
-		var d2 = new Date(new Date(starttime).getTime()-5*60*60*1000-30*60*1000+matchtime*60*1000)
-		console.log(d)
-		console.log(d2)
-		console.log(d.getDate())
-		console.log(d.getMonth())
-		console.log(d.getFullYear())
-			for(var i=0;i<=data2.Matches.length;i=i+inc){
-				inc/=2 
-				console.log(`i: ${i}`)
-				if(inc<1){
-			break
-		}
-				console.log(inc + 'iinc');
-		for(var j=0;j<inc;j=j+numcourts){
-			for(var k=0;k<numcourts;k++){
-				console.log(`<h5>${moment(d).format('LT')} - ${moment(d2).format('LT')}(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</h5>`)
-				console.log(i+j+k+1)
-				if(i+j+k+1<=i+inc){
-					$(`.Match.${i+j+k+1}`).append(`<div class="times ${i+j+k+1}">${moment(d).format('LT')} - ${moment(d2).format('LT')}<p>(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</p></div>`)
-				}
-			}
-			starttime = new Date(new Date(starttime).getTime()+matchtime*60*1000+breaktime*60*1000).toISOString()
-			d = new Date(new Date(starttime).getTime()-5*60*60*1000-30*60*1000)
-			d2 = new Date(new Date(starttime).getTime()-5*60*60*1000-30*60*1000+matchtime*60*1000)
-		}
-	}
-	if(prev_set_timing_dat){
-		console.log(prev_set_timing_dat)
-		for(var i = 0;i<prev_set_timing_dat.array.length;i++){
-			const d = new Date(prev_set_timing_dat.array[i].START_TIMESTAMP)
-			const d2 = new Date(prev_set_timing_dat.array[i].END_TIMESTAMP)
-			$(`.times.${parseInt(prev_set_timing_dat.array[i].MATCHID,10)+1}`).html(`${moment(d).format('LT')} - ${moment(d2).format('LT')}<p>(${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()})</p>`)
-		}
-	}
-		}
-	}
-	if($("#tourney_id").text().split("-")[1].includes('D')){
-		//find the partner
-		const r = await fetch(`http://52.66.209.218:3000/finddoublespartner?TOURNAMENT_ID=${$("#tourney_id").text()}&USERID=${$('#user_id').text()}`)
-		const rjson = await r.json()
-		if(rjson){
-			if(rjson.PLAYER_1==$('#user_id').text()){
-				dbles_partner = rjson.PLAYER_2
-			}
-			else{
-				dbles_partner = rjson.PLAYER_1
-			}
-			for(var i=0;i<data2.Matches.length;i++){
-		if(data2.Matches[i].PLAYER1==$('#user_id').text()||data2.Matches[i].PLAYER2==$('#user_id').text()||data2.Matches[i].PLAYER1==dbles_partner||data2.Matches[i].PLAYER2==dbles_partner){
-			console.log('Hello' + `${i}`)
-			$(`.Match.${i+1}`).css('background','#0000ff')
-		}
-	}
-	for(var i=0;i<data.array.length;i++){
-		if(data.array[i].includes("confirmed")){
-            if(data.array[i].split("-")[1]==dbles_partner){
-                $(`.Spot.${i+1}`).css("background","#fa4848")
-                $(`.Spot.${i+1}`).css("border","1px solid #fa4848")    
-            }
-			const usr_name = await fetch(`http://52.66.209.218:3000/userDetails?USERID=${data.array[i].split("-")[1]}`)
-			const usr_name_deets = await usr_name.json()
-			if(usr_name_deets){
-				$(`.Spot.${i+1}`).html($('<a></a>').attr('href',`http://52.66.209.218:3000/profileDetails?USERID=${data.array[i].split("-")[1]}&TOURNAMENT_ID=${$("#tourney_id").text()}&ORIGINAL=${$('#user_id').text()}`).text(`${sp_array.get(data.array[i].split("-")[1])}: ` + usr_name_deets.Name))
-				//text(data.array[i].split("-")[1].slice(0,6))
-				$(`.Spot.${i+1}`).css("color","#faf5f5")
-			}
-		} 
-	}
-		}
-	}	
 });
+
 
 });
 </script>
