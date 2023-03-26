@@ -1306,7 +1306,7 @@ ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
           ].TEAMS[0].TEAM_NAME;
       }
 
-      res.render("scorecard", { data: JSON.stringify(returnVal), TOURNAMENT_ID: req.query.TOURNAMENT_ID, match_no: req.query.match_no });
+      res.render("scoreCard", { data: JSON.stringify(returnVal), TOURNAMENT_ID: req.query.TOURNAMENT_ID, match_no: req.query.match_no });
     } else {
       res.status(200).send("Wrong Tournament Id");
     }
