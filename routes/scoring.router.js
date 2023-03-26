@@ -1163,8 +1163,8 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
 });
 ScoringRouter.get("/cricketFixtures", async (req, res) => {
   try {
+    console.log(req.query.TOURNAMENT_ID);
     var checkExists = await score.findOne({ TOURNAMENT_ID: req.query.TOURNAMENT_ID });
-    console.log(checkExists.TOTAL_MATCHES);
     if (checkExists) {
       res.render("cricket_fixture", {
         TOURNAMENT_ID: req.query.TOURNAMENT_ID,
