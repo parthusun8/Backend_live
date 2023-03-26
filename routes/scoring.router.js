@@ -510,7 +510,6 @@ ScoringRouter.post("/changeOverCricket", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
-
 //CHANGE OVER ALSO
 ScoringRouter.post("/changeInningCricket", async (req, res) => {
   var checkExists = {};
@@ -1182,7 +1181,6 @@ ScoringRouter.get("/cricketFixtures", async (req, res) => {
     res.status(200).render("version");
   }
 });
-
 ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
   var checkExists = {};
   try {
