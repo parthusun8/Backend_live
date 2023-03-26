@@ -167,7 +167,9 @@ const match = new mongoose.Schema({
     },
     WINNER : {
         type : Object,
-        default : {}//TEAM NAME
+        default : {
+            "NAME" : "TBD"
+        }//TEAM NAME
     },
     FIRST_INNING_DONE : {
         type : Boolean, //TRUE IF FIRST INNING IS COMPLETED
@@ -205,7 +207,7 @@ const scoringSchema = new mongoose.Schema({
     },
     MATCHES : {
         type : [match],
-    }, 
+    },
     TOTAL_MATCHES : {
         type : Number,
         default : 0

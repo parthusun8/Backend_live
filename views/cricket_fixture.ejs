@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cricket Fixtures</title>
     <style>
         html,
@@ -13,7 +13,7 @@
             width: 100%;
             min-height: 100%;
             font-family: "Arial", sans-serif;
-            background: #7F8487;
+            background: #7f8487;
             color: white;
         }
 
@@ -31,11 +31,11 @@
         }
 
         a:active {
-            color: #C0F0FC
+            color: #c0f0fc;
         }
 
         .metroBtn {
-            background-color: #2E7BCC;
+            background-color: #2e7bcc;
             color: #fff;
             font-size: 1.1em;
             padding: 10px;
@@ -62,7 +62,7 @@
             position: relative;
             width: 100%;
             height: 100%;
-            background-color: cyan;
+            /* background-color: cyan; */
             border-top: 2px solid rgb(140, 25, 25);
             border-right: 2px solid rgb(5, 192, 61);
             border-bottom: 2px solid rgb(69, 9, 220);
@@ -98,7 +98,7 @@
             border: 1px solid #000000;
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
             border-radius: 20px;
-            background-color: #4A1974;
+            background-color: #4a1974;
         }
 
         .brackets div.bracketbox>span.teamb {
@@ -108,17 +108,16 @@
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
             border: 1px solid #000000;
             border-radius: 20px;
-            background-color: #8F3A20;
+            background-color: #8f3a20;
         }
 
         .brackets div.bracketbox>span.teamc {
             bottom: -13.5px;
-            background-color: #91A893;
-            border: 1px solid #F1FFF2;
+            background-color: #91a893;
+            border: 1px solid #f1fff2;
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
             border-radius: 20px;
             padding: 5px 20px 5px 20px;
-
         }
 
         .brackets>.group2 {
@@ -228,8 +227,7 @@
             font-size: 0px;
         }
 
-
-        @media only screen and (max-width:700px) {
+        @media only screen and (max-width: 700px) {
             .brackets div.bracketbox>span.teama {
                 position: absolute;
                 left: 30px;
@@ -240,7 +238,6 @@
                 position: absolute;
                 left: 30px;
                 bottom: -20px;
-
             }
 
             .brackets div.bracketbox>span {
@@ -285,7 +282,6 @@
                 position: relative;
                 left: 80px;
             }
-
         }
     </style>
 </head>
@@ -305,117 +301,155 @@
     <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-        $(document).on('ready', function () {
-            var data = JSON.parse($('#allData').text());
+        $(document).on("ready", function () {
+            var data = JSON.parse($("#allData").text())["MATCHES"];
+            var currMatchNumber = JSON.parse($("#allData").text())[
+                "CURRENT_MATCH_NUMBER"
+            ];
+            var totalTeams = parseInt($("#bracs").text()) / 2;
 
-            var knownBrackets = [2, 4, 8, 16, 32, 64], // brackets with "perfect" proportions (full fields, no byes)
+            var knownBrackets = [2, 4, 8, 16, 32, 64],
+                exampleTeams = [];
 
-                exampleTeams = data.MATCHES // because a bracket needs some teams!
-            bracketCount = 0; console.log($(exampleTeams).length);
-            for (let i = 1; i <= 64; i++) {
-                exampleTeams.push(`Spot ${i}`)
-            }
-            /*
-             * Build our bracket "model"
-             */
-            var matchid = 1
-            function getBracket(base) {
-
-                var closest = _.find(knownBrackets, function (k) { return k >= base; }),
-                    byes = closest - base;
-
-                if (byes > 0) base = closest;
-
-                var brackets = [],
-                    round = 1,
-                    baseT = base / 2,
-                    baseC = base / 2,
-                    teamMark = 0,
-                    nextInc = base / 2;
-                for (i = 1; i <= (base - 1); i++) {
-                    var baseR = i / baseT,
-                        isBye = false;
-
-                    if (byes > 0 && (i % 2 != 0 || byes >= (baseT - i))) {
-                        isBye = true;
-                        byes--;
+            function getBracket() {
+                var brackets = {};
+                var groupNo = 1;
+                console.log(data);
+                var matchNo = 0;
+                while (totalTeams >= 1) {
+                    var groupArray = [];
+                    if (currMatchNumber >= matchNo) {
+                        for (var i = 0; i < totalTeams; i++) {
+                            var curr = data[matchNo];
+                            // console.log(curr["WINNER"]);
+                            var currData = { MATCH_ID: curr.MATCH_ID };
+                            var winnerTeam = "TBD";
+                            if(currData["WINNER"]?.["NAME"] != "TBD"){
+                                winnerTeam = curr["WINNER"]["TEAM_NAME"];
+                            }
+                            var bothTeams = [
+                                curr["TEAMS"][0]["TEAM_NAME"],
+                                curr["TEAMS"][1]["TEAM_NAME"],
+                            ];
+                            currData["TEAMS"] = bothTeams;
+                            currData["WINNER"] = winnerTeam;
+                            var bothTeamPlayers = [
+                                curr["TEAMS"][0]["PLAYERS"],
+                                curr["TEAMS"][1]["PLAYERS"],
+                            ];
+                            currData["PLAYERS"] = bothTeamPlayers;
+                            groupArray.push(currData);
+                            matchNo++;
+                        }
                     }
+                    else{
+                        for(var i=0; i<totalTeams; i++){
+                            var currData = { MATCH_ID: matchNo };
+                            var bothTeams = ["TBD", "TBD"];
+                            currData["TEAMS"] = bothTeams;
+                            currData["WINNER"] = "TBD";
+                            currData["PLAYERS"] = [[], []];
+                            groupArray.push(currData);
+                            matchNo++;
+                        }
+                    }
+                    brackets[groupNo] = groupArray;
+                    groupNo++;
+                    totalTeams /= 2;
+                }
+                console.log(brackets);
+                console.log(matchNo);
+                var finalDetails = {
+                    "NAME" : "TBD",
+                    "PLAYERS" : []
+                };
 
-                    var last = _.map(_.filter(brackets, function (b) { return b.nextGame == i; }), function (b) { return { game: b.bracketNo, teams: b.teamnames }; });
-                    //[last[0].teams[_.random(1)],last[1].teams[_.random(1)]]
-                    console.log(exampleTeams[teamMark]);
-                    brackets.push({
-                        lastGames: round == 1 ? null : [last[0].game, last[1].game],
-                        nextGame: nextInc + i > base - 1 ? null : nextInc + i,
-                        teamnames: round == 1 ? [exampleTeams[teamMark]["TEAMS"][0]["TEAM_NAME"], exampleTeams[teamMark]["TEAMS"][1]["TEAM_NAME"]] : [`TBA`, `TBA`],
-                        bracketNo: i,
-                        roundNo: round,
-                        bye: isBye
-                    });
-                    // console.log(brackets);
-                    matchid += 2
-                    teamMark += 2;
-                    if (i % 2 != 0) nextInc--;
-                    while (baseR >= 1) {
-                        round++;
-                        baseC /= 2;
-                        baseT = baseT + baseC;
-                        baseR = i / baseT;
+                if(currMatchNumber == matchNo){
+                    finalDetails = {
+                        "NAME" : data[data.length - 1]["WINNER"]["TEAM_NAME"],
+                        "PLAYERS" : []
                     }
                 }
-
-                renderBrackets(brackets);
+                renderBrackets(brackets, finalDetails);
             }
 
             /*
              * Inject our brackets
              */
-            function renderBrackets(struct) {
-                var groupCount = _.uniq(_.map(struct, function (s) { return s.roundNo; })).length;
+
+            //JUST TO MAKE IT WORK
+            var bracketCount = 0;
+            function renderBrackets(struct, final) {
+                var matchNo = 0;
+                var groupCount = Object.keys(struct).length;
                 console.log(groupCount);
                 console.log("Bracket Count" + bracketCount);
-                var group = $('<div class="group' + (groupCount + 1) + '" id="b' + bracketCount + '"></div>'),
-                    grouped = _.groupBy(struct, function (s) { return s.roundNo; });
+                var group = $(
+                    '<div class="group' +
+                    (groupCount + 1) +
+                    '" id="b' +
+                    bracketCount +
+                    '"></div>'
+                ),
+                    grouped = struct;
                 console.log(grouped);
                 for (g = 1; g <= groupCount; g++) {
                     var round = $('<div class="r' + g + '"></div>');
+                    console.log(grouped[g]);
                     _.each(grouped[g], function (gg) {
-                        round.append('<div><div class="bracketbox"></span><span class="teama">' + gg.teamnames[0] + '</span><span class="teamb">' + gg.teamnames[1] + '</span></div></div>');
+                        if(g == 1){
+                            //PLAYER NAMES UI
+                            round.append(
+                            '<div><div class="bracketbox"></span><span class="teama"><a href="http://localhost:3000/?no_of_spots=8">' +
+                            gg["TEAMS"][0] +
+                            '</a></span><span class="teamb">' +
+                            gg["TEAMS"][1] +
+                            "</span></div></div>"
+                        );
+                        } else{
+                            //SCORE CARD UI
+                            round.append(
+                            '<div><div class="bracketbox"></span><span class="teama">' + 
+                            gg["TEAMS"][0] +
+                            '</span><span class="teamb">' +
+                            gg["TEAMS"][1] +
+                            "</span></div></div>"
+                        );
+                        matchNo+=2;
+                        }
                     });
                     console.log(round[0].innerHTML);
                     group.append(round);
                 }
-                group.append('<div class="r' + (groupCount + 1) + '"><div class="final"><div class="bracketbox"><span class="teamc">TBA' + '</span></div></div></div>');
-                $('#brackets').append(group);
+                group.append(
+                    '<div class="r' +
+                    (groupCount + 1) +
+                    '"><div class="final"><div class="bracketbox"><span class="teamc">' + (final.NAME) +
+                    "</span></div></div></div>"
+                );
+                $("#brackets").append(group);
 
                 bracketCount++;
-                $('html,body').animate({
-                    scrollTop: $("#b" + (bracketCount - 1)).offset().top
+                $("html,body").animate({
+                    scrollTop: $("#b" + (bracketCount - 1)).offset().top,
                 });
             }
 
-            $(window).on('load', function () {
-                console.log('Hello')
-                var opts = parseInt($('#bracs').text())
-                var TOURNAMENT_ID = $('#tourney_id').text();
+            $(window).on("load", function () {
+                console.log("Hello");
+                var opts = parseInt($("#bracs").text());
+                var TOURNAMENT_ID = $("#tourney_id").text();
                 console.log(TOURNAMENT_ID);
-                if (!_.isNaN(opts) && opts <= _.last(knownBrackets)) {
-                    getBracket(opts);
-                    $('button').prop('disabled', true)
-                }
-                else
-                    alert('The bracket size you specified is not currently supported.');
+                if (!_.isNaN(opts) && $.inArray(opts, knownBrackets) != -1) {
+                    getBracket();
+                    $("button").prop("disabled", true);
+                } else alert("The bracket size you specified is not currently supported.");
 
-                $('#clear').off('click');
-                $('#clear').on('click', function () {
-                    $('#brackets').html("");
+                $("#clear").off("click");
+                $("#clear").on("click", function () {
+                    $("#brackets").html("");
                 });
-                // var allData = <%-JSON.stringify(allData)%>;
-                var data = JSON.parse($('#allData').text());
-                console.log(data);
             });
-
-
         });
     </script>
 </body>

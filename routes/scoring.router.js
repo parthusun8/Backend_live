@@ -854,6 +854,7 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
       console.log(
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0].TEAM_NAME
       );
+      console.log(req.body.batting_team_name);
       if (
         checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].TEAMS[0]
           .TEAM_NAME == req.body.batting_team_name
@@ -938,7 +939,7 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
             {
               $push: {
                 MATCHES: {
-                  MATCH_ID: checkExists.MATCHES.length + 1,
+                  MATCH_ID: checkExists.MATCHES.length,
                   TOURNAMENT_ID: req.body.TOURNAMENT_ID,
                   TEAMS: [
                     checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER - 1]
@@ -946,6 +947,9 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
                     winningTeam,
                   ],
                   INNING: inningArray,
+                  WINNER : {
+                    "NAME" : "TBD"
+                  },
                 },
               },
             }
@@ -1165,6 +1169,8 @@ ScoringRouter.get("/cricketFixtures", async (req, res) =>{
         no_of_bracs: checkExists.TOTAL_MATCHES + 1,
         allData : JSON.stringify(checkExists),
       });
+    } else{
+      res.status(200).send("Wrong Tournament Id");
     }
     
   } catch(e){
