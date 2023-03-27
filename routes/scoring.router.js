@@ -216,6 +216,7 @@ ScoringRouter.post("/updatePlayers", async (req, res) => {
             [`MATCHES.${req.body.MATCH_ID}.INNING.${inning_no}.BALLER`]:
               checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1]
                 .PLAYERS[req.body.BOWLING.BALLER_INDEX],
+            [`MATCHES.${req.body.MATCH_ID}.SCORING_STARTED`] : true,
           },
         }
       );
@@ -1168,7 +1169,158 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+ScoringRouter.post("/resumeScoring", async (req, res) => {
+  try{
+    var checkExists = await score.findOne({ TOURNAMENT_ID: req.body.TOURNAMENT_ID });
+    if(checkExists){
+      var first =
+        checkExists.MATCHES[req.body.MATCH_ID].FIRST_INNING_DONE;
+      var inning_no = 0;
+      if (first) inning_no = 1;
+      var striker_index = -1;
+      for (
+        var i = 0;
+        i <
+        checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS
+          .length;
+        i++
+      ) {
+        if (
+          checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0]
+            .PLAYERS[i].USERID ==
+          checkExists.MATCHES[req.body.MATCH_ID].INNING[
+            inning_no
+          ].BATTING_DETAILS.STRIKER.USERID
+        ) {
+          striker_index = i;
+          break;
+        }
+      }
 
+      var non_striker_index = -1;
+
+      for (
+        var i = 0;
+        i <
+        checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS
+          .length;
+        i++
+      ) {
+        if (
+          checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0]
+            .PLAYERS[i].USERID ==
+          checkExists.MATCHES[req.body.MATCH_ID].INNING[
+            inning_no
+          ].BATTING_DETAILS.NON_STRIKER.USERID
+        ) {
+          non_striker_index = i;
+          break;
+        }
+      }
+
+      var baller_index = -1;
+
+      for (
+        var i = 0;
+        i <
+        checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS
+          .length;
+        i++
+      ) {
+        if (
+          checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1]
+            .PLAYERS[i].USERID ==
+          checkExists.MATCHES[req.body.MATCH_ID].INNING[
+            inning_no
+          ].BALLER.USERID
+        ) {
+          baller_index = i;
+          break;
+        }
+      }
+
+      console.log(striker_index, non_striker_index, baller_index);
+
+      var returnVal = {
+        first : first,
+        "BATTING" : {
+          "STRIKER" : {
+            "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].NAME,
+            "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE,
+            "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED,
+          },
+          "NON_STRIKER" : {
+            "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].NAME,
+            "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE,
+            "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED,
+          }
+        }, "BALLING" : {
+          "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
+          "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS,          
+        }, "MATCH" : {
+          "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].BATTING_DETAILS.SCORE,
+          "OVERS" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].COMPLETED_OVER_DETAILS.length,
+        }
+      };
+      var extraOvers =
+        checkExists.MATCHES[
+          req.body.MATCH_ID
+        ].INNING[0].CURRENT_OVER.split("-");
+      var countExtra = 0;
+      for (var i = 0; i < extraOvers.length - 1; i += 1) {
+        if (
+          extraOvers[i] == "0" ||
+          extraOvers[i] == "1" ||
+          extraOvers[i] == "2" ||
+          extraOvers[i] == "3" ||
+          extraOvers[i] == "4" ||
+          extraOvers[i] == "5" ||
+          extraOvers[i] == "6" ||
+          extraOvers[i] == "Bye"
+        ) {
+          countExtra += 0.1;
+        }
+      }
+      if (countExtra < 0.6) {
+        returnVal["MATCH"]["OVERS"] += countExtra;
+      } else {
+        returnVal["MATCH"]["OVERS"] += 1;
+      }
+      res.status(200).send(returnVal);
+    } else{
+      console.log(req.body.TOURNAMENT_ID);
+      res.status(201).send("Wrong Tournament Id");
+    }
+  } catch(e){
+    console.log("Error Occured");
+    console.log(e);
+    res.status(400).send("Error Occured");
+  }
+});
+ScoringRouter.post("/hasScoringStarted", async (req, res) => {
+  try{
+    var checkExists = await score.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID});
+    if(checkExists){
+      if(checkExists.MATCHES[req.body.MATCH_ID].SCORING_STARTED == true){
+        res.status(200).send("true");
+      } else{
+        res.status(201).send("false");
+      }
+    } else{
+      console.log(req.body.TOURNAMENT_ID);
+      res.status(201).send("Wrong Tournament Id");
+    }
+  } catch(e){
+    console.log("Error Occured");
+    res.status(400).send("Error Occured");
+  }
+});
+//ABOVE API'S ARE FOR SCORING 
+
+
+
+//NEXT ALL API'S FOR EJS FILES, MOSTLY TO VIEW SCORE, FIXTURES etc..
+//TO BE UPDATED
 //updated above api's
 ScoringRouter.get("/cricketFixtures", async (req, res) => {
   try {

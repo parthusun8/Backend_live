@@ -190,6 +190,10 @@ const match = new mongoose.Schema({
     TOSS_WINNER : {
         type : String,
         default : "NOT YET DECIDED"
+    }, 
+    SCORING_STARTED : {
+        type : Boolean,
+        default : false,
     }
 });
 const scoringSchema = new mongoose.Schema({
