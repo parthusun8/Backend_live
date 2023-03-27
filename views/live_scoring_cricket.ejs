@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        .data{
+            display: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .allCenter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #272c2d;
+        }
+
+        .container{
+            width: 90%;
+            height: 80vh;
+            overflow: scroll;
+            background-color: #50595a;
+            border-radius: 10px;
+        }
+
+        .heading{
+            text-align: center;
+            color: white;
+            font-size: 30px;
+            padding: 10px;
+        }
+
+        .tabs{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tab{
+            width: 50%;
+            height: 50px;
+            background-color: #272c2d;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: rgba(207,87,87,0.5);
+        }
+
+        .active{
+            background-color: rgba(207,87,87,1);
+        }
+
+        .tossDetails{
+            text-align: center;
+            color: white;
+            font-size: 15px;
+            padding: 10px;
+        }
+
+        table{
+            width: 100%;
+            color: white;
+            overflow: scroll;
+        }
+
+        th{
+            font-size: 18px;
+            padding-bottom: 15px;
+        }
+
+        td{
+            font-size: 15px;
+        }
+
+        .content{
+            margin-bottom: 50px;
+        }
+
+        .firstInningsContent{
+            display: block;
+        }
+
+        .secondInningsContent{
+            display: none;
+        }
+
+        .firstInningsBatsmenDetails, .secondInningsBatsmenDetails{
+            margin-top: 10px;
+            /* background-color: red; */
+            margin: 50px 0px 50px 0px;
+            text-align: center;
+        }
+        
+
+        .firstInningsBowlerDetails, .secondInningsBowlerDetails{
+            margin-top: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="allCenter">
+        <div class="container">
+            <h2 class="heading">Match Score Card</h2>
+            <div class="tabs">
+                <div class="tab firstInningsTab active" onclick="switchTabs()">Innings 1</div>
+                <div class="tab secondInningsTab" onclick="switchTabs()">Innings 2</div>
+            </div>
+            <div class="content">
+                <h3 class="tossDetails">Team A won the toss and chose to bat first.</h3>
+                <div class="firstInningsContent">
+                    <table class="firstInningsBatsmenDetails">
+                        <thead>
+                            <tr>
+                                <th>Batsman</th>
+                                <th>Runs</th>
+                                <th>Balls</th>
+                                <th>4s</th>
+                                <th>6s</th>
+                                <th>S/R</th>
+                            </tr>
+                        </thead>
+                        <tbody class="firstInningsBatsmenScoreDetails">
+                        </tbody>
+                    </table>
+                    <table class="firstInningsBowlerDetails">
+                        <thead>
+                            <tr>
+                                <th>Bowler</th>
+                                <th>O</th>
+                                <th>R</th>
+                                <th>W</th>
+                                <th>E</th>
+                            </tr>
+                        </thead>
+                        <tbody class="firstInningsBowlerPerformance">
+                            <hr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="secondInningsContent">
+                    <table class="secondInningsBatsmenDetails">
+                        <thead>
+                            <tr>
+                                <th>Batsman</th>
+                                <th>Runs</th>
+                                <th>Balls</th>
+                                <th>4s</th>
+                                <th>6s</th>
+                                <th>S/R</th>
+                            </tr>
+                        </thead>
+                        <tbody class="secondInningsBatsmenScoreDetails">
+                        </tbody>
+                    </table>
+                    <table class="secondInningsBowlerDetails">
+                        <thead>
+                            <tr>
+                                <th>Bowler</th>
+                                <th>O</th>
+                                <th>R</th>
+                                <th>W</th>
+                                <th>E</th>
+                            </tr>
+                        </thead>
+                        <hr>
+                        <tbody class="secondInningsBowlerPerformance"> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="data" id="data"><%=data%></div>
+</body>
+<script>
+    let data = JSON.parse($("#data").text());
+    console.log(data);
+
+    function switchTabs(){
+        if($(".firstInningsTab").hasClass("active"))
+        {
+            $(".firstInningsTab").removeClass("active");
+            $(".secondInningsTab").addClass("active");
+            $(".firstInningsContent").css("display","none");
+            $(".secondInningsContent").css("display","block");
+        }
+        else{
+            $(".secondInningsTab").removeClass("active");
+            $(".firstInningsTab").addClass("active");
+            $(".secondInningsContent").css("display","none");
+            $(".firstInningsContent").css("display","block");
+        }
+    }
+    console.log(data["SECOND_INNING"]);
+
+    if(data["SECOND_INNING"] == "NOT_STARTED"){
+        console.log("Clicked");
+        $(".secondInningsContent").html("<div> SECOND INNING STILL GOING ON </div>");
+
+        var h = "<div> </div>";
+
+        let firstInningsStrikerDetails = data["FIRST_INNING"]["STRIKER"];
+        $('.firstInningsBatsmenScoreDetails').append(
+            `<tr>
+                <td>${firstInningsStrikerDetails.NAME}<br><strong>${firstInningsStrikerDetails.OUT?"Out":"Not out"}</strong></td>
+                <td>${firstInningsStrikerDetails.SCORE}</td>
+                <td>${firstInningsStrikerDetails.BALLS_USED}</td>
+                <td>${firstInningsStrikerDetails.FOURS}</td>
+                <td>${firstInningsStrikerDetails.SIX}</td>
+                <td>${firstInningsStrikerDetails.sr}</td>
+            </tr>`
+        );
+        let firstInningsNonStrikerDetails = data["FIRST_INNING"]["NON_STRIKER"];
+        $('.firstInningsBatsmenScoreDetails').append(
+            `<tr>
+                <td>${firstInningsNonStrikerDetails.NAME}<br><strong>${firstInningsNonStrikerDetails.OUT?"Out":"Not out"}</strong></td>
+                <td>${firstInningsNonStrikerDetails.SCORE}</td>
+                <td>${firstInningsNonStrikerDetails.BALLS_USED}</td>
+                <td>${firstInningsNonStrikerDetails.FOURS}</td>
+                <td>${firstInningsNonStrikerDetails.SIX}</td>
+                <td>${firstInningsNonStrikerDetails.sr}</td>
+            </tr>`
+        );
+        for(var i=0; i<data["FIRST_INNING"]["OUTPLAYERS"].length; i++){
+            $(".firstInningsBatsmenScoreDetails").append(
+                `<tr>
+                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].NAME}<br><strong>Out</strong>${firstInningsNonStrikerDetails.OUT?"Out":"Not out"}</strong></td>
+                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].SCORE}</td>
+                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].BALLS_USED}</td>
+                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].FOURS}</td>
+                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].SIX}</td>
+                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].sr}</td>
+                </tr>`
+            );
+        }
+        $('.firstInningsBowlerDetails').append(
+            `
+            <tr>
+                <td>${data["FIRST_INNING"]["BALLER"].NAME}</td>
+                <td>${data["FIRST_INNING"]["BALLER"].OVERS}</td>
+                <td>${data["FIRST_INNING"]["BALLER"].RUNS}</td>
+                <td>${data["FIRST_INNING"]["BALLER"].WICKETS}</td>
+                <td>${data["FIRST_INNING"]["BALLER"].ECON}</td>
+            `
+        )
+        for(var i=0; i<data["FIRST_INNING"]["BALLER"].length; i++){
+            $(".firstInningsBowlerPerformance").append(
+                `
+                <tr>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].NAME}</td>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].OVERS}</td>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].RUNS}</td>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].WICKETS}</td>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].ECON}</td>
+                </tr>
+                `
+            );
+        }
+    }
+    else{
+        for(var i=0; i<data["FIRST_INNING"].length; i++){
+            $(".firstInningsBatsmenScoreDetails").append(
+                `<tr>
+                    <td>${data["FIRST_INNING"]["BATTING"][i].NAME}<br><strong>Out</strong>${firstInningsNonStrikerDetails.OUT?"Out":"Not out"}</strong></td>
+                    <td>${data["FIRST_INNING"]["BATTING"][i].SCORE}</td>
+                    <td>${data["FIRST_INNING"]["BATTING"][i].BALLS_USED}</td>
+                    <td>${data["FIRST_INNING"]["BATTING"][i].FOURS}</td>
+                    <td>${data["FIRST_INNING"]["BATTING"][i].SIX}</td>
+                    <td>${data["FIRST_INNING"]["BATTING"][i].sr}</td>
+                </tr>`
+            );
+        }
+
+        for(var i=0; i<data["FIRST_INNING"]["BALLER"].length; i++){
+            $(".firstInningsBowlerPerformance").append(
+                `
+                <tr>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].NAME}</td>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].OVERS}</td>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].RUNS}</td>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].WICKETS}</td>
+                    <td>${data["FIRST_INNING"]["BALLER"][i].ECON}</td>
+                </tr>
+                `
+            );
+        }
+
+        //DISPLAY LIVE FOR 2ND INNING
+    }
+</script>
+</html>
