@@ -1242,26 +1242,67 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
       console.log(striker_index, non_striker_index, baller_index);
 
       var returnVal = {
-        first : first,
+        "first" : first,
         "BATTING" : {
           "STRIKER" : {
             "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].NAME,
             "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE,
             "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED,
+            "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].USERID
           },
           "NON_STRIKER" : {
             "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].NAME,
             "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE,
             "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED,
-          }
+            "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].USERID
+          },
+          "TEAM_NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].TEAM_NAME,
+
+          //ADD PLAYERS
+          "PLAYERS" : [],
+          "LEFT" : []
         }, "BALLING" : {
-          "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
-          "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS,          
+          "BALLER" : {
+            "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
+            "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS,
+            "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].USERID,
+          },  
+          "TEAM_NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].TEAM_NAME,
+          //ADD PLAYERS
+          "PLAYERS" : []
         }, "MATCH" : {
           "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].BATTING_DETAILS.SCORE,
           "OVERS" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].COMPLETED_OVER_DETAILS.length,
+          "TOTAL_OVERS" : checkExists.TOTAL_OVERS,
+          "WICKETS" : checkExists.WICKETS,
+          "TOSS" : checkExists.MATCHES[req.body.MATCH_ID].TOSS,
+          "TOSS_WINNER" : checkExists.MATCHES[req.body.MATCH_ID].TOSS_WINNER,
+          "CURR_OVERS" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].CURRENT_OVER,
         }
       };
+
+      for(var i=0; i<checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS.length; i++){
+        returnVal["BATTING"]["PLAYERS"].push({
+          "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
+          "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].USERID,
+          "index" : i,
+        });
+
+        if(i!=striker_index && i!=non_striker_index)
+          returnVal["BATTING"]["LEFT"].push({
+            "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
+            "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].USERID,
+            "index" : i,
+          });
+      }
+      for(var i=0; i<checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS.length; i++){
+        returnVal["BALLING"]["PLAYERS"].push({
+          "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
+          "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[i].USERID,
+          "index" : i,
+        });
+      }
+      
       var extraOvers =
         checkExists.MATCHES[
           req.body.MATCH_ID
