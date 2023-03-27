@@ -104,10 +104,12 @@ ScoringRouter.post("/startScoringFlow", async (req, res) => {
 
       for(var i = 0; i<checkExists.MATCHES.length; i++){
         console.log("Match Number " + i);
-        teams.push({
-          "TEAM_NAMES" : [checkExists.MATCHES[i].TEAMS[0].TEAM_NAME, checkExists.MATCHES[i].TEAMS[1].TEAM_NAME],
-          "MATCH_ID" : checkExists.MATCHES[i].MATCH_ID
-        });
+        if(checkExists.MATCHES[i].STATUS == false){
+          teams.push({
+            "TEAM_NAMES" : [checkExists.MATCHES[i].TEAMS[0].TEAM_NAME, checkExists.MATCHES[i].TEAMS[1].TEAM_NAME],
+            "MATCH_ID" : checkExists.MATCHES[i].MATCH_ID
+          });
+        }
       }
       console.log("Teams " + teams);
       res.status(200).send({ message: `Starting Scoring`, team: teams });
@@ -515,7 +517,6 @@ ScoringRouter.post("/changeOverCricket", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
-//CHANGE OVER ALSO
 ScoringRouter.post("/changeInningCricket", async (req, res) => {
   var checkExists = {};
   try {
@@ -871,6 +872,7 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
           {
             $set: {
               CURRENT_MATCH_NUMBER: req.body.MATCH_ID + 1,
+              [`MATCHES.${req.body.MATCH_ID}.STATUS`]: true,
             },
           }
         );
@@ -1026,8 +1028,6 @@ ScoringRouter.post("/changeStrike", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
-
-//updated above api's
 ScoringRouter.post("/getScoreCard", async (req, res) => {
   var checkExists = {};
   try {
@@ -1035,7 +1035,7 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
     });
     if (checkExists) {
-      checkExists.CURRENT_MATCH_NUMBER -= 1;
+      req.body.MATCH_ID -= 1;
 
       var returnVal = {
         scoreCard: [
@@ -1057,22 +1057,22 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
 
       returnVal.scoreCard[0].TeamName =
         checkExists.MATCHES[
-          checkExists.CURRENT_MATCH_NUMBER
+          req.body.MATCH_ID
         ].TEAMS[1].TEAM_NAME;
       returnVal.scoreCard[0].TeamTotal =
         checkExists.MATCHES[
-          checkExists.CURRENT_MATCH_NUMBER
+          req.body.MATCH_ID
         ].INNING[0].BATTING_DETAILS.SCORE;
       returnVal.scoreCard[0].TeamWickets =
-        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[0].WICKETS;
+        checkExists.MATCHES[req.body.MATCH_ID].INNING[0].WICKETS;
       returnVal.scoreCard[0].TeamOvers =
         checkExists.MATCHES[
-          checkExists.CURRENT_MATCH_NUMBER
+          req.body.MATCH_ID
         ].INNING[0].OVERS_DONE;
 
       var extraOvers =
         checkExists.MATCHES[
-          checkExists.CURRENT_MATCH_NUMBER
+          req.body.MATCH_ID
         ].INNING[0].CURRENT_OVER.split("-");
       var countExtra = 0;
       for (var i = 0; i < extraOvers.length - 1; i += 1) {
@@ -1097,22 +1097,22 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
 
       returnVal.scoreCard[1].TeamName =
         checkExists.MATCHES[
-          checkExists.CURRENT_MATCH_NUMBER
+          req.body.MATCH_ID
         ].TEAMS[0].TEAM_NAME;
       returnVal.scoreCard[1].TeamTotal =
         checkExists.MATCHES[
-          checkExists.CURRENT_MATCH_NUMBER
+          req.body.MATCH_ID
         ].INNING[1].BATTING_DETAILS.SCORE;
       returnVal.scoreCard[1].TeamWickets =
-        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[1].WICKETS;
+        checkExists.MATCHES[req.body.MATCH_ID].INNING[1].WICKETS;
       returnVal.scoreCard[1].TeamOvers =
         checkExists.MATCHES[
-          checkExists.CURRENT_MATCH_NUMBER
+          req.body.MATCH_ID
         ].INNING[1].OVERS_DONE;
 
       var extraOvers =
         checkExists.MATCHES[
-          checkExists.CURRENT_MATCH_NUMBER
+          req.body.MATCH_ID
         ].INNING[1].CURRENT_OVER.split("-");
       var countExtra = 0;
       for (var i = 0; i < extraOvers.length - 1; i += 1) {
@@ -1137,21 +1137,21 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
       }
 
       var firstInningScore =
-        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[0]
+        checkExists.MATCHES[req.body.MATCH_ID].INNING[0]
           .BATTING_DETAILS.SCORE;
       var secondInningScore =
-        checkExists.MATCHES[checkExists.CURRENT_MATCH_NUMBER].INNING[1]
+        checkExists.MATCHES[req.body.MATCH_ID].INNING[1]
           .BATTING_DETAILS.SCORE;
 
       if (firstInningScore > secondInningScore) {
         returnVal.WinnerTeam =
           checkExists.MATCHES[
-            checkExists.CURRENT_MATCH_NUMBER
+            req.body.MATCH_ID
           ].TEAMS[1].TEAM_NAME;
       } else {
         returnVal.WinnerTeam =
           checkExists.MATCHES[
-            checkExists.CURRENT_MATCH_NUMBER
+            req.body.MATCH_ID
           ].TEAMS[0].TEAM_NAME;
       }
 
@@ -1168,6 +1168,8 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+
+//updated above api's
 ScoringRouter.get("/cricketFixtures", async (req, res) => {
   try {
     console.log(req.query.TOURNAMENT_ID);
