@@ -1278,6 +1278,7 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
           "TOSS" : checkExists.MATCHES[req.body.MATCH_ID].TOSS,
           "TOSS_WINNER" : checkExists.MATCHES[req.body.MATCH_ID].TOSS_WINNER,
           "CURR_OVERS" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].CURRENT_OVER,
+          "WICKETS_TAKEN" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].WICKETS,
         }
       };
 
