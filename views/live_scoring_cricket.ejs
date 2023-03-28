@@ -94,11 +94,13 @@
         .firstInningsContent {
             display: block;
         }
-        .firstinnings-scorecard{
+
+        .firstinnings-scorecard {
             display: flex;
             justify-content: center;
         }
-        .scorecard-card1{
+
+        .scorecard-card1 {
             display: flex;
             flex-direction: column;
             background-color: rgba(207, 87, 87, 1);
@@ -110,12 +112,14 @@
             margin-top: 15px;
             margin-bottom: 15px;
         }
-        .scorecard-firstinnings-score{
+
+        .scorecard-firstinnings-score {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             margin-bottom: 5px;
         }
+
         .secondInningsContent {
             display: none;
         }
@@ -134,12 +138,13 @@
             margin-top: 50px;
             text-align: center;
         }
-        .SocketButton{
-    visibility: hidden;
-    height: 0;
-    width: 0;
-}
-</style>
+
+        .SocketButton {
+            visibility: hidden;
+            height: 0;
+            width: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -156,115 +161,238 @@
                     <div class="firstinnings-scorecard">
                         <div class="scorecard-card1">
                             <div class="scorecard-firstinnings-score">
-                                <div class="firstinnings-totalscore"><span class="firstinnings-runs">100</span>/<span class="firstinnings-wickets">2</div>
-                                <div class="firstinnings-oversbowled"><span class="firstinnings-oversbowled-number">(0.0/0)</div>
+                                <div class="firstinnings-totalscore"><span class="firstinnings-runs">100</span>/<span
+                                        class="firstinnings-wickets">2</div>
+                                <div class="firstinnings-oversbowled"><span
+                                        class="firstinnings-oversbowled-number">(0.0/0)</div>
                             </div>
                             <div class="scorecard-firstinnings-bowling">
-                                <div class="firstinnings-bowler"><span class="firstinnings-bowlername">bowler</span>:<span class="firstinnings-deliveries">0-0-0-0-0</span></div>
+                                <div class="firstinnings-bowler"><span
+                                        class="firstinnings-bowlername">bowler</span>:<span
+                                        class="firstinnings-deliveries">0-0-0-0-0</span></div>
                             </div>
                         </div>
                     </div>
-                <h3 class="tossDetails">Team A won the toss and chose to bat first.</h3>
-                <div class="firstInningsContent">
-                    <table class="firstInningsBatsmenDetails">
-                        <thead>
-                            <tr>
-                                <th>Batsman</th>
-                                <th>Runs</th>
-                                <th>Balls</th>
-                                <th>4s</th>
-                                <th>6s</th>
-                                <th>S/R</th>
-                            </tr>
-                        </thead>
-                        <tbody class="firstInningsBatsmenScoreDetails">
-                        </tbody>
-                    </table>
-                    <table class="firstInningsBowlerDetails">
-                        <thead>
-                            <tr>
-                                <th>Bowler</th>
-                                <th>O</th>
-                                <th>R</th>
-                                <th>W</th>
-                                <th>E</th>
-                            </tr>
-                        </thead>
-                        <tbody class="firstInningsBowlerPerformance">
-                            <hr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="secondInningsContent">
-                    <div class="secondinnings-scorecard">
-                        <div class="scorecard-card1">
-                            <div class="scorecard-secondinnings-score">
-                                <div class="secondinnings-totalscore"><span class="secondinnings-runs">100</span>/<span class="secondinnings-wickets">2</div>
-                                <div class="secondinnings-oversbowled"><span class="secondinnings-oversbowled-number">(0.0/0)</div>
+                    <h3 class="tossDetails">Team A won the toss and chose to bat first.</h3>
+                    <div class="firstInningsContent">
+                        <table class="firstInningsBatsmenDetails">
+                            <thead>
+                                <tr>
+                                    <th>Batsman</th>
+                                    <th>Runs</th>
+                                    <th>Balls</th>
+                                    <th>4s</th>
+                                    <th>6s</th>
+                                    <th>S/R</th>
+                                </tr>
+                            </thead>
+                            <tbody class="firstInningsBatsmenScoreDetails">
+                            </tbody>
+                        </table>
+                        <table class="firstInningsBowlerDetails">
+                            <thead>
+                                <tr>
+                                    <th>Bowler</th>
+                                    <th>O</th>
+                                    <th>R</th>
+                                    <th>W</th>
+                                    <th>E</th>
+                                </tr>
+                            </thead>
+                            <tbody class="firstInningsBowlerPerformance">
+                                <hr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="secondInningsContent">
+                        <div class="secondinnings-scorecard">
+                            <div class="scorecard-card1">
+                                <div class="scorecard-secondinnings-score">
+                                    <div class="secondinnings-totalscore"><span
+                                            class="secondinnings-runs">100</span>/<span class="secondinnings-wickets">2
+                                    </div>
+                                    <div class="secondinnings-oversbowled"><span
+                                            class="secondinnings-oversbowled-number">(0.0/0)</div>
+                                </div>
+                                <div class="scorecard-secondinnings-bowling">
+                                    <div class="secondinnings-bowler"><span
+                                            class="secondinnings-bowlername">bowler</span>:<span
+                                            class="secondinnings-deliveries">0-0-0-0-0</span></div>
+                                </div>
                             </div>
-                            <div class="scorecard-secondinnings-bowling">
-                                <div class="secondinnings-bowler"><span class="secondinnings-bowlername">bowler</span>:<span class="secondinnings-deliveries">0-0-0-0-0</span></div>
-                            </div>
+                            <table class="secondInningsBatsmenDetails">
+                                <thead>
+                                    <tr>
+                                        <th>Batsman</th>
+                                        <th>Runs</th>
+                                        <th>Balls</th>
+                                        <th>4s</th>
+                                        <th>6s</th>
+                                        <th>S/R</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="secondInningsBatsmenScoreDetails">
+                                </tbody>
+                            </table>
+                            <table class="secondInningsBowlerDetails">
+                                <thead>
+                                    <tr>
+                                        <th>Bowler</th>
+                                        <th>O</th>
+                                        <th>R</th>
+                                        <th>W</th>
+                                        <th>E</th>
+                                    </tr>
+                                </thead>
+                                <hr>
+                                <tbody class="secondInningsBowlerPerformance">
+                                </tbody>
+                            </table>
                         </div>
-                    <table class="secondInningsBatsmenDetails">
-                        <thead>
-                            <tr>
-                                <th>Batsman</th>
-                                <th>Runs</th>
-                                <th>Balls</th>
-                                <th>4s</th>
-                                <th>6s</th>
-                                <th>S/R</th>
-                            </tr>
-                        </thead>
-                        <tbody class="secondInningsBatsmenScoreDetails">
-                        </tbody>
-                    </table>
-                    <table class="secondInningsBowlerDetails">
-                        <thead>
-                            <tr>
-                                <th>Bowler</th>
-                                <th>O</th>
-                                <th>R</th>
-                                <th>W</th>
-                                <th>E</th>
-                            </tr>
-                        </thead>
-                        <hr>
-                        <tbody class="secondInningsBowlerPerformance">
-                        </tbody>
-                    </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="data" id="data">
-        <%=data%>
-    </div>
+            <div class="data" id="data">
+                <%=data%>
+            </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io()
     let data = JSON.parse($("#data").text());
-    const sktButton = document.querySelector('.SocketButton')
-    socket.on("connect",()=>{
-            sktButton.addEventListener('click',()=>{
-            console.log(socket.id)
-            socket.emit('join-scoring-live',{
-                TOURNAMENT_ID:data.TOURNAMENT_ID,
-                MATCH_ID:data.MATCH_ID
-            })
-            socket.on('cricket-room-joined',(data)=>{
-            console.log('Joined Match')
-            console.log(data)
-        })
-        })
-        sktButton.click()
-        })
     console.log(data);
-    socket.on('usual-score-updated',(d)=>{
+    const sktButton = document.querySelector('.SocketButton')
+    socket.on("connect", () => {
+        console.log("connected");
+        socket.emit("join-scoring-live", {
+            TOURNAMENT_ID : data.TOURNAMENT_ID,
+            MATCH_ID : data.MATCH_ID
+        })
+    });
+    socket.on('usual-score-updated', (d) => {
         console.log(d);
+        if (data["SECOND_INNING"] == "NOT_STARTED"){
+            data["FIRST_INNING"]["STRIKER"]["SCORE"] += d;
+            data["FIRST_INNING"]["STRIKER"]["BALLS_USED"] += 1;
+            data["FIRST_INNING"]["SCORECARD"]["OVERS"] += 0.1;
+            data["FIRST_INNING"]["SCORECARD"]["CURRENT_OVER"] += d.toString();
+            data["FIRST_INNING"]["SCORECARD"]["SCORE"] += d;
+            console.log(data);
+            //Calculating Strike Rate
+            let strikeRate = data["FIRST_INNING"]["STRIKER"]["sr"];
+            let runs = data["FIRST_INNING"]["STRIKER"]["SCORE"];
+            let balls = data["FIRST_INNING"]["STRIKER"]["BALLS_USED"];
+
+            strikeRate = ((runs/balls)*100) != NaN && ((runs/balls)*100) !=Infinity ? parseFloat(((runs/balls)*100).toFixed(1)) : 0;
+            data["FIRST_INNING"]["STRIKER"]["sr"] = strikeRate;
+
+            //for baller
+            data["FIRST_INNING"]["BALLER"]["OVERS"] += 0.1;
+            data["FIRST_INNING"]["BALLER"]["OVERS"] = parseFloat(data["FIRST_INNING"]["BALLER"]["OVERS"].toFixed(1));
+
+            data["FIRST_INNING"]["BALLER"]["RUNS"] += d;
+            let runns = data["FIRST_INNING"]["BALLER"]["RUNS"];
+            let over = data["FIRST_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns/over).toFixed(1) !=NaN && (runns/over).toFixed(1) !=Infinity ? parseFloat((runns/over).toFixed(1)) : 0;
+            console.log(econ);
+            data["FIRST_INNING"]["BALLER"]["ECON"] = econ;
+
+
+            if(d%2 == 1){
+                //strike change
+                let temp = data["FIRST_INNING"]["STRIKER"];
+                data["FIRST_INNING"]["STRIKER"] = data["FIRST_INNING"]["NON_STRIKER"];
+                data["FIRST_INNING"]["NON_STRIKER"] = temp;
+            }
+
+            if(d == 4){
+                data["FIRST_INNING"]["STRIKER"]["FOURS"] += 1;
+            }
+            if(d == 6){
+                data["FIRST_INNING"]["STRIKER"]["SIX"] += 1;
+            }
+            updateMatchDetails();
+        } else{
+            data["SECOND_INNING"]["STRIKER"]["SCORE"] += d;
+            data["SECOND_INNING"]["STRIKER"]["BALLS_USED"] += 1;
+            data["SECOND_INNING"]["SCORECARD"]["OVERS"] += 0.1;
+            data["SECOND_INNING"]["SCORECARD"]["CURRENT_OVER"] += d.toString();
+            data["SECOND_INNING"]["SCORECARD"]["SCORE"] += d;
+            console.log(data);
+            //Calculating Strike Rate
+            let strikeRate = data["SECOND_INNING"]["STRIKER"]["sr"];
+            let runs = data["SECOND_INNING"]["STRIKER"]["SCORE"];
+            let balls = data["SECOND_INNING"]["STRIKER"]["BALLS_USED"];
+
+            strikeRate = ((runs/balls)*100) != NaN && ((runs/balls)*100) !=Infinity ? parseFloat(((runs/balls)*100).toFixed(1)) : 0;
+            data["SECOND_INNING"]["STRIKER"]["sr"] = strikeRate;
+
+
+            //for baller
+            data["SECOND_INNING"]["BALLER"]["OVERS"] += 0.1;
+            data["SECOND_INNING"]["BALLER"]["RUNS"] += d;
+            let runns = data["SECOND_INNING"]["BALLER"]["RUNS"];
+            let over = data["SECOND_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns/over).toFixed(1) !=NaN && (runns/over).toFixed(1) !=Infinity ? parseFloat((runns/over).toFixed(1)) : 0;
+            data["SECOND_INNING"]["BALLER"]["ECON"] = econ;
+
+            if(d%2 == 1){
+                //strike change
+                let temp = data["SECOND_INNING"]["STRIKER"];
+                data["SECOND_INNING"]["STRIKER"] = data["SECOND_INNING"]["NON_STRIKER"];
+                data["SECOND_INNING"]["NON_STRIKER"] = temp;
+            }
+
+            if(d == 4){
+                data["SECOND_INNING"]["STRIKER"]["FOURS"] += 1;
+            }
+            if(d == 6){
+                data["SECOND_INNING"]["STRIKER"]["SIX"] += 1;
+            }
+            updateMatchDetails();
+        }
     })
+    socket.on('over-changed', (baller) => {
+        console.log(baller);
+        if (data["SECOND_INNING"] == "NOT_STARTED"){
+            let temp = data["FIRST_INNING"]["STRIKER"];
+                data["FIRST_INNING"]["STRIKER"] = data["FIRST_INNING"]["NON_STRIKER"];
+                data["FIRST_INNING"]["NON_STRIKER"] = temp;
+            data["FIRST_INNING"]["SCORECARD"]["CURRENT_OVER"] = "";
+            data["FIRST_INNING"]["SCORECARD"]["OVERS"] += 0.4;
+            
+            if(baller["NAME"] != data["FIRST_INNING"]["BALLER"]["NAME"]){
+                data["FIRST_INNING"]["OUTPLAYERS"].push(data["FIRST_INNING"]["BALLER"]);
+                data["FIRST_INNING"]["BALLER"] = baller;
+            } else{
+                data["FIRST_INNING"]["BALLER"]["OVERS"] += 0.4;
+            let runns = data["FIRST_INNING"]["BALLER"]["RUNS"];
+            let over = data["FIRST_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns/over).toFixed(1) !=NaN && (runns/over).toFixed(1) !=Infinity ? parseFloat((runns/over).toFixed(1)) : 0;
+            data["FIRST_INNING"]["BALLER"]["ECON"] = econ;
+            }
+        } else{
+            let temp = data["SECOND_INNING"]["STRIKER"];
+                data["SECOND_INNING"]["STRIKER"] = data["SECOND_INNING"]["NON_STRIKER"];
+                data["SECOND_INNING"]["NON_STRIKER"] = temp;
+                data["SECOND_INNING"]["SCORECARD"]["CURRENT_OVER"] = "";
+                data["SECOND_INNING"]["SCORECARD"]["OVERS"] += 0.4;
+                if(baller["NAME"] != data["SECOND_INNING"]["BALLER"]["NAME"]){
+                    data["SECOND_INNING"]["OUTPLAYERS"].push(data["SECOND_INNING"]["BALLER"]);
+                    data["SECOND_INNING"]["BALLER"] = baller;
+                } else{
+                    data["SECOND_INNING"]["BALLER"]["OVERS"] += 0.4;
+            let runns = data["SECOND_INNING"]["BALLER"]["RUNS"];
+            let over = data["SECOND_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns/over).toFixed(1) !=NaN && (runns/over).toFixed(1) !=Infinity ? parseFloat((runns/over).toFixed(1)) : 0;
+            data["SECOND_INNING"]["BALLER"]["ECON"] = econ;
+                }
+        }
+        updateMatchDetails();
+        console.log("Over Changed");
+    })
+    
+    
     function switchTabs() {
         if ($(".firstInningsTab").hasClass("active")) {
             $(".firstInningsTab").removeClass("active");
@@ -281,6 +409,7 @@
     }
 
     function updateMatchDetails() {
+        
         $('.firstInningsBatsmenDetails').html(`<thead><tr><th>Batsman</th><th>Runs</th><th>Balls</th><th>4s</th><th>6s</th><th>S/R</th></tr></thead><hr><tbody class="firstInningsBatsmenScoreDetails"></tbody>`);
         $('.firstInningsBowlerDetails').html(`<thead><tr><th>Bowler</th><th>O</th><th>R</th><th>W</th><th>E</th></tr></thead><tbody class="firstInningsBowlerPerformance"><hr></tbody>`);
         $('.secondInningsBatsmenDetails').html(`<thead><tr><th>Batsman</th><th>Runs</th><th>Balls</th><th>4s</th><th>6s</th><th>S/R</th></tr></thead><hr><tbody class="secondInningsBatsmenScoreDetails"></tbody>`);
@@ -290,11 +419,11 @@
             console.log("Clicked");
             $(".secondInningsContent").html("<div> SECOND INNING STILL GOING ON </div>");
             var h = "<div> </div>";
-            
+
             let firstInningsStrikerDetails = data["FIRST_INNING"]["STRIKER"];
-            if(!firstInningsStrikerDetails.OUT){
+            if (!firstInningsStrikerDetails.OUT) {
                 $('.firstInningsBatsmenScoreDetails').append(
-                `<tr>
+                    `<tr>
                 <td>${firstInningsStrikerDetails.NAME}<br><strong>${firstInningsStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
                 <td>${firstInningsStrikerDetails.SCORE}</td>
                 <td>${firstInningsStrikerDetails.BALLS_USED}</td>
@@ -302,13 +431,13 @@
                 <td>${firstInningsStrikerDetails.SIX}</td>
                 <td>${firstInningsStrikerDetails.sr}</td>
             </tr>`
-            );
+                );
             }
-            
+
             let firstInningsNonStrikerDetails = data["FIRST_INNING"]["NON_STRIKER"];
-            if(!firstInningsNonStrikerDetails.OUT){
+            if (!firstInningsNonStrikerDetails.OUT) {
                 $('.firstInningsBatsmenScoreDetails').append(
-                `<tr>
+                    `<tr>
                 <td>${firstInningsNonStrikerDetails.NAME}<br><strong>${firstInningsNonStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
                 <td>${firstInningsNonStrikerDetails.SCORE}</td>
                 <td>${firstInningsNonStrikerDetails.BALLS_USED}</td>
@@ -316,9 +445,9 @@
                 <td>${firstInningsNonStrikerDetails.SIX}</td>
                 <td>${firstInningsNonStrikerDetails.sr}</td>
             </tr>`
-            );
+                );
             }
-            
+
             for (var i = 0; i < data["FIRST_INNING"]["OUTPLAYERS"].length; i++) {
                 $(".firstInningsBatsmenScoreDetails").append(
                     `<tr>
@@ -385,34 +514,34 @@
 
             //DISPLAY LIVE FOR 2ND INNING
             let secondInningsStrikerDetails = data["SECOND_INNING"]["STRIKER"];
-            if(!secondInningsStrikerDetails.OUT){
+            if (!secondInningsStrikerDetails.OUT) {
                 $(".secondInningsBatsmenScoreDetails").append(
-                `<tr>
+                    `<tr>
                 <td>${secondInningsStrikerDetails.NAME}<br><strong>${secondInningsStrikerDetails.OUT ? "Out" : "Not out"
-                }</strong></td>
+                    }</strong></td>
                 <td>${secondInningsStrikerDetails.SCORE}</td>
                 <td>${secondInningsStrikerDetails.BALLS_USED}</td>
                 <td>${secondInningsStrikerDetails.FOURS}</td>
                 <td>${secondInningsStrikerDetails.SIX}</td>
                 <td>${secondInningsStrikerDetails.sr}</td>
             </tr>`
-            );
+                );
             }
             let secondInningsNonStrikerDetails = data["SECOND_INNING"]["NON_STRIKER"];
-            if(secondInningsNonStrikerDetails.OUT){
+            if (secondInningsNonStrikerDetails.OUT) {
                 $(".secondInningsBatsmenScoreDetails").append(
-                `<tr>
+                    `<tr>
                 <td>${secondInningsNonStrikerDetails.NAME}<br><strong>${secondInningsNonStrikerDetails.OUT ? "Out" : "Not out"
-                }</strong></td>
+                    }</strong></td>
                 <td>${secondInningsNonStrikerDetails.SCORE}</td>
                 <td>${secondInningsNonStrikerDetails.BALLS_USED}</td>
                 <td>${secondInningsNonStrikerDetails.FOURS}</td>
                 <td>${secondInningsNonStrikerDetails.SIX}</td>
                 <td>${secondInningsNonStrikerDetails.sr}</td>
             </tr>`
-            );
+                );
             }
-            
+
             for (var i = 0; i < data["SECOND_INNING"]["OUTPLAYERS"].length; i++) {
                 $(".secondInningsBatsmenScoreDetails").append(
                     `<tr>
@@ -451,10 +580,11 @@
             }
 
         }
+        console.log("Updated");
     }
 
     $(window).on("load", async function () {
-        
+
         updateMatchDetails();
     });
 </script>

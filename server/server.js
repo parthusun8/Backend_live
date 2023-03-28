@@ -590,10 +590,28 @@ io.on('connection',async (socket)=>{
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('usual-score-updated', obj["SCORE"]);
     });
 
-    socket.on('update-over-changed', (obj)=>{
-        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["ballerIndex"]);
+    socket.on('update-over-changed', async (obj)=>{
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["baller_index"]);
         console.log('updated-over-changed');
-        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('over-changed', obj["ballerIndex"]);//emit mai baller Jaisa display hoga waisa format karna hai
+
+        var val = await score.findOne({TOURNAMENT_ID : obj["TOURNAMENT_ID"]});
+
+        var first = val["MATCHES"][obj["MATCH_ID"]]["FIRST_INNING_DONE"]!=0 ? 1 : 0;
+        console.log(first);
+        console.log(val["MATCHES"][obj["MATCH_ID"]]["TEAMS"][1]["PLAYERS"][obj["baller_index"]]);
+        var currBaller = val["MATCHES"][obj["MATCH_ID"]]["TEAMS"][1]["PLAYERS"][obj["baller_index"]];
+        console.log(currBaller);
+
+        var baller = {
+            "ECON" : (currBaller["RUNS"]/(currBaller["BALLS"]*0.1)).toFixed(1)!=Infinity && (currBaller["RUNS"]/(currBaller["BALLS"]*0.1)).toFixed(1)!=NaN ? (currBaller["RUNS"]/(currBaller["BALLS"]*0.1)).toFixed(1) : 0,
+            "NAME" : currBaller["NAME"],
+            "OVERS" : (currBaller["BALLS"]*0.1).toFixed(1),
+            "RUNS" : currBaller["RUNS"],
+            "WICKETS" : currBaller["WICKETS"], 
+        }
+
+
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('over-changed', baller);//emit mai baller Jaisa display hoga waisa format karna hai
     });
 
     socket.on('update-change-inning', (obj)=>{
