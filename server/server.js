@@ -578,51 +578,52 @@ io.on("connection",(socket)=>{
 io.on('connection',async (socket)=>{
     console.log(socket.id);
     socket.on('join-scoring-live', (ids) => {
-        console.log(ids.TOURNAMENT_ID, ids.MATCH_ID);
-        socket.join(ids.TOURNAMENT_ID + ids.MATCH_ID.toString());
+        console.log(ids);
+        console.log(ids.TOURNAMENT_ID, ids["MATCH_ID"]);
+        socket.join(ids["TOURNAMENT_ID"] + ids["MATCH_ID"]);
         console.log('joined');
     });
 
     socket.on('update-usual-score', (obj) => {
-        console.log(obj.TOURNAMENT_ID, obj.MATCH_ID, obj.SCORE);
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["SCORE"]);
         console.log('updated-usual-score');
-        io.to(obj.TOURNAMENT_ID + obj.MATCH_ID.toString()).emit('usual-score-updated', obj.SCORE);
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('usual-score-updated', obj["SCORE"]);
     });
 
     socket.on('update-over-changed', (obj)=>{
-        console.log(obj.TOURNAMENT_ID, obj.MATCH_ID, obj.ballerIndex);
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["ballerIndex"]);
         console.log('updated-over-changed');
-        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('over-changed', ballerIndex);//emit mai baller Jaisa display hoga waisa format karna hai
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('over-changed', obj["ballerIndex"]);//emit mai baller Jaisa display hoga waisa format karna hai
     });
 
-    socket.on('update-change-inning', (TOURNAMENT_ID, MATCH_ID)=>{
-        console.log(TOURNAMENT_ID, MATCH_ID);
+    socket.on('update-change-inning', (obj)=>{
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         console.log('updated-change-inning');
-        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('change-inning'); //No data needed for this
+        io.to(obj["TOURNAMENT_ID"] + MATCH_ID.toString()).emit('change-inning'); //No data needed for this
     });
 
-    socket.on('update-out', (TOURNAMENT_ID, MATCH_ID, remarks, batterIndex)=>{
-        console.log(TOURNAMENT_ID, MATCH_ID, remarks, batterIndex);
+    socket.on('update-out', (obj)=>{
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["remarks"], obj["batterIndex"]);
         console.log('updated-out');
-        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('out', remarks, batterIndex);//emit mai batter Jaisa display hoga waisa format karna hai
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('out', obj["remarks"], obj["batterIndex"]);//emit mai batter Jaisa display hoga waisa format karna hai
     });
 
-    socket.on('update-special-runs', (TOURNAMENT_ID, MATCH_ID, remarks, extraRuns)=>{
-        console.log(TOURNAMENT_ID, MATCH_ID, remarks, extraRuns);
+    socket.on('update-special-runs', (obj)=>{
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["remarks"], obj["extraRuns"]);
         console.log('updated-special-runs');
-        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('special-runs', remarks, extraRuns);//emit mai batter Jaisa display hoga waisa format karna hai
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('special-runs', obj["remarks"], obj["extraRuns"]);//emit mai batter Jaisa display hoga waisa format karna hai
     });
 
-    socket.on('end-match', (TOURNAMENT_ID, MATCH_ID) => {
-        console.log(TOURNAMENT_ID, MATCH_ID);
+    socket.on('end-match', (obj) => {
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         console.log('end-match');
-        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('match-ended');
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('match-ended');
     });
 
-    socket.emit('update-change-strike', (TOURNAMENT_ID, MATCH_ID) => {
-        console.log(TOURNAMENT_ID, MATCH_ID);
+    socket.emit('update-change-strike', (obj) => {
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         console.log('update-change-strike');
-        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('change-strike');
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('change-strike');
     });
 });
 
