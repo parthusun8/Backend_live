@@ -134,10 +134,16 @@
             margin-top: 50px;
             text-align: center;
         }
+        .SocketButton{
+    visibility: hidden;
+    height: 0;
+    width: 0;
+}
     </style>
 </head>
 
 <body>
+    <div class="SocketButton"></div>
     <div class="allCenter">
         <div class="container">
             <h2 class="heading">Match Score Card</h2>
@@ -189,6 +195,16 @@
                     </table>
                 </div>
                 <div class="secondInningsContent">
+                    <div class="secondinnings-scorecard">
+                        <div class="scorecard-card1">
+                            <div class="scorecard-secondinnings-score">
+                                <div class="secondinnings-totalscore"><span class="secondinnings-runs">100</span>/<span class="secondinnings-wickets">2</div>
+                                <div class="secondinnings-oversbowled"><span class="secondinnings-oversbowled-number">(0.0/0)</div>
+                            </div>
+                            <div class="scorecard-secondinnings-bowling">
+                                <div class="secondinnings-bowler"><span class="secondinnings-bowlername">bowler</span>:<span class="secondinnings-deliveries">0-0-0-0-0</span></div>
+                            </div>
+                        </div>
                     <table class="secondInningsBatsmenDetails">
                         <thead>
                             <tr>
@@ -229,6 +245,21 @@
 <script>
     var socket = io()
     let data = JSON.parse($("#data").text());
+    const sktButton = document.querySelector('.SocketButton')
+    socket.on("connect",()=>{
+            sktButton.addEventListener('click',()=>{
+            console.log(socket.id)
+            socket.emit('join-scoring-live',{
+                TOURNAMENT_ID:data.TOURNAMENT_ID,
+                MATCH_ID:data.MATCH_ID
+            })
+            socket.on('cricket-room-joined',(data)=>{
+            console.log('Joined Match')
+            console.log(data)
+        })
+        })
+        sktButton.click()
+        })
     console.log(data);
     socket.on('usual-score-updated',(d)=>{
         console.log(d);
@@ -421,7 +452,8 @@
         }
     }
 
-    $(window).on("load", function () {
+    $(window).on("load", async function () {
+        
         updateMatchDetails();
     });
 </script>

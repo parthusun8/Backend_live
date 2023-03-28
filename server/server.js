@@ -581,6 +581,9 @@ io.on('connection',async (socket)=>{
         console.log(ids);
         console.log(ids.TOURNAMENT_ID, ids["MATCH_ID"]);
         socket.join(ids["TOURNAMENT_ID"] + ids["MATCH_ID"]);
+        socket.to(ids["TOURNAMENT_ID"] + ids["MATCH_ID"]).emit('cricket-scoring-joined',{
+            ROOM_ID:ids["TOURNAMENT_ID"] + ids["MATCH_ID"]
+        })
         console.log('joined');
     });
 
