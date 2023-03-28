@@ -577,14 +577,15 @@ io.on("connection",(socket)=>{
 //live cricket scoring
 io.on('connection',async (socket)=>{
     console.log(socket.id);
-    socket.on('join-scoring-live', (TOURNAMENT_ID, MATCH_ID) => {
-        socket.join(TOURNAMENT_ID + MATCH_ID.toString());
+    socket.on('join-scoring-live', (ids) => {
+        socket.join(ids.TOURNAMENT_ID + ids.MATCH_ID.toString());
+        console.log('joined');
     });
 
-    socket.on('update-usual-score', (TOURNAMENT_ID, MATCH_ID, SCORE) => {
-        console.log(TOURNAMENT_ID, MATCH_ID, SCORE);
+    socket.on('update-usual-score', (obj) => {
+        console.log(obj.TOURNAMENT_ID, obj.MATCH_ID, obj.SCORE);
         console.log('updated-usual-score');
-        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('usual-score-updated', SCORE);
+        io.to(obj.TOURNAMENT_ID + obj.MATCH_ID.toString()).emit('usual-score-updated', obj.SCORE);
     });
 
     socket.on('update-over-changed', (TOURNAMENT_ID, MATCH_ID, ballerIndex)=>{
