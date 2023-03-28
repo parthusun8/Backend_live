@@ -578,6 +578,7 @@ io.on("connection",(socket)=>{
 io.on('connection',async (socket)=>{
     console.log(socket.id);
     socket.on('join-scoring-live', (ids) => {
+        console.log(ids.TOURNAMENT_ID, ids.MATCH_ID);
         socket.join(ids.TOURNAMENT_ID + ids.MATCH_ID.toString());
         console.log('joined');
     });
@@ -588,8 +589,8 @@ io.on('connection',async (socket)=>{
         io.to(obj.TOURNAMENT_ID + obj.MATCH_ID.toString()).emit('usual-score-updated', obj.SCORE);
     });
 
-    socket.on('update-over-changed', (TOURNAMENT_ID, MATCH_ID, ballerIndex)=>{
-        console.log(TOURNAMENT_ID, MATCH_ID, ballerIndex);
+    socket.on('update-over-changed', (obj)=>{
+        console.log(obj.TOURNAMENT_ID, obj.MATCH_ID, obj.ballerIndex);
         console.log('updated-over-changed');
         io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('over-changed', ballerIndex);//emit mai baller Jaisa display hoga waisa format karna hai
     });
