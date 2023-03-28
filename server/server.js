@@ -11,6 +11,8 @@ const tournamentModel = require('../models/tournament.model');
 const matchesmodel = require('../models/matches.mongo')
 const dbles = require('../models/doubles.mongo');
 const cricketModel = require('../models/cricket.model');
+const score = require('../models/scoring.model');
+const player = require('../models/team.model');
 
 const io = new Server(server,{
     cors: {
@@ -481,95 +483,150 @@ io.on("connection",(socket)=>{
 })
 
 //Instantaneous Cricket matches
+// io.on('connection',async (socket)=>{
+//     console.log(socket.id)
+//     socket.on('instacricket',(objkt)=>{
+//         const obj = JSON.parse(objkt)
+//         const matchid = obj.matchid  //string
+//         instacricket.findOne({
+//             matchid:matchid            
+//         },function (error,result){
+//             if(error){
+//                 socket.emit('match-not-found',{
+//                     Message:'Match Not Found'
+//                 })
+//             }
+//             if(result){
+//                 socket.join(matchid)
+//             }
+//         })
+//         socket.on('update-score',(objt)=>{
+//             //required batter_id, matchid, bowler_id,Batter_score,bowler_overs,bowler_runs_conceded,team_1 or team_2,total score
+//             const obj = JSON.parse(objt)
+//             if(obj.team=='team_1'){
+//                 instacricket.findOneAndUpdate({
+//                     matchid:obj.matchid
+//                 },{
+//                     $set:{
+//                         "team_1.$[elem].runs_scored":obj.batter_score,
+//                         team_1_score:obj.total_score
+//                     }
+//                 },{
+//                     arrayFilters:[{
+//                         "elem.USERID":obj.batter_id
+//                     }]
+//                 },function(error,result){
+//                     if(error){
+//                         console.log(error)
+//                     }
+//                     else{
+//                         console.log(result)
+//                         io.to(obj.matchid).emit('score-updated',{
+//                             team:'team_1',
+//                             batter_id:obj.batter_id,
+//                             batter_score:obj.batter_score,
+//                             bowler_id:bowler_id,
+//                             bowler_runs_conceded:bowler_runs_conceded,
+//                             bowler_overs:bowler_overs,
+//                             total_score:total_score,
+//                             total_wickets_fallen:total_wickets_fallen                                   
+//                         })
+//                     }
+//                 })
+//             }
+//         })
+//         socket.on('wicket',(objt)=>{
+//             //required batter_id, matchid, bowler_id,Batter_score,bowler_overs,bowler_runs_conceded,team_1 or team_2,total_score,total_wickets,team_1 or team_2
+//             //team_2
+//             const obj = JSON.parse(objt)
+//             instacricket.findOneAndUpdate({
+//                 matchid:obj.matchid
+//             },{
+//                 $set:{
+//                     team_1_wickets:total_wickets
+//                 }
+//             },function(error,result){
+//                 if(error){
+//                     console.log(error)
+//                     socket.emit('error-in-score-updation',{
+//                         Message:'Error in Updation'
+//                     })
+//                 }
+//                 if(result){
+//                     io.to(obj.matchid).emit('wickets-updated',{
+//                             team:'team_1',
+//                             batter_id:obj.batter_id,
+//                             batter_score:obj.batter_score,
+//                             bowler_id:bowler_id,
+//                             bowler_runs_conceded:bowler_runs_conceded,
+//                             bowler_overs:bowler_overs,
+//                             total_score:total_score,
+//                             total_wickets_fallen:total_wickets_fallen
+//                     })
+//                 }
+//             })            
+//         })
+//         socket.on('finish-game', (objt)=>{
+//             //should have team_1 score,team_2_score,team_1_wickets,team_2_wickets,overs,batter_who_got
+//             console.log('Game Finished')
+//         })
+//     })
+// })
+
+
+//live cricket scoring
 io.on('connection',async (socket)=>{
-    console.log(socket.id)
-    socket.on('instacricket',(objkt)=>{
-        const obj = JSON.parse(objkt)
-        const matchid = obj.matchid  //string
-        instacricket.findOne({
-            matchid:matchid            
-        },function (error,result){
-            if(error){
-                socket.emit('match-not-found',{
-                    Message:'Match Not Found'
-                })
-            }
-            if(result){
-                socket.join(matchid)
-            }
-        })
-        socket.on('update-score',(objt)=>{
-            //required batter_id, matchid, bowler_id,Batter_score,bowler_overs,bowler_runs_conceded,team_1 or team_2,total score
-            const obj = JSON.parse(objt)
-            if(obj.team=='team_1'){
-                instacricket.findOneAndUpdate({
-                    matchid:obj.matchid
-                },{
-                    $set:{
-                        "team_1.$[elem].runs_scored":obj.batter_score,
-                        team_1_score:obj.total_score
-                    }
-                },{
-                    arrayFilters:[{
-                        "elem.USERID":obj.batter_id
-                    }]
-                },function(error,result){
-                    if(error){
-                        console.log(error)
-                    }
-                    else{
-                        console.log(result)
-                        io.to(obj.matchid).emit('score-updated',{
-                            team:'team_1',
-                            batter_id:obj.batter_id,
-                            batter_score:obj.batter_score,
-                            bowler_id:bowler_id,
-                            bowler_runs_conceded:bowler_runs_conceded,
-                            bowler_overs:bowler_overs,
-                            total_score:total_score,
-                            total_wickets_fallen:total_wickets_fallen                                   
-                        })
-                    }
-                })
-            }
-        })
-        socket.on('wicket',(objt)=>{
-            //required batter_id, matchid, bowler_id,Batter_score,bowler_overs,bowler_runs_conceded,team_1 or team_2,total_score,total_wickets,team_1 or team_2
-            //team_2
-            const obj = JSON.parse(objt)
-            instacricket.findOneAndUpdate({
-                matchid:obj.matchid
-            },{
-                $set:{
-                    team_1_wickets:total_wickets
-                }
-            },function(error,result){
-                if(error){
-                    console.log(error)
-                    socket.emit('error-in-score-updation',{
-                        Message:'Error in Updation'
-                    })
-                }
-                if(result){
-                    io.to(obj.matchid).emit('wickets-updated',{
-                            team:'team_1',
-                            batter_id:obj.batter_id,
-                            batter_score:obj.batter_score,
-                            bowler_id:bowler_id,
-                            bowler_runs_conceded:bowler_runs_conceded,
-                            bowler_overs:bowler_overs,
-                            total_score:total_score,
-                            total_wickets_fallen:total_wickets_fallen
-                    })
-                }
-            })            
-        })
-        socket.on('finish-game', (objt)=>{
-            //should have team_1 score,team_2_score,team_1_wickets,team_2_wickets,overs,batter_who_got
-            console.log('Game Finished')
-        })
-    })
-})
+    console.log(socket.id);
+    socket.on('join-scoring-live', (TOURNAMENT_ID, MATCH_ID) => {
+        socket.join(TOURNAMENT_ID + MATCH_ID.toString());
+    });
+
+    socket.on('update-usual-score', (TOURNAMENT_ID, MATCH_ID, SCORE) => {
+        console.log(TOURNAMENT_ID, MATCH_ID, SCORE);
+        console.log('updated-usual-score');
+        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('usual-score-updated', SCORE);
+    });
+
+    socket.on('update-over-changed', (TOURNAMENT_ID, MATCH_ID, ballerIndex)=>{
+        console.log(TOURNAMENT_ID, MATCH_ID, ballerIndex);
+        console.log('updated-over-changed');
+        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('over-changed', ballerIndex);//emit mai baller Jaisa display hoga waisa format karna hai
+    });
+
+    socket.on('update-change-inning', (TOURNAMENT_ID, MATCH_ID)=>{
+        console.log(TOURNAMENT_ID, MATCH_ID);
+        console.log('updated-change-inning');
+        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('change-inning'); //No data needed for this
+    });
+
+    socket.on('update-out', (TOURNAMENT_ID, MATCH_ID, remarks, batterIndex)=>{
+        console.log(TOURNAMENT_ID, MATCH_ID, remarks, batterIndex);
+        console.log('updated-out');
+        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('out', remarks, batterIndex);//emit mai batter Jaisa display hoga waisa format karna hai
+    });
+
+    socket.on('update-special-runs', (TOURNAMENT_ID, MATCH_ID, remarks, extraRuns)=>{
+        console.log(TOURNAMENT_ID, MATCH_ID, remarks, extraRuns);
+        console.log('updated-special-runs');
+        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('special-runs', remarks, extraRuns);//emit mai batter Jaisa display hoga waisa format karna hai
+    });
+
+    socket.on('end-match', (TOURNAMENT_ID, MATCH_ID) => {
+        console.log(TOURNAMENT_ID, MATCH_ID);
+        console.log('end-match');
+        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('match-ended');
+    });
+
+    socket.emit('update-change-strike', (TOURNAMENT_ID, MATCH_ID) => {
+        console.log(TOURNAMENT_ID, MATCH_ID);
+        console.log('update-change-strike');
+        io.to(TOURNAMENT_ID + MATCH_ID.toString()).emit('change-strike');
+    });
+});
+
+
+
+
 server.listen(port,()=>{
     console.log(`Listening on port: ${port}`)
 })

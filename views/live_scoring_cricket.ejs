@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +8,7 @@
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <style>
-        .data{
+        .data {
             display: none;
         }
 
@@ -25,7 +26,7 @@
             background-color: #272c2d;
         }
 
-        .container{
+        .container {
             width: 90%;
             height: 80vh;
             overflow: scroll;
@@ -33,20 +34,20 @@
             border-radius: 10px;
         }
 
-        .heading{
+        .heading {
             text-align: center;
             color: white;
             font-size: 30px;
             padding: 10px;
         }
 
-        .tabs{
+        .tabs {
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .tab{
+        .tab {
             width: 50%;
             height: 50px;
             background-color: #272c2d;
@@ -57,61 +58,64 @@
             padding: 10px;
             margin: 10px;
             cursor: pointer;
-            background-color: rgba(207,87,87,0.5);
+            background-color: rgba(207, 87, 87, 0.5);
         }
 
-        .active{
-            background-color: rgba(207,87,87,1);
+        .active {
+            background-color: rgba(207, 87, 87, 1);
         }
 
-        .tossDetails{
+        .tossDetails {
             text-align: center;
             color: white;
             font-size: 15px;
             padding: 10px;
         }
 
-        table{
+        table {
             width: 100%;
             color: white;
             overflow: scroll;
         }
 
-        th{
+        th {
             font-size: 18px;
             padding-bottom: 15px;
         }
 
-        td{
+        td {
             font-size: 15px;
         }
 
-        .content{
+        .content {
             margin-bottom: 50px;
         }
 
-        .firstInningsContent{
+        .firstInningsContent {
             display: block;
         }
 
-        .secondInningsContent{
+        .secondInningsContent {
             display: none;
         }
 
-        .firstInningsBatsmenDetails, .secondInningsBatsmenDetails{
+        .firstInningsBatsmenDetails,
+        .secondInningsBatsmenDetails {
             margin-top: 10px;
             /* background-color: red; */
             margin: 50px 0px 50px 0px;
             text-align: center;
         }
-        
 
-        .firstInningsBowlerDetails, .secondInningsBowlerDetails{
+
+        .firstInningsBowlerDetails,
+        .secondInningsBowlerDetails {
             margin-top: 50px;
             text-align: center;
         }
     </style>
 </head>
+
 <body>
     <div class="allCenter">
         <div class="container">
@@ -178,78 +182,89 @@
                             </tr>
                         </thead>
                         <hr>
-                        <tbody class="secondInningsBowlerPerformance"> 
+                        <tbody class="secondInningsBowlerPerformance">
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="data" id="data"><%=data%></div>
+    <div class="data" id="data">
+        <%=data%>
+    </div>
 </body>
 <script>
     let data = JSON.parse($("#data").text());
     console.log(data);
 
-    function switchTabs(){
-        if($(".firstInningsTab").hasClass("active"))
-        {
+    function switchTabs() {
+        if ($(".firstInningsTab").hasClass("active")) {
             $(".firstInningsTab").removeClass("active");
             $(".secondInningsTab").addClass("active");
-            $(".firstInningsContent").css("display","none");
-            $(".secondInningsContent").css("display","block");
+            $(".firstInningsContent").css("display", "none");
+            $(".secondInningsContent").css("display", "block");
         }
-        else{
+        else {
             $(".secondInningsTab").removeClass("active");
             $(".firstInningsTab").addClass("active");
-            $(".secondInningsContent").css("display","none");
-            $(".firstInningsContent").css("display","block");
+            $(".secondInningsContent").css("display", "none");
+            $(".firstInningsContent").css("display", "block");
         }
     }
-    console.log(data["SECOND_INNING"]);
 
-    if(data["SECOND_INNING"] == "NOT_STARTED"){
-        console.log("Clicked");
-        $(".secondInningsContent").html("<div> SECOND INNING STILL GOING ON </div>");
+    function updateMatchDetails() {
+        $('.firstInningsBatsmenDetails').html(`<thead><tr><th>Batsman</th><th>Runs</th><th>Balls</th><th>4s</th><th>6s</th><th>S/R</th></tr></thead><hr><tbody class="firstInningsBatsmenScoreDetails"></tbody>`);
+        $('.firstInningsBowlerDetails').html(`<thead><tr><th>Bowler</th><th>O</th><th>R</th><th>W</th><th>E</th></tr></thead><tbody class="firstInningsBowlerPerformance"><hr></tbody>`);
+        $('.secondInningsBatsmenDetails').html(`<thead><tr><th>Batsman</th><th>Runs</th><th>Balls</th><th>4s</th><th>6s</th><th>S/R</th></tr></thead><hr><tbody class="secondInningsBatsmenScoreDetails"></tbody>`);
+        $('.secondInningsBowlerDetails').html(`<thead><tr><th>Bowler</th><th>O</th><th>R</th><th>W</th><th>E</th></tr></thead><hr><tbody class="secondInningsBowlerPerformance"></tbody>`);
 
-        var h = "<div> </div>";
-
-        let firstInningsStrikerDetails = data["FIRST_INNING"]["STRIKER"];
-        $('.firstInningsBatsmenScoreDetails').append(
-            `<tr>
-                <td>${firstInningsStrikerDetails.NAME}<br><strong>${firstInningsStrikerDetails.OUT?"Out":"Not out"}</strong></td>
+        if (data["SECOND_INNING"] == "NOT_STARTED") {
+            console.log("Clicked");
+            $(".secondInningsContent").html("<div> SECOND INNING STILL GOING ON </div>");
+            var h = "<div> </div>";
+            
+            let firstInningsStrikerDetails = data["FIRST_INNING"]["STRIKER"];
+            if(!firstInningsStrikerDetails.OUT){
+                $('.firstInningsBatsmenScoreDetails').append(
+                `<tr>
+                <td>${firstInningsStrikerDetails.NAME}<br><strong>${firstInningsStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
                 <td>${firstInningsStrikerDetails.SCORE}</td>
                 <td>${firstInningsStrikerDetails.BALLS_USED}</td>
                 <td>${firstInningsStrikerDetails.FOURS}</td>
                 <td>${firstInningsStrikerDetails.SIX}</td>
                 <td>${firstInningsStrikerDetails.sr}</td>
             </tr>`
-        );
-        let firstInningsNonStrikerDetails = data["FIRST_INNING"]["NON_STRIKER"];
-        $('.firstInningsBatsmenScoreDetails').append(
-            `<tr>
-                <td>${firstInningsNonStrikerDetails.NAME}<br><strong>${firstInningsNonStrikerDetails.OUT?"Out":"Not out"}</strong></td>
+            );
+            }
+            
+            let firstInningsNonStrikerDetails = data["FIRST_INNING"]["NON_STRIKER"];
+            if(!firstInningsNonStrikerDetails.OUT){
+                $('.firstInningsBatsmenScoreDetails').append(
+                `<tr>
+                <td>${firstInningsNonStrikerDetails.NAME}<br><strong>${firstInningsNonStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
                 <td>${firstInningsNonStrikerDetails.SCORE}</td>
                 <td>${firstInningsNonStrikerDetails.BALLS_USED}</td>
                 <td>${firstInningsNonStrikerDetails.FOURS}</td>
                 <td>${firstInningsNonStrikerDetails.SIX}</td>
                 <td>${firstInningsNonStrikerDetails.sr}</td>
             </tr>`
-        );
-        for(var i=0; i<data["FIRST_INNING"]["OUTPLAYERS"].length; i++){
-            $(".firstInningsBatsmenScoreDetails").append(
-                `<tr>
-                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].NAME}<br><strong>Out</strong>${firstInningsNonStrikerDetails.OUT?"Out":"Not out"}</strong></td>
+            );
+            }
+            
+            for (var i = 0; i < data["FIRST_INNING"]["OUTPLAYERS"].length; i++) {
+                $(".firstInningsBatsmenScoreDetails").append(
+                    `<tr>
+                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].NAME}<br><strong>${firstInningsNonStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
                     <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].SCORE}</td>
                     <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].BALLS_USED}</td>
                     <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].FOURS}</td>
                     <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].SIX}</td>
                     <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].sr}</td>
                 </tr>`
-            );
-        }
-        $('.firstInningsBowlerDetails').append(
-            `
+                );
+            }
+            $('.firstInningsBowlerDetails').append(
+                `
             <tr>
                 <td>${data["FIRST_INNING"]["BALLER"].NAME}</td>
                 <td>${data["FIRST_INNING"]["BALLER"].OVERS}</td>
@@ -257,50 +272,122 @@
                 <td>${data["FIRST_INNING"]["BALLER"].WICKETS}</td>
                 <td>${data["FIRST_INNING"]["BALLER"].ECON}</td>
             `
-        )
-        for(var i=0; i<data["FIRST_INNING"]["BALLER"].length; i++){
-            $(".firstInningsBowlerPerformance").append(
-                `
+            )
+            for (var i = 0; i < data["FIRST_INNING"]["PREVIOUS_BALLS"].length; i++) {
+                $(".firstInningsBowlerPerformance").append(
+                    `
                 <tr>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].NAME}</td>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].OVERS}</td>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].RUNS}</td>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].WICKETS}</td>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].ECON}</td>
+                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].NAME}</td>
+                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].OVERS}</td>
+                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].RUNS}</td>
+                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].WICKETS}</td>
+                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].ECON}</td>
                 </tr>
                 `
-            );
+                );
+            }
         }
-    }
-    else{
-        for(var i=0; i<data["FIRST_INNING"].length; i++){
-            $(".firstInningsBatsmenScoreDetails").append(
-                `<tr>
-                    <td>${data["FIRST_INNING"]["BATTING"][i].NAME}<br><strong>Out</strong>${firstInningsNonStrikerDetails.OUT?"Out":"Not out"}</strong></td>
+        else {
+            for (var i = 0; i < data["FIRST_INNING"]["BATTING"].length; i++) {
+                $(".firstInningsBatsmenScoreDetails").append(
+                    `<tr>
+                    <td>${data["FIRST_INNING"]["BATTING"][i].NAME}<br><strong>${data["FIRST_INNING"]["BATTING"][i].OUT ? "Out" : "Not out"}</strong></td>
                     <td>${data["FIRST_INNING"]["BATTING"][i].SCORE}</td>
                     <td>${data["FIRST_INNING"]["BATTING"][i].BALLS_USED}</td>
                     <td>${data["FIRST_INNING"]["BATTING"][i].FOURS}</td>
                     <td>${data["FIRST_INNING"]["BATTING"][i].SIX}</td>
                     <td>${data["FIRST_INNING"]["BATTING"][i].sr}</td>
                 </tr>`
-            );
-        }
+                );
+            }
 
-        for(var i=0; i<data["FIRST_INNING"]["BALLER"].length; i++){
-            $(".firstInningsBowlerPerformance").append(
-                `
+            for (var i = 0; i < data["FIRST_INNING"]["BALLING"].length; i++) {
+                $(".firstInningsBowlerPerformance").append(
+                    `
                 <tr>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].NAME}</td>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].OVERS}</td>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].RUNS}</td>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].WICKETS}</td>
-                    <td>${data["FIRST_INNING"]["BALLER"][i].ECON}</td>
+                    <td>${data["FIRST_INNING"]["BALLING"][i].NAME}</td>
+                    <td>${data["FIRST_INNING"]["BALLING"][i].OVERS}</td>
+                    <td>${data["FIRST_INNING"]["BALLING"][i].RUNS}</td>
+                    <td>${data["FIRST_INNING"]["BALLING"][i].WICKETS}</td>
+                    <td>${data["FIRST_INNING"]["BALLING"][i].ECON}</td>
                 </tr>
                 `
-            );
-        }
+                );
+            }
 
-        //DISPLAY LIVE FOR 2ND INNING
+            //DISPLAY LIVE FOR 2ND INNING
+            let secondInningsStrikerDetails = data["SECOND_INNING"]["STRIKER"];
+            if(!secondInningsStrikerDetails.OUT){
+                $(".secondInningsBatsmenScoreDetails").append(
+                `<tr>
+                <td>${secondInningsStrikerDetails.NAME}<br><strong>${secondInningsStrikerDetails.OUT ? "Out" : "Not out"
+                }</strong></td>
+                <td>${secondInningsStrikerDetails.SCORE}</td>
+                <td>${secondInningsStrikerDetails.BALLS_USED}</td>
+                <td>${secondInningsStrikerDetails.FOURS}</td>
+                <td>${secondInningsStrikerDetails.SIX}</td>
+                <td>${secondInningsStrikerDetails.sr}</td>
+            </tr>`
+            );
+            }
+            let secondInningsNonStrikerDetails = data["SECOND_INNING"]["NON_STRIKER"];
+            if(secondInningsNonStrikerDetails.OUT){
+                $(".secondInningsBatsmenScoreDetails").append(
+                `<tr>
+                <td>${secondInningsNonStrikerDetails.NAME}<br><strong>${secondInningsNonStrikerDetails.OUT ? "Out" : "Not out"
+                }</strong></td>
+                <td>${secondInningsNonStrikerDetails.SCORE}</td>
+                <td>${secondInningsNonStrikerDetails.BALLS_USED}</td>
+                <td>${secondInningsNonStrikerDetails.FOURS}</td>
+                <td>${secondInningsNonStrikerDetails.SIX}</td>
+                <td>${secondInningsNonStrikerDetails.sr}</td>
+            </tr>`
+            );
+            }
+            
+            for (var i = 0; i < data["SECOND_INNING"]["OUTPLAYERS"].length; i++) {
+                $(".secondInningsBatsmenScoreDetails").append(
+                    `<tr>
+                    <td>${data["SECOND_INNING"]["OUTPLAYERS"][i].NAME
+                    }<br><strong>Out</strong></td>
+                    <td>${data["SECOND_INNING"]["OUTPLAYERS"][i].SCORE}</td>
+                    <td>${data["SECOND_INNING"]["OUTPLAYERS"][i].BALLS_USED}</td>
+                    <td>${data["SECOND_INNING"]["OUTPLAYERS"][i].FOURS}</td>
+                    <td>${data["SECOND_INNING"]["OUTPLAYERS"][i].SIX}</td>
+                    <td>${data["SECOND_INNING"]["OUTPLAYERS"][i].sr}</td>
+                </tr>`
+                );
+            }
+            $(".secondInningsBowlerDetails").append(
+                `
+            <tr>
+                <td>${data["SECOND_INNING"]["BALLER"].NAME}</td>
+                <td>${data["SECOND_INNING"]["BALLER"].OVERS}</td>
+                <td>${data["SECOND_INNING"]["BALLER"].RUNS}</td>
+                <td>${data["SECOND_INNING"]["BALLER"].WICKETS}</td>
+                <td>${data["SECOND_INNING"]["BALLER"].ECON}</td>
+            `
+            );
+            for (var i = 0; i < data["SECOND_INNING"]["BALLER"].length; i++) {
+                $(".secondInningsBowlerPerformance").append(
+                    `
+                <tr>
+                    <td>${data["SECOND_INNING"]["BALLER"][i].NAME}</td>
+                    <td>${data["SECOND_INNING"]["BALLER"][i].OVERS}</td>
+                    <td>${data["SECOND_INNING"]["BALLER"][i].RUNS}</td>
+                    <td>${data["SECOND_INNING"]["BALLER"][i].WICKETS}</td>
+                    <td>${data["SECOND_INNING"]["BALLER"][i].ECON}</td>
+                </tr>
+                `
+                );
+            }
+
+        }
     }
+
+    $(window).on("load", function () {
+        updateMatchDetails();
+    });
 </script>
+
 </html>
