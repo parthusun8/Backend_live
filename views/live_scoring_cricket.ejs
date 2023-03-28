@@ -209,10 +209,15 @@
         <%=data%>
     </div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
 <script>
+    var socket = io()
     let data = JSON.parse($("#data").text());
     console.log(data);
-
+    socket.join(`${data.TOURNAMENT_ID}${MATCH_ID}`)
+    socket.on('usual-score-updated',(d)=>{
+        console.log(d);
+    })
     function switchTabs() {
         if ($(".firstInningsTab").hasClass("active")) {
             $(".firstInningsTab").removeClass("active");

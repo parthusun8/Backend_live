@@ -1703,7 +1703,7 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
           "ECON" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)!='NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)!=Infinity ? (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1) : 0,
         },
         OUTPLAYERS : [],
-        PREVIOUS_BALLS : []
+        PREVIOUS_BALLS : [],
       };
 
       for(var i=0; i<checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS.length; i++){
@@ -1787,6 +1787,8 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
       //GET ALREADY OUT PLAYERS
 
       //GET ALREADY BOWLED PLAYERS
+      ret.TOURNAMENT_ID = req.query.TOURNAMENT_ID;
+      ret.MATCH_ID = req.query.MATCH_ID;
 
       res.status(200).render("live_scoring_cricket", {
         data : JSON.stringify(ret)
