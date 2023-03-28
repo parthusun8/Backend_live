@@ -94,7 +94,18 @@
         .firstInningsContent {
             display: block;
         }
+        .firstinnings-scorecard{
+            display: flex;
+            justify-content: center;
+        }
+        .scorecard-card1{
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(207, 87, 87, 1);
+            height: 50px;
+            width: 200px;
 
+        }
         .secondInningsContent {
             display: none;
         }
@@ -125,8 +136,13 @@
                 <div class="tab secondInningsTab" onclick="switchTabs()">Innings 2</div>
             </div>
             <div class="content">
-                <h3 class="tossDetails">Team A won the toss and chose to bat first.</h3>
                 <div class="firstInningsContent">
+                    <div class="firstinnings-scorecard">
+                        <div class="scorecard-card1">
+                            Hello
+                        </div>
+                    </div>
+                    <h3 class="tossDetails">Team A won the toss and chose to bat first.</h3>
                     <table class="firstInningsBatsmenDetails">
                         <thead>
                             <tr>
