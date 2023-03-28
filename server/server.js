@@ -584,12 +584,14 @@ io.on('connection',async (socket)=>{
         console.log('joined');
     });
 
+    //implemented
     socket.on('update-usual-score', (obj) => {
         console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["SCORE"]);
         console.log('updated-usual-score');
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('usual-score-updated', obj["SCORE"]);
     });
 
+    //implemented
     socket.on('update-over-changed', async (obj)=>{
         console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["baller_index"]);
         console.log('updated-over-changed');
@@ -600,12 +602,15 @@ io.on('connection',async (socket)=>{
         console.log(first);
         console.log(val["MATCHES"][obj["MATCH_ID"]]["TEAMS"][1]["PLAYERS"][obj["baller_index"]]);
         var currBaller = val["MATCHES"][obj["MATCH_ID"]]["TEAMS"][1]["PLAYERS"][obj["baller_index"]];
-        console.log(currBaller);
+        console.log(currBaller["RUNS"]);
+
+        var overs = parseFloat((currBaller["BALLS"]/6).toFixed(1)) + (currBaller["BALLS"]%6)/10;
+        console.log(overs);
 
         var baller = {
-            "ECON" : (currBaller["RUNS"]/(currBaller["BALLS"]*0.1)).toFixed(1)!=Infinity && (currBaller["RUNS"]/(currBaller["BALLS"]*0.1)).toFixed(1)!=NaN ? (currBaller["RUNS"]/(currBaller["BALLS"]*0.1)).toFixed(1) : 0,
+            "ECON" : (currBaller["RUNS"]/overs).toFixed(1)!=Infinity && (currBaller["RUNS"]/overs).toFixed(1)!=null ? parseFloat((currBaller["RUNS"]/overs).toFixed(1)) : 0,
             "NAME" : currBaller["NAME"],
-            "OVERS" : (currBaller["BALLS"]*0.1).toFixed(1),
+            "OVERS" : overs,
             "RUNS" : currBaller["RUNS"],
             "WICKETS" : currBaller["WICKETS"], 
         }
@@ -614,31 +619,36 @@ io.on('connection',async (socket)=>{
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('over-changed', baller);//emit mai baller Jaisa display hoga waisa format karna hai
     });
 
+    //implemented
     socket.on('update-change-inning', (obj)=>{
         console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         console.log('updated-change-inning');
-        io.to(obj["TOURNAMENT_ID"] + MATCH_ID.toString()).emit('change-inning'); //No data needed for this
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('change-inning'); //No data needed for this
     });
 
+    //yet to implement
     socket.on('update-out', (obj)=>{
         console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["remarks"], obj["batterIndex"]);
         console.log('updated-out');
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('out', obj["remarks"], obj["batterIndex"]);//emit mai batter Jaisa display hoga waisa format karna hai
     });
 
+    //yet to implement
     socket.on('update-special-runs', (obj)=>{
         console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["remarks"], obj["extraRuns"]);
         console.log('updated-special-runs');
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('special-runs', obj["remarks"], obj["extraRuns"]);//emit mai batter Jaisa display hoga waisa format karna hai
     });
 
+    //yet to implement
     socket.on('end-match', (obj) => {
         console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         console.log('end-match');
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('match-ended');
     });
 
-    socket.emit('update-change-strike', (obj) => {
+    //implemented
+    socket.on('update-change-strike', (obj) => {
         console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         console.log('update-change-strike');
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('change-strike');

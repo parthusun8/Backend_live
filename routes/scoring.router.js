@@ -1307,7 +1307,7 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
       var extraOvers =
         checkExists.MATCHES[
           req.body.MATCH_ID
-        ].INNING[0].CURRENT_OVER.split("-");
+        ].INNING[inning_no].CURRENT_OVER.split("-");
       var countExtra = 0;
       for (var i = 0; i < extraOvers.length - 1; i += 1) {
         if (
@@ -1697,10 +1697,10 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
         }, 
         BALLER : {
           "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
-          "OVERS" : parseFloat((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS*0.1).toFixed(1)),
+          "OVERS" : parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS%6)/10,
           "RUNS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS,
           "WICKETS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].WICKETS,
-          "ECON" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)!='NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)!=Infinity ? parseFloat((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)) : 0,
+          "ECON" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS%6)/10).toFixed(1)!='NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS%6)/10).toFixed(1)!=Infinity ? parseFloat((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS%6)/10).toFixed(1)) : 0,
         },
         OUTPLAYERS : [],
         PREVIOUS_BALLS : [],
@@ -1709,14 +1709,16 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
           "OVERS" : checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].OVERS_DONE,
           "WICKETS" : checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].WICKETS,
           "CURRENT_OVER" : checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].CURRENT_OVER,
+          "TOTAL_OVERS" : checkExists.TOTAL_OVERS,
         }
       };
 
       var extraOvers =
         checkExists.MATCHES[
           req.query.MATCH_ID
-        ].INNING[0].CURRENT_OVER.split("-");
+        ].INNING[inning_no].CURRENT_OVER.split("-");
       var countExtra = 0;
+      console.log("extraOvers", extraOvers);
       for (var i = 0; i < extraOvers.length - 1; i += 1) {
         if (
           extraOvers[i] == "0" ||
@@ -1729,12 +1731,14 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
           extraOvers[i] == "Bye"
         ) {
           countExtra += 0.1;
+          countExtra = parseFloat(countExtra.toFixed(1));
         }
       }
       if (countExtra < 0.6) {
         result.SCORECARD["OVERS"] += countExtra;
       } else {
-        result.SCORECARD["OVERS"].TeamOvers += 1;
+        console.log("countExtra", countExtra);
+        result.SCORECARD["OVERS"] += 1;
       }
 
 
@@ -1752,13 +1756,14 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
       }
 
       for(var i=0; i<checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS.length; i++){
+        var overs = parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS%6)*0.1;
         if(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS!=0 && i!=baller_index){
           result.PREVIOUS_BALLS.push({
             "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
-            "OVERS" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS*0.1).toFixed(1),
+            "OVERS" : overs,
             "RUNS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS,
             "WICKETS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].WICKETS,
-            "ECON" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS*0.1)).toFixed(1)!='NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS*0.1)).toFixed(1)!=Infinity ? (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS*0.1)).toFixed(1) : 0,
+            "ECON" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs) !='NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs) !=Infinity ? parseFloat((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs).toFixed(1)) : 0,
           });
         }
       }
@@ -1770,6 +1775,7 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
           "FIRST_INNING" : result,
           "SECOND_INNING" : "NOT_STARTED"
         }
+        ret.TEAM_NAMES = [checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].TEAM_NAME, checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].TEAM_NAME];
       } else{
         //isme first inning ka pura daalna hai, aur second ka live waala
         ret = {
@@ -1780,6 +1786,7 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
           },
           "SECOND_INNING" : result
         }
+        ret.TEAM_NAMES = [checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].TEAM_NAME, checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].TEAM_NAME];
         for(var i=0; i<checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS.length; i++){
           if(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED!=0){
             ret.FIRST_INNING.BATTING.push({
