@@ -80,6 +80,45 @@ ScoringRouter.post("/startScoringFlow", async (req, res) => {
         });
         matchNo++;
       }
+      //above are first round matches created
+
+      //Now creating later round matches
+      while (matchNo < Tournament.NO_OF_KNOCKOUT_ROUNDS - 1) {
+        inningArray = [];
+        for (var i = 0; i < 2; i++) {
+          inningArray.push({
+            COMPLETED_OVER_DETAILS: [],
+            CURRENT_OVER: "",
+            BATTING_DETAILS: {
+              STRIKER: {
+                NAME: "",
+                USERID: "",
+              },
+              NON_STRIKER: {
+                NAME: "",
+                USERID: "",
+              },
+              SCORE: 0,
+            },
+            BALLER: {
+              NAME: "",
+              USERID: "",
+            },
+            OVERS_DONE: 0,
+            WICKETS: 0,
+          });
+        }
+        matchesArray.push({
+          MATCH_ID: matchNo,
+          TOURNAMENT_ID: req.body.TOURNAMENT_ID,
+          TEAMS: [],
+          STATUS: false,
+          WINNER: "ONGOING",
+          FIRST_INNING_DONE: false,
+          INNING: inningArray,
+        });
+        matchNo++;
+      }
 
       const newDoc = {
         TOURNAMENT_ID: req.body.TOURNAMENT_ID,
@@ -97,17 +136,19 @@ ScoringRouter.post("/startScoringFlow", async (req, res) => {
       });
     }
 
-    if (checkExists.CURRENT_MATCH_NUMBER == checkExists.TOTAL_MATCHES) {
-      res.status(200).send({ message: "All Matches Completed" });
+
+    //YET TO BE CHECKED
+    if (checkExists["MATCHES"][checkExists.TOTAL_MATCHES - 1]["WINNER"] != "ONGOING") {
+      res.status(200).send({ message: "All Matches Completed" }); //Hopefully this works
     } else {
       var teams = [];
 
-      for(var i = 0; i<checkExists.MATCHES.length; i++){
+      for (var i = 0; i < checkExists.MATCHES.length; i++) {
         console.log("Match Number " + i);
-        if(checkExists.MATCHES[i].STATUS == false){
+        if (checkExists["MATCHES"][i]["TEAMS"].length == 2 && checkExists["MATCHES"][i]["WINNER"] == "ONGOING") {
           teams.push({
-            "TEAM_NAMES" : [checkExists.MATCHES[i].TEAMS[0].TEAM_NAME, checkExists.MATCHES[i].TEAMS[1].TEAM_NAME],
-            "MATCH_ID" : checkExists.MATCHES[i].MATCH_ID
+            "TEAM_NAMES": [checkExists["MATCHES"][i]["TEAMS"][0].TEAM_NAME, checkExists["MATCHES"][i]["TEAMS"][1].TEAM_NAME],
+            "MATCH_ID": checkExists.MATCHES[i].MATCH_ID
           });
         }
       }
@@ -216,7 +257,7 @@ ScoringRouter.post("/updatePlayers", async (req, res) => {
             [`MATCHES.${req.body.MATCH_ID}.INNING.${inning_no}.BALLER`]:
               checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1]
                 .PLAYERS[req.body.BOWLING.BALLER_INDEX],
-            [`MATCHES.${req.body.MATCH_ID}.SCORING_STARTED`] : true,
+            [`MATCHES.${req.body.MATCH_ID}.SCORING_STARTED`]: true,
           },
         }
       );
@@ -864,119 +905,75 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
       console.log(
         checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].TEAM_NAME
       );
-      console.log(req.body.batting_team_name);
-      if (
-        checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0]
-          .TEAM_NAME == req.body.batting_team_name
-      ) {
+      await score.updateOne({ TOURNAMENT_ID: req.body.TOURNAMENT_ID }, {
+        $set: {
+          [`MATCHES.${req.body.MATCH_ID}.STATUS`]: true,
+        }
+      })
+
+      //Check Who Won
+      var firstInningScore =
+        checkExists.MATCHES[req.body.MATCH_ID].INNING[0]
+          .BATTING_DETAILS.SCORE;
+      var secondInningScore =
+        checkExists.MATCHES[req.body.MATCH_ID].INNING[1]
+          .BATTING_DETAILS.SCORE;
+
+      //GET TEAM DETAILS OF WINNING TEAM
+      var winningTeam = {};
+      if (firstInningScore > secondInningScore) {
         await score.updateOne(
           { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
           {
             $set: {
-              CURRENT_MATCH_NUMBER: req.body.MATCH_ID + 1,
-              [`MATCHES.${req.body.MATCH_ID}.STATUS`]: true,
+              [`MATCHES.${req.body.MATCH_ID}.WINNER`]:
+                checkExists.MATCHES[req.body.MATCH_ID]
+                  .TEAMS[1],
             },
           }
         );
-
-        //Check Who Won
-        var firstInningScore =
-          checkExists.MATCHES[req.body.MATCH_ID].INNING[0]
-            .BATTING_DETAILS.SCORE;
-        var secondInningScore =
-          checkExists.MATCHES[req.body.MATCH_ID].INNING[1]
-            .BATTING_DETAILS.SCORE;
-
-        var winningTeam = {};
-        if (firstInningScore > secondInningScore) {
-          await score.updateOne(
-            { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
-            {
-              $set: {
-                [`MATCHES.${req.body.MATCH_ID}.WINNER`]:
-                  checkExists.MATCHES[req.body.MATCH_ID]
-                    .TEAMS[1],
-              },
-            }
-          );
-          winningTeam =
-            checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1];
-          res.status(200).send(winningTeam.TEAM_NAME);
-        } else {
-          await score.updateOne(
-            {
-              TOURNAMENT_ID: req.body.TOURNAMENT_ID,
-            },
-            {
-              $set: {
-                [`MATCHES.${req.body.MATCH_ID}.WINNER`]:
-                  checkExists.MATCHES[req.body.MATCH_ID]
-                    .TEAMS[0],
-              },
-            }
-          );
-          winningTeam =
-            checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0];
-          res.status(200).send(winningTeam.TEAM_NAME);
-        }
-
-        if (req.body.MATCH_ID % 2 == 1) {
-          var inningArray = [];
-          for (var i = 0; i < 2; i += 1) {
-            inningArray.push({
-              COMPLETED_OVER_DETAILS: [],
-              CURRENT_OVER: "",
-              BATTING_DETAILS: {
-                STRIKER: {
-                  NAME: "",
-                  USERID: "",
-                },
-                NON_STRIKER: {
-                  NAME: "",
-                  USERID: "",
-                },
-                SCORE: 0,
-              },
-              BALLER: {
-                NAME: "",
-                USERID: "",
-              },
-              OVERS_DONE: 0,
-              WICKETS: 0,
-            });
-          }
-          await score.updateOne(
-            { TOURNAMENT_ID: req.body.TOURNAMENT_ID },
-            {
-              $push: {
-                MATCHES: {
-                  MATCH_ID: checkExists.MATCHES.length,
-                  TOURNAMENT_ID: req.body.TOURNAMENT_ID,
-                  TEAMS: [
-                    checkExists.MATCHES[req.body.MATCH_ID - 1]
-                      .WINNER,
-                    winningTeam,
-                  ],
-                  INNING: inningArray,
-                  WINNER: {
-                    "NAME": "TBD"
-                  },
-                },
-              },
-            }
-          );
-          console.log("Added a new Match");
-        }
+        winningTeam =
+          checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1];
+        
       } else {
-        console.log(
-          "Already Done End Match Once. Cant Do Again. Go to Score a challenge page, enter tournament id and play a new match"
+        await score.updateOne(
+          {
+            TOURNAMENT_ID: req.body.TOURNAMENT_ID,
+          },
+          {
+            $set: {
+              [`MATCHES.${req.body.MATCH_ID}.WINNER`]:
+                checkExists.MATCHES[req.body.MATCH_ID]
+                  .TEAMS[0],
+            },
+          }
         );
-        res
-          .status(200)
-          .send(
-            "Already Done End Match Once. Cant Do Again. Go to Score a challenge page, enter tournament id and play a new match"
-          );
+        winningTeam =
+          checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0];
+        
       }
+
+      if (req.body.MATCH_ID == checkExists.TOTAL_MATCHES - 1) {
+        //Just add winner
+        await score.updateOne({ TOURNAMENT_ID: req.body.TOURNAMENT_ID }, {
+          $set: {
+            [`MATCHES.${req.body.MATCH_ID}.WINNER`]: winningTeam,
+          }
+        });
+      }
+      //TOTAL TEAMS IN TOURNAMENT
+      else {
+        var totalTeams = checkExists.TOTAL_MATCHES + 1;
+        var next_match = Math.floor(req.body.MATCH_ID / 2) + totalTeams / 2;
+
+        await score.updateOne({ TOURNAMENT_ID: req.body.TOURNAMENT_ID }, {
+          $push: {
+            [`MATCHES.${next_match}.TEAMS`]: winningTeam,
+          }
+        });
+      }
+      console.log("Match Ended");
+      res.status(200).send(winningTeam.TEAM_NAME);
     } else {
       res.status(400).send("Invalid Tournament ID");
     }
@@ -1132,7 +1129,7 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"||
+          extraOvers[i] == "Bye" ||
           extraOvers[i] == "LBW" ||
           extraOvers[i] == "B" ||
           extraOvers[i] == "C" ||
@@ -1183,9 +1180,9 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
   }
 });
 ScoringRouter.post("/resumeScoring", async (req, res) => {
-  try{
+  try {
     var checkExists = await score.findOne({ TOURNAMENT_ID: req.body.TOURNAMENT_ID });
-    if(checkExists){
+    if (checkExists) {
       var first =
         checkExists.MATCHES[req.body.MATCH_ID].FIRST_INNING_DONE;
       var inning_no = 0;
@@ -1255,68 +1252,68 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
       console.log(striker_index, non_striker_index, baller_index);
 
       var returnVal = {
-        "first" : first,
-        "BATTING" : {
-          "STRIKER" : {
-            "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].NAME,
-            "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE,
-            "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED,
-            "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].USERID
+        "first": first,
+        "BATTING": {
+          "STRIKER": {
+            "NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].NAME,
+            "SCORE": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE,
+            "BALLS": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED,
+            "USERID": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[striker_index].USERID
           },
-          "NON_STRIKER" : {
-            "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].NAME,
-            "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE,
-            "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED,
-            "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].USERID
+          "NON_STRIKER": {
+            "NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].NAME,
+            "SCORE": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE,
+            "BALLS": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED,
+            "USERID": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].USERID
           },
-          "TEAM_NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].TEAM_NAME,
+          "TEAM_NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].TEAM_NAME,
 
           //ADD PLAYERS
-          "PLAYERS" : [],
-          "LEFT" : []
-        }, "BALLING" : {
-          "BALLER" : {
-            "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
-            "BALLS" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS,
-            "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].USERID,
-          },  
-          "TEAM_NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].TEAM_NAME,
+          "PLAYERS": [],
+          "LEFT": []
+        }, "BALLING": {
+          "BALLER": {
+            "NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
+            "BALLS": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS,
+            "USERID": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].USERID,
+          },
+          "TEAM_NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].TEAM_NAME,
           //ADD PLAYERS
-          "PLAYERS" : []
-        }, "MATCH" : {
-          "SCORE" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].BATTING_DETAILS.SCORE,
-          "OVERS" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].COMPLETED_OVER_DETAILS.length,
-          "TOTAL_OVERS" : checkExists.TOTAL_OVERS,
-          "WICKETS" : checkExists.WICKETS,
-          "TOSS" : checkExists.MATCHES[req.body.MATCH_ID].TOSS,
-          "TOSS_WINNER" : checkExists.MATCHES[req.body.MATCH_ID].TOSS_WINNER,
-          "CURR_OVERS" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].CURRENT_OVER,
-          "WICKETS_TAKEN" : checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].WICKETS,
+          "PLAYERS": []
+        }, "MATCH": {
+          "SCORE": checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].BATTING_DETAILS.SCORE,
+          "OVERS": checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].COMPLETED_OVER_DETAILS.length,
+          "TOTAL_OVERS": checkExists.TOTAL_OVERS,
+          "WICKETS": checkExists.WICKETS,
+          "TOSS": checkExists.MATCHES[req.body.MATCH_ID].TOSS,
+          "TOSS_WINNER": checkExists.MATCHES[req.body.MATCH_ID].TOSS_WINNER,
+          "CURR_OVERS": checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].CURRENT_OVER,
+          "WICKETS_TAKEN": checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].WICKETS,
         }
       };
 
-      for(var i=0; i<checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS.length; i++){
+      for (var i = 0; i < checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS.length; i++) {
         returnVal["BATTING"]["PLAYERS"].push({
-          "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
-          "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].USERID,
-          "index" : i,
+          "NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
+          "USERID": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].USERID,
+          "index": i,
         });
 
-        if(i!=striker_index && i!=non_striker_index)
+        if (i != striker_index && i != non_striker_index)
           returnVal["BATTING"]["LEFT"].push({
-            "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
-            "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].USERID,
-            "index" : i,
+            "NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
+            "USERID": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS[i].USERID,
+            "index": i,
           });
       }
-      for(var i=0; i<checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS.length; i++){
+      for (var i = 0; i < checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS.length; i++) {
         returnVal["BALLING"]["PLAYERS"].push({
-          "NAME" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
-          "USERID" : checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[i].USERID,
-          "index" : i,
+          "NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
+          "USERID": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[i].USERID,
+          "index": i,
         });
       }
-      
+
       var extraOvers =
         checkExists.MATCHES[
           req.body.MATCH_ID
@@ -1331,7 +1328,7 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"||
+          extraOvers[i] == "Bye" ||
           extraOvers[i] == "LBW" ||
           extraOvers[i] == "B" ||
           extraOvers[i] == "C" ||
@@ -1348,35 +1345,35 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
         returnVal["MATCH"]["OVERS"] += 1;
       }
       res.status(200).send(returnVal);
-    } else{
+    } else {
       console.log(req.body.TOURNAMENT_ID);
       res.status(201).send("Wrong Tournament Id");
     }
-  } catch(e){
+  } catch (e) {
     console.log("Error Occured");
     console.log(e);
     res.status(400).send("Error Occured");
   }
 });
 ScoringRouter.post("/hasScoringStarted", async (req, res) => {
-  try{
-    var checkExists = await score.findOne({TOURNAMENT_ID : req.body.TOURNAMENT_ID});
-    if(checkExists){
-      if(checkExists.MATCHES[req.body.MATCH_ID].SCORING_STARTED == true){
+  try {
+    var checkExists = await score.findOne({ TOURNAMENT_ID: req.body.TOURNAMENT_ID });
+    if (checkExists) {
+      if (checkExists.MATCHES[req.body.MATCH_ID].SCORING_STARTED == true) {
         res.status(200).send("true");
-      } else{
+      } else {
         res.status(201).send("false");
       }
-    } else{
+    } else {
       console.log(req.body.TOURNAMENT_ID);
       res.status(201).send("Wrong Tournament Id");
     }
-  } catch(e){
+  } catch (e) {
     console.log("Error Occured");
     res.status(400).send("Error Occured");
   }
 });
-//ABOVE API'S ARE FOR SCORING 
+//ABOVE API'S ARE FOR SCORING
 
 
 
@@ -1457,7 +1454,7 @@ ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"||
+          extraOvers[i] == "Bye" ||
           extraOvers[i] == "LBW" ||
           extraOvers[i] == "B" ||
           extraOvers[i] == "C" ||
@@ -1503,7 +1500,7 @@ ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"||
+          extraOvers[i] == "Bye" ||
           extraOvers[i] == "LBW" ||
           extraOvers[i] == "B" ||
           extraOvers[i] == "C" ||
@@ -1708,39 +1705,39 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
       console.log(striker_index, non_striker_index, baller_index);
 
       var result = {
-        STRIKER : {
-          "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].NAME,
-          "SCORE" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE,
-          "BALLS_USED" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED,
-          "FOURS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].FOURS,
-          "SIX" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SIX,
-          "sr" : ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED) * 100).toFixed(1)!='NaN' && ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED) * 100).toFixed(1)!=Infinity ? ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED) * 100).toFixed(1) : 0,
-          "OUT" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].OUT
+        STRIKER: {
+          "NAME": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].NAME,
+          "SCORE": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE,
+          "BALLS_USED": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED,
+          "FOURS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].FOURS,
+          "SIX": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SIX,
+          "sr": ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED) * 100).toFixed(1) != 'NaN' && ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED) * 100).toFixed(1) != Infinity ? ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].BALLS_USED) * 100).toFixed(1) : 0,
+          "OUT": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[striker_index].OUT
         },
-        NON_STRIKER : {
-          "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].NAME,
-          "SCORE" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE,
-          "BALLS_USED" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED,
-          "FOURS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].FOURS,
-          "SIX" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SIX,
-          "sr" : ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED) * 100).toFixed(1)!='NaN' && ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED) * 100).toFixed(1)!=Infinity ? parseFloat(((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED) * 100).toFixed(1)) : 0,
-          "OUT" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].OUT
-        }, 
-        BALLER : {
-          "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
-          "OVERS" : parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS%6)/10,
-          "RUNS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS,
-          "WICKETS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].WICKETS,
-          "ECON" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS%6)/10).toFixed(1)!='NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS%6)/10).toFixed(1)!=Infinity ? parseFloat((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS%6)/10).toFixed(1)) : 0,
+        NON_STRIKER: {
+          "NAME": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].NAME,
+          "SCORE": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE,
+          "BALLS_USED": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED,
+          "FOURS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].FOURS,
+          "SIX": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SIX,
+          "sr": ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED) * 100).toFixed(1) != 'NaN' && ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED) * 100).toFixed(1) != Infinity ? parseFloat(((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].BALLS_USED) * 100).toFixed(1)) : 0,
+          "OUT": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[non_striker_index].OUT
         },
-        OUTPLAYERS : [],
-        PREVIOUS_BALLS : [],
-        SCORECARD : {
-          "SCORE" : checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no]["BATTING_DETAILS"].SCORE,
-          "OVERS" : checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].OVERS_DONE,
-          "WICKETS" : checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].WICKETS,
-          "CURRENT_OVER" : checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].CURRENT_OVER,
-          "TOTAL_OVERS" : checkExists.TOTAL_OVERS,
+        BALLER: {
+          "NAME": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
+          "OVERS": parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS % 6) / 10,
+          "RUNS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS,
+          "WICKETS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].WICKETS,
+          "ECON": (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS % 6) / 10).toFixed(1) != 'NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS % 6) / 10).toFixed(1) != Infinity ? parseFloat((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].RUNS / parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS / 6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS % 6) / 10).toFixed(1)) : 0,
+        },
+        OUTPLAYERS: [],
+        PREVIOUS_BALLS: [],
+        SCORECARD: {
+          "SCORE": checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no]["BATTING_DETAILS"].SCORE,
+          "OVERS": checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].OVERS_DONE,
+          "WICKETS": checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].WICKETS,
+          "CURRENT_OVER": checkExists.MATCHES[req.query.MATCH_ID].INNING[inning_no].CURRENT_OVER,
+          "TOTAL_OVERS": checkExists.TOTAL_OVERS,
         }
       };
 
@@ -1759,7 +1756,7 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"||
+          extraOvers[i] == "Bye" ||
           extraOvers[i] == "LBW" ||
           extraOvers[i] == "B" ||
           extraOvers[i] == "C" ||
@@ -1779,72 +1776,72 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
       }
 
 
-      for(var i=0; i<checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS.length; i++){
-        if(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].OUT == true && checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED!=0){
+      for (var i = 0; i < checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS.length; i++) {
+        if (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].OUT == true && checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED != 0) {
           result.OUTPLAYERS.push({
-            "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
-            "SCORE" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SCORE,
-            "BALLS_USED" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED,
-            "FOURS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].FOURS,
-            "SIX" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SIX,
-            "sr" : ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED) * 100).toFixed(1)!=NaN && ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED) * 100).toFixed(1) != Infinity ? ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED) * 100).toFixed(1) : 0,
+            "NAME": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
+            "SCORE": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SCORE,
+            "BALLS_USED": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED,
+            "FOURS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].FOURS,
+            "SIX": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SIX,
+            "sr": ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED) * 100).toFixed(1) != NaN && ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED) * 100).toFixed(1) != Infinity ? ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS_USED) * 100).toFixed(1) : 0,
           });
         }
       }
 
-      for(var i=0; i<checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS.length; i++){
-        var overs = parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS/6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS%6)*0.1;
-        if(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS!=0 && i!=baller_index){
+      for (var i = 0; i < checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS.length; i++) {
+        var overs = parseFloat((Math.floor(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS / 6)).toFixed(1)) + (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS % 6) * 0.1;
+        if (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS != 0 && i != baller_index) {
           result.PREVIOUS_BALLS.push({
-            "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
-            "OVERS" : overs,
-            "RUNS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS,
-            "WICKETS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].WICKETS,
-            "ECON" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs) !='NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs) !=Infinity ? parseFloat((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs).toFixed(1)) : 0,
+            "NAME": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
+            "OVERS": overs,
+            "RUNS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS,
+            "WICKETS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].WICKETS,
+            "ECON": (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs) != 'NaN' && (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs) != Infinity ? parseFloat((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].RUNS / overs).toFixed(1)) : 0,
           });
         }
       }
 
       //if mai last mai second inning mai not-started daalna hai
       var ret = {};
-      if(!first){
+      if (!first) {
         ret = {
-          "FIRST_INNING" : result,
-          "SECOND_INNING" : "NOT_STARTED"
+          "FIRST_INNING": result,
+          "SECOND_INNING": "NOT_STARTED"
         }
         ret.TEAM_NAMES = [checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].TEAM_NAME, checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].TEAM_NAME];
-      } else{
+      } else {
         //isme first inning ka pura daalna hai, aur second ka live waala
         ret = {
-          "FIRST_INNING" : {
-            "BATTING" : [],
-            "BALLING" : [],
-            "SCORE" : checkExists.MATCHES[req.query.MATCH_ID].INNING[0].SCORE,
+          "FIRST_INNING": {
+            "BATTING": [],
+            "BALLING": [],
+            "SCORE": checkExists.MATCHES[req.query.MATCH_ID].INNING[0].SCORE,
           },
-          "SECOND_INNING" : result
+          "SECOND_INNING": result
         }
         ret.TEAM_NAMES = [checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].TEAM_NAME, checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].TEAM_NAME];
-        for(var i=0; i<checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS.length; i++){
-          if(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED!=0){
+        for (var i = 0; i < checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS.length; i++) {
+          if (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED != 0) {
             ret.FIRST_INNING.BATTING.push({
-              "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
-              "SCORE" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].SCORE,
-              "BALLS_USED" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED,
-              "FOURS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].FOURS,
-              "SIX" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].SIX,
-              "sr" : ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED) * 100).toFixed(1),
-              "OUT" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].OUT
+              "NAME": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
+              "SCORE": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].SCORE,
+              "BALLS_USED": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED,
+              "FOURS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].FOURS,
+              "SIX": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].SIX,
+              "sr": ((checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].SCORE / checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED) * 100).toFixed(1),
+              "OUT": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].OUT
             });
           }
         }
-        for(var i=0; i<checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS.length; i++){
-          if(checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS!=0){
+        for (var i = 0; i < checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS.length; i++) {
+          if (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS != 0) {
             ret.FIRST_INNING.BALLING.push({
-              "NAME" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
-              "OVERS" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS / 6).toFixed(1),
-              "RUNS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].RUNS,
-              "WICKETS" : checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].WICKETS,
-              "ECON" : (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS / 6)).toFixed(1)!='NaN' ? (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS / 6)).toFixed(1) : 0,
+              "NAME": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].NAME,
+              "OVERS": (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS / 6).toFixed(1),
+              "RUNS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].RUNS,
+              "WICKETS": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].WICKETS,
+              "ECON": (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS / 6)).toFixed(1) != 'NaN' ? (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].RUNS / (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].PLAYERS[i].BALLS / 6)).toFixed(1) : 0,
             });
           }
         }
@@ -1855,14 +1852,14 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
       ret.MATCH_ID = req.query.MATCH_ID;
 
       res.status(200).render("live_scoring_cricket", {
-        data : JSON.stringify(ret)
+        data: JSON.stringify(ret)
       });
     } else {
       res.status(200).send("Wrong Tournament Id");
     }
   } catch (e) {
     console.log(e);
-    res.status(400).send("Something Went Wrong");
+    res.status(200).send("Match Is yet to begin.");
   }
 });
 module.exports = ScoringRouter;
