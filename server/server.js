@@ -626,21 +626,65 @@ io.on('connection',async (socket)=>{
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('change-inning'); //No data needed for this
     });
 
-    //yet to implement
-    socket.on('update-out', (obj)=>{
-        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["remarks"], obj["batterIndex"]);
+    //implemented but yet to check
+    socket.on('update-out', async(obj)=>{
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["remarks"], obj["index"]);
         console.log('updated-out');
-        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('out', obj["remarks"], obj["batterIndex"]);//emit mai batter Jaisa display hoga waisa format karna hai
+
+        var remarks = obj["remarks"];
+        var val = await score.findOne({TOURNAMENT_ID : obj["TOURNAMENT_ID"]});
+
+        var first = val["MATCHES"][obj["MATCH_ID"]]["FIRST_INNING_DONE"]!=0 ? 1 : 0;
+        console.log(first);
+        console.log(val["MATCHES"][obj["MATCH_ID"]]["TEAMS"][0]["PLAYERS"][obj["index"]]);
+        var currBatter = val["MATCHES"][obj["MATCH_ID"]]["TEAMS"][0]["PLAYERS"][obj["index"]];
+        console.log(currBatter["RUNS"]);
+        var ways = {
+            "LBW": "LBW",
+            "Bowled": "B",
+            "Catch Out": "C",
+            "Stricker Run Out": "RO",
+            "Non-Stricker Run Out": "RO",
+            "Stumped": "ST",
+            "Hit Wicket": "HW",
+          };
+          var ret = {batsman : currBatter, over_add : ways[remarks]};
+        if(remarks == "Non-Stricker Run Out"){
+            //for non-striker run out
+            io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('non-striker-out', ret);
+        } else{
+            //for striker run out
+            io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('striker-out', ret);
+        }//emit mai batter Jaisa display hoga waisa format karna hai
     });
 
-    //yet to implement
+    //implemented but yet to check
     socket.on('update-special-runs', (obj)=>{
-        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["remarks"], obj["extraRuns"]);
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"], obj["remarks"], obj["score"]);
         console.log('updated-special-runs');
-        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('special-runs', obj["remarks"], obj["extraRuns"]);//emit mai batter Jaisa display hoga waisa format karna hai
+        var ways = {
+            "No Ball": "NB",
+            "Wide Ball": "WD",
+            "Bye Ball": "Bye",
+          };
+          var runs = {
+            "No Ball": 1,
+            "Wide Ball": 1,
+            "Bye Ball": 0,
+          };
+        var ret = {
+            "over_add" : ways[obj["remarks"]],
+            "score" : runs[obj["remarks"]],
+            "extra_score" : obj["score"]
+        };
+        io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('special-runs', ret);
+        if(obj["score"] % 2 ==  1){
+            io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('change-strike');
+        }
     });
 
     //yet to implement
+    //need help with this
     socket.on('end-match', (obj) => {
         console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         console.log('end-match');
