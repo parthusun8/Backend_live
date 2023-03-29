@@ -8,6 +8,15 @@
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <style>
+        .mt10{
+            padding-top: 10px;
+        }
+        .mt5{
+            margin-top: 5px;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
         .data {
             display: none;
         }
@@ -29,7 +38,7 @@
         .container {
             width: 90%;
             height: 80vh;
-            overflow: scroll;
+            overflow-y: scroll;
             background-color: #50595a;
             border-radius: 10px;
         }
@@ -169,8 +178,8 @@
                 <!-- <h3 class="tossDetails">Team  won the toss and chose to bat first.</h3> -->
             </div>
             <div class="tabs">
-                <div class="tab firstInningsTab active" onclick="switchTabs()">Innings 1</div>
-                <div class="tab secondInningsTab" onclick="switchTabs()">Innings 2</div>
+                <div class="tab firstInningsTab active" onclick="switchTabs('innings2')">Innings 1</div>
+                <div class="tab secondInningsTab" onclick="switchTabs('innings1')">Innings 2</div>
             </div>
             <div class="content">
                 <div class="firstInningsContent">
@@ -583,8 +592,8 @@
     });
     
 
-    function switchTabs() {
-        if ($(".firstInningsTab").hasClass("active")) {
+    function switchTabs(x){
+        if(x==="innings1"){
             $(".firstInningsTab").removeClass("active");
             $(".secondInningsTab").addClass("active");
             $(".firstInningsContent").css("display", "none");
@@ -624,12 +633,12 @@
             if (!firstInningsStrikerDetails.OUT) {
                 $('.firstInningsBatsmenScoreDetails').append(
                     `<tr>
-                <td>${firstInningsStrikerDetails.NAME}<br><strong>${firstInningsStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
-                <td>${firstInningsStrikerDetails.SCORE}</td>
-                <td>${firstInningsStrikerDetails.BALLS_USED}</td>
-                <td>${firstInningsStrikerDetails.FOURS}</td>
-                <td>${firstInningsStrikerDetails.SIX}</td>
-                <td>${firstInningsStrikerDetails.sr}</td>
+                <td class="mt10">${firstInningsStrikerDetails.NAME}<br><strong>${firstInningsStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
+                <td class="mt10">${firstInningsStrikerDetails.SCORE}</td>
+                <td class="mt10">${firstInningsStrikerDetails.BALLS_USED}</td>
+                <td class="mt10">${firstInningsStrikerDetails.FOURS}</td>
+                <td class="mt10">${firstInningsStrikerDetails.SIX}</td>
+                <td class="mt10">${firstInningsStrikerDetails.sr}</td>
             </tr>`
                 );
             }
@@ -638,12 +647,12 @@
             if (!firstInningsNonStrikerDetails.OUT) {
                 $('.firstInningsBatsmenScoreDetails').append(
                     `<tr>
-                <td>${firstInningsNonStrikerDetails.NAME}<br><strong>${firstInningsNonStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
-                <td>${firstInningsNonStrikerDetails.SCORE}</td>
-                <td>${firstInningsNonStrikerDetails.BALLS_USED}</td>
-                <td>${firstInningsNonStrikerDetails.FOURS}</td>
-                <td>${firstInningsNonStrikerDetails.SIX}</td>
-                <td>${firstInningsNonStrikerDetails.sr}</td>
+                <td class="mt10">${firstInningsNonStrikerDetails.NAME}<br><strong>${firstInningsNonStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
+                <td class="mt10">${firstInningsNonStrikerDetails.SCORE}</td>
+                <td class="mt10">${firstInningsNonStrikerDetails.BALLS_USED}</td>
+                <td class="mt10">${firstInningsNonStrikerDetails.FOURS}</td>
+                <td class="mt10">${firstInningsNonStrikerDetails.SIX}</td>
+                <td class="mt10">${firstInningsNonStrikerDetails.sr}</td>
             </tr>`
                 );
             }
@@ -651,34 +660,34 @@
             for (var i = 0; i < data["FIRST_INNING"]["OUTPLAYERS"].length; i++) {
                 $(".firstInningsBatsmenScoreDetails").append(
                     `<tr>
-                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].NAME}<br><strong>Out</strong></td>
-                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].SCORE}</td>
-                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].BALLS_USED}</td>
-                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].FOURS}</td>
-                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].SIX}</td>
-                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].sr}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["OUTPLAYERS"][i].NAME}<br><strong>Out</strong></td>
+                    <td class="mt10">${data["FIRST_INNING"]["OUTPLAYERS"][i].SCORE}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["OUTPLAYERS"][i].BALLS_USED}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["OUTPLAYERS"][i].FOURS}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["OUTPLAYERS"][i].SIX}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["OUTPLAYERS"][i].sr}</td>
                 </tr>`
                 );
             }
             $('.firstInningsBowlerPerformance').append(
                 `
             <tr>
-                <td>${data["FIRST_INNING"]["BALLER"].NAME}</td>
-                <td>${data["FIRST_INNING"]["BALLER"].OVERS}</td>
-                <td>${data["FIRST_INNING"]["BALLER"].RUNS}</td>
-                <td>${data["FIRST_INNING"]["BALLER"].WICKETS}</td>
-                <td>${data["FIRST_INNING"]["BALLER"].ECON}</td>
+                <td class="mt10">${data["FIRST_INNING"]["BALLER"].NAME}</td>
+                <td class="mt10">${data["FIRST_INNING"]["BALLER"].OVERS}</td>
+                <td class="mt10">${data["FIRST_INNING"]["BALLER"].RUNS}</td>
+                <td class="mt10">${data["FIRST_INNING"]["BALLER"].WICKETS}</td>
+                <td class="mt10">${data["FIRST_INNING"]["BALLER"].ECON}</td>
             `
             )
             for (var i = 0; i < data["FIRST_INNING"]["PREVIOUS_BALLS"].length; i++) {
                 $(".firstInningsBowlerPerformance").append(
                     `
                 <tr>
-                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].NAME}</td>
-                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].OVERS}</td>
-                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].RUNS}</td>
-                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].WICKETS}</td>
-                    <td>${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].ECON}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].NAME}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].OVERS}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].RUNS}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].WICKETS}</td>
+                    <td class="mt10">${data["FIRST_INNING"]["PREVIOUS_BALLS"][i].ECON}</td>
                 </tr>
                 `
                 );
