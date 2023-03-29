@@ -565,7 +565,7 @@ ScoringRouter.post("/outScore", async (req, res) => {
     Bowled: "B",
     "Catch Out": "C",
     "Stricker Run Out": "RO",
-    "Non Stricker Run Out": "RO",
+    "Non-Stricker Run Out": "RO",
     Stumped: "ST",
     "Hit Wicket": "HW",
   };

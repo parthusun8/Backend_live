@@ -529,6 +529,7 @@
             data["SECOND_INNING"]["OUTPLAYERS"].push(data["SECOND_INNING"]["STRIKER"]);
             data["SECOND_INNING"]["STRIKER"] = obj.batsman;
         }
+        updateMatchDetails();
     })    
     socket.on('special-runs', (obj) => {
         if(data["SECOND_INNING"] == "NOT_STARTED"){
