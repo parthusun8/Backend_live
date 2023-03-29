@@ -401,8 +401,185 @@
         }
         updateMatchDetails();
     });
+    socket.on('non-striker-out', (obj) => {
+        if(data["SECOND_INNING"] == "NOT_STARTED"){
+            data["FIRST_INNING"]["NON_STRIKER"]["OUT"] = true;
+            //Ball used for Non-Striker to be increased by 1
+            data["FIRST_INNING"]["NON_STRIKER"]["BALLS_USED"] += 1;
+            //Calculating Strike Rate
+            let strikeRate = data["FIRST_INNING"]["NON_STRIKER"]["sr"];
+            let runs = data["FIRST_INNING"]["NON_STRIKER"]["SCORE"];
+            let balls = data["FIRST_INNING"]["NON_STRIKER"]["BALLS_USED"];
+
+            strikeRate = ((runs / balls) * 100) != NaN && ((runs / balls) * 100) != Infinity ? parseFloat(((runs / balls) * 100).toFixed(1)) : 0;
+            data["FIRST_INNING"]["NON_STRIKER"]["sr"] = strikeRate;
+
+            //ADD WICKETS FOR BALLER, ADD A BALL FOR BALLER
+            data["FIRST_INNING"]["BALLER"]["WICKETS"] += 1;
+            data["FIRST_INNING"]["BALLER"]["OVERS"] += 0.1;
+            data["FIRST_INNING"]["BALLER"]["OVERS"] = parseFloat(data["FIRST_INNING"]["BALLER"]["OVERS"].toFixed(1));
+            //ADD ECONOMY FOR BALLER
+            let runns = data["FIRST_INNING"]["BALLER"]["RUNS"];
+            let over = data["FIRST_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns / over).toFixed(1) != NaN && (runns / over).toFixed(1) != Infinity ? parseFloat((runns / over).toFixed(1)) : 0;
+            console.log(econ);
+            data["FIRST_INNING"]["BALLER"]["ECON"] = econ;
+            //UPDATE REMARKS FOR OVER
+            //UPDATE SCORECARD👇🏻
+            data["FIRST_INNING"]["SCORECARD"]["OVERS"] += 0.1;
+            data["FIRST_INNING"]["SCORECARD"]["OVERS"] = parseFloat(data["SECOND_INNING"]["SCORECARD"]["OVERS"].toFixed(1));
+            data["FIRST_INNING"]["SCORECARD"]["CURRENT_OVER"] += obj.over_add + '-';
+            data["FIRST_INNING"]["SCORECARD"]["WICKETS"] += 1;
+            data["FIRST_INNING"]["OUTPLAYERS"].push(data["FIRST_INNING"]["NON_STRIKER"]);
+            data["FIRST_INNING"]["NON_STRIKER"] = obj.batsman;
+        }
+        else{
+            data["SECOND_INNING"]["NON_STRIKER"]["OUT"] = true;
+            //Ball used for Non-Striker to be increased by 1
+            data["SECOND_INNING"]["NON_STRIKER"]["BALLS_USED"] += 1;
+            //Calculating Strike Rate
+            let strikeRate = data["SECOND_INNING"]["NON_STRIKER"]["sr"];
+            let runs = data["SECOND_INNING"]["NON_STRIKER"]["SCORE"];
+            let balls = data["SECOND_INNING"]["NON_STRIKER"]["BALLS_USED"];
+
+            strikeRate = ((runs / balls) * 100) != NaN && ((runs / balls) * 100) != Infinity ? parseFloat(((runs / balls) * 100).toFixed(1)) : 0;
+            data["SECOND_INNING"]["NON_STRIKER"]["sr"] = strikeRate;
+
+            //ADD WICKETS FOR BALLER, ADD A BALL FOR BALLER
+            data["SECOND_INNING"]["BALLER"]["WICKETS"] += 1;
+            data["SECOND_INNING"]["BALLER"]["OVERS"] += 0.1;
+            data["SECOND_INNING"]["BALLER"]["OVERS"] = parseFloat(data["SECOND_INNING"]["BALLER"]["OVERS"].toFixed(1));
+            //ADD ECONOMY FOR BALLER
+            let runns = data["SECOND_INNING"]["BALLER"]["RUNS"];
+            let over = data["SECOND_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns / over).toFixed(1) != NaN && (runns / over).toFixed(1) != Infinity ? parseFloat((runns / over).toFixed(1)) : 0;
+            console.log(econ);
+            data["SECOND_INNING"]["BALLER"]["ECON"] = econ;
+            //UPDATE REMARKS FOR OVER
+            //UPDATE SCORECARD👇🏻
+            data["SECOND_INNING"]["SCORECARD"]["OVERS"] += 0.1;
+            data["SECOND_INNING"]["SCORECARD"]["OVERS"] = parseFloat(data["SECOND_INNING"]["SCORECARD"]["OVERS"].toFixed(1));
+            data["SECOND_INNING"]["SCORECARD"]["CURRENT_OVER"] += obj.over_add + '-';
+            data["SECOND_INNING"]["SCORECARD"]["WICKETS"] += 1;
+            data["SECOND_INNING"]["OUTPLAYERS"].push(data["SECOND_INNING"]["NON_STRIKER"]);
+            data["SECOND_INNING"]["NON_STRIKER"] = obj.batsman;
+        }
+        updateMatchDetails();
+    });
+    socket.on('striker-out', (obj) => {
+        if(data["SECOND_INNING"] == "NOT_STARTED"){
+            data["FIRST_INNING"]["STRIKER"]["OUT"] = true;
+            //Ball used for Non-Striker to be increased by 1
+            data["FIRST_INNING"]["STRIKER"]["BALLS_USED"] += 1;
+            //Calculating Strike Rate
+            let strikeRate = data["FIRST_INNING"]["STRIKER"]["sr"];
+            let runs = data["FIRST_INNING"]["STRIKER"]["SCORE"];
+            let balls = data["FIRST_INNING"]["STRIKER"]["BALLS_USED"];
+
+            strikeRate = ((runs / balls) * 100) != NaN && ((runs / balls) * 100) != Infinity ? parseFloat(((runs / balls) * 100).toFixed(1)) : 0;
+            data["FIRST_INNING"]["STRIKER"]["sr"] = strikeRate;
+
+            //ADD WICKETS FOR BALLER, ADD A BALL FOR BALLER
+            data["FIRST_INNING"]["BALLER"]["WICKETS"] += 1;
+            data["FIRST_INNING"]["BALLER"]["OVERS"] += 0.1;
+            data["FIRST_INNING"]["BALLER"]["OVERS"] = parseFloat(data["FIRST_INNING"]["BALLER"]["OVERS"].toFixed(1));
+            //ADD ECONOMY FOR BALLER
+            let runns = data["FIRST_INNING"]["BALLER"]["RUNS"];
+            let over = data["FIRST_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns / over).toFixed(1) != NaN && (runns / over).toFixed(1) != Infinity ? parseFloat((runns / over).toFixed(1)) : 0;
+            console.log(econ);
+            data["FIRST_INNING"]["BALLER"]["ECON"] = econ;
+            //UPDATE REMARKS FOR OVER
+            //UPDATE SCORECARD👇🏻
+            data["FIRST_INNING"]["SCORECARD"]["OVERS"] += 0.1;
+            data["FIRST_INNING"]["SCORECARD"]["OVERS"] = parseFloat(data["SECOND_INNING"]["SCORECARD"]["OVERS"].toFixed(1));
+            data["FIRST_INNING"]["SCORECARD"]["CURRENT_OVER"] += obj.over_add + '-';
+            data["FIRST_INNING"]["SCORECARD"]["WICKETS"] += 1;
+            data["FIRST_INNING"]["OUTPLAYERS"].push(data["FIRST_INNING"]["STRIKER"]);
+            data["FIRST_INNING"]["STRIKER"] = obj.batsman;
+        }
+        else{
+            data["SECOND_INNING"]["STRIKER"]["OUT"] = true;
+            //Ball used for Non-Striker to be increased by 1
+            data["SECOND_INNING"]["STRIKER"]["BALLS_USED"] += 1;
+            //Calculating Strike Rate
+            let strikeRate = data["SECOND_INNING"]["STRIKER"]["sr"];
+            let runs = data["SECOND_INNING"]["STRIKER"]["SCORE"];
+            let balls = data["SECOND_INNING"]["STRIKER"]["BALLS_USED"];
+
+            strikeRate = ((runs / balls) * 100) != NaN && ((runs / balls) * 100) != Infinity ? parseFloat(((runs / balls) * 100).toFixed(1)) : 0;
+            data["SECOND_INNING"]["STRIKER"]["sr"] = strikeRate;
+
+            //ADD WICKETS FOR BALLER, ADD A BALL FOR BALLER
+            data["SECOND_INNING"]["BALLER"]["WICKETS"] += 1;
+            data["SECOND_INNING"]["BALLER"]["OVERS"] += 0.1;
+            data["SECOND_INNING"]["BALLER"]["OVERS"] = parseFloat(data["SECOND_INNING"]["BALLER"]["OVERS"].toFixed(1));
+            //ADD ECONOMY FOR BALLER
+            let runns = data["SECOND_INNING"]["BALLER"]["RUNS"];
+            let over = data["SECOND_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns / over).toFixed(1) != NaN && (runns / over).toFixed(1) != Infinity ? parseFloat((runns / over).toFixed(1)) : 0;
+            console.log(econ);
+            data["SECOND_INNING"]["BALLER"]["ECON"] = econ;
+            //UPDATE REMARKS FOR OVER
+            //UPDATE SCORECARD👇🏻
+            data["SECOND_INNING"]["SCORECARD"]["OVERS"] += 0.1;
+            data["SECOND_INNING"]["SCORECARD"]["OVERS"] = parseFloat(data["SECOND_INNING"]["SCORECARD"]["OVERS"].toFixed(1));
+            data["SECOND_INNING"]["SCORECARD"]["CURRENT_OVER"] += obj.over_add + '-';
+            data["SECOND_INNING"]["SCORECARD"]["WICKETS"] += 1;
+            data["SECOND_INNING"]["OUTPLAYERS"].push(data["SECOND_INNING"]["STRIKER"]);
+            data["SECOND_INNING"]["STRIKER"] = obj.batsman;
+        }
+    })    
+    socket.on('special-runs', (obj) => {
+        if(data["SECOND_INNING"] == "NOT_STARTED"){
+            //change over string
+            data["FIRST_INNING"]["SCORECARD"]["CURRENT_OVER"] += obj.over_add + '-';
+            //change striker score
+            data["FIRST_INNING"]["STRIKER"]["SCORE"] += obj.extra_score;
+            let strikeRate = data["FIRST_INNING"]["STRIKER"]["sr"];
+            let runs = data["FIRST_INNING"]["STRIKER"]["SCORE"];
+            let balls = data["FIRST_INNING"]["STRIKER"]["BALLS_USED"];
+
+            strikeRate = ((runs / balls) * 100) != NaN && ((runs / balls) * 100) != Infinity ? parseFloat(((runs / balls) * 100).toFixed(1)) : 0;
+            data["FIRST_INNING"]["STRIKER"]["sr"] = strikeRate;
+            //change scorecard runs
+            data["FIRST_INNING"]["SCORECARD"]["SCORE"] += obj.extra_score + obj.score;
+            //change baller overs, econ, runs
+            data["FIRST_INNING"]["BALLER"]["OVERS"] += 0.1;
+            data["FIRST_INNING"]["BALLER"]["OVERS"] = parseFloat(data["FIRST_INNING"]["BALLER"]["OVERS"].toFixed(1));
+            data["FIRST_INNING"]["BALLER"]["RUNS"] += obj.extra_score + obj.score;
+            let runns = data["FIRST_INNING"]["BALLER"]["RUNS"];
+            let over = data["FIRST_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns / over).toFixed(1) != NaN && (runns / over).toFixed(1) != Infinity ? parseFloat((runns / over).toFixed(1)) : 0;
+            console.log(econ);
+            data["FIRST_INNING"]["BALLER"]["ECON"] = econ;            
+        } else {
+            //change over string
+            data["SECOND_INNING"]["SCORECARD"]["CURRENT_OVER"] += obj.over_add + '-';
+            //change striker score
+            data["SECOND_INNING"]["STRIKER"]["SCORE"] += obj.extra_score;
+            let strikeRate = data["SECOND_INNING"]["STRIKER"]["sr"];
+            let runs = data["SECOND_INNING"]["STRIKER"]["SCORE"];
+            let balls = data["SECOND_INNING"]["STRIKER"]["BALLS_USED"];
+
+            strikeRate = ((runs / balls) * 100) != NaN && ((runs / balls) * 100) != Infinity ? parseFloat(((runs / balls) * 100).toFixed(1)) : 0;
+            data["SECOND_INNING"]["STRIKER"]["sr"] = strikeRate;
+            //change scorecard runs
+            data["SECOND_INNING"]["SCORECARD"]["SCORE"] += obj.extra_score + obj.score;
+            //change baller overs, econ, runs
+            data["SECOND_INNING"]["BALLER"]["OVERS"] += 0.1;
+            data["SECOND_INNING"]["BALLER"]["OVERS"] = parseFloat(data["SECOND_INNING"]["BALLER"]["OVERS"].toFixed(1));
+            data["SECOND_INNING"]["BALLER"]["RUNS"] += obj.extra_score + obj.score;
+            let runns = data["SECOND_INNING"]["BALLER"]["RUNS"];
+            let over = data["SECOND_INNING"]["BALLER"]["OVERS"];
+            let econ = (runns / over).toFixed(1) != NaN && (runns / over).toFixed(1) != Infinity ? parseFloat((runns / over).toFixed(1)) : 0;
+            console.log(econ);
+            data["SECOND_INNING"]["BALLER"]["ECON"] = econ;
+        }
+        updateMatchDetails();
+    });
     
-    
+
     function switchTabs() {
         if ($(".firstInningsTab").hasClass("active")) {
             $(".firstInningsTab").removeClass("active");
