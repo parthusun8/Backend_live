@@ -428,7 +428,7 @@
             //UPDATE REMARKS FOR OVER
             //UPDATE SCORECARD👇🏻
             data["FIRST_INNING"]["SCORECARD"]["OVERS"] += 0.1;
-            data["FIRST_INNING"]["SCORECARD"]["OVERS"] = parseFloat(data["SECOND_INNING"]["SCORECARD"]["OVERS"].toFixed(1));
+            data["FIRST_INNING"]["SCORECARD"]["OVERS"] = parseFloat(data["FIRST_INNING"]["SCORECARD"]["OVERS"].toFixed(1));
             data["FIRST_INNING"]["SCORECARD"]["CURRENT_OVER"] += obj.over_add + '-';
             data["FIRST_INNING"]["SCORECARD"]["WICKETS"] += 1;
             data["FIRST_INNING"]["OUTPLAYERS"].push(data["FIRST_INNING"]["NON_STRIKER"]);
@@ -494,7 +494,7 @@
             //UPDATE REMARKS FOR OVER
             //UPDATE SCORECARD👇🏻
             data["FIRST_INNING"]["SCORECARD"]["OVERS"] += 0.1;
-            data["FIRST_INNING"]["SCORECARD"]["OVERS"] = parseFloat(data["SECOND_INNING"]["SCORECARD"]["OVERS"].toFixed(1));
+            data["FIRST_INNING"]["SCORECARD"]["OVERS"] = parseFloat(data["FIRST_INNING"]["SCORECARD"]["OVERS"].toFixed(1));
             data["FIRST_INNING"]["SCORECARD"]["CURRENT_OVER"] += obj.over_add + '-';
             data["FIRST_INNING"]["SCORECARD"]["WICKETS"] += 1;
             data["FIRST_INNING"]["OUTPLAYERS"].push(data["FIRST_INNING"]["STRIKER"]);
