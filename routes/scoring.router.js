@@ -559,6 +559,7 @@ ScoringRouter.post("/changeInningCricket", async (req, res) => {
 });
 ScoringRouter.post("/outScore", async (req, res) => {
   //Update Balls Count
+  //check if set to true
   var checkExists = {};
   var ways = {
     LBW: "LBW",
@@ -1085,7 +1086,13 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"
+          extraOvers[i] == "Bye" ||
+          extraOvers[i] == "LBW" ||
+          extraOvers[i] == "B" ||
+          extraOvers[i] == "C" ||
+          extraOvers[i] == "RO" ||
+          extraOvers[i] == "ST" ||
+          extraOvers[i] == "HW"
         ) {
           countExtra += 0.1;
         }
@@ -1125,7 +1132,13 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"
+          extraOvers[i] == "Bye"||
+          extraOvers[i] == "LBW" ||
+          extraOvers[i] == "B" ||
+          extraOvers[i] == "C" ||
+          extraOvers[i] == "RO" ||
+          extraOvers[i] == "ST" ||
+          extraOvers[i] == "HW"
         ) {
           countExtra += 0.1;
         }
@@ -1318,7 +1331,13 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"
+          extraOvers[i] == "Bye"||
+          extraOvers[i] == "LBW" ||
+          extraOvers[i] == "B" ||
+          extraOvers[i] == "C" ||
+          extraOvers[i] == "RO" ||
+          extraOvers[i] == "ST" ||
+          extraOvers[i] == "HW"
         ) {
           countExtra += 0.1;
         }
@@ -1438,7 +1457,13 @@ ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"
+          extraOvers[i] == "Bye"||
+          extraOvers[i] == "LBW" ||
+          extraOvers[i] == "B" ||
+          extraOvers[i] == "C" ||
+          extraOvers[i] == "RO" ||
+          extraOvers[i] == "ST" ||
+          extraOvers[i] == "HW"
         ) {
           countExtra += 0.1;
         }
@@ -1478,7 +1503,13 @@ ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"
+          extraOvers[i] == "Bye"||
+          extraOvers[i] == "LBW" ||
+          extraOvers[i] == "B" ||
+          extraOvers[i] == "C" ||
+          extraOvers[i] == "RO" ||
+          extraOvers[i] == "ST" ||
+          extraOvers[i] == "HW"
         ) {
           countExtra += 0.1;
         }
@@ -1728,7 +1759,13 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
           extraOvers[i] == "4" ||
           extraOvers[i] == "5" ||
           extraOvers[i] == "6" ||
-          extraOvers[i] == "Bye"
+          extraOvers[i] == "Bye"||
+          extraOvers[i] == "LBW" ||
+          extraOvers[i] == "B" ||
+          extraOvers[i] == "C" ||
+          extraOvers[i] == "RO" ||
+          extraOvers[i] == "ST" ||
+          extraOvers[i] == "HW"
         ) {
           countExtra += 0.1;
           countExtra = parseFloat(countExtra.toFixed(1));
