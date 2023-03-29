@@ -402,6 +402,7 @@
         updateMatchDetails();
     });
     socket.on('non-striker-out', (obj) => {
+        console.log("Non-Striker Out Socket Called");
         if(data["SECOND_INNING"] == "NOT_STARTED"){
             data["FIRST_INNING"]["NON_STRIKER"]["OUT"] = true;
             //Ball used for Non-Striker to be increased by 1
@@ -467,6 +468,7 @@
         updateMatchDetails();
     });
     socket.on('striker-out', (obj) => {
+        console.log("Striker Manage");
         if(data["SECOND_INNING"] == "NOT_STARTED"){
             data["FIRST_INNING"]["STRIKER"]["OUT"] = true;
             //Ball used for Non-Striker to be increased by 1
@@ -529,6 +531,7 @@
             data["SECOND_INNING"]["OUTPLAYERS"].push(data["SECOND_INNING"]["STRIKER"]);
             data["SECOND_INNING"]["STRIKER"] = obj.batsman;
         }
+        updateMatchDetails();
     })    
     socket.on('special-runs', (obj) => {
         if(data["SECOND_INNING"] == "NOT_STARTED"){
