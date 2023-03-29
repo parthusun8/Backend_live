@@ -686,8 +686,8 @@ io.on('connection',async (socket)=>{
     //yet to implement
     //need help with this
     socket.on('end-match', (obj) => {
-        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         console.log('end-match');
+        console.log(obj["TOURNAMENT_ID"], obj["MATCH_ID"]);
         io.to(obj["TOURNAMENT_ID"] + obj["MATCH_ID"].toString()).emit('match-ended');
     });
 

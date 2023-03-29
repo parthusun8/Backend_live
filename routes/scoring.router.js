@@ -953,6 +953,7 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
         
       }
 
+
       if (req.body.MATCH_ID == checkExists.TOTAL_MATCHES - 1) {
         //Just add winner
         await score.updateOne({ TOURNAMENT_ID: req.body.TOURNAMENT_ID }, {
@@ -965,6 +966,17 @@ ScoringRouter.post("/endMatchCricket", async (req, res) => {
       else {
         var totalTeams = checkExists.TOTAL_MATCHES + 1;
         var next_match = Math.floor(req.body.MATCH_ID / 2) + totalTeams / 2;
+
+        for(var i=0; i<winningTeam.PLAYERS.length; i++){
+          winningTeam.PLAYERS[i].SCORE = 0;
+          winningTeam.PLAYERS[i].BALLS = 0;
+          winningTeam.PLAYERS[i].RUNS = 0;
+          winningTeam.PLAYERS[i].WICKETS = 0;
+          winningTeam.PLAYERS[i].FOURS = 0;
+          winningTeam.PLAYERS[i].SIX = 0;
+          winningTeam.PLAYERS[i].BALLS_USED = 0;
+          winningTeam.PLAYERS[i].OUT = false;
+        }
 
         await score.updateOne({ TOURNAMENT_ID: req.body.TOURNAMENT_ID }, {
           $push: {
@@ -1034,8 +1046,6 @@ ScoringRouter.post("/getScoreCard", async (req, res) => {
       TOURNAMENT_ID: req.body.TOURNAMENT_ID,
     });
     if (checkExists) {
-      req.body.MATCH_ID -= 1;
-
       var returnVal = {
         scoreCard: [
           {
@@ -1551,6 +1561,157 @@ ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
+ScoringRouter.get("/winnerDeclare", async (req, res) => {
+  var checkExists = {};
+  try {
+    checkExists = await score.findOne({
+      TOURNAMENT_ID: req.query.TOURNAMENT_ID,
+    });
+    if (checkExists) {
+      var returnVal = {
+        scoreCard: [
+          {
+            TeamName: "",
+            TeamTotal: 0,
+            TeamWickets: 0,
+            TeamOvers: 0,
+          },
+          {
+            TeamName: "",
+            TeamTotal: 0,
+            TeamWickets: 0,
+            TeamOvers: 0,
+          },
+        ],
+        WinnerTeam: "",
+      };
+
+      returnVal.scoreCard[0].TeamName =
+        checkExists.MATCHES[
+          req.query.match_no
+        ].TEAMS[1].TEAM_NAME;
+      returnVal.scoreCard[0].TeamTotal =
+        checkExists.MATCHES[
+          req.query.match_no
+        ].INNING[0].BATTING_DETAILS.SCORE;
+      returnVal.scoreCard[0].TeamWickets =
+        checkExists.MATCHES[req.query.match_no].INNING[0].WICKETS;
+      returnVal.scoreCard[0].TeamOvers =
+        checkExists.MATCHES[
+          req.query.match_no
+        ].INNING[0].OVERS_DONE;
+
+      var extraOvers =
+        checkExists.MATCHES[
+          req.query.match_no
+        ].INNING[0].CURRENT_OVER.split("-");
+      var countExtra = 0;
+      for (var i = 0; i < extraOvers.length - 1; i += 1) {
+        if (
+          extraOvers[i] == "0" ||
+          extraOvers[i] == "1" ||
+          extraOvers[i] == "2" ||
+          extraOvers[i] == "3" ||
+          extraOvers[i] == "4" ||
+          extraOvers[i] == "5" ||
+          extraOvers[i] == "6" ||
+          extraOvers[i] == "Bye" ||
+          extraOvers[i] == "LBW" ||
+          extraOvers[i] == "B" ||
+          extraOvers[i] == "C" ||
+          extraOvers[i] == "RO" ||
+          extraOvers[i] == "ST" ||
+          extraOvers[i] == "HW"
+        ) {
+          countExtra += 0.1;
+        }
+      }
+      if (countExtra < 0.6) {
+        returnVal.scoreCard[0].TeamOvers += countExtra;
+      } else {
+        returnVal.scoreCard[0].TeamOvers += 1;
+      }
+
+      returnVal.scoreCard[1].TeamName =
+        checkExists.MATCHES[
+          req.query.match_no
+        ].TEAMS[0].TEAM_NAME;
+      returnVal.scoreCard[1].TeamTotal =
+        checkExists.MATCHES[
+          req.query.match_no
+        ].INNING[1].BATTING_DETAILS.SCORE;
+      returnVal.scoreCard[1].TeamWickets =
+        checkExists.MATCHES[req.query.match_no].INNING[1].WICKETS;
+      returnVal.scoreCard[1].TeamOvers =
+        checkExists.MATCHES[
+          req.query.match_no
+        ].INNING[1].OVERS_DONE;
+
+      var extraOvers =
+        checkExists.MATCHES[
+          req.query.match_no
+        ].INNING[1].CURRENT_OVER.split("-");
+      var countExtra = 0;
+      for (var i = 0; i < extraOvers.length - 1; i += 1) {
+        if (
+          extraOvers[i] == "0" ||
+          extraOvers[i] == "1" ||
+          extraOvers[i] == "2" ||
+          extraOvers[i] == "3" ||
+          extraOvers[i] == "4" ||
+          extraOvers[i] == "5" ||
+          extraOvers[i] == "6" ||
+          extraOvers[i] == "Bye" ||
+          extraOvers[i] == "LBW" ||
+          extraOvers[i] == "B" ||
+          extraOvers[i] == "C" ||
+          extraOvers[i] == "RO" ||
+          extraOvers[i] == "ST" ||
+          extraOvers[i] == "HW"
+        ) {
+          countExtra += 0.1;
+        }
+      }
+
+      if (countExtra < 0.6) {
+        returnVal.scoreCard[1].TeamOvers += countExtra;
+      } else {
+        returnVal.scoreCard[1].TeamOvers += 1;
+      }
+
+      var firstInningScore =
+        checkExists.MATCHES[req.query.match_no].INNING[0]
+          .BATTING_DETAILS.SCORE;
+      var secondInningScore =
+        checkExists.MATCHES[req.query.match_no].INNING[1]
+          .BATTING_DETAILS.SCORE;
+
+      if (firstInningScore > secondInningScore) {
+        returnVal.WinnerTeam =
+          checkExists.MATCHES[
+            req.query.match_no
+          ].TEAMS[1].TEAM_NAME;
+      } else {
+        returnVal.WinnerTeam =
+          checkExists.MATCHES[
+            req.query.match_no
+          ].TEAMS[0].TEAM_NAME;
+      }
+
+      res.render("scoreCard2", { data: JSON.stringify(returnVal), TOURNAMENT_ID: req.query.TOURNAMENT_ID, match_no: req.query.match_no });
+    } else {
+      res.status(200).send("Wrong Tournament Id");
+    }
+  } catch (e) {
+    console.log("Error Occured");
+    console.log(e);
+    await score.updateOne(
+      { TOURNAMENT_ID: req.query.TOURNAMENT_ID },
+      checkExists
+    );
+    res.status(400).send("Error Occured");
+  }
+});
 ScoringRouter.get("/teamPlayerViewOnFixtures", async (req, res) => {
   try {
     console.log(req.query.players);
@@ -1812,6 +1973,7 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
         ret.TEAM_NAMES = [checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].TEAM_NAME, checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].TEAM_NAME];
       } else {
         //isme first inning ka pura daalna hai, aur second ka live waala
+        console.log("First Innings done");
         ret = {
           "FIRST_INNING": {
             "BATTING": [],
@@ -1822,6 +1984,7 @@ ScoringRouter.get("/liveScoringCricket", async (req, res) => {
         }
         ret.TEAM_NAMES = [checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].TEAM_NAME, checkExists.MATCHES[req.query.MATCH_ID].TEAMS[0].TEAM_NAME];
         for (var i = 0; i < checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS.length; i++) {
+          console.log("checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED", checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED)
           if (checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].BALLS_USED != 0) {
             ret.FIRST_INNING.BATTING.push({
               "NAME": checkExists.MATCHES[req.query.MATCH_ID].TEAMS[1].PLAYERS[i].NAME,
