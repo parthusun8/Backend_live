@@ -651,7 +651,7 @@
             for (var i = 0; i < data["FIRST_INNING"]["OUTPLAYERS"].length; i++) {
                 $(".firstInningsBatsmenScoreDetails").append(
                     `<tr>
-                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].NAME}<br><strong>${firstInningsNonStrikerDetails.OUT ? "Out" : "Not out"}</strong></td>
+                    <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].NAME}<br><strong>Out</strong></td>
                     <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].SCORE}</td>
                     <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].BALLS_USED}</td>
                     <td>${data["FIRST_INNING"]["OUTPLAYERS"][i].FOURS}</td>
