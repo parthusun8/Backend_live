@@ -588,7 +588,7 @@
     });
     
     socket.on('match-ended', (obj)=>{
-        window.location.replace(`http://localhost:3000/winnerDeclare?TOURNAMENT_ID=${data["TOURNAMENT_ID"]}&match_no=${data.MATCH_ID}`)
+        window.location.replace(`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/winnerDeclare?TOURNAMENT_ID=${data["TOURNAMENT_ID"]}&match_no=${data.MATCH_ID}`)
     });
 
     function switchTabs() {
