@@ -172,7 +172,7 @@
         }
 
         .brackets>.group7>div {
-            width: 14.2%;
+            width: 13.3%;
         }
 
         .brackets>div>.r1>div {
@@ -397,7 +397,7 @@
                 //create Final Match
                 final = {
                     "Winner": `Match ${matchNo + 1}`,
-                    "url" : data[matchNo + 1].WINNER == "ONGOING" ? `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}` : `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`
+                    "url" : data[matchNo].WINNER == "ONGOING" ? `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}` : `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`
                 }
                 renderBrackets(brackets, final);
             }
