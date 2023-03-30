@@ -309,6 +309,7 @@ function renderBrackets(struct) {
 
     var group	= $('<div class="group'+(groupCount+1)+'" id="b'+bracketCount+'"></div>'),
         grouped = _.groupBy(struct, function(s) { return s.roundNo; });
+	console.log(grouped);
     for(g=1;g<=groupCount;g++) {
         var round = $('<div class="r'+g+'"></div>');
         _.each(grouped[g], function(gg) {

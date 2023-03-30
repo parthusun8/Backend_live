@@ -1392,17 +1392,19 @@ ScoringRouter.post("/hasScoringStarted", async (req, res) => {
 //updated above api's
 ScoringRouter.get("/cricketFixtures", async (req, res) => {
   try {
+    console.log("cricketFixtures");
     console.log(req.query.TOURNAMENT_ID);
-    var checkExists = await score.findOne({ TOURNAMENT_ID: req.query.TOURNAMENT_ID });
-    if (checkExists) {
+    // var checkExists = await score.findOne({ TOURNAMENT_ID: req.query.TOURNAMENT_ID });
+    // if (checkExists) {
       res.render("cricket_fixture", {
         TOURNAMENT_ID: req.query.TOURNAMENT_ID,
-        no_of_bracs: checkExists.TOTAL_MATCHES + 1,
-        allData: JSON.stringify(checkExists),
+        //rishi
+        no_of_bracs: 4,//checkExists.TOTAL_MATCHES + 1,
+        allData: "abc"//JSON.stringify(checkExists),
       });
-    } else {
-      res.status(200).send("Wrong Tournament Id");
-    }
+    // } else {
+      // res.status(200).send("Wrong Tournament Id");
+    // }
 
   } catch (e) {
     console.log("Error Occured");
