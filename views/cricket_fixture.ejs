@@ -1067,7 +1067,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "3",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -1332,7 +1332,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "0",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -2077,7 +2077,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "2",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -2341,8 +2341,8 @@
                     "TOSS_WINNER": "Team B",
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
-                    }
-                ,{
+                }
+                , {
                     "MATCH_ID": "0",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -3087,7 +3087,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "3",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -3352,7 +3352,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "0",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -4097,7 +4097,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "2",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -4361,8 +4361,8 @@
                     "TOSS_WINNER": "Team B",
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
-                    }
-                ,{
+                }
+                , {
                     "MATCH_ID": "0",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -5107,7 +5107,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "3",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -5372,7 +5372,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "0",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -6117,7 +6117,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "2",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -6381,8 +6381,8 @@
                     "TOSS_WINNER": "Team B",
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
-                    }
-                ,{
+                }
+                , {
                     "MATCH_ID": "0",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -7127,7 +7127,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "3",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -7392,7 +7392,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "0",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -8137,7 +8137,7 @@
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
                 }
-                ,{
+                , {
                     "MATCH_ID": "2",
                     "TOURNAMENT_ID": "CR179543-CR-NA",
                     "TEAMS": [
@@ -8401,7 +8401,7 @@
                     "TOSS_WINNER": "Team B",
                     "SCORING_STARTED": true,
                     "_id": "6425403fe527d9083d264392"
-                    }
+                }
             ]
 
             console.log("Entire Data");
@@ -8451,10 +8451,27 @@
                 while (totalMatches > 1) {
                     brackets[groupNo] = [];
                     for (var i = 0; i < totalMatches; i += 2) {
-                        brackets[groupNo].push({
-                            "TEAMS": [`Match ${matchNo + 1}`, `Match ${matchNo + 2}`],
-                            "PLAYERS": []
-                        })
+                        if (data[matchNo].WINNER == "ONGOING" && data[matchNo + 1] == "ONGOING") {
+                            brackets[groupNo].push({
+                                "TEAMS": [`Match ${matchNo + 1}`, `Match ${matchNo + 2}`],
+                                "url" : [`ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}`, `ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo + 1}`],
+                            });
+                        } else if(data[matchNo].WINNER == "ONGOING" && data[matchNo + 1].WINNER != "ONGOING"){
+                            brackets[groupNo].push({
+                                "TEAMS": [`Match ${matchNo + 1}`, data[matchNo + 1].WINNER.TEAM_NAME],
+                                "url" : [`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}`, `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo + 1}`]
+                            });
+                        } else if(data[matchNo].WINNER != "ONGOING" && data[matchNo + 1].WINNER == "ONGOING"){
+                            brackets[groupNo].push({
+                                "TEAMS": [data[matchNo].WINNER.TEAM_NAME, `Match ${matchNo + 2}`],
+                                "url" : [`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`,`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo + 1}`]
+                            });
+                        } else{
+                            brackets[groupNo].push({
+                                "TEAMS": [data[matchNo].WINNER.TEAM_NAME, data[matchNo + 1].WINNER.TEAM_NAME],
+                                "url" : [`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`,`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo + 1}`]
+                            });
+                        }
                         matchNo += 2;
                     }
                     totalMatches /= 2;
@@ -8463,7 +8480,8 @@
 
                 //create Final Match
                 final = {
-                    "Winner": `Match ${matchNo + 1}`
+                    "Winner": `Match ${matchNo + 1}`,
+                    "url" : data[matchNo + 1].WINNER == "ONGOING" ? `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}` : `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`
                 }
                 renderBrackets(brackets, final);
             }
@@ -8501,12 +8519,10 @@
                                 "</a></span></div></div>"
                             );
                         } else {
-                            var url = `http://52.66.209.218:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo}`;
-                            var url2 = `http://52.66.209.218:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo + 1}`;
                             round.append(
-                                '<div><div class="bracketbox"></span><span class="teama"><a href=' + url + '>' +
+                                '<div><div class="bracketbox"></span><span class="teama"><a href=' + gg["url"][0] + '>' +
                                 gg["TEAMS"][0] +
-                                '</a></span><span class="teamb"><a href=' + url2 + '>' +
+                                '</a></span><span class="teamb"><a href=' + gg["url"][1] + '>' +
                                 gg["TEAMS"][1] +
                                 "</a></span></div></div>"
                             );
