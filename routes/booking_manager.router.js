@@ -30,11 +30,12 @@ BookingRouter.get("/getPlayers", async (req, res) => {
     });
     console.log(result);
     if(!result){
+      const nameFromEmail = USER.findOne({EMAIL : req.body.CAPTAIN}, {NAME : 1});
       await Player.create({
         TEAM_NAME: "",
         TOURNAMENT_ID: tournament_id,
         CAPTAIN: captain_id,
-        PLAYERS: [{ USERID: captain_id, NAME: captain_id }],
+        PLAYERS: [{ USERID: captain_id, NAME: nameFromEmail}],
         SUBSTITUTE: [],
         TEAM_NAME : ""
       });
@@ -108,7 +109,6 @@ BookingRouter.post("/validatePlayerCricket", async (req, res) => {
     });
   }
 });
-
 // TEAM_NAME
 BookingRouter.post("/cricketTeamName", async (req, res) => {
   try {
@@ -128,7 +128,6 @@ BookingRouter.post("/cricketTeamName", async (req, res) => {
     res.status(400).send("Error Occured");
   }
 });
-
 BookingRouter.post("/getCricketTourneyDetails", async (req, res) => {
   try {
     const result1 = await cricketModel.findOne({
@@ -144,7 +143,6 @@ BookingRouter.post("/getCricketTourneyDetails", async (req, res) => {
     res.status(400).send("Something Went Wrong");
   }
 });
-
 BookingRouter.post("/addTeamPlayers", async (req, res) => {
   try {
     if(!req.body.player.NAME || !req.body.player.USERID || req.body.player.NAME == "" || req.body.player.USERID == ""){
@@ -178,7 +176,6 @@ BookingRouter.post("/addTeamPlayers", async (req, res) => {
     res.status(400).send("Something Went Wrong");
   }
 });
-
 BookingRouter.post("/addSubstitutePlayers", async (req, res) => {
   try {
     if(!req.body.substitute.NAME || !req.body.substitute.USERID || req.body.substitute.NAME == "" || req.body.substitute.USERID == ""){
@@ -209,7 +206,6 @@ BookingRouter.post("/addSubstitutePlayers", async (req, res) => {
     res.status(400).send("Something Went Wrong");
   }
 });
-
 BookingRouter.post("/removePlayer", async (req, res) => {
   try {
     var request = {
@@ -266,6 +262,22 @@ BookingRouter.post("/removeSubstitue", async (req, res) => {
     res.status(400).send("Something Went Wrong");
   }
 });
-BookingRouter.post("/removeSubstitute", async (req, res) => {});
-BookingRouter.post("/submitTeam", async (req, res) => {});
+BookingRouter.get("/hasTourneyStarted", async (req, res) => {
+  try{
+    var checkExists = tourneyMongo.findOne({TOURNAMENT_ID : req.query.TOURNAMENT_ID.split('-')[0]}, {REGISTRATION_CLOSES_BEFORE : 1});
+    if(checkExists){
+      console.log(checkExists);
+      if(checkExists == 0){
+        res.status(200).send("Tournament Has Started. Can't edit Team");
+      } else{
+        res.status(200).send("false");
+      }
+    } else{
+      console.log("Wrong Tournament Id");
+      res.status(200).send("Wrong Tournament Id");
+    }
+  }catch(e){
+    res.status(400).send("Error Occured");
+  }
+});
 module.exports = BookingRouter;
