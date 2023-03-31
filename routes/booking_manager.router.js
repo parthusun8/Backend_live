@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const USER = require("../models/user.mongo");
 const USERProfile = require("../models/userprofile.model");
 const tournamentModel = require("../models/tournament.model");
-const onlytournamentModel = require("../models/tourney.mongo");
+const onlytourneys = require("../models/tourney.mongo");
 const matchesmodel = require("../models/matches.mongo");
 const BookingRouter = express.Router();
 const S3 = require("aws-sdk/clients/s3");
@@ -264,10 +264,12 @@ BookingRouter.post("/removeSubstitue", async (req, res) => {
 });
 BookingRouter.get("/hasTourneyStarted", async (req, res) => {
   try{
-    var checkExists = tourneyMongo.findOne({TOURNAMENT_ID : req.query.TOURNAMENT_ID.split('-')[0]}, {REGISTRATION_CLOSES_BEFORE : 1});
+    console.log(req.query.TOURNAMENT_ID.split('-')[0]);
+    var checkExists = await onlytourneys.findOne({TOURNAMENT_ID : req.query.TOURNAMENT_ID.split('-')[0]});
+    console.log(checkExists);
     if(checkExists){
-      console.log(checkExists);
-      if(checkExists == 0){
+      console.log(checkExists.REGISTRATION_CLOSES_BEFORE);
+      if(checkExists.REGISTRATION_CLOSES_BEFORE == 0){
         res.status(200).send("Tournament Has Started. Can't edit Team");
       } else{
         res.status(200).send("false");
