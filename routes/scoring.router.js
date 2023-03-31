@@ -1559,7 +1559,7 @@ ScoringRouter.get("/ScoreCardOnFixtures", async (req, res) => {
       { TOURNAMENT_ID: req.query.TOURNAMENT_ID },
       checkExists
     );
-    res.status(400).send("Error Occured");
+    res.status(400).send("Match Not Decided Yet");
   }
 });
 ScoringRouter.get("/winnerDeclare", async (req, res) => {
