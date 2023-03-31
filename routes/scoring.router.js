@@ -31,6 +31,11 @@ ScoringRouter.post("/startScoringFlow", async (req, res) => {
       });
       // console.log(GetAllTeams);
       //CREATING ONLY FIRST SET OF MATCHES
+
+      if(GetAllTeams.length!=NO_OF_KNOCKOUT_ROUNDS){
+        res.status(200).send("Not All teams are full ");
+        return;
+      }
       var matchesArray = [];
       var matchNo = 0;
       var inningArray = [];
