@@ -367,22 +367,28 @@
                 while (totalMatches > 1) {
                     brackets[groupNo] = [];
                     for (var i = 0; i < totalMatches; i += 2) {
-                        if (data[matchNo].WINNER == "ONGOING" && data[matchNo + 1] == "ONGOING") {
+                        console.log("Current Match " + i + " and " + (i + 1));
+                        
+                        if (data[matchNo].WINNER == "ONGOING" && data[matchNo + 1].WINNER == "ONGOING") {
+                            console.log("Both Ongoing");
                             brackets[groupNo].push({
                                 "TEAMS": [`Match ${matchNo + 1}`, `Match ${matchNo + 2}`],
                                 "url" : [`ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}`, `ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo + 1}`],
                             });
                         } else if(data[matchNo].WINNER == "ONGOING" && data[matchNo + 1].WINNER != "ONGOING"){
+                            console.log("First Ongoing");
                             brackets[groupNo].push({
                                 "TEAMS": [`Match ${matchNo + 1}`, data[matchNo + 1].WINNER.TEAM_NAME],
                                 "url" : [`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}`, `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo + 1}`]
                             });
                         } else if(data[matchNo].WINNER != "ONGOING" && data[matchNo + 1].WINNER == "ONGOING"){
+                            console.log("Second Ongoing");
                             brackets[groupNo].push({
                                 "TEAMS": [data[matchNo].WINNER.TEAM_NAME, `Match ${matchNo + 2}`],
                                 "url" : [`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`,`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo + 1}`]
                             });
                         } else{
+                            console.log("Both Done");
                             brackets[groupNo].push({
                                 "TEAMS": [data[matchNo].WINNER.TEAM_NAME, data[matchNo + 1].WINNER.TEAM_NAME],
                                 "url" : [`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`,`http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo + 1}`]
@@ -399,6 +405,11 @@
                     "Winner": `Match ${matchNo + 1}`,
                     "url" : data[matchNo].WINNER == "ONGOING" ? `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}` : `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`
                 }
+
+                console.log("Brackets are : ");
+                console.log(brackets);
+                console.log("Final is : ");
+                console.log(final);
                 renderBrackets(brackets, final);
             }
 
