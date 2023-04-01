@@ -2865,6 +2865,8 @@ userRouter.get("/baseTournaments", async (req, res) => {
         }
         res.status(200).send(r2);
         console.log("RETURN" + r2);
+      } else{
+        res.status(200).send("No Tournaments");
       }
     }
   } catch (error) {
