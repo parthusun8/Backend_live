@@ -30,7 +30,7 @@ BookingRouter.get("/getPlayers", async (req, res) => {
     });
     console.log(result);
     if(!result){
-      const nameFromEmail = USER.findOne({EMAIL : req.query.CAPTAIN}, {NAME : 1});
+      const nameFromEmail = await USER.findOne({EMAIL : req.query.CAPTAIN}, {NAME : 1});
       await Player.create({
         TEAM_NAME: "",
         TOURNAMENT_ID: tournament_id,
