@@ -210,6 +210,9 @@
     let firstInningsBatsmenDetails = data.SCORECARD[0].BATTING;
     let firstInningsBowlerDetails = data.SCORECARD[0].BALLING;
 
+    $('.firstInningsTab').text(data.SCORECARD[0].TEAM_NAME);
+    $('.secondInningsTab').text(data.SCORECARD[1].TEAM_NAME);
+
     for(let i=0; i<firstInningsBatsmenDetails.length; i++){
         if(firstInningsBatsmenDetails[i].SCORE==0){
             continue;
