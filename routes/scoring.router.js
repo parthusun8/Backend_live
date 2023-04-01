@@ -1292,6 +1292,7 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
             "NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].NAME,
             "BALLS": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].BALLS,
             "USERID": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].PLAYERS[baller_index].USERID,
+            "SCORE" : 0,
           },
           "TEAM_NAME": checkExists.MATCHES[req.body.MATCH_ID].TEAMS[1].TEAM_NAME,
           //ADD PLAYERS
