@@ -33,7 +33,7 @@ ScoringRouter.post("/startScoringFlow", async (req, res) => {
       //CREATING ONLY FIRST SET OF MATCHES
 
       if(GetAllTeams.length!=Tournament.NO_OF_KNOCKOUT_ROUNDS){
-        res.status(200).send("Not All teams are full ");
+        res.status(200).send({message : "Not All teams are full "});
         return;
       }
       var matchesArray = [];
