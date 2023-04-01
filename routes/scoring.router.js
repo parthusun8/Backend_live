@@ -1200,6 +1200,7 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
     if (checkExists) {
       var first =
         checkExists.MATCHES[req.body.MATCH_ID].FIRST_INNING_DONE;
+      var score_to_beat = first ? checkExists.MATCHES[req.body.MATCH_ID]["INNING"][0]["BATTING_DETAILS"]["SCORE"]: 10000;
       var inning_no = 0;
       if (first) inning_no = 1;
       var striker_index = -1;
@@ -1304,7 +1305,7 @@ ScoringRouter.post("/resumeScoring", async (req, res) => {
           "TOSS_WINNER": checkExists.MATCHES[req.body.MATCH_ID].TOSS_WINNER,
           "CURR_OVERS": checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].CURRENT_OVER,
           "WICKETS_TAKEN": checkExists.MATCHES[req.body.MATCH_ID].INNING[inning_no].WICKETS,
-        }
+        },"score_to_beat" : score_to_beat
       };
 
       for (var i = 0; i < checkExists.MATCHES[req.body.MATCH_ID].TEAMS[0].PLAYERS.length; i++) {
