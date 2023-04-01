@@ -404,7 +404,7 @@
                 //create Final Match
                 final = {
                     "Winner": `Match ${matchNo + 1}`,
-                    "url" : data[matchNo].WINNER == "ONGOING" ? `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=CR179543-CR-NA&MATCH_ID=${matchNo}` : `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=CR179543-CR-NA&match_no=${matchNo}`
+                    "url" : data[matchNo].WINNER == "ONGOING" ? `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/liveScoringCricket?TOURNAMENT_ID=${tid}&MATCH_ID=${matchNo}` : `http://ec2-52-66-209-218.ap-south-1.compute.amazonaws.com:3000/ScoreCardOnFixtures?TOURNAMENT_ID=${tid}&match_no=${matchNo}`
                 }
 
                 console.log("Brackets are : ");
