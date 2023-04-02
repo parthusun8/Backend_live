@@ -4,7 +4,9 @@ const cors = require('cors')
 const userRouter = require('../routes/userRouter.router')
 const livrouter = require('../routes/live_maintainer.router')
 const evrouter = require('../routes/event_manager.router')
-const mongoose = require('mongoose')
+const BookingRouter = require('../routes/booking_manager.router')
+const mongoose = require('mongoose');
+const ScoringRouter = require('../routes/scoring.router');
 require('dotenv').config()
 
 const uri = "mongodb+srv://Riddhiman_Mongo:hello123@cluster1.b76yf.mongodb.net/ArdentSport?retryWrites=true&w=majority";
@@ -18,5 +20,7 @@ app.use(express.json());
 app.use(userRouter);
 app.use(livrouter);
 app.use(evrouter);
+app.use(BookingRouter);
+app.use(ScoringRouter)
 app.use(express.static(`${__dirname}/staticfiles`))
 module.exports = app
